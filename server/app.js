@@ -92,6 +92,29 @@ app.post('/api/signup', async (req, res) => {
   }
 });
 
+// login
+app.post('/api/login', async (req, res) => {
+  const { email, password_hash } = req.body;
+  if (!email || !password_hash) return res.status(400).json({ error: 'Missing email or password' });
+
+  try {
+    const user = await prisma.user.findUnique({ where: { email } });
+    if (!user) return res.status(401).json({ error: 'Invalid credentials' });
+
+    // For now, compare the password_hash directly
+    // Future version: verify a hashed password with stored salt
+    if (user.password_hash !== password_hash) {
+      return res.status(401).json({ error: 'Invalid credentials' });
+    }
+
+    // hide password_hash and salt, return the rest of the user object
+    const { password_hash: _hiddenPassword, salt: _hiddenSalt, ...safeUser } = user;
+    return res.json({ user: safeUser });
+  } catch (err) {
+    return res.status(500).json({ error: err.message });
+  }
+});
+
 const port = process.env.PORT || 3000;
 app.listen(port, () => {
   // eslint-disable-next-line no-console
