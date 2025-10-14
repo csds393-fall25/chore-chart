@@ -10,8 +10,8 @@
         </v-col>
       </v-row>
     </v-container>
-    <v-container fluid class="fill-height pa-0" v-else>
-      <router-view></router-view>
+    <v-container fluid class="fill-height pa-0 w-100" v-else>
+      <Login />
     </v-container>
   </v-app>
 </template>
@@ -19,6 +19,7 @@
 <script setup>
   import NavigationBar from "./components/NavigationBar.vue"
   import {useAppStore} from "./stores/app.js";
+  import Login from "./components/Login.vue";
 
   const store = useAppStore();
 </script>
