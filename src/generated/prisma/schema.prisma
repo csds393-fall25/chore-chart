@@ -1,0 +1,105 @@
+datasource db {
+  url      = env("DATABASE_URL")
+  provider = "postgresql"
+}
+
+generator client {
+  provider = "prisma-client-js"
+  output   = "../src/generated/prisma"
+}
+
+model User {
+  id            Int        @id @default(autoincrement())
+  createdAt     DateTime   @default(now())
+  email         String     @unique
+  name          String
+  password_hash String
+  salt          String?
+  household     Household? @relation(fields: [householdId], references: [id])
+  householdId   Int?
+  role          Role?      @default(member)
+  difficulty    Int?
+  totalPoints   Int?       @default(0)
+
+  // Opposite relation fields:
+  assignedChores  Chore[] // chores assigned to this user
+  avatar          Avatar? // one-to-one Avatar.owner <-> User.avatar
+  userAvatarProps UserAvatarProps[] // join table entries for user's owned props
+}
+
+model Household {
+  id       Int    @id @default(autoincrement())
+  name     String
+  joinCode String @unique @default(uuid())
+
+  // Opposite relation fields:
+  users  User[]
+  chores Chore[]
+}
+
+model Chore {
+  id            Int       @id @default(autoincrement())
+  name          String
+  description   String
+  difficulty    Int
+  location      String
+  estimatedTime Int // in minutes 
+  dueDate       DateTime
+  repeat        Boolean
+  household     Household @relation(fields: [householdId], references: [id])
+  householdId   Int
+  assignee      User      @relation(fields: [assigneeId], references: [id])
+  assigneeId    Int
+}
+
+model Avatar {
+  ownerId      Int        @id
+  owner        User       @relation(fields: [ownerId], references: [id])
+  hat          AvatarProp @relation("hat", fields: [hatId], references: [id])
+  hair         AvatarProp @relation("hair", fields: [hairId], references: [id])
+  shirt        AvatarProp @relation("shirt", fields: [shirtId], references: [id])
+  background   AvatarProp @relation("background", fields: [backgroundId], references: [id])
+  handProp     AvatarProp @relation("handProp", fields: [handPropId], references: [id])
+  hatId        Int
+  hairId       Int
+  shirtId      Int
+  backgroundId Int
+  handPropId   Int
+}
+
+model UserAvatarProps {
+  userId Int
+  user   User       @relation(fields: [userId], references: [id])
+  propId Int
+  prop   AvatarProp @relation(fields: [propId], references: [id])
+
+  @@id([userId, propId])
+}
+
+model AvatarProp {
+  id   Int      @id @default(autoincrement())
+  name String   @unique
+  type PropType
+  cost Int
+
+  // Opposite relation fields:
+  hatInAvatars        Avatar[]          @relation("hat")
+  hairInAvatars       Avatar[]          @relation("hair")
+  shirtInAvatars      Avatar[]          @relation("shirt")
+  backgroundInAvatars Avatar[]          @relation("background")
+  handPropInAvatars   Avatar[]          @relation("handProp")
+  userAvatarProps     UserAvatarProps[]
+}
+
+enum Role {
+  member
+  leader
+}
+
+enum PropType {
+  hat
+  hair
+  shirt
+  background
+  handProp
+}
