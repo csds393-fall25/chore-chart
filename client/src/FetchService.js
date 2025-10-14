@@ -2,7 +2,17 @@ class FetchService {
     // Sign up
     static async signup(user) {
         try {
-            const response = new Request("/api/signup", {
+            console.log(user.name)
+            console.log(user.email)
+            console.log(user.password_hash)
+            console.log(JSON.stringify({
+                    name: user.name,
+                    email: user.email,
+                    password_hash: user.password_hash
+            })
+            
+            )
+            const response = await fetch("/api/signup", {
                 method: "POST",
                 body: JSON.stringify({
                     name: user.name,
