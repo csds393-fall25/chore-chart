@@ -1,12 +1,12 @@
 import { createWebHistory, createRouter } from 'vue-router'
-
+import Chore from '../pages/Chore.vue'
 import index from '../pages/index.vue'
 
 const routes = [
   { path: '/', component: index },
   { path: '/chores', component: index, props: true },
   { path: '/house', component: index, props: true },
-  { path: '/create', component: index, props: true },
+  { path: '/create', component: Chore, props: true },
   { path: '/random', component: index, props: true },
   { path: '/print', component: index, props: true },
   { path: '/help', component: index, props: true },
