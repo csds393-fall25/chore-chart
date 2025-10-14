@@ -24,7 +24,7 @@
               </h2>
               <v-form>
                 
-              <v-text-field  v-if="isCreate"  v-model = "name"  label = "Name"></v-text-field>
+              <v-text-field  v-if="isCreate"  v-model = "displayedName"  label = "Name"></v-text-field>
               <v-text-field   v-model = "username"  label = "Email"></v-text-field>
               <v-text-field  v-model = "password"  label = "Password" type = "password" :persistent-hint='isIncorrect' :hint = " isIncorrect ? 'Incorrect username or password' : ''" ></v-text-field>
               <v-text-field v-if="isCreate" v-model = "repeatedPassword"  label = "Password Again" type = "password" :persistent-hint='isNotSame' :hint = " isNotSame ? 'Passwords do not match' : ''" ></v-text-field>   
@@ -80,12 +80,12 @@
 </template>
 
 <script setup>
-
+  import FetchService from "../FetchService"
 
   const username = ref();
   const password = ref();
   const isIncorrect = ref(false);
-  const name = ref()
+  const displayedName = ref()
   const maxDifficulty = ref()
   const estimatedTime = ref()
   const repeatedPassword = ref()
@@ -112,6 +112,13 @@
     if (typeof(password.value) != null && typeof(repeatedPassword.value) != null && password.value != repeatedPassword.value){
       isNotSame.value = true;
     }
+    const user = {
+      name: displayedName.value,
+      email: username.value,
+      password_hash: password.value
+    }
+    const result = FetchService.signup(user);
+    console.log(result);
   }
 
 // replace with database call that looks for username and returns the password associated with that username from the database
