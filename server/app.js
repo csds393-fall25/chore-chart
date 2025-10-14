@@ -5,16 +5,19 @@ import path from 'path';
 import { fileURLToPath } from 'url';
 import cors from 'cors';
 import prisma from './prisma.js';
+import bodyParser from 'body-parser';
 
 const __filename = fileURLToPath(import.meta.url);
 const __dirname = path.dirname(__filename);
 
 const app = express();
 app.use(express.json());
+app.use(bodyParser.urlencoded({ extended: true }));
+app.use(bodyParser.json());
 
 // Allow client to call server api during development
 // When deploy to production, let express serve the build file (change the path to client/dist instead of client)
-app.use(cors({ origin: 'http://localhost:3000' }));
+app.use(cors());
 
 
 // Serve the static vue files
@@ -81,15 +84,14 @@ app.delete('/api/household/:id', async (req, res) => {
 
 // signup
 app.post('/api/signup', async (req, res) => {
-  const request = await req.body;
-  console.log(request)
-  const { name, email, password_hash } = JSON.parse(request);
   try {
+    const {name, email, password_hash } = req.body;
     const result = await prisma.user.create({
       data: { name, email, password_hash },
     });
     res.json(result);
   } catch (err) {
+    console.log("Error: " + err);
     res.status(500).json({ error: err.message });
   }
 });

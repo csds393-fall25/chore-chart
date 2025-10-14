@@ -1,19 +1,14 @@
+const baseURL = "http://localhost:3000/api"
 class FetchService {
+
     // Sign up
     static async signup(user) {
         try {
-            console.log(user.name)
-            console.log(user.email)
-            console.log(user.password_hash)
-            console.log(JSON.stringify({
-                    name: user.name,
-                    email: user.email,
-                    password_hash: user.password_hash
-            })
-            
-            )
-            const response = await fetch("/api/signup", {
+            const response = await fetch(baseURL + "/signup", {
                 method: "POST",
+                headers: {
+                    "Content-Type": "application/json",
+                },
                 body: JSON.stringify({
                     name: user.name,
                     email: user.email,
@@ -28,6 +23,7 @@ class FetchService {
             console.error(error.message);
         }
     }
+    
     // Signin
 }
 
