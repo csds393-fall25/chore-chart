@@ -1,5 +1,5 @@
 <template>
-  <p>index</p>
+  <Login />
 </template>
 
 <script setup>
