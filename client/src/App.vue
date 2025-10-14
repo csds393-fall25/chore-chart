@@ -1,28 +1,26 @@
 <template>
   <v-app>
-    <NavigationBar />
-    <router-view />
+    <v-container fluid class="fill-height pa-0" v-if="store.loggedIn">
+      <v-row class="pa-0 fill-height ml-0">
+        <v-col cols="3" lg="2" class="pa-0 ma-0">
+          <NavigationBar/>
+        </v-col>
+        <v-col class="pa-0">
+          <router-view></router-view>
+        </v-col>
+      </v-row>
+    </v-container>
+    <v-container fluid class="fill-height pa-0" v-else>
+      <router-view></router-view>
+    </v-container>
   </v-app>
 </template>
 
 <script setup>
-  //
+  import NavigationBar from "./components/NavigationBar.vue"
+  import {useAppStore} from "./stores/app.js";
+
+  const store = useAppStore();
 </script>
 <style>
-  .navy {
-      background-color: #192b40;
-      color: white;
-  }
-  .medium-blue {
-      background-color: #396496;
-      color: white;
-  }
-  .light-blue {
-      background-color: #cfe2f3;
-      color: #192b40;
-  }
-  .teal {
-      background-color: #51d299;
-      color: black;
-  }
 </style>

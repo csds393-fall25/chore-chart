@@ -1,39 +1,55 @@
 <template>
-  <v-container class="fill-height">
-    <v-navigation-drawer
-      permanent
-      color="primary-lighten-1"
-      class = "text-center"
-    >
-      <template v-slot:prepend>
-        <v-list-item>
-          <v-avatar size = "large" color="primary"></v-avatar>
-          <p class = "text-h4">Jane Doe</p>
-          <p class = "text-subtitle-2">250 pts</p>
+  <v-sheet class="fill-height text-center d-flex flex-column" color="primary-lighten-1 pa-0 ma-0" width="100%">
+    <v-card to="/profile" color="primary-lighten-1">
+      <v-container class="text-center" width="100%">
+        <v-row width="100%" class="mb-0 mr-0 ml-0">
+          <v-col cols="12" class="pa-0">
+            <v-avatar size = "large" color="primary"></v-avatar>
+          </v-col>
+        </v-row>
+        <v-row width="100%" class="mr-0 ml-0">
+          <v-col cols="12" class="pa-0">
+            <p class = "text-h4">{{ user.name }}</p>
+          </v-col>
+        </v-row>
+        <v-row width="100%" class="mr-0 ml-0">
+          <v-col cols="12" class="pt-0">
+            <p class = "text-subtitle-2">{{ user.points }} pts</p>
+          </v-col>
+        </v-row>
+      </v-container>
+    </v-card>
+
+    <v-container class="primary-lighten-1 text-center pa-0" width="100%">
+      <v-list bg-color="primary" width="100%">
+        <v-list-item title = "Chores" value = "chores" to="/chores"></v-list-item>
+        <v-list-item title = "House" value = "house" to="/house"></v-list-item>
+        <v-list-item title = "Create" value = "create" to="/create"></v-list-item>
+        <v-list-item title = "Random" value = "random" to="/random">
         </v-list-item>
-      </template>
-      <v-list bg-color="primary">
-        <v-list-item title = "Chores" value = "chores"></v-list-item>
-        <v-list-item title = "House" value = "house"></v-list-item>
-        <v-list-item title = "Create" value = "create"></v-list-item>
-        <v-list-item title = "Random" value = "random">
-        </v-list-item>
-        <v-list-item title = "Print" value = "print"></v-list-item>
-        <v-list-item title = "Bulletin Board" value = "bulletin"></v-list-item>
-        <v-list-item title = "Help" value = "help"></v-list-item>
+        <v-list-item title = "Print" value = "print" to="/print"></v-list-item>
+        <v-list-item title = "Help" value = "help" to="/help"></v-list-item>
       </v-list>
-      <template v-slot:append>
-        <v-list bg-color="primary">
-          <v-list-item title = "Leaderboard" value = "leaderboard"></v-list-item>
-          <v-list-item title = "Store" value = "store"></v-list-item>
-        </v-list>
-      </template>
-    </v-navigation-drawer>
-  </v-container>
+    </v-container>
+    <v-container class="primary-lighten-1 text-center pa-0 mt-auto" width="100%">
+      <v-list bg-color="primary" width="100%">
+        <v-list-item title = "Leaderboard" value = "leaderboard" to="/leaderboard"></v-list-item>
+        <v-list-item title = "Store" value = "store" to="/store"></v-list-item>
+      </v-list>
+    </v-container>
+  </v-sheet>
 </template>
 
 <script setup>
-  
+  import { useAppStore } from "../stores/app.js";
+  const store = useAppStore();
+
+  const user = store.user;
+  store.user.name = "Jane Doe";
+  store.user.points = 500;
 </script>
 <style scoped>
+  v-navigation-drawer {
+    width: 100%;
+  }
 </style>
