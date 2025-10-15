@@ -41,6 +41,7 @@
 
 <script setup>
   import { ref } from 'vue'
+  import FetchService from "../FetchService.js"
 
   const username = ref();
   const password = ref();
