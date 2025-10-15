@@ -25,6 +25,27 @@ class FetchService {
     }
     
     // Signin
+    static async login(user) {
+        try {
+            const response = await fetch(baseURL + "/login", {
+                method: "POST",
+                headers: {
+                    "Content-Type": "application/json",
+                },
+                body: JSON.stringify({
+                    email: user.email,
+                    password_hash: user.password_hash
+                })
+            });
+            if(!response.ok) {
+                throw new Error(`Response status: ${response.status}`);
+            }
+            const result = await response.json();
+            return result;
+        } catch (error) {
+            console.error(error.message);
+        }
+    }
 }
 
 export default FetchService

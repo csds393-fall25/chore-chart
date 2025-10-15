@@ -93,40 +93,40 @@
   const isCreate = ref(false)
   
 
-  function validateLogin(){
-    console.log("bye")
-
-    
-    if (typeof( password.value) != null &&password.value == getPassword()){
-      console.log("success!!")
-      // go to next screen
-    }
-    else{
+  async function validateLogin(){
+    try {
+      const user = {
+        email: username.value,
+        password_hash: password.value
+      }
+      const result = await FetchService.login(user);
+      console.log("Login successful!", result);
+      isIncorrect.value = false;
+      // TODO: Store user data (eg in localStorage) and navigate to next screen
+    } catch (error) {
+      console.error("Login failed:", error);
       isIncorrect.value = true;
-
     }
   }
 
-  function validateProfile(){
-    console.log("HI")
+  async function validateProfile(){
     if (typeof(password.value) != null && typeof(repeatedPassword.value) != null && password.value != repeatedPassword.value){
       isNotSame.value = true;
+      return;
     }
+    isNotSame.value = false;
+    
     const user = {
       name: displayedName.value,
       email: username.value,
       password_hash: password.value
     }
-    const result = FetchService.signup(user);
-    console.log(result);
+    try {
+      const result = await FetchService.signup(user);
+      console.log("Signup successful!", result);
+    } catch (error) {
+      console.error("Signup failed:", error);
+    }
   }
-
-// replace with database call that looks for username and returns the password associated with that username from the database
-  function getPassword(username){
-
-    return "password"
-    
-  }
-  
 
 </script>
