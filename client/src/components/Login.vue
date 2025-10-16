@@ -42,6 +42,7 @@
 <script setup>
   import { ref } from 'vue'
   import FetchService from "../FetchService.js"
+  import { useAppStore } from '@/stores/app.js';
 
   const username = ref();
   const password = ref();
@@ -52,6 +53,7 @@
   const repeatedPassword = ref()
   const isNotSame = ref(false)
   const isCreate = ref(false)
+  const store = useAppStore()
   
 
   async function validateLogin(){
@@ -63,9 +65,11 @@
       const result = await FetchService.login(user);
       console.log("Login successful!", result);
       isIncorrect.value = false;
+      store.loggedIn = true;
       // TODO: Store user data (eg in localStorage) and navigate to next screen
     } catch (error) {
       console.error("Login failed:", error);
+      store
       isIncorrect.value = true;
     }
   }

@@ -7,6 +7,6 @@ export const useAppStore = defineStore('app', {
       name: "",
       points: 0,
     },
-    loggedIn: true,
+    loggedIn: false,
   }),
 })

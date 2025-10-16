@@ -1,5 +1,5 @@
 <template>
-  <Login />
+  <h2>Dummy Page</h2>
 </template>
 
 <script setup>
