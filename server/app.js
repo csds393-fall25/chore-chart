@@ -58,7 +58,7 @@ app.post('/api/household', async (req, res) => {
 });
 
 // edit household name
-app.put('/api/household:id', async (req, res) => {
+app.put('/api/household/:id', async (req, res) => {
   const { name } = req.body;
   const id = parseInt(req.params.id);
   if (Number.isNaN(id) || !name) return res.status(400).json({ error: 'Missing id or name' });
