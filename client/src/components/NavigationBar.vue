@@ -9,12 +9,12 @@
         </v-row>
         <v-row width="100%" class="mr-0 ml-0">
           <v-col cols="12" class="pa-0">
-            <p class = "text-h4">{{ user.name }}</p>
+            <p class = "text-h4">{{ store.user.name }}</p>
           </v-col>
         </v-row>
         <v-row width="100%" class="mr-0 ml-0">
           <v-col cols="12" class="pt-0">
-            <p class = "text-subtitle-2">{{ user.points }} pts</p>
+            <p class = "text-subtitle-2">{{ store.user.points }} pts</p>
           </v-col>
         </v-row>
       </v-container>
@@ -44,9 +44,7 @@
   import { useAppStore } from "../stores/app.js";
   const store = useAppStore();
 
-  const user = store.user;
-  store.user.name = "Jane Doe";
-  store.user.points = 500;
+
 </script>
 <style scoped>
   v-navigation-drawer {

@@ -66,6 +66,7 @@
       console.log("Login successful!", result);
       isIncorrect.value = false;
       store.loggedIn = true;
+      store.user = (result.user)
       // TODO: Store user data (eg in localStorage) and navigate to next screen
     } catch (error) {
       console.error("Login failed:", error);
@@ -89,6 +90,7 @@
     try {
       const result = await FetchService.signup(user);
       console.log("Signup successful!", result);
+      store.user = result.user
     } catch (error) {
       console.error("Signup failed:", error);
     }
