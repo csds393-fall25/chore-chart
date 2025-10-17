@@ -75,6 +75,7 @@
 </template>
 
 <script setup>
+import { ref } from 'vue';
 
 
   const username = ref();

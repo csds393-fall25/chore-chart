@@ -12,5 +12,6 @@ export const useAppStore = defineStore('app', {
       totalPoints: 0,
     },
     loggedIn: false,
+    profileView: false,
   }),
 })

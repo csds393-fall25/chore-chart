@@ -1,6 +1,7 @@
 import { createWebHistory, createRouter } from 'vue-router'
 
 import index from '../pages/index.vue'
+import Profile from '@/components/Profile.vue'
 
 const routes = [
   { path: '/', component: index },
@@ -12,7 +13,7 @@ const routes = [
   { path: '/help', component: index, props: true },
   { path: '/leaderboard', component: index, props: true },
   { path: '/store', component: index, props: true },
-  { path: '/profile', component: index, props: true },
+  { path: '/profile', component: Profile, props: true },
 ]
 
 const router = createRouter({

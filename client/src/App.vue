@@ -10,6 +10,12 @@
         </v-col>
       </v-row>
     </v-container>
+
+      <v-container fluid class="fill-height pa-0 w-100" v-if = "store.profileView">
+      <Profile />
+    </v-container>
+
+
     <v-container fluid class="fill-height pa-0 w-100" v-else>
       <Login />
     </v-container>
@@ -20,6 +26,7 @@
   import NavigationBar from "./components/NavigationBar.vue"
   import {useAppStore} from "./stores/app.js";
   import Login from "./components/Login.vue";
+import Profile from "./components/Profile.vue";
 
   const store = useAppStore();
 </script>
