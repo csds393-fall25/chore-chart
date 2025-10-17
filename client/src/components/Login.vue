@@ -64,6 +64,7 @@
       }
       const result = await FetchService.login(user);
       console.log("Login successful!", result);
+      console.log(result.user)
       isIncorrect.value = false;
       store.loggedIn = true;
       store.user = (result.user)
@@ -85,7 +86,8 @@
     const user = {
       name: displayedName.value,
       email: username.value,
-      password_hash: password.value
+      password_hash: password.value,
+      householdId: 2
     }
     try {
       const result = await FetchService.signup(user);
