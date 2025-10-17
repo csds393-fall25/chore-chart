@@ -5,8 +5,12 @@ export const useAppStore = defineStore('app', {
   state: () => ({
     user: {
       name: "",
-      points: 0,
+      email: "",
+      difficulty: 0,
+      householdId: 0,
+      role: "member",
+      totalPoints: 0,
     },
-    loggedIn: true,
+    loggedIn: false,
   }),
 })
