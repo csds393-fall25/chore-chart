@@ -1,27 +1,26 @@
 <template>
-  
-    <div style = "background-color: #192b40 ; ">
+  <v-sheet class = "fill-height w-100" color="primary-darken-1">
+
       
-     <v-avatar  style = "background-color: red;  "> </v-avatar>
+     <v-avatar size = "large" color="primary"></v-avatar>
 
      <v-form>
                 
-              <v-text-field style = "width: 75%; "    v-model = "name"  label = "Name"></v-text-field>
+              <v-text-field style = "width: 75%; "  label="Name"   v-model = "name" ></v-text-field>
               <v-text-field style = "width: 75%"   v-model = "username"  label = "Email"></v-text-field> 
-              <v-row  class="mx-auto my-auto"  style = "align-items: center;">
-              <v-col   style = "font-size: x-small;" cols = "6">
+             
+             
                 Estimated Time
-                <v-number-input  v-model = "estimatedTime" min = '0' control-variant="split" ></v-number-input>
+                <v-number-input style = "width: 75%"  v-model = "estimatedTime" min = '0' control-variant="split" ></v-number-input>
             
 
-              </v-col>
-              <v-col   style = "font-size: x-small;" cols = "6">
+     
                 Maximum Difficulty
 
-                <v-number-input  v-model = "maxDifficulty" min = '1' max = '10' control-variant="split"  ></v-number-input>
-              </v-col>
+                <v-number-input style = "width: 75%" v-model = "maxDifficulty" min = '1' max = '10' control-variant="split"  ></v-number-input>
+          
 
-              </v-row>
+              
               
               <v-btn  class = "elevation-0" style = "background-color: #51d299 ; " @click =" isCreate ? validateProfile() : validateLogin()">Update</v-btn>
                 
@@ -70,19 +69,22 @@
       
 
      
-    </div>
+    </v-sheet>
   
 </template>
 
 <script setup>
+import stores from '@/stores';
 import { ref } from 'vue';
+import { useAppStore } from "../stores/app.js";
+  const store = useAppStore();
 
 
-  const username = ref();
+  const username = ref(store.user.email);
   const password = ref();
   const isIncorrect = ref(false);
-  const name = ref()
-  const maxDifficulty = ref()
+  const name = ref(store.user.name)
+  const maxDifficulty = ref(store.user.difficulty)
   const estimatedTime = ref()
   const repeatedPassword = ref()
   const isNotSame = ref(false)

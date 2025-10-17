@@ -1,5 +1,5 @@
 <template>
-  <v-sheet class = "fill-height w-100" color="primary-darken-1">
+  <v-sheet v-if = "!store.loggedIn" class = "fill-height w-100" color="primary-darken-1">
     <h2 class="text-h5 font-weight-bold">
       ChoreChart
     </h2>
