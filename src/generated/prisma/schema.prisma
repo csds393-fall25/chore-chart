@@ -49,8 +49,8 @@ model Chore {
   repeat        Boolean
   household     Household @relation(fields: [householdId], references: [id])
   householdId   Int
-  assignee      User      @relation(fields: [assigneeId], references: [id])
-  assigneeId    Int
+  assignee      User?     @relation(fields: [assigneeId], references: [id])
+  assigneeId    Int?
 }
 
 model Avatar {
