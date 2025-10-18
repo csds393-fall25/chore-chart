@@ -49,6 +49,9 @@ class FetchService {
 
     // update user
     static async updateUser(userId, userData) {
+        console.log(userId)
+        console.log(userData.name)
+        console.log(userData.email)
         try {
             const response = await fetch(`${baseURL}/user/${userId}`, {
                 method: "PUT",
@@ -58,7 +61,6 @@ class FetchService {
                 body: JSON.stringify({
                     name: userData.name,
                     email: userData.email,
-                    password_hash: userData.password_hash
                 })
             });
             if(!response.ok) {

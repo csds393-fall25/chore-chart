@@ -4,6 +4,7 @@ import { defineStore } from 'pinia'
 export const useAppStore = defineStore('app', {
   state: () => ({
     user: {
+      id: 0,
       name: "",
       email: "",
       difficulty: 0,

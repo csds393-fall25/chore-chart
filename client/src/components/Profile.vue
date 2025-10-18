@@ -22,7 +22,7 @@
 
               
               
-              <v-btn  class = "elevation-0" style = "background-color: #51d299 ; " @click =" isCreate ? validateProfile() : validateLogin()">Update</v-btn>
+              <v-btn  class = "elevation-0" style = "background-color: #51d299 ; " @click =" updateProfile()">Update</v-btn>
                 
              
                <v-btn  class="mx-auto my-auto elevation-0" color="error" @click = "isCreate = true" style = " font-size: x-small; " > Delete</v-btn>
@@ -77,6 +77,7 @@
 import stores from '@/stores';
 import { ref } from 'vue';
 import { useAppStore } from "../stores/app.js";
+import FetchService from '@/FetchService';
   const store = useAppStore();
 
 
@@ -91,33 +92,12 @@ import { useAppStore } from "../stores/app.js";
   const isCreate = ref(false)
   
 
-  function validateLogin(){
-    console.log("bye")
+  function updateProfile(){
+    FetchService.updateUser(store.user.id, store.user)
 
-    
-    if (typeof( password.value) != null &&password.value == getPassword()){
-      console.log("success!!")
-      // go to next screen
-    }
-    else{
-      isIncorrect.value = true;
-
-    }
   }
 
-  function validateProfile(){
-    console.log("HI")
-    if (typeof(password.value) != null && typeof(repeatedPassword.value) != null && password.value != repeatedPassword.value){
-      isNotSame.value = true;
-    }
-  }
 
-// replace with database call that looks for username and returns the password associated with that username from the database
-  function getPassword(username){
-
-    return "password"
-    
-  }
   
 
 </script>
