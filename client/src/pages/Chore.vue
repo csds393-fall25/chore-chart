@@ -138,6 +138,7 @@
   import { ref, defineProps } from 'vue';
   import { useAppStore } from "../stores/app.js";
   import { useRouter } from 'vue-router';
+  import FetchService from '../FetchService.js'
 
   const store = useAppStore();
   const props = defineProps({
@@ -255,11 +256,25 @@
     return valid;
   }
 
-  function createChore() {
+  async function createChore() {
     if(validateChore()) {
       //TODO: create chore in the database and update the household with it
-      console.log("create chore")
-      console.log(chore)
+      const choreForDatabase = {
+        name: chore.value.name,
+        description: chore.value.description,
+        difficulty: chore.value.difficulty,
+        location: chore.value.location,
+        estimatedTime: parseInt(chore.value.estimatedTime),
+        dueDate: new Date(chore.value.dueDate),
+        repeat: chore.value.repeat,
+        householdId: chore.value.householdId,
+        assigneeId: 1
+      }
+
+      console.log(choreForDatabase)
+
+      const result = await FetchService.createChore(choreForDatabase);
+      console.log(result)
     }
   }
 
