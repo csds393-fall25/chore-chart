@@ -1,7 +1,6 @@
 import { createWebHistory, createRouter } from 'vue-router'
 import Chore from '../pages/Chore.vue'
 import index from '../pages/index.vue'
-import Chore from '../pages/Chore.vue'
 
 const routes = [
   { 

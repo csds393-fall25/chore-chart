@@ -11,7 +11,7 @@
               required
               variant="outlined"
               id="name"
-              :v-model="chore.name"
+              v-model="chore.name"
               :error-messages="errorMessages.name"
               v-if="props.viewMode == 'create' || props.viewMode == 'edit'"
               ></v-text-field>
@@ -29,7 +29,7 @@
               placeholder="Description"
               variant="outlined"
               id="description"
-              :v-model="chore.description"
+              v-model="chore.description"
               :error-messages="errorMessages.description"
               v-if="props.viewMode == 'create' || props.viewMode == 'edit'"
             ></v-textarea>
@@ -46,7 +46,7 @@
               required
               variant="outlined"
               id="difficulty"
-              :v-model="chore.difficulty"
+              v-model="chore.difficulty"
               :items="[1, 2, 3, 4, 5, 6, 7, 8, 9, 10]"
               :error-messages="errorMessages.difficulty"
               v-if="props.viewMode == 'create' || props.viewMode == 'edit'"
@@ -64,7 +64,7 @@
               required
               variant="outlined"
               id="location"
-              :v-model="chore.location"
+              v-model="chore.location"
               :items="['Kitchen', 'Dining Room', 'Living Room', 'Bedroom', 'Outside', 'Laundry Room', 'Bathroom', 'Office', 'Basement', 'Other']"
               :error-messages="errorMessages.location"
               v-if="props.viewMode == 'create' || props.viewMode == 'edit'"
@@ -82,7 +82,8 @@
               required
               variant="outlined"
               id="estimatedTime"
-              :v-model="chore.estimatedTime"
+              type="number"
+              v-model="chore.estimatedTime"
               :error-messages="errorMessages.estimatedTime"
               tooltip="The time to complete the chore in minutes"
               v-if="props.viewMode == 'create' || props.viewMode == 'edit'"
@@ -100,7 +101,7 @@
               required
               variant="outlined"
               id="dueDate"
-              :v-model="chore.dueDate"
+              v-model="chore.dueDate"
               :error-messages="errorMessages.dueDate"
               v-if="props.viewMode == 'create' || props.viewMode == 'edit'"
               ></v-text-field>
@@ -109,11 +110,25 @@
         </v-row>
         <v-row class="mb-0 mt-0 pb-0 pt-0" v-if="props.viewMode == 'create' || props.viewMode == 'edit'">
           <v-col cols="3">
-            <v-btn color="secondary" block v-if="props.viewMode == 'create'">Create</v-btn>
-            <v-btn color="secondary" block v-else>Save</v-btn>
+            <v-btn 
+              color="secondary" 
+              @click="createChore()"
+              block 
+              v-if="props.viewMode == 'create'">
+              Create
+            </v-btn>
+            <v-btn 
+              color="secondary" 
+              @click="updateChore()"
+              block 
+              v-else>
+              Save
+            </v-btn>
           </v-col>
           <v-col cols="3">
-            <v-btn color="error" block>Cancel</v-btn>
+            <v-btn 
+              color="error" 
+              block>Cancel</v-btn>
           </v-col>
         </v-row>
       </v-form>
@@ -127,7 +142,7 @@
   const store = useAppStore();
   const props = defineProps({
     viewMode: String,
-    choreId: String,
+    choreId: Number,
   });
   const router = useRouter();
 
@@ -159,8 +174,8 @@
       estimatedTime: 0,
       dueDate: '',
       repeat: false,
-      householdId: '',
-      assigneeId: ""
+      householdId: store.user.householdId,
+      assigneeId: 0
     };
   } else {
     //TODO: retreive chore from household
@@ -174,7 +189,7 @@
       dueDate: '10-29-2025',
       repeat: false,
       householdId: 2,
-      assigneeId: ""
+      assigneeId: 0
     }
   }
 
@@ -185,32 +200,54 @@
 
   function validateChore() {
     var valid = true;
+
+    //Validate that the chore has a name
     if(!chore.value.name) {
       valid = false;
-      errorMessages.name = "Please enter a name for the chore"
+      errorMessages.value.name = "Please enter a name for the chore"
+    } else {
+      errorMessages.value.name = ''
     }
+
+    //Validate that the chore has a difficulty level
     if(!chore.value.difficulty) {
       valid = false;
-      errorMessages.difficulty = "Please enter a difficulty level";
+      errorMessages.value.difficulty = "Please enter a difficulty level";
+    } else {
+      errorMessages.value.difficulty = ''
     }
+
+    //Validate that the chore has a location specified
     if(!chore.value.location) {
       valid = false;
-      errorMessages.location = "Please enter a location";
+      errorMessages.value.location = "Please enter a location";
+    } else {
+      errorMessages.value.location = ''
     }
-    if(!chore.value.estimatedTime) {
+
+    //Validate that the chore has an estimated completion time
+    if(!chore.value.estimatedTime && chore.value.estimatedTime != 0) {
       valid = false;
-      errorMessages.estimatedTime = "Please enter how long you believe it will take to complete the chore";
-    } else if(chore.value.estimatedTime < 0) {
+      errorMessages.value.estimatedTime = "Please enter how long you believe it will take to complete the chore";
+    } else if(isNaN(parseInt(chore.value.estimatedTime)) || chore.value.estimatedTime <= 0) {
       valid = false;
-      errorMessages.estimatedTime = "Please enter a positive value for the amount of time it will take to complete the chore";
+      errorMessages.value.estimatedTime = "Please enter a positive value for the amount of time it will take to complete the chore";
+    } else {
+      errorMessages.value.estimatedTime = '';
     }
+
+    //Validate that the due date is before the current date
     if(chore.value.dueDate) {
       const dueDate = new Date(chore.value.dueDate);
       const currentDate = new Date();
       if(dueDate < currentDate) {
         valid = false;
-        errorMessages.dueDate = "The due date must be after today";
+        errorMessages.value.dueDate = "The due date must be after today";
+      } else {
+        errorMessages.value.dueDate = ''
       }
+    } else {
+      errorMessages.value.dueDate = ''
     }
 
     //TODO: send a toast if it is not valid
@@ -221,12 +258,16 @@
   function createChore() {
     if(validateChore()) {
       //TODO: create chore in the database and update the household with it
+      console.log("create chore")
+      console.log(chore)
     }
   }
 
   function updateChore() {
     if(validateChore()) {
       //TODO: update the chore in the database and update the household with it
+      console.log("update chore")
+      console.log(chore)
     }
   }
 </script>
