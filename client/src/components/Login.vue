@@ -13,7 +13,7 @@
           {{isCreate ?  'Create Profile' : 'Login'}}
         </h2>
         <v-form>
-          <v-text-field  v-if="isCreate"  v-model = "name"  label = "Name"></v-text-field>
+          <v-text-field  v-if="isCreate"  v-model = "displayedName"  label = "Name"></v-text-field>
           <v-text-field   v-model = "username"  label = "Email"></v-text-field>
           <v-text-field  v-model = "password"  label = "Password" type = "password" :persistent-hint='isIncorrect' :hint = " isIncorrect ? 'Incorrect username or password' : ''" ></v-text-field>
           <v-text-field v-if="isCreate" v-model = "repeatedPassword"  label = "Password Again" type = "password" :persistent-hint='isNotSame' :hint = " isNotSame ? 'Passwords do not match' : ''" ></v-text-field>   
@@ -41,45 +41,61 @@
 
 <script setup>
   import { ref } from 'vue'
+  import FetchService from "../FetchService.js"
+  import { useAppStore } from '@/stores/app.js';
 
   const username = ref();
   const password = ref();
   const isIncorrect = ref(false);
-  const name = ref()
+  const displayedName = ref()
   const maxDifficulty = ref()
   const estimatedTime = ref()
   const repeatedPassword = ref()
   const isNotSame = ref(false)
   const isCreate = ref(false)
+  const store = useAppStore()
   
 
-  function validateLogin(){
-    console.log("bye")
-
-    
-    if (typeof( password.value) != null &&password.value == getPassword()){
-      console.log("success!!")
-      // go to next screen
-    }
-    else{
+  async function validateLogin(){
+    try {
+      const user = {
+        email: username.value,
+        password_hash: password.value
+      }
+      const result = await FetchService.login(user);
+      console.log("Login successful!", result);
+      console.log(result.user)
+      isIncorrect.value = false;
+      store.loggedIn = true;
+      store.user = (result.user)
+      // TODO: Store user data (eg in localStorage) and navigate to next screen
+    } catch (error) {
+      console.error("Login failed:", error);
+      store
       isIncorrect.value = true;
-
     }
   }
 
-  function validateProfile(){
-    console.log("HI")
+  async function validateProfile(){
     if (typeof(password.value) != null && typeof(repeatedPassword.value) != null && password.value != repeatedPassword.value){
       isNotSame.value = true;
+      return;
+    }
+    isNotSame.value = false;
+    
+    const user = {
+      name: displayedName.value,
+      email: username.value,
+      password_hash: password.value,
+      householdId: 2
+    }
+    try {
+      const result = await FetchService.signup(user);
+      console.log("Signup successful!", result);
+      store.user = result.user
+    } catch (error) {
+      console.error("Signup failed:", error);
     }
   }
-
-// replace with database call that looks for username and returns the password associated with that username from the database
-  function getPassword(username){
-
-    return "password"
-    
-  }
-  
 
 </script>
