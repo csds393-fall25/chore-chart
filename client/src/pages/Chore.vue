@@ -153,6 +153,7 @@
           <v-col cols="3">
             <v-btn 
               color="error" 
+              @click="cancel()"
               block>Cancel</v-btn>
           </v-col>
         </v-row>
