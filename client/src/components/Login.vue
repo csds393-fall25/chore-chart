@@ -31,7 +31,7 @@
             <v-btn  class = "elevation-0" color="teal" @click =" isCreate ? validateProfile() : validateLogin()">{{isCreate ? 'Create' : 'Login'}}</v-btn>
           </div>
           <div>
-            <v-btn v-if="!isCreate" class="mx-auto my-auto elevation-0" color="navy" @click = "isCreate = true" style = "font-size: x-small; " > Don't have an account? create one here</v-btn>
+            <v-btn v-if="!isCreate" class="mx-auto my-auto elevation-0" color="navy" @click = "switchCreate()" style = "font-size: x-small; " > Don't have an account? create one here</v-btn>
           </div>
         </v-form>
       </template>
@@ -76,6 +76,20 @@
     }
   }
 
+  function switchCreate(){
+    isCreate.value = true;
+    isIncorrect.value = false;
+    username.value = ""
+    password.value = ""
+
+  }
+
+  function switchLogin(){
+    isCreate.value = false;
+    username.value = ""
+    password.value = ""
+  }
+
   async function validateProfile(){
     if (typeof(password.value) != null && typeof(repeatedPassword.value) != null && password.value != repeatedPassword.value){
       isNotSame.value = true;
@@ -89,9 +103,11 @@
       password_hash: password.value,
       householdId: 2
     }
+    console.log(user.name)
     try {
       const result = await FetchService.signup(user);
       console.log("Signup successful!", result);
+      switchLogin()
       store.user = result.user
     } catch (error) {
       console.error("Signup failed:", error);
