@@ -4098,7 +4098,7 @@ export namespace Prisma {
     dueDate: Date
     repeat: boolean
     householdId: number
-    assigneeId: number
+    assigneeId: number | null
     _count: ChoreCountAggregateOutputType | null
     _avg: ChoreAvgAggregateOutputType | null
     _sum: ChoreSumAggregateOutputType | null
@@ -4132,7 +4132,7 @@ export namespace Prisma {
     householdId?: boolean
     assigneeId?: boolean
     household?: boolean | HouseholdDefaultArgs<ExtArgs>
-    assignee?: boolean | UserDefaultArgs<ExtArgs>
+    assignee?: boolean | Chore$assigneeArgs<ExtArgs>
   }, ExtArgs["result"]["chore"]>
 
   export type ChoreSelectCreateManyAndReturn<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetSelect<{
@@ -4147,7 +4147,7 @@ export namespace Prisma {
     householdId?: boolean
     assigneeId?: boolean
     household?: boolean | HouseholdDefaultArgs<ExtArgs>
-    assignee?: boolean | UserDefaultArgs<ExtArgs>
+    assignee?: boolean | Chore$assigneeArgs<ExtArgs>
   }, ExtArgs["result"]["chore"]>
 
   export type ChoreSelectUpdateManyAndReturn<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetSelect<{
@@ -4162,7 +4162,7 @@ export namespace Prisma {
     householdId?: boolean
     assigneeId?: boolean
     household?: boolean | HouseholdDefaultArgs<ExtArgs>
-    assignee?: boolean | UserDefaultArgs<ExtArgs>
+    assignee?: boolean | Chore$assigneeArgs<ExtArgs>
   }, ExtArgs["result"]["chore"]>
 
   export type ChoreSelectScalar = {
@@ -4181,22 +4181,22 @@ export namespace Prisma {
   export type ChoreOmit<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetOmit<"id" | "name" | "description" | "difficulty" | "location" | "estimatedTime" | "dueDate" | "repeat" | "householdId" | "assigneeId", ExtArgs["result"]["chore"]>
   export type ChoreInclude<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
     household?: boolean | HouseholdDefaultArgs<ExtArgs>
-    assignee?: boolean | UserDefaultArgs<ExtArgs>
+    assignee?: boolean | Chore$assigneeArgs<ExtArgs>
   }
   export type ChoreIncludeCreateManyAndReturn<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
     household?: boolean | HouseholdDefaultArgs<ExtArgs>
-    assignee?: boolean | UserDefaultArgs<ExtArgs>
+    assignee?: boolean | Chore$assigneeArgs<ExtArgs>
   }
   export type ChoreIncludeUpdateManyAndReturn<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
     household?: boolean | HouseholdDefaultArgs<ExtArgs>
-    assignee?: boolean | UserDefaultArgs<ExtArgs>
+    assignee?: boolean | Chore$assigneeArgs<ExtArgs>
   }
 
   export type $ChorePayload<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
     name: "Chore"
     objects: {
       household: Prisma.$HouseholdPayload<ExtArgs>
-      assignee: Prisma.$UserPayload<ExtArgs>
+      assignee: Prisma.$UserPayload<ExtArgs> | null
     }
     scalars: $Extensions.GetPayloadResult<{
       id: number
@@ -4208,7 +4208,7 @@ export namespace Prisma {
       dueDate: Date
       repeat: boolean
       householdId: number
-      assigneeId: number
+      assigneeId: number | null
     }, ExtArgs["result"]["chore"]>
     composites: {}
   }
@@ -4604,7 +4604,7 @@ export namespace Prisma {
   export interface Prisma__ChoreClient<T, Null = never, ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs, GlobalOmitOptions = {}> extends Prisma.PrismaPromise<T> {
     readonly [Symbol.toStringTag]: "PrismaPromise"
     household<T extends HouseholdDefaultArgs<ExtArgs> = {}>(args?: Subset<T, HouseholdDefaultArgs<ExtArgs>>): Prisma__HouseholdClient<$Result.GetResult<Prisma.$HouseholdPayload<ExtArgs>, T, "findUniqueOrThrow", GlobalOmitOptions> | Null, Null, ExtArgs, GlobalOmitOptions>
-    assignee<T extends UserDefaultArgs<ExtArgs> = {}>(args?: Subset<T, UserDefaultArgs<ExtArgs>>): Prisma__UserClient<$Result.GetResult<Prisma.$UserPayload<ExtArgs>, T, "findUniqueOrThrow", GlobalOmitOptions> | Null, Null, ExtArgs, GlobalOmitOptions>
+    assignee<T extends Chore$assigneeArgs<ExtArgs> = {}>(args?: Subset<T, Chore$assigneeArgs<ExtArgs>>): Prisma__UserClient<$Result.GetResult<Prisma.$UserPayload<ExtArgs>, T, "findUniqueOrThrow", GlobalOmitOptions> | null, null, ExtArgs, GlobalOmitOptions>
     /**
      * Attaches callbacks for the resolution and/or rejection of the Promise.
      * @param onfulfilled The callback to execute when the Promise is resolved.
@@ -5037,6 +5037,25 @@ export namespace Prisma {
      * Limit how many Chores to delete.
      */
     limit?: number
+  }
+
+  /**
+   * Chore.assignee
+   */
+  export type Chore$assigneeArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the User
+     */
+    select?: UserSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the User
+     */
+    omit?: UserOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: UserInclude<ExtArgs> | null
+    where?: UserWhereInput
   }
 
   /**
@@ -8885,9 +8904,9 @@ export namespace Prisma {
     dueDate?: DateTimeFilter<"Chore"> | Date | string
     repeat?: BoolFilter<"Chore"> | boolean
     householdId?: IntFilter<"Chore"> | number
-    assigneeId?: IntFilter<"Chore"> | number
+    assigneeId?: IntNullableFilter<"Chore"> | number | null
     household?: XOR<HouseholdScalarRelationFilter, HouseholdWhereInput>
-    assignee?: XOR<UserScalarRelationFilter, UserWhereInput>
+    assignee?: XOR<UserNullableScalarRelationFilter, UserWhereInput> | null
   }
 
   export type ChoreOrderByWithRelationInput = {
@@ -8900,7 +8919,7 @@ export namespace Prisma {
     dueDate?: SortOrder
     repeat?: SortOrder
     householdId?: SortOrder
-    assigneeId?: SortOrder
+    assigneeId?: SortOrderInput | SortOrder
     household?: HouseholdOrderByWithRelationInput
     assignee?: UserOrderByWithRelationInput
   }
@@ -8918,9 +8937,9 @@ export namespace Prisma {
     dueDate?: DateTimeFilter<"Chore"> | Date | string
     repeat?: BoolFilter<"Chore"> | boolean
     householdId?: IntFilter<"Chore"> | number
-    assigneeId?: IntFilter<"Chore"> | number
+    assigneeId?: IntNullableFilter<"Chore"> | number | null
     household?: XOR<HouseholdScalarRelationFilter, HouseholdWhereInput>
-    assignee?: XOR<UserScalarRelationFilter, UserWhereInput>
+    assignee?: XOR<UserNullableScalarRelationFilter, UserWhereInput> | null
   }, "id">
 
   export type ChoreOrderByWithAggregationInput = {
@@ -8933,7 +8952,7 @@ export namespace Prisma {
     dueDate?: SortOrder
     repeat?: SortOrder
     householdId?: SortOrder
-    assigneeId?: SortOrder
+    assigneeId?: SortOrderInput | SortOrder
     _count?: ChoreCountOrderByAggregateInput
     _avg?: ChoreAvgOrderByAggregateInput
     _max?: ChoreMaxOrderByAggregateInput
@@ -8954,7 +8973,7 @@ export namespace Prisma {
     dueDate?: DateTimeWithAggregatesFilter<"Chore"> | Date | string
     repeat?: BoolWithAggregatesFilter<"Chore"> | boolean
     householdId?: IntWithAggregatesFilter<"Chore"> | number
-    assigneeId?: IntWithAggregatesFilter<"Chore"> | number
+    assigneeId?: IntNullableWithAggregatesFilter<"Chore"> | number | null
   }
 
   export type AvatarWhereInput = {
@@ -9302,7 +9321,7 @@ export namespace Prisma {
     dueDate: Date | string
     repeat: boolean
     household: HouseholdCreateNestedOneWithoutChoresInput
-    assignee: UserCreateNestedOneWithoutAssignedChoresInput
+    assignee?: UserCreateNestedOneWithoutAssignedChoresInput
   }
 
   export type ChoreUncheckedCreateInput = {
@@ -9315,7 +9334,7 @@ export namespace Prisma {
     dueDate: Date | string
     repeat: boolean
     householdId: number
-    assigneeId: number
+    assigneeId?: number | null
   }
 
   export type ChoreUpdateInput = {
@@ -9327,7 +9346,7 @@ export namespace Prisma {
     dueDate?: DateTimeFieldUpdateOperationsInput | Date | string
     repeat?: BoolFieldUpdateOperationsInput | boolean
     household?: HouseholdUpdateOneRequiredWithoutChoresNestedInput
-    assignee?: UserUpdateOneRequiredWithoutAssignedChoresNestedInput
+    assignee?: UserUpdateOneWithoutAssignedChoresNestedInput
   }
 
   export type ChoreUncheckedUpdateInput = {
@@ -9340,7 +9359,7 @@ export namespace Prisma {
     dueDate?: DateTimeFieldUpdateOperationsInput | Date | string
     repeat?: BoolFieldUpdateOperationsInput | boolean
     householdId?: IntFieldUpdateOperationsInput | number
-    assigneeId?: IntFieldUpdateOperationsInput | number
+    assigneeId?: NullableIntFieldUpdateOperationsInput | number | null
   }
 
   export type ChoreCreateManyInput = {
@@ -9353,7 +9372,7 @@ export namespace Prisma {
     dueDate: Date | string
     repeat: boolean
     householdId: number
-    assigneeId: number
+    assigneeId?: number | null
   }
 
   export type ChoreUpdateManyMutationInput = {
@@ -9376,7 +9395,7 @@ export namespace Prisma {
     dueDate?: DateTimeFieldUpdateOperationsInput | Date | string
     repeat?: BoolFieldUpdateOperationsInput | boolean
     householdId?: IntFieldUpdateOperationsInput | number
-    assigneeId?: IntFieldUpdateOperationsInput | number
+    assigneeId?: NullableIntFieldUpdateOperationsInput | number | null
   }
 
   export type AvatarCreateInput = {
@@ -9837,9 +9856,9 @@ export namespace Prisma {
     isNot?: HouseholdWhereInput
   }
 
-  export type UserScalarRelationFilter = {
-    is?: UserWhereInput
-    isNot?: UserWhereInput
+  export type UserNullableScalarRelationFilter = {
+    is?: UserWhereInput | null
+    isNot?: UserWhereInput | null
   }
 
   export type ChoreCountOrderByAggregateInput = {
@@ -9903,6 +9922,11 @@ export namespace Prisma {
     _count?: NestedIntFilter<$PrismaModel>
     _min?: NestedBoolFilter<$PrismaModel>
     _max?: NestedBoolFilter<$PrismaModel>
+  }
+
+  export type UserScalarRelationFilter = {
+    is?: UserWhereInput
+    isNot?: UserWhereInput
   }
 
   export type AvatarPropScalarRelationFilter = {
@@ -10315,10 +10339,12 @@ export namespace Prisma {
     update?: XOR<XOR<HouseholdUpdateToOneWithWhereWithoutChoresInput, HouseholdUpdateWithoutChoresInput>, HouseholdUncheckedUpdateWithoutChoresInput>
   }
 
-  export type UserUpdateOneRequiredWithoutAssignedChoresNestedInput = {
+  export type UserUpdateOneWithoutAssignedChoresNestedInput = {
     create?: XOR<UserCreateWithoutAssignedChoresInput, UserUncheckedCreateWithoutAssignedChoresInput>
     connectOrCreate?: UserCreateOrConnectWithoutAssignedChoresInput
     upsert?: UserUpsertWithoutAssignedChoresInput
+    disconnect?: UserWhereInput | boolean
+    delete?: UserWhereInput | boolean
     connect?: UserWhereUniqueInput
     update?: XOR<XOR<UserUpdateToOneWithWhereWithoutAssignedChoresInput, UserUpdateWithoutAssignedChoresInput>, UserUncheckedUpdateWithoutAssignedChoresInput>
   }
@@ -11044,7 +11070,7 @@ export namespace Prisma {
     dueDate?: DateTimeFilter<"Chore"> | Date | string
     repeat?: BoolFilter<"Chore"> | boolean
     householdId?: IntFilter<"Chore"> | number
-    assigneeId?: IntFilter<"Chore"> | number
+    assigneeId?: IntNullableFilter<"Chore"> | number | null
   }
 
   export type AvatarUpsertWithoutOwnerInput = {
@@ -11145,7 +11171,7 @@ export namespace Prisma {
     estimatedTime: number
     dueDate: Date | string
     repeat: boolean
-    assignee: UserCreateNestedOneWithoutAssignedChoresInput
+    assignee?: UserCreateNestedOneWithoutAssignedChoresInput
   }
 
   export type ChoreUncheckedCreateWithoutHouseholdInput = {
@@ -11157,7 +11183,7 @@ export namespace Prisma {
     estimatedTime: number
     dueDate: Date | string
     repeat: boolean
-    assigneeId: number
+    assigneeId?: number | null
   }
 
   export type ChoreCreateOrConnectWithoutHouseholdInput = {
@@ -12194,7 +12220,7 @@ export namespace Prisma {
     estimatedTime: number
     dueDate: Date | string
     repeat: boolean
-    assigneeId: number
+    assigneeId?: number | null
   }
 
   export type UserUpdateWithoutHouseholdInput = {
@@ -12246,7 +12272,7 @@ export namespace Prisma {
     estimatedTime?: IntFieldUpdateOperationsInput | number
     dueDate?: DateTimeFieldUpdateOperationsInput | Date | string
     repeat?: BoolFieldUpdateOperationsInput | boolean
-    assignee?: UserUpdateOneRequiredWithoutAssignedChoresNestedInput
+    assignee?: UserUpdateOneWithoutAssignedChoresNestedInput
   }
 
   export type ChoreUncheckedUpdateWithoutHouseholdInput = {
@@ -12258,7 +12284,7 @@ export namespace Prisma {
     estimatedTime?: IntFieldUpdateOperationsInput | number
     dueDate?: DateTimeFieldUpdateOperationsInput | Date | string
     repeat?: BoolFieldUpdateOperationsInput | boolean
-    assigneeId?: IntFieldUpdateOperationsInput | number
+    assigneeId?: NullableIntFieldUpdateOperationsInput | number | null
   }
 
   export type ChoreUncheckedUpdateManyWithoutHouseholdInput = {
@@ -12270,7 +12296,7 @@ export namespace Prisma {
     estimatedTime?: IntFieldUpdateOperationsInput | number
     dueDate?: DateTimeFieldUpdateOperationsInput | Date | string
     repeat?: BoolFieldUpdateOperationsInput | boolean
-    assigneeId?: IntFieldUpdateOperationsInput | number
+    assigneeId?: NullableIntFieldUpdateOperationsInput | number | null
   }
 
   export type AvatarCreateManyHatInput = {
