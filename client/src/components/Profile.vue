@@ -92,9 +92,13 @@ import FetchService from '@/FetchService';
   const isCreate = ref(false)
   
 
-  function updateProfile(){
-    FetchService.updateUser(store.user.id, store.user)
-
+  async function updateProfile(){
+    console.log(store.user)
+    const result = await FetchService.updateUser(store.user.id, {
+      name: name.value,
+      email: username.value,
+    })
+    console.log(result)
   }
 
 

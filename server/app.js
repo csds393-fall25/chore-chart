@@ -122,10 +122,15 @@ app.post('/api/login', async (req, res) => {
 // update user
 app.put('/api/user/:id', async (req, res) => {
   const { id } = req.params;
-  const { name, email, password_hash } = req.body;
-  
+  const { name, email } = req.body;
   try {
-    const updated = await prisma.user.update({ where: { id }, data: { name, email, password_hash } });
+    var updated;
+    if(Object.hasOwn(req.body, 'password_hash')) {
+      const password_hash = req.body.password_hash
+      updated = await prisma.user.update({ where: { id: Number(id) }, data: { name, email, password_hash } });
+    } else {
+      updated = await prisma.user.update({ where: { id: Number(id) }, data: { name, email } });
+    }
     res.json(updated);
   } catch (err) {
     res.status(500).json({ error: err.message });

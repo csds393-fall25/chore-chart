@@ -52,16 +52,28 @@ class FetchService {
         console.log(userId)
         console.log(userData.name)
         console.log(userData.email)
+        console.log(userData)
         try {
+            var stringified;
+            if(Object.hasOwn(userData, 'password_hash')) {
+                stringified = JSON.stringify({
+                    name: userData.name,
+                    email: userData.email,
+                    password_hash: userData.password_hash
+                })
+            } else {
+                stringified = JSON.stringify({
+                    name: userData.name,
+                    email: userData.email,
+                })
+            }
+
             const response = await fetch(`${baseURL}/user/${userId}`, {
                 method: "PUT",
                 headers: {
                     "Content-Type": "application/json",
                 },
-                body: JSON.stringify({
-                    name: userData.name,
-                    email: userData.email,
-                })
+                body: stringified
             });
             if(!response.ok) {
                 throw new Error(`Response status: ${response.status}`);
