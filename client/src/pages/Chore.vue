@@ -15,11 +15,11 @@
               :error-messages="errorMessages.name"
               v-if="props.viewMode == 'create' || props.viewMode == 'edit'"
               ></v-text-field>
-              <div v-else class="text-subtitle-1">{{ chore.name }}</div>
+              <div v-else class="text-body-1">{{ chore.name }}</div>
           </v-col>
         </v-row>
-        <v-row class="mb-0 mt-0">
-          <v-col cols="12" sm="3" class="mb-0 mt-0">
+        <v-row class="mb-0 mt-0 pb-0">
+          <v-col cols="12" sm="3" class="mb-0 mt-0 pb-0">
             <div class="text-subtitle-1 font-weight-bold">Description: </div>
           </v-col>
         </v-row>
@@ -33,7 +33,12 @@
               :error-messages="errorMessages.description"
               v-if="props.viewMode == 'create' || props.viewMode == 'edit'"
             ></v-textarea>
-            <p v-else class="text-subtitle-1">{{chore.description}}</p>
+            <div v-else class="text-body-1">
+              <div
+                v-for="(line) in viewDescription"
+                :key="line.key"
+              >{{ line.line }}</div>
+            </div>
           </v-col>
         </v-row>
         <v-row class="mb-0 mt-0">
@@ -51,7 +56,7 @@
               :error-messages="errorMessages.difficulty"
               v-if="props.viewMode == 'create' || props.viewMode == 'edit'"
             ></v-select>
-            <p v-else class="text-subtitle-1">{{chore.difficulty}}</p>
+            <p v-else class="text-body-1">{{chore.difficulty}}</p>
           </v-col>
         </v-row>
         <v-row class="mb-0 mt-0">
@@ -69,7 +74,7 @@
               :error-messages="errorMessages.location"
               v-if="props.viewMode == 'create' || props.viewMode == 'edit'"
             ></v-select>
-            <p v-else class="text-subtitle-1">{{chore.location}}</p>
+            <p v-else class="text-body-1">{{chore.location}}</p>
           </v-col>
         </v-row>
         <v-row class="mb-0 mt-0">
@@ -88,7 +93,7 @@
               tooltip="The time to complete the chore in minutes"
               v-if="props.viewMode == 'create' || props.viewMode == 'edit'"
               ></v-text-field>
-              <div v-else class="text-subtitle-1">{{ chore.estimatedTime }}</div>
+              <div v-else class="text-body-1">{{ chore.estimatedTime }}</div>
           </v-col>
         </v-row>
         <v-row class="mb-0 mt-0">
@@ -105,7 +110,7 @@
               :error-messages="errorMessages.dueDate"
               v-if="props.viewMode == 'create' || props.viewMode == 'edit'"
               ></v-text-field>
-              <div v-else class="text-subtitle-1">{{ chore.dueDate }}</div>
+              <div v-else class="text-body-1">{{ chore.dueDate.substring(5, 7) + "/" + chore.dueDate.substring(8, 10) + "/" + chore.dueDate.substring(0, 4) }}</div>
           </v-col>
         </v-row>
         <v-row class="mb-0 mt-0">
@@ -122,10 +127,10 @@
               :items="members"
               item-title="name"
               item-value="id"
-              :error-messages="errorMessages.location"
+              :error-messages="errorMessages.asignee"
               v-if="props.viewMode == 'create' || props.viewMode == 'edit'"
             ></v-select>
-            <p v-else class="text-subtitle-1">{{store.household.users.filter(user => user.id == chore.value.assigneeId)[0].name}}</p>
+            <p v-else class="text-body-1">{{ viewAssignee }}</p>
           </v-col>
         </v-row>
         <v-row class="mb-0 mt-0" v-if="props.viewMode == 'create' || props.viewMode == 'edit'">
@@ -151,13 +156,24 @@
               block>Cancel</v-btn>
           </v-col>
         </v-row>
+        <v-row class="mb-0 mt-0" v-else-if="store.user.role == 'leader'">
+          <v-col cols="3">
+            <v-btn
+              color="secondary"
+              @click="enterEdit()"
+              block
+            >
+            Edit
+            </v-btn>
+          </v-col>
+        </v-row>
       </v-form>
     </v-sheet>
 </template>
 <script setup>
-  import { ref, defineProps } from 'vue';
+  import { ref, defineProps, watch } from 'vue';
   import { useAppStore } from "../stores/app.js";
-  import { useRouter } from 'vue-router';
+  import { useRouter, useRoute } from 'vue-router';
   import FetchService from '../FetchService.js'
 
   const store = useAppStore();
@@ -166,6 +182,7 @@
     choreId: Number,
   });
   const router = useRouter();
+  const route = useRoute();
 
   if(props.viewMode == "edit" && store.user.role != 'leader') {
     router.push({
@@ -179,7 +196,6 @@
     .filter(user => store.user.role == 'leader' || user.id == store.user.id)
     .map(user => { return {id: user.id, name: user.name}});
   members.push({name: "No One", id: null});
-  console.log(members)
 
   const errorMessages = ref({
     name: '',
@@ -192,34 +208,85 @@
   });
 
   const chore = ref({});
+  const viewDescription = ref([])
+  const viewAssignee = ref("")
 
-  if(props.viewMode == "create") {
-    chore.value = {
-      name: "",
-      description: "",
-      difficulty: 10,
-      location: "",
-      estimatedTime: 0,
-      dueDate: '',
-      repeat: false,
-      householdId: store.user.householdId,
-      assigneeId: null,
-    };
-  } else {
-    const filterResult = store.household.chores.filter(householdChore => householdChore.id == props.choreId);
-    console.log(filterResult);
-    if(filterResult.length == 1) {
-      chore.value = filterResult[0];
+  retrieveChore(props.viewMode, props.choreId);
+
+  //handle id changing
+  watch(
+    () => route.params.id,
+    (newId, oldId) => {
+      retrieveChore(props.viewMode, newId)
+    }
+  )
+  //handle changing between view modes
+  watch(
+    () => route.name,
+    (newName, oldName) => {
+      if(newName == "editChore" && store.user.role != 'leader') {
+        router.push({
+          name: 'viewChore',
+          params: { choreId: to.props.choreId }
+        })
+        //TODO: add a toaster to indicate why it rerouted
+      }
+
+      let viewMode;
+      if(newName == 'editChore') {
+        viewMode = 'edit'
+      } else if(newName == 'viewChore') {
+        viewMode = 'view'
+      } else {
+        viewMode = 'create'
+      }
+      retrieveChore(viewMode, props.choreId)
+    }
+  )
+
+  function retrieveChore(viewMode, choreId) {
+    if(viewMode == "create") {
+      chore.value = {
+        name: "",
+        description: "",
+        difficulty: 10,
+        location: "",
+        estimatedTime: 0,
+        dueDate: '',
+        repeat: false,
+        householdId: store.user.householdId,
+        assigneeId: null,
+      };
     } else {
-      //TODO: add a toast to indicate that the chore was not found
-      console.log("no chore with that id is in the household")
+      const filterResult = store.household.chores.filter(householdChore => householdChore.id == choreId);
+      if(filterResult.length == 1) {
+        chore.value = filterResult[0];
+        const choreDate = new Date(chore.value.dueDate);
+        chore.value.dueDate = choreDate.toLocaleDateString('en-CA');
+      } else {
+        //TODO: add a toast to indicate that the chore was not found
+        console.log("no chore with that id is in the household")
+      }
+    }
+
+    if(chore.value.householdId != store.user.householdId) {
+      router.push({ name: 'home' });
+      //TODO: add a toaster to indicate why it rerouted
+    }
+
+    //Create the values needed to display description and assignee in view mode
+    viewDescription.value = chore.value.description.split("\n").map((line, index) => {
+      return {key: index, line: line};
+    });
+    
+    const filterAssigneeResult = store.household.users.filter(user => user.id == chore.value.assigneeId)
+    if(filterAssigneeResult.length == 1) {
+      viewAssignee.value = filterAssigneeResult[0].name;
+    } else {
+      viewAssignee.value = "No One";
     }
   }
-
-  if(chore.value.householdId != store.user.householdId) {
-    router.push({ name: 'home' });
-    //TODO: add a toaster to indicate why it rerouted
-  }
+  
 
   function validateChore() {
     var valid = true;
@@ -260,7 +327,10 @@
     }
 
     //Validate that the due date is before the current date
-    if(chore.value.dueDate) {
+    if(!chore.value.dueDate) {
+      valid = false;
+      errorMessages.value.dueDate = "Please enter a due date";
+    } else {
       const dueDate = new Date(chore.value.dueDate);
       const currentDate = new Date();
       if(dueDate < currentDate) {
@@ -269,8 +339,6 @@
       } else {
         errorMessages.value.dueDate = ''
       }
-    } else {
-      errorMessages.value.dueDate = ''
     }
 
     //TODO: send a toast if it is not valid
@@ -280,8 +348,6 @@
 
   async function createChore() {
     if(validateChore()) {
-      //TODO: create chore in the database and update the household with it
-
       const choreForDatabase = {
         name: chore.value.name,
         description: chore.value.description,
@@ -294,22 +360,56 @@
         assigneeId: chore.value.assigneeId
       }
 
-      console.log(choreForDatabase)
-
       const result = await FetchService.createChore(choreForDatabase);
-      console.log(result)
-      
+      //TODO: add a toast if the create failed
+
       store.household.chores.push(choreForDatabase);
 
       router.push({ name: 'home'});
     }
   }
 
-  function updateChore() {
+  async function updateChore() {
+    //TODO: fix dates possibly being 1 off based on timezone
     if(validateChore()) {
-      //TODO: update the chore in the database and update the household with it
-      console.log("update chore")
-      console.log(chore)
+      const choreForDatabase = {
+        id: chore.value.id,
+        name: chore.value.name,
+        description: chore.value.description,
+        difficulty: chore.value.difficulty,
+        location: chore.value.location,
+        estimatedTime: parseInt(chore.value.estimatedTime),
+        dueDate: new Date(chore.value.dueDate),
+        repeat: chore.value.repeat,
+        householdId: chore.value.householdId,
+        assigneeId: chore.value.assigneeId
+      }
+
+      const result = await FetchService.editChore(props.choreId, choreForDatabase);
+
+      //TODO: add a toast if the update failed
+
+      var choreIndex = -1;
+      for(var index = 0; index < store.household.chores.length; index++) {
+        if(store.household.chores[index].id == props.choreId) {
+          choreIndex = index
+        }
+      }
+
+      store.household.chores[choreIndex] = choreForDatabase;
+      router.push({ name: 'viewChore', params: {id: props.choreId}});
     }
+  }
+
+  function cancel() {
+    if(props.viewMode == 'edit') {
+      router.push({ name: 'viewChore', params: {id: props.choreId}})
+    } else {
+      router.push({ name: 'home' })
+    }
+  }
+
+  function enterEdit() {
+    router.push({ name: 'editChore', params: {id: props.choreId}})
   }
 </script>

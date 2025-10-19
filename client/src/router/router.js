@@ -31,7 +31,7 @@ const routes = [
     component: Chore,
     props: route => ({
       viewMode: 'view',
-      choreId: route.params.id
+      choreId: parseInt(route.params.id)
     }),
   },
   {
@@ -40,7 +40,7 @@ const routes = [
     component: Chore,
     props: route => ({
       viewMode: 'edit',
-      choreId: route.params.id
+      choreId: parseInt(route.params.id)
     }),
   },
   { 
