@@ -1,18 +1,84 @@
 import { createWebHistory, createRouter } from 'vue-router'
-
+import Chore from '../pages/Chore.vue'
 import index from '../pages/index.vue'
 
 const routes = [
-  { path: '/', component: index },
-  { path: '/chores', component: index, props: true },
-  { path: '/house', component: index, props: true },
-  { path: '/create', component: index, props: true },
-  { path: '/random', component: index, props: true },
-  { path: '/print', component: index, props: true },
-  { path: '/help', component: index, props: true },
-  { path: '/leaderboard', component: index, props: true },
-  { path: '/store', component: index, props: true },
-  { path: '/profile', component: index, props: true },
+  { 
+    path: '/', 
+    name: 'home',
+    component: index,
+  },
+  { 
+    path: '/chores', 
+    name: 'dashboard',
+    component: index, 
+    props: true 
+  },
+  { 
+    path: '/house', 
+    name: 'household',
+    component: index, 
+    props: true },
+  { 
+    path: '/chore/create', 
+    name: 'create',
+    component: Chore, 
+    props: { viewMode: 'create', choreId: 0 },
+  },
+  {
+    path: '/chore/:id',
+    name: 'viewChore',
+    component: Chore,
+    props: route => ({
+      viewMode: 'view',
+      choreId: parseInt(route.params.id)
+    }),
+  },
+  {
+    path: '/chore/:id/edit',
+    name: 'editChore',
+    component: Chore,
+    props: route => ({
+      viewMode: 'edit',
+      choreId: parseInt(route.params.id)
+    }),
+  },
+  { 
+    path: '/random', 
+    name: 'random',
+    component: index, 
+    props: true 
+  },
+  { 
+    path: '/print', 
+    name: 'print',
+    component: index, 
+    props: true 
+  },
+  { 
+    path: '/help', 
+    name: 'help',
+    component: index, 
+    props: true 
+  },
+  { 
+    path: '/leaderboard', 
+    name: 'leaderboard',
+    component: index, 
+    props: true 
+  },
+  { 
+    path: '/store', 
+    name: 'store',
+    component: index, 
+    props: true 
+  },
+  { 
+    path: '/profile', 
+    name: 'profile',
+    component: index, 
+    props: true 
+  },
 ]
 
 const router = createRouter({

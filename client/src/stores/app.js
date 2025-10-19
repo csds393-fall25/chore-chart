@@ -12,5 +12,8 @@ export const useAppStore = defineStore('app', {
       totalPoints: 0,
     },
     loggedIn: false,
+    household: {
+      id: -1,
+    }
   }),
 })

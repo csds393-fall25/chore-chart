@@ -163,7 +163,37 @@ app.get('/api/chores/:id', async (req, res) => {
 // create chore
 app.post('/api/chores', async (req, res) => {
   const {name, description, difficulty, location, estimatedTime, dueDate, repeat, householdId, assigneeId} = req.body;
-  const chore = await prisma.chore.create({data: {name, description, difficulty, location, estimatedTime, dueDate, repeat, householdId, assigneeId}});
+  var chore;
+  if(assigneeId) {
+    chore = await prisma.chore.create({data: {
+      name, 
+      description, 
+      difficulty, 
+      location, 
+      estimatedTime, 
+      dueDate, 
+      repeat, 
+      household: {
+        connect: {id: householdId},
+      }, 
+      assignee: {
+        connect: {id: assigneeId},
+      }
+    }});
+  } else {
+    chore = await prisma.chore.create({data: {
+      name, 
+      description, 
+      difficulty, 
+      location, 
+      estimatedTime, 
+      dueDate, 
+      repeat, 
+      household: {
+        connect: {id: householdId},
+      },
+    }});
+  }
   res.json(chore);
 });
 
@@ -171,7 +201,19 @@ app.post('/api/chores', async (req, res) => {
 app.put('/api/chores/:id', async (req, res) => {
   const {id} = req.params;
   const {name, description, difficulty, location, estimatedTime, dueDate, repeat, householdId, assigneeId} = req.body;
-  const chore = await prisma.chore.update({where: {id}, data: {name, description, difficulty, location, estimatedTime, dueDate, repeat, householdId, assigneeId}});
+  
+  let chore;
+  if(assigneeId) {
+    chore = await prisma.chore.update({where: {id: Number(id)}, data: {name, description, difficulty, location, estimatedTime, dueDate, repeat, 
+    assignee: {
+      connect: {id: assigneeId},
+    }}});
+  } else {
+    chore = await prisma.chore.update({where: {id: Number(id)}, data: {name, description, difficulty, location, estimatedTime, dueDate, repeat, 
+      assignee: {
+        disconnect: true,
+      }}});
+  }
   res.json(chore);
 });
 
