@@ -1,11 +1,11 @@
 <template>
     <v-sheet color="navy" class="fill-height pr-3">
       <v-form class="pa-5">
-        <v-row class="mb-0 mt-0 pb-0 pt-0">
-          <v-col cols="12" sm="3" class="mb-0 mt-0 pb-0 pt-0">
+        <v-row class="mb-0 mt-0">
+          <v-col cols="12" sm="3" class="mb-0 mt-0">
             <div class="text-subtitle-1 font-weight-bold"><span class="error" v-if="props.viewMode == 'create' || props.viewMode == 'edit'">*</span>Name: </div>
           </v-col>
-          <v-col cols="12" sm="9" class="mb-0 mt-0 pb-0 pt-0">
+          <v-col cols="12" sm="9" class="mb-0 mt-0">
             <v-text-field
               placeholder="Name"
               required
@@ -18,13 +18,13 @@
               <div v-else class="text-subtitle-1">{{ chore.name }}</div>
           </v-col>
         </v-row>
-        <v-row class="mb-0 mt-0 pb-0 pt-0">
-          <v-col cols="12" sm="3" class="mb-0 mt-0 pb-0 pt-0">
+        <v-row class="mb-0 mt-0">
+          <v-col cols="12" sm="3" class="mb-0 mt-0">
             <div class="text-subtitle-1 font-weight-bold">Description: </div>
           </v-col>
         </v-row>
-        <v-row class="mb-0 mt-0 pb-0 pt-0">
-          <v-col cols="12" class="mb-0 mt-0 pb-0 pt-0">
+        <v-row class="mb-0 mt-0">
+          <v-col cols="12" class="mb-0 mt-0">
             <v-textarea
               placeholder="Description"
               variant="outlined"
@@ -36,12 +36,12 @@
             <p v-else class="text-subtitle-1">{{chore.description}}</p>
           </v-col>
         </v-row>
-        <v-row class="mb-0 mt-0 pb-0 pt-0">
-          <v-col cols="12" sm="3" class="mb-0 mt-0 pb-0 pt-0">
+        <v-row class="mb-0 mt-0">
+          <v-col cols="12" sm="3" class="mb-0 mt-0">
             <div class="text-subtitle-1 font-weight-bold"><span class="error" v-if="props.viewMode == 'create' || props.viewMode == 'edit'">*</span>Difficulty: </div>
           </v-col>
-          <v-col cols="12" sm="9" class="mb-0 mt-0 pb-0 pt-0">
-            <v-combobox
+          <v-col cols="12" sm="9" class="mb-0 mt-0">
+            <v-select
               placeholder="Difficulty"
               required
               variant="outlined"
@@ -50,16 +50,16 @@
               :items="[1, 2, 3, 4, 5, 6, 7, 8, 9, 10]"
               :error-messages="errorMessages.difficulty"
               v-if="props.viewMode == 'create' || props.viewMode == 'edit'"
-            ></v-combobox>
+            ></v-select>
             <p v-else class="text-subtitle-1">{{chore.difficulty}}</p>
           </v-col>
         </v-row>
-        <v-row class="mb-0 mt-0 pb-0 pt-0">
-          <v-col cols="12" sm="3" class="mb-0 mt-0 pb-0 pt-0">
+        <v-row class="mb-0 mt-0">
+          <v-col cols="12" sm="3" class="mb-0 mt-0">
             <div class="text-subtitle-1 font-weight-bold"><span class="error" v-if="props.viewMode == 'create' || props.viewMode == 'edit'">*</span>Location: </div>
           </v-col>
-          <v-col cols="12" sm="9" class="mb-0 mt-0 pb-0 pt-0">
-            <v-combobox
+          <v-col cols="12" sm="9" class="mb-0 mt-0">
+            <v-select
               placeholder="Location"
               required
               variant="outlined"
@@ -68,15 +68,15 @@
               :items="['Kitchen', 'Dining Room', 'Living Room', 'Bedroom', 'Outside', 'Laundry Room', 'Bathroom', 'Office', 'Basement', 'Other']"
               :error-messages="errorMessages.location"
               v-if="props.viewMode == 'create' || props.viewMode == 'edit'"
-            ></v-combobox>
+            ></v-select>
             <p v-else class="text-subtitle-1">{{chore.location}}</p>
           </v-col>
         </v-row>
-        <v-row class="mb-0 mt-0 pb-0 pt-0">
-          <v-col cols="12" sm="3" class="mb-0 mt-0 pb-0 pt-0">
+        <v-row class="mb-0 mt-0">
+          <v-col cols="12" sm="3" class="mb-0 mt-0">
             <div class="text-subtitle-1 font-weight-bold"><span class="error" v-if="props.viewMode == 'create' || props.viewMode == 'edit'">*</span>Estimated Time To Complete (minutes): </div>
           </v-col>
-          <v-col cols="12" sm="9" class="mb-0 mt-0 pb-0 pt-0">
+          <v-col cols="12" sm="9" class="mb-0 mt-0">
             <v-text-field
               placeholder="minutes"
               required
@@ -91,11 +91,11 @@
               <div v-else class="text-subtitle-1">{{ chore.estimatedTime }}</div>
           </v-col>
         </v-row>
-        <v-row class="mb-0 mt-0 pb-0 pt-0">
-          <v-col cols="12" sm="3" class="mb-0 mt-0 pb-0 pt-0">
+        <v-row class="mb-0 mt-0">
+          <v-col cols="12" sm="3" class="mb-0 mt-0">
             <div class="text-subtitle-1 font-weight-bold">Due Date: </div>
           </v-col>
-          <v-col cols="12" sm="9" class="mb-0 mt-0 pb-0 pt-0">
+          <v-col cols="12" sm="9" class="mb-0 mt-0">
             <v-text-field
               type="date"
               required
@@ -108,7 +108,27 @@
               <div v-else class="text-subtitle-1">{{ chore.dueDate }}</div>
           </v-col>
         </v-row>
-        <v-row class="mb-0 mt-0 pb-0 pt-0" v-if="props.viewMode == 'create' || props.viewMode == 'edit'">
+        <v-row class="mb-0 mt-0">
+          <v-col cols="12" sm="3" class="mb-0 mt-0">
+            <div class="text-subtitle-1 font-weight-bold"><span class="error" v-if="props.viewMode == 'create' || props.viewMode == 'edit'">*</span>Assigned To: </div>
+          </v-col>
+          <v-col cols="12" sm="9" class="mb-0 mt-0">
+            <v-select
+              placeholder="No One"
+              required
+              variant="outlined"
+              id="assignedTo"
+              v-model="chore.assigneeId"
+              :items="members"
+              item-title="name"
+              item-value="id"
+              :error-messages="errorMessages.location"
+              v-if="props.viewMode == 'create' || props.viewMode == 'edit'"
+            ></v-select>
+            <p v-else class="text-subtitle-1">{{store.household.users.filter(user => user.id == chore.value.assigneeId)[0].name}}</p>
+          </v-col>
+        </v-row>
+        <v-row class="mb-0 mt-0" v-if="props.viewMode == 'create' || props.viewMode == 'edit'">
           <v-col cols="3">
             <v-btn 
               color="secondary" 
@@ -155,7 +175,12 @@
     //TODO: add a toaster to indicate why it rerouted
   }
 
-  const chore = ref({});
+  const members = store.household.users
+    .filter(user => store.user.role == 'leader' || user.id == store.user.id)
+    .map(user => { return {id: user.id, name: user.name}});
+  members.push({name: "No One", id: null});
+  console.log(members)
+
   const errorMessages = ref({
     name: '',
     description: '',
@@ -165,6 +190,8 @@
     dueDate: '',
     assignee: ''
   });
+
+  const chore = ref({});
 
   if(props.viewMode == "create") {
     chore.value = {
@@ -176,21 +203,16 @@
       dueDate: '',
       repeat: false,
       householdId: store.user.householdId,
-      assigneeId: 0
+      assigneeId: null,
     };
   } else {
-    //TODO: retreive chore from household
-    //TODO: retrieve due date as a string instead of a date
-    chore.value = {
-      name: "Do the dishes",
-      description: "do the dishes description",
-      difficulty: 5,
-      location: "Kitchen",
-      estimatedTime: 1.5,
-      dueDate: '10-29-2025',
-      repeat: false,
-      householdId: 2,
-      assigneeId: 0
+    const filterResult = store.household.chores.filter(householdChore => householdChore.id == props.choreId);
+    console.log(filterResult);
+    if(filterResult.length == 1) {
+      chore.value = filterResult[0];
+    } else {
+      //TODO: add a toast to indicate that the chore was not found
+      console.log("no chore with that id is in the household")
     }
   }
 
@@ -259,6 +281,7 @@
   async function createChore() {
     if(validateChore()) {
       //TODO: create chore in the database and update the household with it
+
       const choreForDatabase = {
         name: chore.value.name,
         description: chore.value.description,
@@ -268,13 +291,17 @@
         dueDate: new Date(chore.value.dueDate),
         repeat: chore.value.repeat,
         householdId: chore.value.householdId,
-        assigneeId: 1
+        assigneeId: chore.value.assigneeId
       }
 
       console.log(choreForDatabase)
 
       const result = await FetchService.createChore(choreForDatabase);
       console.log(result)
+      
+      store.household.chores.push(choreForDatabase);
+
+      router.push({ name: 'home'});
     }
   }
 
