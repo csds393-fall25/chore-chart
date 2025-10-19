@@ -130,6 +130,7 @@ exports.Prisma.UserScalarFieldEnum = {
   householdId: 'householdId',
   role: 'role',
   difficulty: 'difficulty',
+  maxChoreTime: 'maxChoreTime',
   totalPoints: 'totalPoints'
 };
 

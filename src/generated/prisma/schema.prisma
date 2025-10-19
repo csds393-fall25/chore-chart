@@ -20,6 +20,7 @@ model User {
   householdId   Int?
   role          Role?      @default(member)
   difficulty    Int?
+  maxChoreTime  Int? // in minutes/week
   totalPoints   Int?       @default(0)
 
   // Opposite relation fields:
