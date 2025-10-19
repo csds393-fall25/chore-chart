@@ -1,13 +1,13 @@
 <template>
-  <v-sheet class = "fill-height w-100" color="primary-darken-1">
+  <v-sheet class = "fill-height w-100 " color="primary-darken-1">
 
       
-     <v-avatar size = "large" color="primary"></v-avatar>
+     <v-avatar class = "ma-4" size = "large" color="primary"></v-avatar>
 
-     <v-form>
+     <v-form class = "ma-4">
                 
               <v-text-field style = "width: 75%; "  label="Name"   v-model = "name" ></v-text-field>
-              <v-text-field style = "width: 75%"   v-model = "username"  label = "Email"></v-text-field> 
+              <v-text-field disabled="true" style = "width: 75%"   v-model = "username"  label = "Email"></v-text-field> 
              
              
                 Estimated Time
@@ -18,14 +18,36 @@
                 Maximum Difficulty
 
                 <v-number-input style = "width: 75%" v-model = "maxDifficulty" min = '1' max = '10' control-variant="split"  ></v-number-input>
-          
-
+                        
               
-              
-              <v-btn  class = "elevation-0" style = "background-color: #51d299 ; " @click =" updateProfile()">Update</v-btn>
+              <v-btn  class = "elevation-0" style = "background-color: #51d299 ; font-size: small; " @click =" updateProfile()">Update</v-btn>
                 
              
-               <v-btn  class="mx-auto my-auto elevation-0" color="error" @click = "isCreate = true" style = " font-size: x-small; " > Delete</v-btn>
+               <v-btn  class="mx-auto my-auto elevation-0 ml-4" color="error" @click = "showDialog = true" style = " font-size: small; " > Delete</v-btn>
+
+               <v-dialog
+               v-model="showDialog"
+               width="auto" >
+                
+                <v-card title = "Delete Profile?" max-width="400">
+                  <v-card-text>Are you sure you want to delete your profile? This action cannot be reversed.</v-card-text>
+                  
+                  <v-card-actions>
+                  <v-btn @click = "deleteProfile()" text = "delete">
+
+
+                  </v-btn>
+
+                  </v-card-actions>
+
+
+                </v-card>
+
+
+              
+
+
+               </v-dialog>
                 
            
 
@@ -34,17 +56,7 @@
               
 
               </v-form>
- 
 
-      
-
-        
-          <v-card
-            class="py-2 mx-auto my-auto"
-            style = "background-color: #192b40; width: 75%"
-            rounded="lg"
-        
-          >
             
 
             <template #title>
@@ -65,7 +77,7 @@
          
 
             
-          </v-card>
+         
       
 
      
@@ -90,6 +102,7 @@ import FetchService from '@/FetchService';
   const repeatedPassword = ref()
   const isNotSame = ref(false)
   const isCreate = ref(false)
+  const showDialog = ref(false)
   
 
   async function updateProfile(){
@@ -99,6 +112,15 @@ import FetchService from '@/FetchService';
       email: username.value,
     })
     console.log(result)
+    store.user.name = name.value
+    store.user.email = username.value
+  }
+
+  function deleteProfile(){
+
+    console.log("profile will be deleted in here")
+    FetchService.deleteUser(store.user.id)
+    showDialog.value = false
   }
 
 
