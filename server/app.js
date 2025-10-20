@@ -33,13 +33,16 @@ app.get('/api/household/:id', async (req, res) => {
   const id = parseInt(req.params.id);
   if (Number.isNaN(id)) return res.status(400).json({ error: 'Invalid id' });
   try {
+    console.log("IN HERE back1")
     const household = await prisma.household.findUnique({
       where: { id },
       // only use include for relations
       include: { users: true, chores: true },
     });
+    console.log("IN HERE back2")
     if (!household) return res.status(404).json({ error: 'Household not found' });
     res.json(household);
+    console.log("IN HERE back3")
   } catch (err) {
     res.status(500).json({ error: err.message });
   }
@@ -59,6 +62,7 @@ app.post('/api/household', async (req, res) => {
 
 // edit household name
 app.put('/api/household/:id', async (req, res) => {
+  console.log("IN HERE")
   const { name } = req.body;
   const id = parseInt(req.params.id);
   if (Number.isNaN(id) || !name) return res.status(400).json({ error: 'Missing id or name' });
@@ -121,13 +125,15 @@ app.post('/api/login', async (req, res) => {
 });
 
 // update user
+
+//changed this a little, no idea if its ok but it works now
 app.put('/api/user/:id', async (req, res) => {
-  const { id } = parseInt(req.params.id);
+  const { id } = req.params;
   if(Number.isNaN(id)) { return res.status(400).json({ error: "Invalid id" })};
   const { name, email, password_hash, difficulty } = req.body;
   
   try {
-    const updated = await prisma.user.update({ where: { id }, data: { name, email, password_hash, difficulty } });
+    const updated = await prisma.user.update({ where:  { id: Number(id) }, data: { name, email, password_hash, difficulty } });
     res.json(updated);
   } catch (err) {
     res.status(500).json({ error: err.message });
@@ -135,17 +141,16 @@ app.put('/api/user/:id', async (req, res) => {
 });
 
 // delete user
-app.delete('api/user/:id', async (req, res) => {
-  const { id } = parseInt(req.params.id);
-  if (Number.isNaN(id)) {return res.status(400).json({error: "Invalid id"})};
-
+// changed this one a lot
+app.delete('/api/user/:id', async (req, res) => {
+  const {id} = req.params;
   try {
-    const deleted = await prisma.user.delete({where: {  id }});
-    res.json({deleted: true, user: deleted});
+    const deleted = await prisma.user.delete({ where: { id: Number(id) }});
+    res.json({deleted: true, id: deleted.id});
   } catch (err) {
-    res.status(500).json({error: err.message})
+    res.status(500).json({error: err.message});
   }
-})
+});
 
 // get all chores 
 app.get('/api/chores', async (req, res) => {

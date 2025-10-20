@@ -77,7 +77,7 @@ const routes = [
   { 
     path: '/profile', 
     name: 'profile',
-    component: index, 
+    component: Profile, 
     props: true 
   },
 ]

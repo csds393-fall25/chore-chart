@@ -148,6 +148,7 @@ class FetchService {
 
     // Get household 
     static async fetchHousehold(householdId) {
+        console.log("IN HERE")
         try {
             const response = await fetch(`${baseURL}/household/${householdId}`);
             if(!response.ok) {
