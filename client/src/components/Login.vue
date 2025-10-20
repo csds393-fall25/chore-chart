@@ -43,6 +43,7 @@
   import { ref } from 'vue'
   import FetchService from "../FetchService.js"
   import { useAppStore } from '@/stores/app.js';
+  import { useToast } from 'vue-toastification'
 
   const username = ref();
   const password = ref();
@@ -54,6 +55,7 @@
   const isNotSame = ref(false)
   const isCreate = ref(false)
   const store = useAppStore()
+  const toast = useToast()
   
 
   async function validateLogin(){
@@ -63,14 +65,19 @@
         password_hash: password.value
       }
       const result = await FetchService.login(user);
-      console.log("Login successful!", result);
-      console.log(result.user)
-      isIncorrect.value = false;
-      store.user = (result.user)
-      store.household = await FetchService.fetchHousehold(store.user.householdId);
-      console.log(store.household)
-      //Needs to occur last so that all other data is retrieved before the page changes
-      store.loggedIn = true;
+      console.log("Login result:", result);
+      if(result) {
+        console.log(result.user)
+        isIncorrect.value = false;
+        store.user = (result.user)
+        store.household = await FetchService.fetchHousehold(store.user.householdId);
+        console.log(store.household)
+
+        //Needs to occur last so that all other data is retrieved before the page changes
+        store.loggedIn = true;
+      } else {
+        toast.error("Incorrect username or password")
+      }
     } catch (error) {
       console.error("Login failed:", error);
       store
