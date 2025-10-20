@@ -4,7 +4,7 @@ class FetchService {
     // Sign up
     static async signup(user) {
                 try {
-                    console.log(user.maxChoreTime)
+
             const response = await fetch(baseURL + "/signup", {
                 method: "POST",
                 headers: {
@@ -57,10 +57,7 @@ class FetchService {
 
     // update user
     static async updateUser(userId, userData) {
-        console.log(userId)
-        console.log(userData.name)
-        console.log(userData.email)
-        console.log(userData)
+
         try {
             var stringified;
             if(Object.hasOwn(userData, 'password_hash')) {
@@ -153,7 +150,7 @@ class FetchService {
 
     // Get household 
     static async fetchHousehold(householdId) {
-        console.log("IN HERE")
+
         try {
             const response = await fetch(`${baseURL}/household/${householdId}`);
             if(!response.ok) {

@@ -68,7 +68,6 @@
       isIncorrect.value = false;
       store.user = (result.user)
       store.household = await FetchService.fetchHousehold(store.user.householdId);
-      console.log(store.household)
       //Needs to occur last so that all other data is retrieved before the page changes
       store.loggedIn = true;
     } catch (error) {

@@ -38,14 +38,14 @@ const estimatedTime = ref(store.user.maxChoreTime)
 const showDialog = ref(false)
 
 async function updateProfile() {
-  console.log(store.user)
+
   const result = await FetchService.updateUser(store.user.id, {
     name: name.value,
     email: username.value,
     difficulty: maxDifficulty.value,
     maxChoreTime: estimatedTime.value
   })
-  console.log(result)
+
   store.user.name = name.value
   store.user.email = username.value
   store.user.difficulty = maxDifficulty.value
