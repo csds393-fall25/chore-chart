@@ -7,7 +7,7 @@ const routes = [
   { 
     path: '/', 
     name: 'home',
-    component: index,
+    component: Dashboard,
   },
   { 
     path: '/chores', 
