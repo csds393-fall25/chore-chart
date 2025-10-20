@@ -13,6 +13,7 @@
         </v-col>
       </v-row>
     </v-container>
+
     <v-container fluid class="fill-height pa-0 w-100" v-else>
       <Login />
     </v-container>

@@ -20,6 +20,13 @@ export default defineConfig({
       },
     }),
   ],
+   test: {
+    server: {
+      deps: {
+        inline: ['vuetify'],
+      },
+    },
+  },
   optimizeDeps: {
     exclude: [
       'vuetify',

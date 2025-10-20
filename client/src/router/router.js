@@ -2,6 +2,7 @@ import { createWebHistory, createRouter } from 'vue-router'
 import Chore from '../pages/Chore.vue'
 import index from '../pages/index.vue'
 import Dashboard from '../pages/Dashboard.vue'
+import Profile from '@/components/Profile.vue'
 
 const routes = [
   { 
@@ -77,7 +78,7 @@ const routes = [
   { 
     path: '/profile', 
     name: 'profile',
-    component: index, 
+    component: Profile, 
     props: true 
   },
 ]

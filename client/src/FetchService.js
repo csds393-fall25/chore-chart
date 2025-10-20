@@ -3,16 +3,24 @@ class FetchService {
 
     // Sign up
     static async signup(user) {
-        try {
+                try {
+
             const response = await fetch(baseURL + "/signup", {
                 method: "POST",
                 headers: {
                     "Content-Type": "application/json",
                 },
                 body: JSON.stringify({
+                    difficulty: user.difficulty,
                     name: user.name,
                     email: user.email,
-                    password_hash: user.password_hash
+                    password_hash: user.password_hash,
+                    totalPoints: 0,
+                    householdId: 2,
+                    maxChoreTime: user.maxChoreTime
+                    
+
+
             })});
             if(!response.ok) {
                 throw new Error(`Response status: ${response.status}`);
@@ -49,17 +57,48 @@ class FetchService {
 
     // update user
     static async updateUser(userId, userData) {
+
         try {
+            var stringified;
+            if(Object.hasOwn(userData, 'password_hash')) {
+                stringified = JSON.stringify({
+                    name: userData.name,
+                    email: userData.email,
+                    password_hash: userData.password_hash,
+                    difficulty: userData.difficulty,
+                    maxChoreTime: userData.maxChoreTime
+                })
+            } else {
+                stringified = JSON.stringify({
+                    name: userData.name,
+                    email: userData.email,
+                    difficulty: userData.difficulty,
+                    maxChoreTime: userData.maxChoreTime
+                })
+            }
+
             const response = await fetch(`${baseURL}/user/${userId}`, {
                 method: "PUT",
                 headers: {
                     "Content-Type": "application/json",
                 },
-                body: JSON.stringify({
-                    name: userData.name,
-                    email: userData.email,
-                    password_hash: userData.password_hash
-                })
+                body: stringified
+            });
+            if(!response.ok) {
+                throw new Error(`Response status: ${response.status}`);
+            }
+            const result = await response.json();
+            return result;
+        } catch (error) {
+            console.error(error.message);
+        }
+    }
+
+       // Delete user
+    static async deleteUser(userId) {
+        try {
+            const response = await fetch(`${baseURL}/user/${userId}`, {
+                method: "DELETE"
             });
             if(!response.ok) {
                 throw new Error(`Response status: ${response.status}`);
@@ -111,6 +150,7 @@ class FetchService {
 
     // Get household 
     static async fetchHousehold(householdId) {
+
         try {
             const response = await fetch(`${baseURL}/household/${householdId}`);
             if(!response.ok) {
