@@ -84,10 +84,11 @@ app.delete('/api/household/:id', async (req, res) => {
 
 // signup
 app.post('/api/signup', async (req, res) => {
+  
   try {
-    const {name, email, password_hash } = req.body;
+    const {name, email, password_hash, difficulty, totalPoints } = req.body;
     const result = await prisma.user.create({
-      data: { name, email, password_hash },
+      data: { name, email, password_hash, difficulty, totalPoints },
     });
     res.json(result);
   } catch (err) {
@@ -122,14 +123,14 @@ app.post('/api/login', async (req, res) => {
 // update user
 app.put('/api/user/:id', async (req, res) => {
   const { id } = req.params;
-  const { name, email } = req.body;
+  const { name, email, difficulty } = req.body;
   try {
     var updated;
     if(Object.hasOwn(req.body, 'password_hash')) {
       const password_hash = req.body.password_hash
-      updated = await prisma.user.update({ where: { id: Number(id) }, data: { name, email, password_hash } });
+      updated = await prisma.user.update({ where: { id: Number(id) }, data: { name, email, password_hash, difficulty } });
     } else {
-      updated = await prisma.user.update({ where: { id: Number(id) }, data: { name, email } });
+      updated = await prisma.user.update({ where: { id: Number(id) }, data: { name, email, difficulty } });
     }
     res.json(updated);
   } catch (err) {

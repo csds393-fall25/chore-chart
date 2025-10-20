@@ -110,10 +110,13 @@ import FetchService from '@/FetchService';
     const result = await FetchService.updateUser(store.user.id, {
       name: name.value,
       email: username.value,
+      difficulty: maxDifficulty.value
     })
     console.log(result)
     store.user.name = name.value
     store.user.email = username.value
+    store.user.difficulty = maxDifficulty.value
+    
   }
 
   function deleteProfile(){

@@ -64,12 +64,14 @@ class FetchService {
                 stringified = JSON.stringify({
                     name: userData.name,
                     email: userData.email,
-                    password_hash: userData.password_hash
+                    password_hash: userData.password_hash,
+                    difficulty: userData.difficulty
                 })
             } else {
                 stringified = JSON.stringify({
                     name: userData.name,
                     email: userData.email,
+                    difficulty: userData.difficulty
                 })
             }
 
