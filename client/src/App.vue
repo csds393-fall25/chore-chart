@@ -25,7 +25,6 @@
   import {useAppStore} from "./stores/app.js";
   import Login from "./components/Login.vue";
   import Loading from './components/Loading.vue'
-import Profile from "./components/Profile.vue";
 
   const store = useAppStore();
 </script>

@@ -3,11 +3,11 @@
     <v-avatar class="ma-4" size="large" color="primary"></v-avatar>
     <v-form class="ma-4">
       <v-text-field style="width: 75%; " label="Name" v-model="name"></v-text-field>
-      <v-text-field disabled="true" style="width: 75%" v-model="username" label="Email"></v-text-field>
+      <v-text-field :disabled="true" style="width: 75%" v-model="username" label="Email"></v-text-field>
       Estimated Time To Complete Chores (minutes)
-      <v-number-input style="width: 75%" v-model="estimatedTime" min='0' control-variant="split"></v-number-input>
+      <v-number-input style="width: 75%" v-model="estimatedTime" :min='0' control-variant="split"></v-number-input>
       Maximum Difficulty
-      <v-number-input style="width: 75%" v-model="maxDifficulty" min='1' max='10'
+      <v-number-input style="width: 75%" v-model="maxDifficulty" :min='1' :max='10'
         control-variant="split"></v-number-input>
       <v-btn class="elevation-0" style="background-color: #51d299 ; font-size: small; "
         @click=" updateProfile()">Update</v-btn>

@@ -20,11 +20,11 @@
           <v-row v-if="isCreate" class="mx-auto my-auto">
             <v-col  v-if="isCreate" style = "font-size: x-small;" cols = "6">
               Estimated Time To Complete Chores (minutes)
-              <v-number-input v-if="isCreate" v-model = "estimatedTime" min = '0' control-variant="split" ></v-number-input>
+              <v-number-input v-if="isCreate" v-model = "estimatedTime" :min = '0' control-variant="split" ></v-number-input>
             </v-col>
             <v-col v-if="isCreate"  style = "font-size: x-small;" cols = "6">
               Maximum Difficulty
-              <v-number-input v-if="isCreate" v-model = "maxDifficulty" min = '1' max = '10' control-variant="split"  ></v-number-input>
+              <v-number-input v-if="isCreate" v-model = "maxDifficulty" :min = '1' :max = '10' control-variant="split"  ></v-number-input>
             </v-col>
           </v-row>
           <div>
