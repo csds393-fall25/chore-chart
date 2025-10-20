@@ -4,6 +4,7 @@ class FetchService {
     // Sign up
     static async signup(user) {
                 try {
+                    console.log(user.maxChoreTime)
             const response = await fetch(baseURL + "/signup", {
                 method: "POST",
                 headers: {
@@ -15,6 +16,7 @@ class FetchService {
                     email: user.email,
                     password_hash: user.password_hash,
                     totalPoints: 0,
+                    maxChoreTime: user.maxChoreTime
                     
 
 
@@ -65,13 +67,15 @@ class FetchService {
                     name: userData.name,
                     email: userData.email,
                     password_hash: userData.password_hash,
-                    difficulty: userData.difficulty
+                    difficulty: userData.difficulty,
+                    maxChoreTime: userData.maxChoreTime
                 })
             } else {
                 stringified = JSON.stringify({
                     name: userData.name,
                     email: userData.email,
-                    difficulty: userData.difficulty
+                    difficulty: userData.difficulty,
+                    maxChoreTime: userData.maxChoreTime
                 })
             }
 

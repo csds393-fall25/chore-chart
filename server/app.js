@@ -90,9 +90,9 @@ app.delete('/api/household/:id', async (req, res) => {
 app.post('/api/signup', async (req, res) => {
   
   try {
-    const {name, email, password_hash, difficulty, totalPoints } = req.body;
+    const {name, email, password_hash, difficulty, totalPoints, maxChoreTime } = req.body;
     const result = await prisma.user.create({
-      data: { name, email, password_hash, difficulty, totalPoints },
+      data: { name, email, password_hash, difficulty, totalPoints, maxChoreTime },
     });
     res.json(result);
   } catch (err) {
@@ -125,15 +125,14 @@ app.post('/api/login', async (req, res) => {
 });
 
 // update user
-
 //changed this a little, no idea if its ok but it works now
 app.put('/api/user/:id', async (req, res) => {
   const { id } = req.params;
   if(Number.isNaN(id)) { return res.status(400).json({ error: "Invalid id" })};
-  const { name, email, password_hash, difficulty } = req.body;
-  
+  console.log(req.body)
+  const { name, email, password_hash, difficulty, maxChoreTime } = req.body;
   try {
-    const updated = await prisma.user.update({ where:  { id: Number(id) }, data: { name, email, password_hash, difficulty } });
+    const updated = await prisma.user.update({ where:  { id: Number(id) }, data: { name, email, password_hash, difficulty, maxChoreTime } });
     res.json(updated);
   } catch (err) {
     res.status(500).json({ error: err.message });

@@ -19,7 +19,7 @@
           <v-text-field v-if="isCreate" v-model = "repeatedPassword"  label = "Password Again" type = "password" :persistent-hint='isNotSame' :hint = " isNotSame ? 'Passwords do not match' : ''" ></v-text-field>   
           <v-row v-if="isCreate" class="mx-auto my-auto">
             <v-col  v-if="isCreate" style = "font-size: x-small;" cols = "6">
-              Estimated Time
+              Estimated Time To Complete Chores (minutes)
               <v-number-input v-if="isCreate" v-model = "estimatedTime" min = '0' control-variant="split" ></v-number-input>
             </v-col>
             <v-col v-if="isCreate"  style = "font-size: x-small;" cols = "6">
@@ -104,9 +104,11 @@
       email: username.value,
       password_hash: password.value,
       householdId: 2,
-      difficulty: maxDifficulty.value
+      difficulty: maxDifficulty.value,
+      maxChoreTime: estimatedTime.value,
     }
-    console.log(user.name)
+   
+  
     try {
       const result = await FetchService.signup(user);
       console.log("Signup successful!", result);
