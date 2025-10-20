@@ -54,7 +54,10 @@
           <!-- </div> -->
         </v-col>
       </v-row>
-      <v-list class="pb-0 pt-0">
+      <v-list 
+        class="pb-0 pt-0"
+        v-if="listMode"
+      >
         <v-list-item
           v-for="(chore) in choreList"
           :key="chore.id"
@@ -120,8 +123,61 @@
           </template>
         </v-list-item>
       </v-list>
+      <v-row v-else class="mb-3">
+        <v-col cols="12" sm="6" md="4"
+          v-for="(chore) in choreList"
+          :key="chore.id"
+        >
+          <v-card class="pr-2" :to="'/chore/'+chore.id">
+            <v-card-item class="pr-0">
+              <template v-slot:prepend>
+                <v-avatar color="primary">
+                  <span class="text-h5">{{ userInitials(chore.assigneeId) }}</span>
+                </v-avatar>
+              </template>
+              <template v-slot:append>
+                <v-card-subtitle>{{ chore.difficulty * 5 }} pts</v-card-subtitle>
+                <v-btn
+                  color="secondary"
+                  density="compact"
+                  class="ml-2"
+                  @click.prevent="completeChorePrompt(chore)"
+                  v-if="chore.assigneeId == store.user.id"
+                >
+                  Complete
+                </v-btn>
+              </template>
+            </v-card-item>
+            <v-card-item class="text-center">
+              <v-card-title>{{ chore.name }}</v-card-title>
+            </v-card-item>
+            <v-card-actions>
+              <v-btn
+                class="w-50"
+                color="secondary"
+                variant="elevated"
+                density="compact"
+                @click.prevent="updateChore(chore.id)"
+                v-if="store.user.role == 'leader'"
+              >
+                Edit
+              </v-btn>
+              <v-btn
+                class="w-50 mr-2"
+                color="error"
+                variant="elevated"
+                density="compact"
+                @click.prevent="promptDelete(chore)"
+                v-if="store.user.role == 'leader'"
+              >
+                Delete
+              </v-btn>
+            </v-card-actions>
+          </v-card>
+        </v-col>
+      </v-row>
       <div class="bg-primary text-center text-h5 pb-2 pt-2">Unassigned Chores</div>
-      <v-list>
+      <v-list v-if="listMode">
         <v-list-item
           v-for="(chore) in unassignedList"
           :key="chore.id"
@@ -181,6 +237,56 @@
           </template>
         </v-list-item>
       </v-list>
+      <v-row v-else class="mt-3">
+        <v-col cols="12" sm="6" md="4"
+          v-for="(chore) in unassignedList"
+          :key="chore.id"
+        >
+          <v-card class="pr-2" :to="'/chore/'+chore.id">
+            <v-card-item class="pr-0">
+              <template v-slot:prepend>
+                <v-avatar color="primary-lighten-1"></v-avatar>
+              </template>
+              <template v-slot:append>
+                <v-card-subtitle>{{ chore.difficulty * 5 }} pts</v-card-subtitle>
+                <v-btn
+                  color="secondary"
+                  density="compact"
+                  class="ml-2"
+                  @click.prevent="assignToSelfPrompt(chore)"
+                >
+                  Assign
+                </v-btn>
+              </template>
+            </v-card-item>
+            <v-card-item class="text-center">
+              <v-card-title>{{ chore.name }}</v-card-title>
+            </v-card-item>
+            <v-card-actions>
+              <v-btn
+                class="w-50"
+                color="secondary"
+                variant="elevated"
+                density="compact"
+                @click.prevent="updateChore(chore.id)"
+                v-if="store.user.role == 'leader'"
+              >
+                Edit
+              </v-btn>
+              <v-btn
+                class="w-50 mr-2"
+                color="error"
+                variant="elevated"
+                density="compact"
+                @click.prevent="promptDelete(chore)"
+                v-if="store.user.role == 'leader'"
+              >
+                Delete
+              </v-btn>
+            </v-card-actions>
+          </v-card>
+        </v-col>
+      </v-row>
     </v-container>
     <!-- Delete Dialog -->
     <v-dialog v-model="deleteDialogOpen" max-width="500">
