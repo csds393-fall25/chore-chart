@@ -148,9 +148,9 @@
                 </v-btn>
               </template>
             </v-card-item>
-            <v-card-item class="text-center">
-              <v-card-title>{{ chore.name }}</v-card-title>
-            </v-card-item>
+            <v-card-text class="text-center text-body-1">
+              {{ chore.name }}
+            </v-card-text>
             <v-card-actions>
               <v-btn
                 class="w-50"
@@ -259,9 +259,9 @@
                 </v-btn>
               </template>
             </v-card-item>
-            <v-card-item class="text-center">
-              <v-card-title>{{ chore.name }}</v-card-title>
-            </v-card-item>
+            <v-card-text class="text-center text-body-1">
+              {{ chore.name }}
+            </v-card-text>
             <v-card-actions>
               <v-btn
                 class="w-50"
