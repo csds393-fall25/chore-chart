@@ -235,7 +235,7 @@ app.put('/api/chores/:id', async (req, res) => {
 app.delete('/api/chore/:id', async (req, res) => {
   const {id} = parseInt(req.params.id);
   try {
-    const deleted = await prisma.chore.delete({ where: {id}});
+    const deleted = await prisma.chore.delete({ where: { id: Number(id) }});
     res.json({deleted: true, id: deleted.id});
   } catch (err) {
     res.status(500).json({error: err.message});

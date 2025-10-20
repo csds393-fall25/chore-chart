@@ -363,8 +363,7 @@
 
       const result = await FetchService.createChore(choreForDatabase);
       //TODO: add a toast if the create failed
-
-      store.household.chores.push(choreForDatabase);
+      store.household.chores.push(result);
 
       router.push({ name: 'home'});
     }
