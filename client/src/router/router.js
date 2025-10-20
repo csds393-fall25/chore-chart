@@ -1,6 +1,7 @@
 import { createWebHistory, createRouter } from 'vue-router'
 import Chore from '../pages/Chore.vue'
 import index from '../pages/index.vue'
+import Dashboard from '../pages/Dashboard.vue'
 
 const routes = [
   { 
@@ -11,7 +12,7 @@ const routes = [
   { 
     path: '/chores', 
     name: 'dashboard',
-    component: index, 
+    component: Dashboard, 
     props: true 
   },
   { 
