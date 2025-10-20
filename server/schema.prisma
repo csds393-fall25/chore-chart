@@ -18,8 +18,9 @@ model User {
   salt          String?
   household     Household? @relation(fields: [householdId], references: [id])
   householdId   Int?
-  role          Role?    @default(member)
+  role          Role?      @default(member)
   difficulty    Int?
+  maxChoreTime Int?       // in minutes/week
   totalPoints   Int?       @default(0)
 
   // Opposite relation fields:
@@ -49,8 +50,8 @@ model Chore {
   repeat        Boolean
   household     Household @relation(fields: [householdId], references: [id])
   householdId   Int
-  assignee      User @relation(fields: [assigneeId], references: [id])
-  assigneeId    Int  
+  assignee      User? @relation(fields: [assigneeId], references: [id])
+  assigneeId    Int?  
 }
 
 model Avatar {

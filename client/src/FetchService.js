@@ -108,6 +108,22 @@ class FetchService {
         }
     }
 
+    // Delete user
+    static async deleteUser(userId) {
+        try {
+            const response = await fetch(`${baseURL}/user/${userId}`, {
+                method: "DELETE"
+            });
+            if (!response.ok) {
+                throw new Error(`Response status: ${response.status}`);
+            }
+            const result = await response.json();
+            return result;
+        } catch (error) {
+            console.error(error.message);
+        }
+    }
+
     // Create household
     static async createHousehold(household) {
         try {

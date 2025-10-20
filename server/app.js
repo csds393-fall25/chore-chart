@@ -122,31 +122,30 @@ app.post('/api/login', async (req, res) => {
 
 // update user
 app.put('/api/user/:id', async (req, res) => {
-  const { id } = req.params;
-  const { name, email, difficulty } = req.body;
+  const { id } = parseInt(req.params.id);
+  if(Number.isNaN(id)) { return res.status(400).json({ error: "Invalid id" })};
+  const { name, email, password_hash, difficulty } = req.body;
+  
   try {
-    var updated;
-    if(Object.hasOwn(req.body, 'password_hash')) {
-      const password_hash = req.body.password_hash
-      updated = await prisma.user.update({ where: { id: Number(id) }, data: { name, email, password_hash, difficulty } });
-    } else {
-      updated = await prisma.user.update({ where: { id: Number(id) }, data: { name, email, difficulty } });
-    }
+    const updated = await prisma.user.update({ where: { id }, data: { name, email, password_hash, difficulty } });
     res.json(updated);
   } catch (err) {
     res.status(500).json({ error: err.message });
   }
 });
 
-app.delete('/api/user/:id', async (req, res) => {
-  const {id} = req.params;
+// delete user
+app.delete('api/user/:id', async (req, res) => {
+  const { id } = parseInt(req.params.id);
+  if (Number.isNaN(id)) {return res.status(400).json({error: "Invalid id"})};
+
   try {
-    const deleted = await prisma.user.delete({ where: { id: Number(id) }});
-    res.json({deleted: true, id: deleted.id});
+    const deleted = await prisma.user.delete({where: {  id }});
+    res.json({deleted: true, user: deleted});
   } catch (err) {
-    res.status(500).json({error: err.message});
+    res.status(500).json({error: err.message})
   }
-});
+})
 
 // get all chores 
 app.get('/api/chores', async (req, res) => {
@@ -161,14 +160,14 @@ app.get('/api/chores', async (req, res) => {
 
 // gets chores by assignee id
 app.get('/api/chores/assignee/:assigneeId', async (req, res) => {
-  const {assigneeId} = req.params;
-  const chores = await prisma.chore.findMany({where: {assigneeId}});
+  const {assigneeId} = parseInt(req.params.assigneeId);
+  const chores = await prisma.chore.findMany({where: {  assigneeId  }});
   res.json(chores);
 });
 
 // get one chore by id
 app.get('/api/chores/:id', async (req, res) => {
-  const id = Number(req.params.id);
+  const id = parseInt(req.params.id);
   if (Number.isNaN(id)) return res.status(400).json({ error: 'Invalid id' });
 
   const chore = await prisma.chore.findUnique({ where: { id } });
@@ -179,21 +178,63 @@ app.get('/api/chores/:id', async (req, res) => {
 // create chore
 app.post('/api/chores', async (req, res) => {
   const {name, description, difficulty, location, estimatedTime, dueDate, repeat, householdId, assigneeId} = req.body;
-  const chore = await prisma.chore.create({data: {name, description, difficulty, location, estimatedTime, dueDate, repeat, householdId, assigneeId}});
+  var chore;
+  if(assigneeId) {
+    chore = await prisma.chore.create({data: {
+      name, 
+      description, 
+      difficulty, 
+      location, 
+      estimatedTime, 
+      dueDate, 
+      repeat, 
+      household: {
+        connect: {id: householdId},
+      }, 
+      assignee: {
+        connect: {id: assigneeId},
+      }
+    }});
+  } else {
+    chore = await prisma.chore.create({data: {
+      name, 
+      description, 
+      difficulty, 
+      location, 
+      estimatedTime, 
+      dueDate, 
+      repeat, 
+      household: {
+        connect: {id: householdId},
+      },
+    }});
+  }
   res.json(chore);
 });
 
 // edit chore
 app.put('/api/chores/:id', async (req, res) => {
-  const {id} = req.params;
+  const {id} = parseInt(req.params.id);
   const {name, description, difficulty, location, estimatedTime, dueDate, repeat, householdId, assigneeId} = req.body;
-  const chore = await prisma.chore.update({where: {id}, data: {name, description, difficulty, location, estimatedTime, dueDate, repeat, householdId, assigneeId}});
+  
+  let chore;
+  if(assigneeId) {
+    chore = await prisma.chore.update({where: {id: Number(id)}, data: {name, description, difficulty, location, estimatedTime, dueDate, repeat, 
+    assignee: {
+      connect: {id: assigneeId},
+    }}});
+  } else {
+    chore = await prisma.chore.update({where: {id: Number(id)}, data: {name, description, difficulty, location, estimatedTime, dueDate, repeat, 
+      assignee: {
+        disconnect: true,
+      }}});
+  }
   res.json(chore);
 });
 
 // delete chore
 app.delete('/api/chore/:id', async (req, res) => {
-  const {id} = req.params;
+  const {id} = parseInt(req.params.id);
   try {
     const deleted = await prisma.chore.delete({ where: {id}});
     res.json({deleted: true, id: deleted.id});
