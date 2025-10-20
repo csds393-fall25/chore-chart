@@ -90,9 +90,9 @@ app.delete('/api/household/:id', async (req, res) => {
 app.post('/api/signup', async (req, res) => {
   
   try {
-    const {name, email, password_hash, difficulty, totalPoints, maxChoreTime } = req.body;
+    const {name, email, password_hash, difficulty, totalPoints, maxChoreTime, householdId } = req.body;
     const result = await prisma.user.create({
-      data: { name, email, password_hash, difficulty, totalPoints, maxChoreTime },
+      data: { name, email, password_hash, difficulty, totalPoints, maxChoreTime, householdId },
     });
     res.json(result);
   } catch (err) {
