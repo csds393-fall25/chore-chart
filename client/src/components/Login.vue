@@ -1,5 +1,5 @@
 <template>
-  <v-sheet class = "fill-height w-100" color="primary-darken-1">
+  <v-sheet v-if = "!store.loggedIn" class = "fill-height w-100" color="primary-darken-1">
     <h2 class="text-h5 font-weight-bold">
       ChoreChart
     </h2>
@@ -19,19 +19,19 @@
           <v-text-field v-if="isCreate" v-model = "repeatedPassword"  label = "Password Again" type = "password" :persistent-hint='isNotSame' :hint = " isNotSame ? 'Passwords do not match' : ''" ></v-text-field>   
           <v-row v-if="isCreate" class="mx-auto my-auto">
             <v-col  v-if="isCreate" style = "font-size: x-small;" cols = "6">
-              Estimated Time
-              <v-number-input v-if="isCreate" v-model = "estimatedTime" min = '0' control-variant="split" ></v-number-input>
+              Estimated Time To Complete Chores (minutes)
+              <v-number-input v-if="isCreate" v-model = "estimatedTime" :min = '0' control-variant="split" ></v-number-input>
             </v-col>
             <v-col v-if="isCreate"  style = "font-size: x-small;" cols = "6">
               Maximum Difficulty
-              <v-number-input v-if="isCreate" v-model = "maxDifficulty" min = '1' max = '10' control-variant="split"  ></v-number-input>
+              <v-number-input v-if="isCreate" v-model = "maxDifficulty" :min = '1' :max = '10' control-variant="split"  ></v-number-input>
             </v-col>
           </v-row>
           <div>
             <v-btn  class = "elevation-0" color="teal" @click =" isCreate ? validateProfile() : validateLogin()">{{isCreate ? 'Create' : 'Login'}}</v-btn>
           </div>
           <div>
-            <v-btn v-if="!isCreate" class="mx-auto my-auto elevation-0" color="navy" @click = "isCreate = true" style = "font-size: x-small; " > Don't have an account? create one here</v-btn>
+            <v-btn v-if="!isCreate" class="mx-auto my-auto elevation-0" color="navy" @click = "switchCreate()" style = "font-size: x-small; " > Don't have an account? create one here</v-btn>
           </div>
         </v-form>
       </template>
@@ -85,6 +85,20 @@
     }
   }
 
+  function switchCreate(){
+    isCreate.value = true;
+    isIncorrect.value = false;
+    username.value = ""
+    password.value = ""
+
+  }
+
+  function switchLogin(){
+    isCreate.value = false;
+    username.value = ""
+    password.value = ""
+  }
+
   async function validateProfile(){
     if (typeof(password.value) != null && typeof(repeatedPassword.value) != null && password.value != repeatedPassword.value){
       isNotSame.value = true;
@@ -96,11 +110,16 @@
       name: displayedName.value,
       email: username.value,
       password_hash: password.value,
-      householdId: 2
+      householdId: 2,
+      difficulty: maxDifficulty.value,
+      maxChoreTime: estimatedTime.value,
     }
+   
+  
     try {
       const result = await FetchService.signup(user);
       console.log("Signup successful!", result);
+      switchLogin()
       store.user = result.user
     } catch (error) {
       console.error("Signup failed:", error);

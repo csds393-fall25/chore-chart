@@ -1,6 +1,6 @@
 <template>
   <v-sheet class="fill-height text-center d-flex flex-column" color="primary-lighten-1 pa-0 ma-0" width="100%">
-    <v-card to="/profile" color="primary-lighten-1">
+    <v-card to="/profile" color="primary-lighten-1" >
       <v-container class="text-center" width="100%">
         <v-row width="100%" class="mb-0 mr-0 ml-0">
           <v-col cols="12" class="pa-0">

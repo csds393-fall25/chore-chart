@@ -59,6 +59,7 @@ app.post('/api/household', async (req, res) => {
 
 // edit household name
 app.put('/api/household/:id', async (req, res) => {
+
   const { name } = req.body;
   const id = parseInt(req.params.id);
   if (Number.isNaN(id) || !name) return res.status(400).json({ error: 'Missing id or name' });
@@ -84,10 +85,11 @@ app.delete('/api/household/:id', async (req, res) => {
 
 // signup
 app.post('/api/signup', async (req, res) => {
+  
   try {
-    const {name, email, password_hash } = req.body;
+    const {name, email, password_hash, difficulty, totalPoints, maxChoreTime, householdId } = req.body;
     const result = await prisma.user.create({
-      data: { name, email, password_hash },
+      data: { name, email, password_hash, difficulty, totalPoints, maxChoreTime, householdId },
     });
     res.json(result);
   } catch (err) {
@@ -120,15 +122,28 @@ app.post('/api/login', async (req, res) => {
 });
 
 // update user
+//changed this a little, no idea if its ok but it works now
 app.put('/api/user/:id', async (req, res) => {
   const { id } = req.params;
-  const { name, email, password_hash } = req.body;
-  
+  if(Number.isNaN(id)) { return res.status(400).json({ error: "Invalid id" })};
+  const { name, email, password_hash, difficulty, maxChoreTime } = req.body;
   try {
-    const updated = await prisma.user.update({ where: { id }, data: { name, email, password_hash } });
+    const updated = await prisma.user.update({ where:  { id: Number(id) }, data: { name, email, password_hash, difficulty, maxChoreTime } });
     res.json(updated);
   } catch (err) {
     res.status(500).json({ error: err.message });
+  }
+});
+
+// delete user
+// changed this one a lot
+app.delete('/api/user/:id', async (req, res) => {
+  const {id} = req.params;
+  try {
+    const deleted = await prisma.user.delete({ where: { id: Number(id) }});
+    res.json({deleted: true, id: deleted.id});
+  } catch (err) {
+    res.status(500).json({error: err.message});
   }
 });
 
@@ -145,14 +160,14 @@ app.get('/api/chores', async (req, res) => {
 
 // gets chores by assignee id
 app.get('/api/chores/assignee/:assigneeId', async (req, res) => {
-  const {assigneeId} = req.params;
-  const chores = await prisma.chore.findMany({where: {assigneeId}});
+  const {assigneeId} = parseInt(req.params.assigneeId);
+  const chores = await prisma.chore.findMany({where: {  assigneeId  }});
   res.json(chores);
 });
 
 // get one chore by id
 app.get('/api/chores/:id', async (req, res) => {
-  const id = Number(req.params.id);
+  const id = parseInt(req.params.id);
   if (Number.isNaN(id)) return res.status(400).json({ error: 'Invalid id' });
 
   const chore = await prisma.chore.findUnique({ where: { id } });
@@ -199,7 +214,7 @@ app.post('/api/chores', async (req, res) => {
 
 // edit chore
 app.put('/api/chores/:id', async (req, res) => {
-  const {id} = req.params;
+  const {id} = parseInt(req.params.id);
   const {name, description, difficulty, location, estimatedTime, dueDate, repeat, householdId, assigneeId} = req.body;
   
   let chore;
@@ -219,7 +234,7 @@ app.put('/api/chores/:id', async (req, res) => {
 
 // delete chore
 app.delete('/api/chore/:id', async (req, res) => {
-  const {id} = req.params;
+  const {id} = parseInt(req.params.id);
   try {
     const deleted = await prisma.chore.delete({ where: { id: Number(id) }});
     res.json({deleted: true, id: deleted.id});
