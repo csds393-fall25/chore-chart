@@ -14,7 +14,6 @@ export const useAppStore = defineStore('app', {
       maxChoreTime: 0,
     },
     loggedIn: false,
-    profileView: false,
     household: {
       id: -1,
     }
