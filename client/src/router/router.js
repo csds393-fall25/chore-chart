@@ -1,18 +1,19 @@
 import { createWebHistory, createRouter } from 'vue-router'
 import Chore from '../pages/Chore.vue'
 import index from '../pages/index.vue'
+import Dashboard from '../pages/Dashboard.vue'
 import Profile from '@/components/Profile.vue'
 
 const routes = [
   { 
     path: '/', 
     name: 'home',
-    component: index,
+    component: Dashboard,
   },
   { 
     path: '/chores', 
     name: 'dashboard',
-    component: index, 
+    component: Dashboard, 
     props: true 
   },
   { 

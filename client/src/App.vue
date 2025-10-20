@@ -6,7 +6,10 @@
           <NavigationBar/>
         </v-col>
         <v-col class="pa-0 ma-0">
-          <router-view></router-view>
+          <Suspense>
+            <router-view></router-view>
+            <template #fallback><Loading /></template>
+          </Suspense>
         </v-col>
       </v-row>
     </v-container>
@@ -21,6 +24,7 @@
   import NavigationBar from "./components/NavigationBar.vue"
   import {useAppStore} from "./stores/app.js";
   import Login from "./components/Login.vue";
+  import Loading from './components/Loading.vue'
 import Profile from "./components/Profile.vue";
 
   const store = useAppStore();
