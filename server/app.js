@@ -137,6 +137,16 @@ app.put('/api/user/:id', async (req, res) => {
   }
 });
 
+app.delete('/api/user/:id', async (req, res) => {
+  const {id} = req.params;
+  try {
+    const deleted = await prisma.user.delete({ where: { id: Number(id) }});
+    res.json({deleted: true, id: deleted.id});
+  } catch (err) {
+    res.status(500).json({error: err.message});
+  }
+});
+
 // get all chores 
 app.get('/api/chores', async (req, res) => {
   const {householdId} = req.query;

@@ -3,16 +3,21 @@ class FetchService {
 
     // Sign up
     static async signup(user) {
-        try {
+                try {
             const response = await fetch(baseURL + "/signup", {
                 method: "POST",
                 headers: {
                     "Content-Type": "application/json",
                 },
                 body: JSON.stringify({
+                    difficulty: user.difficulty,
                     name: user.name,
                     email: user.email,
-                    password_hash: user.password_hash
+                    password_hash: user.password_hash,
+                    totalPoints: 0,
+                    
+
+
             })});
             if(!response.ok) {
                 throw new Error(`Response status: ${response.status}`);

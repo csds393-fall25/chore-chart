@@ -101,7 +101,8 @@
       name: displayedName.value,
       email: username.value,
       password_hash: password.value,
-      householdId: 2
+      householdId: 2,
+      difficulty: maxDifficulty.value
     }
     console.log(user.name)
     try {

@@ -118,9 +118,10 @@ import FetchService from '@/FetchService';
 
   function deleteProfile(){
 
-    console.log("profile will be deleted in here")
+    
     FetchService.deleteUser(store.user.id)
     showDialog.value = false
+    store.loggedIn = false;
   }
 
 
