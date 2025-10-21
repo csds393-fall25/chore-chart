@@ -109,12 +109,15 @@
    
   
     try {
+      console.log(user)
       const result = await FetchService.signup(user);
       console.log("Signup successful!", result);
       switchLogin()
       store.user = result.user
+      return true
     } catch (error) {
       console.error("Signup failed:", error);
+      return false
     }
   }
 
