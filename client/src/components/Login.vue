@@ -60,10 +60,10 @@
     
     try {
       const user = {
-        email: store.user.email,
-        password_hash: store.user.password
+        email: username.value,
+        password_hash: password.value
       }
-      const result = await FetchService.login(user);
+            const result = await FetchService.login(user);
       console.log("Login successful!", result);
       console.log(result.user)
       isIncorrect.value = false;
@@ -73,7 +73,6 @@
       store.loggedIn = true;
     } catch (error) {
       console.error("Login failed:", error);
-      store
       isIncorrect.value = true;
     }
   }

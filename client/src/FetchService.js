@@ -34,6 +34,9 @@ class FetchService {
     
     // Signin
     static async login(user) {
+       // console.log(user)
+       // console.log("IN Hereeee3")
+        
         try {
             const response = await fetch(baseURL + "/login", {
                 method: "POST",
@@ -45,10 +48,16 @@ class FetchService {
                     password_hash: user.password_hash
                 })
             });
+
+            
             if(!response.ok) {
+                console.log("in here")
                 throw new Error(`Response status: ${response.status}`);
             }
+            console.log("IN Hereeee2")
+            
             const result = await response.json();
+              
             return result;
         } catch (error) {
             console.error(error.message);
@@ -157,6 +166,7 @@ class FetchService {
                 throw new Error(`Response status: ${response.status}`);
             }
             const result = await response.json();
+            console.log("IN houseHold")
             return result;
         } catch (error) {
             console.error(error.message);
