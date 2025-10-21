@@ -1,8 +1,16 @@
 import Login from "@/components/Login.vue";
-import { expect, test } from 'vitest'
+import { expect, test, vi } from 'vitest'
 import { mount } from '@vue/test-utils'
 import { useAppStore } from '@/stores/app.js';
+import { createTestingPinia } from '@pinia/testing'
+import { createVuetify } from 'vuetify'
+import * as components from 'vuetify/components'
+import * as directives from 'vuetify/directives'
 
+const vuetify = createVuetify({
+  components,
+  directives,
+})
 
 test("temp test", () => {
 
@@ -10,8 +18,17 @@ test("temp test", () => {
 }) 
 
 test("loggedIn changes correctly", () => {
-    const wrapper = mount(Login)
-    expect(wrapper.text()).toContain("Login")
+    const wrapper = mount(Login, {
+        global: {
+  plugins: [
+    createTestingPinia({createSpy: vi.fn}),
+  [vuetify],
+  ],
+}
+})
+
+expect(wrapper.text()).toContain('Login')
+
 
     
 
