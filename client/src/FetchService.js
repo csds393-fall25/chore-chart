@@ -34,8 +34,7 @@ class FetchService {
     
     // Signin
     static async login(user) {
-       // console.log(user)
-       // console.log("IN Hereeee3")
+    
         
         try {
             const response = await fetch(baseURL + "/login", {
@@ -51,11 +50,10 @@ class FetchService {
 
             
             if(!response.ok) {
-                console.log("in here")
+          
                 throw new Error(`Response status: ${response.status}`);
             }
-            console.log("IN Hereeee2")
-            
+       
             const result = await response.json();
               
             return result;

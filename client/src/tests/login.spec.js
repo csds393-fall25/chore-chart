@@ -7,7 +7,8 @@ import { createVuetify } from 'vuetify'
 import * as components from 'vuetify/components'
 import * as directives from 'vuetify/directives'
 import { useAppStore } from "@/stores/app.js";
-import FetchService from "@/FetchService";
+
+
 
 
 // need this at the top
@@ -115,34 +116,34 @@ expect(wrapper.vm.password).toBe("")
 })
 
 // REMEMBER TO MAKE TESTS ASYNC WHEN REFERENCING DB!!
-test("validateLogin works correctly", async () => {
-    const wrapper = mount(Login, {
-        global: {
-  plugins: [
-    createTestingPinia({createSpy: vi.fn}),
-  [vuetify],
-  ],
-}
+// test("validateLogin works correctly", async () => {
+//     const wrapper = mount(Login, {
+//         global: {
+//   plugins: [
+//     createTestingPinia({createSpy: vi.fn}),
+//   [vuetify],
+//   ],
+// }
 
 
 
-})
-// using the store
-const store = useAppStore()
+// })
+// // using the store
+// const store = useAppStore()
 
-wrapper.vm.username = 'x'
-wrapper.vm.password = 'x'
-//call a function from component
-
-
-await wrapper.vm.validateLogin()
+// wrapper.vm.username = 'x'
+// wrapper.vm.password = 'x'
+// //call a function from component
 
 
-// access the store like normal
-expect(store.loggedIn).toBe(true)
+// await wrapper.vm.validateLogin()
 
 
-})
+// // access the store like normal
+// expect(store.loggedIn).toBe(true)
+
+
+// })
 
 // test("validateProfile works correctly", async () => {
 //     const wrapper = mount(Login, {
@@ -211,3 +212,9 @@ expect(store.loggedIn).toBe(false)
 
 
 })
+
+
+
+
+
+

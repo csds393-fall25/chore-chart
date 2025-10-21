@@ -38,7 +38,7 @@ const estimatedTime = ref(store.user.maxChoreTime)
 const showDialog = ref(false)
 
 async function updateProfile() {
-
+ 
   const result = await FetchService.updateUser(store.user.id, {
     name: name.value,
     email: username.value,
@@ -50,13 +50,14 @@ async function updateProfile() {
   store.user.email = username.value
   store.user.difficulty = maxDifficulty.value
   store.user.maxChoreTime = estimatedTime.value
+  return true;
 
 }
 
 function deleteProfile() {
   FetchService.deleteUser(store.user.id)
   showDialog.value = false
-  store.loggedIn = false;
+  store.loggedIn = false
 }
 
 
