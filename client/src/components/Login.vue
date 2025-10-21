@@ -57,10 +57,11 @@
   
 
   async function validateLogin(){
+    
     try {
       const user = {
-        email: username.value,
-        password_hash: password.value
+        email: store.user.email,
+        password_hash: store.user.password
       }
       const result = await FetchService.login(user);
       console.log("Login successful!", result);
