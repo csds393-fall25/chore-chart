@@ -55,7 +55,6 @@
   const isCreate = ref(false)
   const store = useAppStore()
   
-
   async function validateLogin(){
     
     try {
@@ -63,7 +62,7 @@
         email: username.value,
         password_hash: password.value
       }
-            const result = await FetchService.login(user);
+      const result = await FetchService.login(user);
       console.log("Login successful!", result);
       console.log(result.user)
       isIncorrect.value = false;

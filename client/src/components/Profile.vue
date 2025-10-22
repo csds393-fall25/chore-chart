@@ -26,7 +26,6 @@
   </v-sheet>
 </template>
 <script setup>
-import stores from '@/stores';
 import { ref } from 'vue';
 import { useAppStore } from "../stores/app.js";
 import FetchService from '@/FetchService';
@@ -55,16 +54,9 @@ async function updateProfile() {
 }
 
 function deleteProfile(id) {
-
   const result = FetchService.deleteUser(id)
-
-  
   showDialog.value = false
   store.loggedIn = false
   return result;
 }
-
-
-
-
 </script>

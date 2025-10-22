@@ -8,10 +8,6 @@ import * as components from 'vuetify/components'
 import * as directives from 'vuetify/directives'
 import { useAppStore } from "@/stores/app.js";
 import FetchService from "@/FetchService";
-
-
-
-
 // need this at the top
 const vuetify = createVuetify({
   components,
@@ -37,12 +33,6 @@ test("Login renders correctly", () => {
 })
 
 expect(wrapper.text()).toContain('Login')
-
-
-
-    
-
-
 })
 
 test("SwitchCreate changes values correctly", () => {
@@ -54,8 +44,6 @@ test("SwitchCreate changes values correctly", () => {
   ],
 }
 
-
-
 })
 
 const store = useAppStore()
@@ -65,8 +53,6 @@ expect(wrapper.vm.isCreate).toBe(true)
 expect(wrapper.vm.isIncorrect).toBe(false)
 expect(wrapper.vm.username).toBe("")
 expect(wrapper.vm.password).toBe("")
-
-
 })
 
 
@@ -82,8 +68,6 @@ test("switchLogin changes values correctly", () => {
 
 
 })
-
-const store = useAppStore()
 //call a function from component
 wrapper.vm.switchLogin()
 expect(wrapper.vm.isCreate).toBe(false)
@@ -91,8 +75,6 @@ expect(wrapper.vm.username).toBe("")
 expect(wrapper.vm.password).toBe("")
 
 })
-
-
 
 test("switchCreate works correctly", () => {
     const wrapper = mount(Login, {
@@ -103,11 +85,9 @@ test("switchCreate works correctly", () => {
   ],
 }
 
-
-
 })
 
-const store = useAppStore()
+
 //call a function from component
 wrapper.vm.switchCreate()
 expect(wrapper.vm.isCreate).toBe(true)
@@ -116,7 +96,6 @@ expect(wrapper.vm.password).toBe("")
 
 })
 
-// REMEMBER TO MAKE TESTS ASYNC WHEN REFERENCING DB!!
 test("validateLogin works correctly", async () => {
     const wrapper = mount(Login, {
         global: {
@@ -126,24 +105,16 @@ test("validateLogin works correctly", async () => {
   ],
 }
 
-
-
 })
 // using the store
 const store = useAppStore()
-
 wrapper.vm.username = 'x'
 wrapper.vm.password = 'x'
-//call a function from component
-
 
 await wrapper.vm.validateLogin()
 
-
 // access the store like normal
 expect(store.loggedIn).toBe(true)
-
-
 })
 
 test("validateProfile works correctly", async () => {
@@ -154,44 +125,29 @@ test("validateProfile works correctly", async () => {
   [vuetify],
   ],
 }
-
-
-
 })
 // using the store
-const store = useAppStore()
-// figure out how to delete this out of the db before doing
-
-
-     wrapper.vm.displayedName = "Mollietest"
-     wrapper.vm.username = "validateProfile" 
-     wrapper.vm.password = "Mtest"
-     wrapper.vm.maxDifficulty = 3
-     wrapper.vm.estimatedTime = 27
-     wrapper.vm.repeatedPassword = "Mtest"
+    wrapper.vm.displayedName = "Mollietest"
+    wrapper.vm.username = "validateProfile" 
+    wrapper.vm.password = "Mtest"
+    wrapper.vm.maxDifficulty = 3
+    wrapper.vm.estimatedTime = 27
+    wrapper.vm.repeatedPassword = "Mtest"
   
    
      
 
-const result = await wrapper.vm.validateProfile()
+    const result = await wrapper.vm.validateProfile()
 
 
- expect(result.email).toBe("validateProfile")
- expect(result.name).toBe("Mollietest")
- expect(result.password_hash).toBe("Mtest")
- expect(result.difficulty).toBe(3)
- expect(result.maxChoreTime).toBe(27)
- 
- FetchService.deleteUser(result.id)
-
-
-
-
-
-
-
+    expect(result.email).toBe("validateProfile")
+    expect(result.name).toBe("Mollietest")
+    expect(result.password_hash).toBe("Mtest")
+    expect(result.difficulty).toBe(3)
+    expect(result.maxChoreTime).toBe(27)
+    
+    FetchService.deleteUser(result.id)
 })
-
 
 test("validateLogin works correctly with incorrect username and password", async () => {
     const wrapper = mount(Login, {
@@ -202,23 +158,18 @@ test("validateLogin works correctly with incorrect username and password", async
   ],
 }
 
-
-
 })
 // using the store
 const store = useAppStore()
 
 wrapper.vm.username = 'x'
 wrapper.vm.password = 'y'
+
 //call a function from component
-
-
 await wrapper.vm.validateLogin()
-
 
 // access the store like normal
 expect(store.loggedIn).toBe(false)
-
 
 })
 
