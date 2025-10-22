@@ -7,6 +7,7 @@ import { createVuetify } from 'vuetify'
 import * as components from 'vuetify/components'
 import * as directives from 'vuetify/directives'
 import { useAppStore } from "@/stores/app.js";
+import FetchService from "@/FetchService";
 
 
 
@@ -116,64 +117,72 @@ expect(wrapper.vm.password).toBe("")
 })
 
 // REMEMBER TO MAKE TESTS ASYNC WHEN REFERENCING DB!!
-// test("validateLogin works correctly", async () => {
-//     const wrapper = mount(Login, {
-//         global: {
-//   plugins: [
-//     createTestingPinia({createSpy: vi.fn}),
-//   [vuetify],
-//   ],
-// }
+test("validateLogin works correctly", async () => {
+    const wrapper = mount(Login, {
+        global: {
+  plugins: [
+    createTestingPinia({createSpy: vi.fn}),
+  [vuetify],
+  ],
+}
 
 
 
-// })
-// // using the store
-// const store = useAppStore()
+})
+// using the store
+const store = useAppStore()
 
-// wrapper.vm.username = 'x'
-// wrapper.vm.password = 'x'
-// //call a function from component
-
-
-// await wrapper.vm.validateLogin()
+wrapper.vm.username = 'x'
+wrapper.vm.password = 'x'
+//call a function from component
 
 
-// // access the store like normal
-// expect(store.loggedIn).toBe(true)
+await wrapper.vm.validateLogin()
 
 
-// })
-
-// test("validateProfile works correctly", async () => {
-//     const wrapper = mount(Login, {
-//         global: {
-//   plugins: [
-//     createTestingPinia({createSpy: vi.fn}),
-//   [vuetify],
-//   ],
-// }
+// access the store like normal
+expect(store.loggedIn).toBe(true)
 
 
+})
 
-// })
-// // using the store
-// const store = useAppStore()
-// // figure out how to delete this out of the db before doing
+test("validateProfile works correctly", async () => {
+    const wrapper = mount(Login, {
+        global: {
+  plugins: [
+    createTestingPinia({createSpy: vi.fn}),
+  [vuetify],
+  ],
+}
 
 
-//      wrapper.vm.displayedName = "Mollietest"
-//      wrapper.vm.username = "89070test593558347847209387" 
-//      wrapper.vm.password = "Mtest"
-//      wrapper.vm.maxDifficulty = 3
-//      wrapper.vm.estimatedTime = 27
-//      wrapper.vm.repeatedPassword = "Mtest"
+
+})
+// using the store
+const store = useAppStore()
+// figure out how to delete this out of the db before doing
+
+
+     wrapper.vm.displayedName = "Mollietest"
+     wrapper.vm.username = "validateProfile" 
+     wrapper.vm.password = "Mtest"
+     wrapper.vm.maxDifficulty = 3
+     wrapper.vm.estimatedTime = 27
+     wrapper.vm.repeatedPassword = "Mtest"
+  
    
      
 
+const result = await wrapper.vm.validateProfile()
 
 
-//  expect(await wrapper.vm.validateProfile()).toBe(true)
+ expect(result.email).toBe("validateProfile")
+ expect(result.name).toBe("Mollietest")
+ expect(result.password_hash).toBe("Mtest")
+ expect(result.difficulty).toBe(3)
+ expect(result.maxChoreTime).toBe(27)
+ 
+ FetchService.deleteUser(result.id)
 
 
 
@@ -181,7 +190,7 @@ expect(wrapper.vm.password).toBe("")
 
 
 
-// })
+})
 
 
 test("validateLogin works correctly with incorrect username and password", async () => {

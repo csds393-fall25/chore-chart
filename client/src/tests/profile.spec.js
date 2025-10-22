@@ -7,6 +7,7 @@ import * as components from 'vuetify/components'
 import * as directives from 'vuetify/directives'
 import { useAppStore } from "@/stores/app.js";
 import Profile from "@/components/Profile.vue";
+import Login from '@/components/Login.vue';
 
 
 
@@ -55,6 +56,56 @@ await wrapper.vm.updateProfile()
 // access the store like normal
 expect(store.user.difficulty).toBe(randomdiff)
 expect(store.user.maxChoreTime).toBe(randomtime)
+
+})
+
+
+test("delete user information", async () => {
+    const wrapperProfile = mount(Profile, {
+        global: {
+  plugins: [
+    createTestingPinia({createSpy: vi.fn}),
+  [vuetify],
+  ],
+}
+
+})
+
+
+   const wrapperLogin = mount(Login, {
+        global: {
+  plugins: [
+    createTestingPinia({createSpy: vi.fn}),
+  [vuetify],
+  ],
+}
+
+})
+const store = useAppStore()
+
+wrapperLogin.vm.displayedName = "Mollietest"
+     wrapperLogin.vm.username = "TestDelete" 
+     wrapperLogin.vm.password = "Mtest"
+     wrapperLogin.vm.maxDifficulty = 3
+     wrapperLogin.vm.estimatedTime = 27
+     wrapperLogin.vm.repeatedPassword = "Mtest"
+  
+   
+     
+
+const result = await wrapperLogin.vm.validateProfile()
+
+
+
+store.user = result
+
+
+
+//call a function from component
+const method = await wrapperProfile.vm.deleteProfile(result.id)
+expect (method.deleted).toBe(true)
+
+
 
 })
 

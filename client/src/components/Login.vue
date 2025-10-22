@@ -103,18 +103,19 @@
       email: username.value,
       password_hash: password.value,
       householdId: 2,
+      totalPoints: 0,
       difficulty: maxDifficulty.value,
       maxChoreTime: estimatedTime.value,
     }
    
   
     try {
-      console.log(user)
+
       const result = await FetchService.signup(user);
-      console.log("Signup successful!", result);
+
       switchLogin()
       store.user = result.user
-      return true
+      return result
     } catch (error) {
       console.error("Signup failed:", error);
       return false

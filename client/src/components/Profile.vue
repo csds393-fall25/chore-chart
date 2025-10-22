@@ -17,7 +17,7 @@
         <v-card title="Delete Profile?" max-width="400">
           <v-card-text>Are you sure you want to delete your profile? This action cannot be reversed.</v-card-text>
           <v-card-actions>
-            <v-btn @click="deleteProfile()" text="delete">
+            <v-btn @click="deleteProfile(store.user.id)" text="delete">
             </v-btn>
           </v-card-actions>
         </v-card>
@@ -54,10 +54,14 @@ async function updateProfile() {
 
 }
 
-function deleteProfile() {
-  FetchService.deleteUser(store.user.id)
+function deleteProfile(id) {
+
+  const result = FetchService.deleteUser(id)
+
+  
   showDialog.value = false
   store.loggedIn = false
+  return result;
 }
 
 
