@@ -30,11 +30,11 @@ app.get('/', (req, res) => {
 
 // retrieve household record, users and chores by id 
 app.get('/api/household/:id', async (req, res) => {
-  const id = parseInt(req.params.id);
+  const id = req.params;
   if (Number.isNaN(id)) return res.status(400).json({ error: 'Invalid id' });
   try {
     const household = await prisma.household.findUnique({
-      where: { id },
+      where: { id: Number(id) },
       // only use include for relations
       include: { users: true, chores: true },
     });
@@ -61,10 +61,10 @@ app.post('/api/household', async (req, res) => {
 app.put('/api/household/:id', async (req, res) => {
 
   const { name } = req.body;
-  const id = parseInt(req.params.id);
+  const id = req.params;
   if (Number.isNaN(id) || !name) return res.status(400).json({ error: 'Missing id or name' });
   try {
-    const updated = await prisma.household.update({ where: { id }, data: { name } });
+    const updated = await prisma.household.update({ where: { id: Number(id) }, data: { name } });
     res.json(updated);
   } catch (err) {
     res.status(500).json({ error: err.message });
@@ -73,10 +73,10 @@ app.put('/api/household/:id', async (req, res) => {
 
 // delete household by id
 app.delete('/api/household/:id', async (req, res) => {
-  const id = parseInt(req.params.id);
+  const id = req.params;
   if (Number.isNaN(id)) return res.status(400).json({ error: 'Invalid id' });
   try {
-    const deleted = await prisma.household.delete({ where: { id } });
+    const deleted = await prisma.household.delete({ where: { id: Number(id) } });
     res.json({ deleted: true, id: deleted.id });
   } catch (err) {
     res.status(500).json({ error: err.message });
@@ -160,17 +160,17 @@ app.get('/api/chores', async (req, res) => {
 
 // gets chores by assignee id
 app.get('/api/chores/assignee/:assigneeId', async (req, res) => {
-  const {assigneeId} = parseInt(req.params.assigneeId);
-  const chores = await prisma.chore.findMany({where: {  assigneeId  }});
+  const {assigneeId} = req.params;
+  const chores = await prisma.chore.findMany({where: {  assigneeId: Number(assigneeId)  }});
   res.json(chores);
 });
 
 // get one chore by id
 app.get('/api/chores/:id', async (req, res) => {
-  const id = parseInt(req.params.id);
+  const id = req.params;
   if (Number.isNaN(id)) return res.status(400).json({ error: 'Invalid id' });
 
-  const chore = await prisma.chore.findUnique({ where: { id } });
+  const chore = await prisma.chore.findUnique({ where: { id: Number(id) } });
   if (!chore) return res.status(404).json({ error: 'Not found' });
   res.json(chore);
 });
@@ -214,7 +214,7 @@ app.post('/api/chores', async (req, res) => {
 
 // edit chore
 app.put('/api/chores/:id', async (req, res) => {
-  const {id} = parseInt(req.params.id);
+  const {id} = req.params;
   const {name, description, difficulty, location, estimatedTime, dueDate, repeat, householdId, assigneeId} = req.body;
   
   let chore;
@@ -234,7 +234,7 @@ app.put('/api/chores/:id', async (req, res) => {
 
 // delete chore
 app.delete('/api/chore/:id', async (req, res) => {
-  const {id} = parseInt(req.params.id);
+  const {id} = req.params;
   try {
     const deleted = await prisma.chore.delete({ where: { id: Number(id) }});
     res.json({deleted: true, id: deleted.id});
