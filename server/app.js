@@ -122,7 +122,6 @@ app.post('/api/login', async (req, res) => {
 });
 
 // update user
-//changed this a little, no idea if its ok but it works now
 app.put('/api/user/:id', async (req, res) => {
   const { id } = req.params;
   if(Number.isNaN(id)) { return res.status(400).json({ error: "Invalid id" })};
@@ -136,7 +135,6 @@ app.put('/api/user/:id', async (req, res) => {
 });
 
 // delete user
-// changed this one a lot
 app.delete('/api/user/:id', async (req, res) => {
   const {id} = req.params;
   try {
