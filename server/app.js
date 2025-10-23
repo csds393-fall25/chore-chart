@@ -122,7 +122,6 @@ app.post('/api/login', async (req, res) => {
 });
 
 // update user
-//changed this a little, no idea if its ok but it works now
 app.put('/api/user/:id', async (req, res) => {
   const { id } = req.params;
   if(Number.isNaN(id)) { return res.status(400).json({ error: "Invalid id" })};
@@ -136,7 +135,6 @@ app.put('/api/user/:id', async (req, res) => {
 });
 
 // delete user
-// changed this one a lot
 app.delete('/api/user/:id', async (req, res) => {
   const {id} = req.params;
   try {
@@ -244,9 +242,13 @@ app.delete('/api/chore/:id', async (req, res) => {
 });
 
 const port = process.env.PORT || 3000;
-app.listen(port, () => {
-  // eslint-disable-next-line no-console
-  console.log(`Server listening on port ${port}`);
-});
+
+// Only start server if not in test mode
+if (process.env.NODE_ENV !== 'test') {
+  app.listen(port, () => {
+    // eslint-disable-next-line no-console
+    console.log(`Server listening on port ${port}`);
+  });
+}
 
 export default app;
