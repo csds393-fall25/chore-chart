@@ -30,11 +30,11 @@ app.get('/', (req, res) => {
 
 // retrieve household record, users and chores by id 
 app.get('/api/household/:id', async (req, res) => {
-  const id = req.params;
+  const id = parseInt(req.params.id);
   if (Number.isNaN(id)) return res.status(400).json({ error: 'Invalid id' });
   try {
     const household = await prisma.household.findUnique({
-      where: { id: Number(id) },
+      where: { id },
       // only use include for relations
       include: { users: true, chores: true },
     });
@@ -61,10 +61,10 @@ app.post('/api/household', async (req, res) => {
 app.put('/api/household/:id', async (req, res) => {
 
   const { name } = req.body;
-  const id = req.params;
+  const id = parseInt(req.params.id);
   if (Number.isNaN(id) || !name) return res.status(400).json({ error: 'Missing id or name' });
   try {
-    const updated = await prisma.household.update({ where: { id: Number(id) }, data: { name } });
+    const updated = await prisma.household.update({ where: { id }, data: { name } });
     res.json(updated);
   } catch (err) {
     res.status(500).json({ error: err.message });
@@ -73,10 +73,10 @@ app.put('/api/household/:id', async (req, res) => {
 
 // delete household by id
 app.delete('/api/household/:id', async (req, res) => {
-  const id = req.params;
+  const id = parseInt(req.params.id);
   if (Number.isNaN(id)) return res.status(400).json({ error: 'Invalid id' });
   try {
-    const deleted = await prisma.household.delete({ where: { id: Number(id) } });
+    const deleted = await prisma.household.delete({ where: { id } });
     res.json({ deleted: true, id: deleted.id });
   } catch (err) {
     res.status(500).json({ error: err.message });
