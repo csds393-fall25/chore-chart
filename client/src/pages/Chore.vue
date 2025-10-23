@@ -110,7 +110,7 @@
               :error-messages="errorMessages.dueDate"
               v-if="props.viewMode == 'create' || props.viewMode == 'edit'"
               ></v-text-field>
-              <div v-else class="text-body-1">{{ chore.dueDate.substring(5, 7) + "/" + chore.dueDate.substring(8, 10) + "/" + chore.dueDate.substring(0, 4) }}</div>
+              <div v-else class="text-body-1">{{ chore.dueDate ? chore.dueDate.substring(5, 7) + "/" + chore.dueDate.substring(8, 10) + "/" + chore.dueDate.substring(0, 4) : "" }}</div>
           </v-col>
         </v-row>
         <v-row class="mb-0 mt-0">
@@ -211,7 +211,6 @@
   const chore = ref({});
   const viewDescription = ref([])
   const viewAssignee = ref("")
-
   retrieveChore(props.viewMode, props.choreId);
 
   //handle id changing
@@ -266,7 +265,8 @@
         chore.value.dueDate = choreDate.toLocaleDateString('en-CA');
       } else {
         //TODO: add a toast to indicate that the chore was not found
-        console.log("no chore with that id is in the household")
+        console.log("no chore with " + choreId + " id is in the household")
+        return {};
       }
     }
 
@@ -286,6 +286,8 @@
     } else {
       viewAssignee.value = "No One";
     }
+
+    return chore.value;
   }
   
 
@@ -355,7 +357,7 @@
         difficulty: chore.value.difficulty,
         location: chore.value.location,
         estimatedTime: parseInt(chore.value.estimatedTime),
-        dueDate: new Date(chore.value.dueDate),
+        dueDate: new Date(chore.value.dueDate + " EST"),
         repeat: chore.value.repeat,
         householdId: chore.value.householdId,
         assigneeId: chore.value.assigneeId
@@ -366,6 +368,7 @@
       store.household.chores.push(result);
 
       router.push({ name: 'home'});
+      return result;
     }
   }
 
@@ -379,7 +382,7 @@
         difficulty: chore.value.difficulty,
         location: chore.value.location,
         estimatedTime: parseInt(chore.value.estimatedTime),
-        dueDate: new Date(chore.value.dueDate),
+        dueDate: new Date(chore.value.dueDate + " EST"),
         repeat: chore.value.repeat,
         householdId: chore.value.householdId,
         assigneeId: chore.value.assigneeId
@@ -398,6 +401,7 @@
 
       store.household.chores[choreIndex] = choreForDatabase;
       router.push({ name: 'viewChore', params: {id: props.choreId}});
+      return result;
     }
   }
 

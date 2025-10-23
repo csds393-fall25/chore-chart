@@ -421,7 +421,6 @@
     const result = await FetchService.deleteChore(choreId)
     deleteDialogOpen.value = false
     deleteDialogChore.value = null
-    console.log(result)
     choreList.value = choreList.value.filter(chore => chore.id != choreId)
     unassignedList.value = unassignedList.value.filter(chore => chore.id != choreId)
     store.household.chores = store.household.chores.filter(chore => chore.id != choreId)
@@ -452,7 +451,6 @@
     assignDialogOpen.value = false;
     assignDialogChore.value = null;
 
-    console.log(result)
     choreList.value.push(choreForDatabase)
     unassignedList.value = unassignedList.value.filter(listChore => listChore.id != chore.id);
     store.household.chores.filter(listChore => listChore.id == chore.id).forEach(listChore => listChore.assigneeId = store.user.id)
@@ -475,7 +473,6 @@
     const result = await FetchService.deleteChore(chore.id)
     completeDialogOpen.value = false
     completeDialogChore.value = null
-    console.log(result)
     choreList.value = choreList.value.filter(listChore => listChore.id != chore.id)
     store.household.chores = store.household.chores.filter(listChore => listChore.id != chore.id)
 

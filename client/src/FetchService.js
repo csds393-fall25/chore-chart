@@ -270,6 +270,7 @@ class FetchService {
                     assigneeId: chore.assigneeId
                 })
             });
+
             if(!response.ok) {
                 throw new Error(`Response status: ${response.status}`);
             }

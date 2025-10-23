@@ -158,17 +158,17 @@ app.get('/api/chores', async (req, res) => {
 
 // gets chores by assignee id
 app.get('/api/chores/assignee/:assigneeId', async (req, res) => {
-  const {assigneeId} = parseInt(req.params.assigneeId);
-  const chores = await prisma.chore.findMany({where: {  assigneeId  }});
+  const {assigneeId} = req.params;
+  const chores = await prisma.chore.findMany({where: {  assigneeId: Number(assigneeId)  }});
   res.json(chores);
 });
 
 // get one chore by id
 app.get('/api/chores/:id', async (req, res) => {
-  const id = parseInt(req.params.id);
+  const id = req.params;
   if (Number.isNaN(id)) return res.status(400).json({ error: 'Invalid id' });
 
-  const chore = await prisma.chore.findUnique({ where: { id } });
+  const chore = await prisma.chore.findUnique({ where: { id: Number(id) } });
   if (!chore) return res.status(404).json({ error: 'Not found' });
   res.json(chore);
 });
@@ -212,7 +212,7 @@ app.post('/api/chores', async (req, res) => {
 
 // edit chore
 app.put('/api/chores/:id', async (req, res) => {
-  const {id} = parseInt(req.params.id);
+  const {id} = req.params;
   const {name, description, difficulty, location, estimatedTime, dueDate, repeat, householdId, assigneeId} = req.body;
   
   let chore;
@@ -232,7 +232,7 @@ app.put('/api/chores/:id', async (req, res) => {
 
 // delete chore
 app.delete('/api/chore/:id', async (req, res) => {
-  const {id} = parseInt(req.params.id);
+  const {id} = req.params;
   try {
     const deleted = await prisma.chore.delete({ where: { id: Number(id) }});
     res.json({deleted: true, id: deleted.id});
