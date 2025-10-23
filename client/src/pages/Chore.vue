@@ -261,7 +261,7 @@
       const filterResult = store.household.chores.filter(householdChore => householdChore.id == choreId);
       if(filterResult.length == 1) {
         chore.value = filterResult[0];
-        const choreDate = new Date(chore.value.dueDate + " EST");
+        const choreDate = new Date(chore.value.dueDate);
         chore.value.dueDate = choreDate.toLocaleDateString('en-CA');
       } else {
         //TODO: add a toast to indicate that the chore was not found

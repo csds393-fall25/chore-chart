@@ -301,6 +301,8 @@ test("retrieveChore uses the correct value for update (chore present)", () => {
 
     const store = useAppStore()
 
+    store.household.chores[1].dueDate = new Date('2025-12-25 EST')
+
     const result = wrapper.vm.retrieveChore('edit', 2)
     expect(wrapper.vm.chore).toEqual({
         id: 2,
@@ -458,6 +460,8 @@ test("retrieveChore uses the correct value for view (chore present)", () => {
     })
 
     const store = useAppStore()
+
+    store.household.chores[1].dueDate = new Date('2025-12-25 EST')
 
     const result = wrapper.vm.retrieveChore('view', 2)
     expect(wrapper.vm.chore).toEqual({
