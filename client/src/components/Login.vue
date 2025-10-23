@@ -28,7 +28,7 @@
             </v-col>
           </v-row>
           <div>
-            <v-btn  class = "elevation-0" color="teal" @click =" isCreate ? validateProfile() : validateLogin()">{{isCreate ? 'Create' : 'Login'}}</v-btn>
+            <v-btn  class = "elevation-0" color="teal" @click =" isCreate ? createProfile() : validateLogin()">{{isCreate ? 'Create' : 'Login'}}</v-btn>
           </div>
           <div>
             <v-btn v-if="!isCreate" class="mx-auto my-auto elevation-0" color="navy" @click = "switchCreate()" style = "font-size: x-small; " > Don't have an account? create one here</v-btn>
