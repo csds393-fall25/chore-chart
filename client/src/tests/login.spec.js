@@ -117,7 +117,7 @@ await wrapper.vm.validateLogin()
 expect(store.loggedIn).toBe(true)
 })
 
-test("validateProfile works correctly", async () => {
+test("createProfile works correctly", async () => {
     const wrapper = mount(Login, {
         global: {
   plugins: [
@@ -137,7 +137,7 @@ test("validateProfile works correctly", async () => {
    
      
 
-    const result = await wrapper.vm.validateProfile()
+    const result = await wrapper.vm.createProfile()
 
 
     expect(result.email).toBe("validateProfile")

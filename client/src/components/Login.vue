@@ -90,7 +90,7 @@
     password.value = ""
   }
 
-  async function validateProfile(){
+  async function createProfile(){
     if (typeof(password.value) != null && typeof(repeatedPassword.value) != null && password.value != repeatedPassword.value){
       isNotSame.value = true;
       return;

@@ -76,7 +76,7 @@ test("delete user information", async () => {
     wrapperLogin.vm.maxDifficulty = 3
     wrapperLogin.vm.estimatedTime = 27
     wrapperLogin.vm.repeatedPassword = "Mtest"
-    const result = await wrapperLogin.vm.validateProfile()
+    const result = await wrapperLogin.vm.createProfile()
     store.user = result
     //call a function from component
     const method = await wrapperProfile.vm.deleteProfile(result.id)
