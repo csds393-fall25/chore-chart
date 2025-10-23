@@ -28,7 +28,7 @@
             </v-col>
           </v-row>
           <div>
-            <v-btn  class = "elevation-0" color="teal" @click =" isCreate ? validateProfile() : validateLogin()">{{isCreate ? 'Create' : 'Login'}}</v-btn>
+            <v-btn  class = "elevation-0" color="teal" @click =" isCreate ? createProfile() : validateLogin()">{{isCreate ? 'Create' : 'Login'}}</v-btn>
           </div>
           <div>
             <v-btn v-if="!isCreate" class="mx-auto my-auto elevation-0" color="navy" @click = "switchCreate()" style = "font-size: x-small; " > Don't have an account? create one here</v-btn>
@@ -55,8 +55,8 @@
   const isCreate = ref(false)
   const store = useAppStore()
   
-
   async function validateLogin(){
+    
     try {
       const user = {
         email: username.value,
@@ -72,7 +72,6 @@
       store.loggedIn = true;
     } catch (error) {
       console.error("Login failed:", error);
-      store
       isIncorrect.value = true;
     }
   }
@@ -91,7 +90,7 @@
     password.value = ""
   }
 
-  async function validateProfile(){
+  async function createProfile(){
     if (typeof(password.value) != null && typeof(repeatedPassword.value) != null && password.value != repeatedPassword.value){
       isNotSame.value = true;
       return;
@@ -103,18 +102,22 @@
       email: username.value,
       password_hash: password.value,
       householdId: 2,
+      totalPoints: 0,
       difficulty: maxDifficulty.value,
       maxChoreTime: estimatedTime.value,
     }
    
   
     try {
+
       const result = await FetchService.signup(user);
-      console.log("Signup successful!", result);
+
       switchLogin()
       store.user = result.user
+      return result
     } catch (error) {
       console.error("Signup failed:", error);
+      return false
     }
   }
 

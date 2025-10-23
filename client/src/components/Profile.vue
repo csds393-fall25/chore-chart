@@ -17,7 +17,7 @@
         <v-card title="Delete Profile?" max-width="400">
           <v-card-text>Are you sure you want to delete your profile? This action cannot be reversed.</v-card-text>
           <v-card-actions>
-            <v-btn @click="deleteProfile()" text="delete">
+            <v-btn @click="deleteProfile(store.user.id)" text="delete">
             </v-btn>
           </v-card-actions>
         </v-card>
@@ -26,7 +26,6 @@
   </v-sheet>
 </template>
 <script setup>
-import stores from '@/stores';
 import { ref } from 'vue';
 import { useAppStore } from "../stores/app.js";
 import FetchService from '@/FetchService';
@@ -38,7 +37,7 @@ const estimatedTime = ref(store.user.maxChoreTime)
 const showDialog = ref(false)
 
 async function updateProfile() {
-
+ 
   const result = await FetchService.updateUser(store.user.id, {
     name: name.value,
     email: username.value,
@@ -50,16 +49,14 @@ async function updateProfile() {
   store.user.email = username.value
   store.user.difficulty = maxDifficulty.value
   store.user.maxChoreTime = estimatedTime.value
+  return true;
 
 }
 
-function deleteProfile() {
-  FetchService.deleteUser(store.user.id)
+function deleteProfile(id) {
+  const result = FetchService.deleteUser(id)
   showDialog.value = false
-  store.loggedIn = false;
+  store.loggedIn = false
+  return result;
 }
-
-
-
-
 </script>
