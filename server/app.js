@@ -45,6 +45,16 @@ app.get('/api/household/:id', async (req, res) => {
   }
 });
 
+// get household by join code
+app.get('/api/household/joinCode/:joinCode', async (req, res) => {
+  const id = req.params;
+  if (Number.isNaN(id)) return res.status(400).json({ error: 'Invalid Join Code' });
+
+  const household = await prisma.household.findUnique({ where: { joinCode: id.joinCode } });
+  if (!household) return res.status(404).json({ error: 'Not found' });
+  res.json(household);
+});
+
 // create household 
 app.post('/api/household', async (req, res) => {
   const { name } = req.body;

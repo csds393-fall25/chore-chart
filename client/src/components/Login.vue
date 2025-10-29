@@ -26,9 +26,31 @@
               Maximum Difficulty
               <v-number-input v-if="isCreate" v-model = "maxDifficulty" :min = '1' :max = '10' control-variant="split"  ></v-number-input>
             </v-col>
+
+            <v-dialog v-model="showDialog" width="auto">
+        <v-card :title="!isJoin ? 'Create a Household' : 'Join a Household'" max-width="400">
+          <v-text-field   v-model = "householdName"  :label = " !isJoin ? 'Enter Household Name' : 'Enter Household Join Code'"></v-text-field>
+          <v-card-actions>
+            <v-btn @click="createProfile()" > create
+            </v-btn>
+          </v-card-actions>
+        </v-card>
+      </v-dialog>
+
+
           </v-row>
           <div>
-            <v-btn  class = "elevation-0" color="teal" @click =" isCreate ? createProfile() : validateLogin()">{{isCreate ? 'Create' : 'Login'}}</v-btn>
+            <v-row v-if="isCreate" class="mx-auto my-auto">
+            <v-col  v-if="isCreate" style = "font-size: x-small;" cols = "6">
+  
+             <v-btn @click ="showDialog = true">Create household</v-btn>
+            </v-col>
+            <v-col v-if="isCreate"  style = "font-size: x-small;" cols = "6">
+             <v-btn @click="joinButtonSwitches()">Join household</v-btn>
+            </v-col>
+             </v-row>
+            <v-btn v-if = "!isCreate" class = "elevation-0" color="teal" @click =" isCreate ? createProfile() : validateLogin()">{{isCreate ? 'Create' : 'Login'}}</v-btn>
+
           </div>
           <div>
             <v-btn v-if="!isCreate" class="mx-auto my-auto elevation-0" color="navy" @click = "switchCreate()" style = "font-size: x-small; " > Don't have an account? create one here</v-btn>
@@ -54,6 +76,11 @@
   const isNotSame = ref(false)
   const isCreate = ref(false)
   const store = useAppStore()
+  const showDialog = ref(false)
+  const test = ref(store.household.id)
+  const code = ref()
+  const householdName = ref()
+  const isJoin = ref(false)
   
   async function validateLogin(){
     
@@ -92,6 +119,11 @@
     username.value = ""
     password.value = ""
   }
+  
+  function joinButtonSwitches(){
+    isJoin.value = true
+    showDialog.value = true
+  }
 
   async function createProfile(){
     if (typeof(password.value) != null && typeof(repeatedPassword.value) != null && password.value != repeatedPassword.value){
@@ -99,12 +131,16 @@
       return;
     }
     isNotSame.value = false;
-    
+    const household = {
+      name: householdName.value
+    }
+    let house = isJoin.value ? await FetchService.fetchHouseholdByJoin(household.name) : await FetchService.createHousehold(household)
+ 
     const user = {
       name: displayedName.value,
       email: username.value,
       password_hash: password.value,
-      householdId: 2,
+      householdId: house.id,
       totalPoints: 0,
       difficulty: maxDifficulty.value,
       maxChoreTime: estimatedTime.value,
