@@ -43,10 +43,10 @@
             <v-row v-if="isCreate" class="mx-auto my-auto">
             <v-col  v-if="isCreate" style = "font-size: x-small;" cols = "6">
   
-             <v-btn @click ="showDialog = true">Create household</v-btn>
+             <v-btn color="teal" @click ="showDialog = true">Create household</v-btn>
             </v-col>
             <v-col v-if="isCreate"  style = "font-size: x-small;" cols = "6">
-             <v-btn @click="joinButtonSwitches()">Join household</v-btn>
+             <v-btn color="teal" @click="joinButtonSwitches()">Join household</v-btn>
             </v-col>
              </v-row>
             <v-btn v-if = "!isCreate" class = "elevation-0" color="teal" @click =" isCreate ? createProfile() : validateLogin()">{{isCreate ? 'Create' : 'Login'}}</v-btn>
@@ -119,7 +119,7 @@
     username.value = ""
     password.value = ""
   }
-  
+
   function joinButtonSwitches(){
     isJoin.value = true
     showDialog.value = true
