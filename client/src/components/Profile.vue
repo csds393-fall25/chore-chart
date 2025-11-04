@@ -1,6 +1,10 @@
 <template>
   <v-sheet class="fill-height w-100 " color="primary-darken-1">
-    <v-avatar class="ma-4" size="large" color="primary"></v-avatar>
+    <v-row>
+      <v-col cols="4" class="ma-4">
+          <Avatar />
+      </v-col>
+    </v-row>
     <v-form class="ma-4">
       <v-text-field style="width: 75%; " label="Name" v-model="name"></v-text-field>
       <v-text-field :disabled="true" style="width: 75%" v-model="username" label="Email"></v-text-field>
@@ -29,6 +33,7 @@
 import { ref } from 'vue';
 import { useAppStore } from "../stores/app.js";
 import FetchService from '@/FetchService';
+import Avatar from './Avatar.vue'
 const store = useAppStore();
 const username = ref(store.user.email);
 const name = ref(store.user.name)

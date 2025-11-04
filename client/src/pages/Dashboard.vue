@@ -24,34 +24,32 @@
           </v-btn>
         </v-col>
         <v-col cols="12" sm="6" md="2" offset-sm="6" offset-md="1" class="pr-0 pl-0 pt-0 mb-1">
-          <!-- <div class="pr-0 mr-0"> -->
-            <v-btn
-              color="secondary"
-              class="mr-0"
-              block
-              @click="changeView()"
-              v-if="listMode"
-            >
-              Tile View
-            </v-btn>
-            <v-btn 
-              color="secondary"
-              class="mr-0"
-              block
-              @click="changeView()"  
-              v-else
-            >
-              List View
-            </v-btn>
-            <v-btn
-              color="secondary"
-              class="mr-0 mt-1"
-              @click="filterUserId = store.user.id; filterChores()"
-              block
-            >
-              My Chores
-            </v-btn>
-          <!-- </div> -->
+          <v-btn
+            color="secondary"
+            class="mr-0"
+            block
+            @click="changeView()"
+            v-if="listMode"
+          >
+            Tile View
+          </v-btn>
+          <v-btn 
+            color="secondary"
+            class="mr-0"
+            block
+            @click="changeView()"  
+            v-else
+          >
+            List View
+          </v-btn>
+          <v-btn
+            color="secondary"
+            class="mr-0 mt-1"
+            @click="filterUserId = store.user.id; filterChores()"
+            block
+          >
+            My Chores
+          </v-btn>
         </v-col>
       </v-row>
       <v-list 
@@ -67,9 +65,9 @@
           <template
             v-slot:prepend
           >
-            <v-avatar color="primary">
-              <span class="text-h5">{{ userInitials(chore.assigneeId) }}</span>
-            </v-avatar>
+            <div style="width: 40px" class="mr-3">
+              <Avatar />
+            </div>
           </template>
 
           <template v-slot:default>
@@ -131,9 +129,9 @@
           <v-card class="pr-2" :to="'/chore/'+chore.id">
             <v-card-item class="pr-0">
               <template v-slot:prepend>
-                <v-avatar color="primary">
-                  <span class="text-h5">{{ userInitials(chore.assigneeId) }}</span>
-                </v-avatar>
+                <div style="width: 40px" class="mr-3">
+                  <Avatar />
+                </div>
               </template>
               <template v-slot:append>
                 <v-card-subtitle>{{ chore.difficulty * 5 }} pts</v-card-subtitle>
@@ -186,7 +184,7 @@
           <template
             v-slot:prepend
           >
-            <v-avatar color="primary-lighten-1"></v-avatar>
+            <v-avatar color="primary-lighten-1" size="40"></v-avatar>
           </template>
 
           <template v-slot:default>
@@ -245,7 +243,7 @@
           <v-card class="pr-2" :to="'/chore/'+chore.id">
             <v-card-item class="pr-0">
               <template v-slot:prepend>
-                <v-avatar color="primary-lighten-1"></v-avatar>
+                <v-avatar color="primary-lighten-1" size="40"></v-avatar>
               </template>
               <template v-slot:append>
                 <v-card-subtitle>{{ chore.difficulty * 5 }} pts</v-card-subtitle>
@@ -370,6 +368,7 @@
   import { useAppStore } from '@/stores/app';
   import { useRouter } from 'vue-router'
   import FetchService from '../FetchService.js'
+  import Avatar from '../components/Avatar.vue'
 
   const store = useAppStore()
   const router = useRouter()
