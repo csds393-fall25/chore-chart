@@ -70,9 +70,9 @@
           <template
             v-slot:prepend
           >
-            <v-avatar color="primary">
-              <span class="text-h5">{{ userInitials(chore.assigneeId) }}</span>
-            </v-avatar>
+            <div style="width: 40px" class="mr-3">
+              <Avatar />
+            </div>
           </template>
 
           <template v-slot:default>
@@ -134,9 +134,9 @@
           <v-card class="pr-2" :to="'/chore/'+chore.id">
             <v-card-item class="pr-0">
               <template v-slot:prepend>
-                <v-avatar color="primary">
-                  <span class="text-h5">{{ userInitials(chore.assigneeId) }}</span>
-                </v-avatar>
+                <div style="width: 40px" class="mr-3">
+                  <Avatar />
+                </div>
               </template>
               <template v-slot:append>
                 <v-card-subtitle>{{ chorePoints(chore) }} pts</v-card-subtitle>
@@ -189,7 +189,7 @@
           <template
             v-slot:prepend
           >
-            <v-avatar color="primary-lighten-1"></v-avatar>
+            <v-avatar color="primary-lighten-1" size="40"></v-avatar>
           </template>
 
           <template v-slot:default>
@@ -248,7 +248,7 @@
           <v-card class="pr-2" :to="'/chore/'+chore.id">
             <v-card-item class="pr-0">
               <template v-slot:prepend>
-                <v-avatar color="primary-lighten-1"></v-avatar>
+                <v-avatar color="primary-lighten-1" size="40"></v-avatar>
               </template>
               <template v-slot:append>
                 <v-card-subtitle>{{ chorePoints(chore) }} pts</v-card-subtitle>
@@ -391,6 +391,7 @@
   import { useAppStore } from '@/stores/app';
   import { useRouter } from 'vue-router'
   import FetchService from '../FetchService.js'
+  import Avatar from '../components/Avatar.vue'
 
   const store = useAppStore()
 
