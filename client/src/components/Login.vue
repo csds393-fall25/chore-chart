@@ -43,13 +43,13 @@
             <v-row v-if="isCreate" class="mx-auto my-auto">
             <v-col  v-if="isCreate" style = "font-size: x-small;" cols = "6">
   
-             <v-btn color="teal" @click ="showDialog = true">Create household</v-btn>
+             <v-btn color="teal" @click ="validateProfile()">Create household</v-btn>
             </v-col>
             <v-col v-if="isCreate"  style = "font-size: x-small;" cols = "6">
              <v-btn color="teal" @click="joinButtonSwitches()">Join household</v-btn>
             </v-col>
              </v-row>
-            <v-btn v-if = "!isCreate" class = "elevation-0" color="teal" @click =" isCreate ? createProfile() : validateLogin()">{{isCreate ? 'Create' : 'Login'}}</v-btn>
+            <v-btn v-if = "!isCreate" class = "elevation-0" color="teal" @click =" isCreate ? validateProfile() : validateLogin()">{{isCreate ? 'Create' : 'Login'}}</v-btn>
 
           </div>
           <div>
@@ -122,14 +122,59 @@
 
   function joinButtonSwitches(){
     isJoin.value = true
+    if (validateProfile()){
     showDialog.value = true
+    }
   }
 
-  async function createProfile(){
-    if (typeof(password.value) != null && typeof(repeatedPassword.value) != null && password.value != repeatedPassword.value){
+  function validateProfile(){
+    let flag = true;
+  if(!displayedName.value){
+    console.log("Name is wrong")
+    flag = false;
+  }
+
+  let regex = username.value.match(/\w+@\w+\.\w+/)
+
+
+  if(!username.value || !regex  ){
+    console.log("email is wrong")
+    flag = false
+  }
+  
+  if (typeof(password.value) != null && typeof(repeatedPassword.value) != null && password.value != repeatedPassword.value){
+    console.log("password is wrong")
       isNotSame.value = true;
-      return;
+      flag = false
     }
+
+  if(!estimatedTime.value){
+    console.log("estimated time is wrong")
+    flag = false
+  }
+
+  if(!maxDifficulty.value){
+    console.log("max difficulty is wrong")
+    flag =  false
+  }
+  if (flag){
+
+  showDialog.value = true
+  }
+
+  return flag
+
+}
+
+
+
+
+
+  async function createProfile(){
+    // if (typeof(password.value) != null && typeof(repeatedPassword.value) != null && password.value != repeatedPassword.value){
+    //   isNotSame.value = true;
+    //   return;
+    // }
     isNotSame.value = false;
     const household = {
       name: householdName.value
