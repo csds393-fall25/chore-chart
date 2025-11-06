@@ -3,7 +3,7 @@
       <v-form class="pa-5">
         <v-row class="mb-0 mt-0">
           <v-col cols="12" sm="3" class="mb-0 mt-0">
-            <div class="text-subtitle-1 font-weight-bold"><span class="error" v-if="props.viewMode == 'create' || props.viewMode == 'edit'">*</span>Name: </div>
+            <div class="text-subtitle-1 font-weight-bold">Name: </div>
           </v-col>
           <v-col cols="12" sm="9" class="mb-0 mt-0">
             <v-text-field
@@ -43,7 +43,7 @@
         </v-row>
         <v-row class="mb-0 mt-0">
           <v-col cols="12" sm="3" class="mb-0 mt-0">
-            <div class="text-subtitle-1 font-weight-bold"><span class="error" v-if="props.viewMode == 'create' || props.viewMode == 'edit'">*</span>Difficulty: </div>
+            <div class="text-subtitle-1 font-weight-bold">Difficulty: </div>
           </v-col>
           <v-col cols="12" sm="9" class="mb-0 mt-0">
             <v-select
@@ -61,7 +61,7 @@
         </v-row>
         <v-row class="mb-0 mt-0">
           <v-col cols="12" sm="3" class="mb-0 mt-0">
-            <div class="text-subtitle-1 font-weight-bold"><span class="error" v-if="props.viewMode == 'create' || props.viewMode == 'edit'">*</span>Location: </div>
+            <div class="text-subtitle-1 font-weight-bold">Location: </div>
           </v-col>
           <v-col cols="12" sm="9" class="mb-0 mt-0">
             <v-select
@@ -79,7 +79,7 @@
         </v-row>
         <v-row class="mb-0 mt-0">
           <v-col cols="12" sm="3" class="mb-0 mt-0">
-            <div class="text-subtitle-1 font-weight-bold"><span class="error" v-if="props.viewMode == 'create' || props.viewMode == 'edit'">*</span>Estimated Time To Complete (minutes): </div>
+            <div class="text-subtitle-1 font-weight-bold">Estimated Time To Complete (minutes): </div>
           </v-col>
           <v-col cols="12" sm="9" class="mb-0 mt-0">
             <v-text-field
@@ -115,7 +115,7 @@
         </v-row>
         <v-row class="mb-0 mt-0">
           <v-col cols="12" sm="3" class="mb-0 mt-0">
-            <div class="text-subtitle-1 font-weight-bold"><span class="error" v-if="props.viewMode == 'create' || props.viewMode == 'edit'">*</span>Assigned To: </div>
+            <div class="text-subtitle-1 font-weight-bold">Assigned To: </div>
           </v-col>
           <v-col cols="12" sm="9" class="mb-0 mt-0">
             <v-select
