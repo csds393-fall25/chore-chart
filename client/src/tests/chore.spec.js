@@ -1376,3 +1376,82 @@ test("updateChore returns correctly", async () => {
     
 //enterEdit()
 //only changes the router
+
+test("test v-model chore.name", async () => {
+    const wrapper = mount(Chore, {
+        global: {
+            plugins: [
+                createTestingPinia({
+                    createSpy: vi.fn,
+                    initialState: {
+                        app: {
+                            user: {
+                                id: 0,
+                                householdId: 1,
+                                role: "leader",
+                            },
+                            household: {
+                                users: [
+                                    {
+                                        id: 4,
+                                        name: "test",
+                                        role: "member",
+                                    },
+                                ],
+                                chores: [
+                                    {
+                                        id: 1,
+                                        name: "test name",
+                                        description: "test description",
+                                        difficulty: 10,
+                                        location: "Kitchen",
+                                        estimatedTime: 20,
+                                        dueDate: new Date('2025-12-25 EST'),
+                                        repeat: false,
+                                        householdId: 1,
+                                        assigneeId: null,
+                                    },
+                                    {
+                                        id: 2,
+                                        name: "test name result",
+                                        description: "test description result",
+                                        difficulty: 9,
+                                        location: "Living Room",
+                                        estimatedTime: 30,
+                                        dueDate: new Date('2025-12-25 EST'),
+                                        repeat: false,
+                                        householdId: 1,
+                                        assigneeId: null,
+                                    },
+                                    {
+                                        id: choreId,
+                                        name: "new test name",
+                                        description: "new test description",
+                                        difficulty: 7,
+                                        location: "Basement",
+                                        estimatedTime: 20,
+                                        dueDate: new Date('2025-12-30 EST'),
+                                        repeat: false,
+                                        householdId: 1,
+                                        assigneeId: null,
+                                    }
+                                ]
+                            },
+                        },
+                    },
+                }),
+                [vuetify],
+                routes,
+            ],
+        },
+        props: {
+            viewMode: 'create',
+            choreId: choreId,
+        }
+    })
+
+    const store = useAppStore()
+
+    await wrapper.find("#name").setValue("test name");
+    expect(wrapper.vm.chore.name).toBe("test name");
+})
