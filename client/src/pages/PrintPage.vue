@@ -11,11 +11,14 @@
             :items="members"
             item-title="name"
             item-value="id"
+            data-testid="filteruserselect"
             v-model="filterUserId"
+            id="filteruser"
           ></v-select>
         </v-col>
         <v-col cols="12" sm="3" md="2" class="pl-0 pr-0 pb-0 mb-1">
           <v-btn
+            id="filterbutton"
             color="secondary"
             block
             @click="filterChores()"
@@ -25,6 +28,7 @@
         </v-col>
         <v-col class="text-right">
           <v-btn
+            id="printbutton"
             color="secondary"
             @click="printChoreChart()"
           >
