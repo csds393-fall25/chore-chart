@@ -117,7 +117,7 @@ await wrapper.vm.validateLogin()
 expect(store.loggedIn).toBe(true)
 })
 
-test("createProfile works correctly", async () => {
+test("createProfile works correctly with creating household", async () => {
     const wrapper = mount(Login, {
         global: {
   plugins: [
@@ -126,6 +126,7 @@ test("createProfile works correctly", async () => {
   ],
 }
 })
+const store = useAppStore()
 // using the store
     wrapper.vm.displayedName = "Mollietest"
     wrapper.vm.username = "validateProfile" 
@@ -133,21 +134,55 @@ test("createProfile works correctly", async () => {
     wrapper.vm.maxDifficulty = 3
     wrapper.vm.estimatedTime = 27
     wrapper.vm.repeatedPassword = "Mtest"
-  
-   
-     
-
+    wrapper.vm.householdName = "TESTHOUSEHOLD"
+    wrapper.vm.IsJoin = false
     const result = await wrapper.vm.createProfile()
-
-
+    console.log("result")
+    console.log(result)
+    const houseResult = await FetchService.fetchHouseholdByJoin(store.household.joinCode)
     expect(result.email).toBe("validateProfile")
     expect(result.name).toBe("Mollietest")
     expect(result.password_hash).toBe("Mtest")
     expect(result.difficulty).toBe(3)
     expect(result.maxChoreTime).toBe(27)
-    
-    FetchService.deleteUser(result.id)
+    expect(houseResult.name).toBe("TESTHOUSEHOLD")
+    await FetchService.deleteUser(result.id)
+    await FetchService.deleteHousehold(result.householdid)
 })
+
+test("createProfile works correctly with joining household", async () => {
+    const wrapper = mount(Login, {
+        global: {
+  plugins: [
+    createTestingPinia({createSpy: vi.fn}),
+  [vuetify],
+  ],
+}
+})
+const store = useAppStore()
+// using the store
+    wrapper.vm.displayedName = "Mollietest2"
+    wrapper.vm.username = "validateProfile2" 
+    wrapper.vm.password = "Mtest"
+    wrapper.vm.maxDifficulty = 3
+    wrapper.vm.estimatedTime = 27
+    wrapper.vm.repeatedPassword = "Mtest"
+    wrapper.vm.householdName = "TESTHOUSEHOLD"
+    wrapper.vm.IsJoin = true
+    const result = await wrapper.vm.createProfile()
+    console.log("result")
+    console.log(result)
+    const houseResult = await FetchService.fetchHouseholdByJoin(store.household.joinCode)
+    expect(result.email).toBe("validateProfile2")
+    expect(result.name).toBe("Mollietest2")
+    expect(result.password_hash).toBe("Mtest")
+    expect(result.difficulty).toBe(3)
+    expect(result.maxChoreTime).toBe(27)
+    expect(houseResult.name).toBe("TESTHOUSEHOLD")
+    await FetchService.deleteUser(result.id)
+    await FetchService.deleteHousehold(result.householdid)
+})
+
 
 test("validateLogin works correctly with incorrect username and password", async () => {
     const wrapper = mount(Login, {
@@ -172,6 +207,33 @@ await wrapper.vm.validateLogin()
 expect(store.loggedIn).toBe(false)
 
 })
+
+
+//validation tests
+
+// test("missing name validation", () => {
+//     const wrapper = mount(Login, {
+//         global: {
+//   plugins: [
+//     createTestingPinia({createSpy: vi.fn}),
+//   [vuetify],
+//   ],
+// }
+
+// })
+
+// wrapper.vm.username = "m@m.case.edu"
+// wrapper.vm.password = "12345678M"
+// wrapper.vm.repeatedPassword = "12345678M"
+// wrapper.vm.estimatedTime = 30
+// wrapper.vm.maxDifficulty = 5
+// //call a function from component
+// wrapper.vm.validateProfile()
+// expect(wrapper.vm.errorMessages.value.name).toBe(false)
+
+
+// })
+
 
 
 

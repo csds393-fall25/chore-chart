@@ -216,7 +216,7 @@
       name: householdName.value
     }
     let house = isJoin.value ? await FetchService.fetchHouseholdByJoin(household.name) : await FetchService.createHousehold(household)
- 
+    store.household.joinCode = house.joinCode
     const user = {
       name: displayedName.value,
       email: username.value,
