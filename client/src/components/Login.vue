@@ -16,7 +16,7 @@
           <v-text-field   v-if="isCreate" :error-messages="errorMessages.name" v-model = "displayedName"  label = "Name"></v-text-field>
           <v-text-field  :error-messages="errorMessages.email" v-model = "username"  label = "Email"></v-text-field>
           <v-text-field  :error-messages="errorMessages.password" v-model = "password"  label = "Password" type = "password"  ></v-text-field>
-          <v-text-field v-if="isCreate" :error-messages="errorMessages.repeatedPassword" v-model = "repeatedPassword"  label = "Password Again" type = "password" :persistent-hint='isNotSame'  ></v-text-field>   
+          <v-text-field v-if="isCreate" :error-messages="errorMessages.repeatedPassword" v-model = "repeatedPassword"  label = "Password Again" type = "password"   ></v-text-field>   
           <v-row v-if="isCreate" class="mx-auto my-auto">
             <v-col  v-if="isCreate" style = "font-size: x-small;" cols = "6">
               Estimated Time To Complete Chores (minutes)
@@ -79,8 +79,7 @@
   const estTimeError = ref("Estimated time must be greater than 0")
   const repeatedPassword = ref("")
   const repeatedPasswordError = ref("Passwords much match")
-  const errorMessages = ref({name: "", email: "", password: "", repeatedPassword: "", estTime: "", maxDiff: ""})
-  const isNotSame = ref(false)
+  const errorMessages = ref({name: "", email: "", password: "", repeatedPassword: "", estTime: "", maxDiff: "", houseName: ""})
   const isCreate = ref(false)
   const store = useAppStore()
   const showDialog = ref(false)
@@ -175,7 +174,7 @@
     errorMessages.value.repeatedPassword = ""
   }
 
-  if(!estimatedTime.value){
+  if(!estimatedTime.value || estimatedTime.value <= 0){
     console.log("estimated time is wrong")
     errorMessages.value.estTime = "Estimated time must be greater than 0"
     flag = false
@@ -185,7 +184,7 @@
 
   }
 
-  if(!maxDifficulty.value){
+  if(!maxDifficulty.value || maxDifficulty.value < 1 || maxDifficulty.value > 10){
     console.log("max difficulty is wrong")
     errorMessages.value.maxDiff = "Maximum difficulty must be between 1 and 10"
     flag =  false
@@ -202,16 +201,11 @@
 
 }
 
-
-
-
-
   async function createProfile(){
-    // if (typeof(password.value) != null && typeof(repeatedPassword.value) != null && password.value != repeatedPassword.value){
-    //   isNotSame.value = true;
-    //   return;
-    // }
-    isNotSame.value = false;
+    if (!householdName.value || householdName.value.length > 50 || !(householdName.value.match(/\.*[A-Z]\.*/)  || householdName.value.match(/\.*[a-z]\.*/))){
+      errorMessages.value.houseName = "Household name must be below 50 characters and have at least 1 letter"
+      return false
+    }
     const household = {
       name: householdName.value
     }
@@ -231,10 +225,17 @@
     try {
 
       const result = await FetchService.signup(user);
+      showDialog.value = false;
+      if (result == 513){
+        console.log("Violate unique constraint on email")
+        errorMessages.value.email = "There already exists an account for this email"
+      }
+      else{
 
       switchLogin()
       store.user = result.user
       return result
+      }
     } catch (error) {
       console.error("Signup failed:", error);
       return false

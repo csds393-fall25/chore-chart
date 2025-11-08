@@ -35,7 +35,7 @@ test("Login renders correctly", () => {
 expect(wrapper.text()).toContain('Login')
 })
 
-test("SwitchCreate changes values correctly", () => {
+test("PCT-10 Switch to profile creation user inteface", () => {
     const wrapper = mount(Login, {
         global: {
   plugins: [
@@ -96,7 +96,7 @@ expect(wrapper.vm.password).toBe("")
 
 })
 
-test("validateLogin works correctly", async () => {
+test("LT-1 Successful login to account", async () => {
     const wrapper = mount(Login, {
         global: {
   plugins: [
@@ -117,7 +117,7 @@ await wrapper.vm.validateLogin()
 expect(store.loggedIn).toBe(true)
 })
 
-test("createProfile works correctly with creating household", async () => {
+test("PCT-1, HCT1 All valid fields for creating profile with valid household name for household creation", async () => {
     const wrapper = mount(Login, {
         global: {
   plugins: [
@@ -150,7 +150,7 @@ const store = useAppStore()
     await FetchService.deleteHousehold(result.householdid)
 })
 
-test("createProfile works correctly with joining household", async () => {
+test("PCT-1 All valid fields for creating profile with joining household ", async () => {
     const wrapper = mount(Login, {
         global: {
   plugins: [
@@ -184,7 +184,7 @@ const store = useAppStore()
 })
 
 
-test("validateLogin works correctly with incorrect username and password", async () => {
+test("LT-2 Invalid login to account", async () => {
     const wrapper = mount(Login, {
         global: {
   plugins: [
@@ -211,28 +211,258 @@ expect(store.loggedIn).toBe(false)
 
 //validation tests
 
-// test("missing name validation", () => {
-//     const wrapper = mount(Login, {
-//         global: {
-//   plugins: [
-//     createTestingPinia({createSpy: vi.fn}),
-//   [vuetify],
-//   ],
-// }
+test("PCT-3 Name is not inputted", () => {
+    const wrapper = mount(Login, {
+        global: {
+  plugins: [
+    createTestingPinia({createSpy: vi.fn}),
+  [vuetify],
+  ],
+}
 
-// })
+})
 
-// wrapper.vm.username = "m@m.case.edu"
-// wrapper.vm.password = "12345678M"
-// wrapper.vm.repeatedPassword = "12345678M"
-// wrapper.vm.estimatedTime = 30
-// wrapper.vm.maxDifficulty = 5
-// //call a function from component
-// wrapper.vm.validateProfile()
-// expect(wrapper.vm.errorMessages.value.name).toBe(false)
+wrapper.vm.username = "m@m.case.edu"
+wrapper.vm.password = "12345678M"
+wrapper.vm.repeatedPassword = "12345678M"
+wrapper.vm.estimatedTime = 30
+wrapper.vm.maxDifficulty = 5
+//call a function from component
+wrapper.vm.validateProfile()
+console.log(wrapper.vm.errorMessages)
+expect(wrapper.vm.errorMessages.name).toBe("name must exist")
 
 
-// })
+})
+
+test("PCT-2 Email is not valid", () => {
+    const wrapper = mount(Login, {
+        global: {
+  plugins: [
+    createTestingPinia({createSpy: vi.fn}),
+  [vuetify],
+  ],
+}
+
+})
+wrapper.vm.displayedName = "Mollie"
+wrapper.vm.username = "mcase.edu"
+wrapper.vm.password = "12345678M"
+wrapper.vm.repeatedPassword = "12345678M"
+wrapper.vm.estimatedTime = 30
+wrapper.vm.maxDifficulty = 5
+//call a function from component
+wrapper.vm.validateProfile()
+console.log(wrapper.vm.errorMessages)
+expect(wrapper.vm.errorMessages.email).toBe("Email must follow format xxx@xxx.xxx")
+
+
+})
+
+
+test("PCT-4 Password is not of the correct format", () => {
+    const wrapper = mount(Login, {
+        global: {
+  plugins: [
+    createTestingPinia({createSpy: vi.fn}),
+  [vuetify],
+  ],
+}
+
+})
+wrapper.vm.displayedName = "Mollie"
+wrapper.vm.username = "m@case.edu"
+wrapper.vm.password = "12345678"
+wrapper.vm.repeatedPassword = "12345678"
+wrapper.vm.estimatedTime = 30
+wrapper.vm.maxDifficulty = 5
+//call a function from component
+wrapper.vm.validateProfile()
+console.log(wrapper.vm.errorMessages)
+expect(wrapper.vm.errorMessages.password).toBe("Password must be 8-25 characters and include at least one capital letter and one number"
+)
+
+
+})
+
+
+test("PCT-5 Verified password does not match the original password", () => {
+    const wrapper = mount(Login, {
+        global: {
+  plugins: [
+    createTestingPinia({createSpy: vi.fn}),
+  [vuetify],
+  ],
+}
+
+})
+wrapper.vm.displayedName = "Mollie"
+wrapper.vm.username = "m@case.edu"
+wrapper.vm.password = "12345678M"
+wrapper.vm.repeatedPassword = "123456789M"
+wrapper.vm.estimatedTime = 30
+wrapper.vm.maxDifficulty = 5
+//call a function from component
+wrapper.vm.validateProfile()
+console.log(wrapper.vm.errorMessages)
+expect(wrapper.vm.errorMessages.repeatedPassword).toBe("Passwords do not match")
+
+
+})
+
+
+test("PCT-6 Invalid estimated time field", () => {
+    const wrapper = mount(Login, {
+        global: {
+  plugins: [
+    createTestingPinia({createSpy: vi.fn}),
+  [vuetify],
+  ],
+}
+
+})
+wrapper.vm.displayedName = "Mollie"
+wrapper.vm.username = "m@case.edu"
+wrapper.vm.password = "12345678M"
+wrapper.vm.repeatedPassword = "123456789M"
+wrapper.vm.estimatedTime = -1
+wrapper.vm.maxDifficulty = 5
+//call a function from component
+wrapper.vm.validateProfile()
+console.log(wrapper.vm.errorMessages)
+expect(wrapper.vm.errorMessages.estTime).toBe("Estimated time must be greater than 0")
+
+
+})
+
+test("PCT-7 Invalid maximum difficulty", () => {
+    const wrapper = mount(Login, {
+        global: {
+  plugins: [
+    createTestingPinia({createSpy: vi.fn}),
+  [vuetify],
+  ],
+}
+
+})
+wrapper.vm.displayedName = "Mollie"
+wrapper.vm.username = "m@case.edu"
+wrapper.vm.password = "12345678M"
+wrapper.vm.repeatedPassword = "123456789M"
+wrapper.vm.estimatedTime = 1
+wrapper.vm.maxDifficulty = 25
+//call a function from component
+wrapper.vm.validateProfile()
+console.log(wrapper.vm.errorMessages)
+expect(wrapper.vm.errorMessages.maxDiff).toBe("Maximum difficulty must be between 1 and 10")
+})
+
+
+test("PCT-8 Error removed when information is correct", () => {
+    const wrapper = mount(Login, {
+        global: {
+  plugins: [
+    createTestingPinia({createSpy: vi.fn}),
+  [vuetify],
+  ],
+}
+
+})
+// two errors
+wrapper.vm.username = "m@case.edu"
+wrapper.vm.password = "12345678M"
+wrapper.vm.repeatedPassword = "123456789M"
+wrapper.vm.estimatedTime = 1
+wrapper.vm.maxDifficulty = 25
+//call a function from component
+wrapper.vm.validateProfile()
+console.log(wrapper.vm.errorMessages)
+expect(wrapper.vm.errorMessages.name).toBe("name must exist")
+expect(wrapper.vm.errorMessages.maxDiff).toBe("Maximum difficulty must be between 1 and 10")
+// max difficulty error fixed
+wrapper.vm.username = "m@case.edu"
+wrapper.vm.password = "12345678M"
+wrapper.vm.repeatedPassword = "123456789M"
+wrapper.vm.estimatedTime = 1
+wrapper.vm.maxDifficulty = 5
+//call a function from component
+wrapper.vm.validateProfile()
+console.log(wrapper.vm.errorMessages)
+expect(wrapper.vm.errorMessages.name).toBe("name must exist")
+expect(wrapper.vm.errorMessages.maxDiff).toBe("")
+})
+
+
+test("PCT-9 Email already exists in the database.", async () => {
+    const wrapper = mount(Login, {
+        global: {
+  plugins: [
+    createTestingPinia({createSpy: vi.fn}),
+  [vuetify],
+  ],
+}
+
+})
+wrapper.vm.displayedName = "Mollie"
+wrapper.vm.username = "msa@chorechart.com"
+wrapper.vm.password = "12345678M"
+wrapper.vm.repeatedPassword = "12345678M"
+wrapper.vm.estimatedTime = 30
+wrapper.vm.maxDifficulty = 5
+wrapper.vm.householdName = "TESTHOUSEHOLD"
+//call a function from component
+wrapper.vm.IsJoin = false
+await wrapper.vm.createProfile()
+console.log(wrapper.vm.errorMessages)
+expect(wrapper.vm.errorMessages.email).toBe("There already exists an account for this email")
+})
+
+
+test("HCT-2 Household name not provided", async () => {
+    const wrapper = mount(Login, {
+        global: {
+  plugins: [
+    createTestingPinia({createSpy: vi.fn}),
+  [vuetify],
+  ],
+}
+
+})
+wrapper.vm.displayedName = "Mollie"
+wrapper.vm.username = "m@case.edu"
+wrapper.vm.password = "12345678M"
+wrapper.vm.repeatedPassword = "123456789M"
+wrapper.vm.estimatedTime = 1
+wrapper.vm.maxDifficulty = 8
+//call a function from component
+await wrapper.vm.createProfile()
+console.log(wrapper.vm.errorMessages)
+expect(wrapper.vm.errorMessages.houseName).toBe("Household name must be below 50 characters and have at least 1 letter")
+})
+test("HCT-3 invalid household name", async () => {
+    const wrapper = mount(Login, {
+        global: {
+  plugins: [
+    createTestingPinia({createSpy: vi.fn}),
+  [vuetify],
+  ],
+}
+
+})
+wrapper.vm.displayedName = "Mollie"
+wrapper.vm.username = "m@case.edu"
+wrapper.vm.password = "12345678M"
+wrapper.vm.repeatedPassword = "123456789M"
+wrapper.vm.estimatedTime = 1
+wrapper.vm.maxDifficulty = 8
+wrapper.vm.householdName = "1234"
+//call a function from component
+await wrapper.vm.createProfile()
+console.log(wrapper.vm.errorMessages)
+expect(wrapper.vm.errorMessages.houseName).toBe("Household name must be below 50 characters and have at least 1 letter")
+
+
+})
 
 
 

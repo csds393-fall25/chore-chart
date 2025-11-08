@@ -23,7 +23,7 @@ class FetchService {
 
             })});
             if(!response.ok) {
-                throw new Error(`Response status: ${response.status}`);
+                 return response.status          
             } 
             const result = await response.json();
             return result;

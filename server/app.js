@@ -104,7 +104,14 @@ app.post('/api/signup', async (req, res) => {
     res.json(result);
   } catch (err) {
     console.log("Error: " + err);
+    console.log(err.code)
+    if (err.code === 'P2002'){
+      console.log("violated email constraint")
+      res.status(513).json({ error: err.message })
+    }
+    else{
     res.status(500).json({ error: err.message });
+    }
   }
 });
 

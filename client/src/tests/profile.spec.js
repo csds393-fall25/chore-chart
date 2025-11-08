@@ -81,6 +81,8 @@ test("delete user information", async () => {
     const result = await wrapperLogin.vm.createProfile()
     store.user = result
     //call a function from component
+
+    //TODO fails here sometimes
     const method = await wrapperProfile.vm.deleteProfile(result.id)
     expect (method.deleted).toBe(true)
 
