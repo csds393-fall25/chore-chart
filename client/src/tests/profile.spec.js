@@ -71,11 +71,13 @@ test("delete user information", async () => {
 })
     const store = useAppStore()
     wrapperLogin.vm.displayedName = "Mollietest"
-    wrapperLogin.vm.username = "TestDelete" 
+    wrapperLogin.vm.username = "validateProfile" 
     wrapperLogin.vm.password = "Mtest"
     wrapperLogin.vm.maxDifficulty = 3
     wrapperLogin.vm.estimatedTime = 27
     wrapperLogin.vm.repeatedPassword = "Mtest"
+    wrapperLogin.vm.householdName = "TESTHOUSEHOLD"
+    wrapperLogin.vm.IsJoin = false
     const result = await wrapperLogin.vm.createProfile()
     store.user = result
     //call a function from component

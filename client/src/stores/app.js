@@ -16,6 +16,7 @@ export const useAppStore = defineStore('app', {
     loggedIn: false,
     household: {
       id: -1,
+      joinCode: 0,
     }
   }),
 })
