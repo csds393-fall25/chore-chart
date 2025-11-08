@@ -27,11 +27,13 @@
               <v-number-input v-if="isCreate" :error-messages="errorMessages.maxDiff" v-model = "maxDifficulty" :min = '1' :max = '10' control-variant="split"  ></v-number-input>
             </v-col>
 
-            <v-dialog v-model="showDialog" width="auto">
+            <v-dialog v-model="showDialog" width="500">
         <v-card :title="!isJoin ? 'Create a Household' : 'Join a Household'" max-width="400">
           <v-text-field   v-model = "householdName"  :label = " !isJoin ? 'Enter Household Name' : 'Enter Household Join Code'"></v-text-field>
           <v-card-actions>
-            <v-btn @click="createProfile()" > create
+             <v-btn @click="showDialog = false" data-testid="cancelButton" > cancel
+            </v-btn>
+            <v-btn @click="showDialog = false" > create
             </v-btn>
           </v-card-actions>
         </v-card>

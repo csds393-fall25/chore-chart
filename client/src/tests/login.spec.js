@@ -8,6 +8,7 @@ import * as components from 'vuetify/components'
 import * as directives from 'vuetify/directives'
 import { useAppStore } from "@/stores/app.js";
 import FetchService from "@/FetchService";
+import { nextTick } from "vue";
 // need this at the top
 const vuetify = createVuetify({
   components,
@@ -460,6 +461,40 @@ wrapper.vm.householdName = "1234"
 await wrapper.vm.createProfile()
 console.log(wrapper.vm.errorMessages)
 expect(wrapper.vm.errorMessages.houseName).toBe("Household name must be below 50 characters and have at least 1 letter")
+
+
+})
+
+test("HCT-3 invalid household name", async () => {
+    const wrapper = mount(Login, {
+        global: {
+  plugins: [
+    createTestingPinia({createSpy: vi.fn}),
+  [vuetify],
+  ],
+}
+
+})
+wrapper.vm.displayedName = "Mollie"
+wrapper.vm.username = "m@case.edu"
+wrapper.vm.password = "12345678M"
+wrapper.vm.repeatedPassword = "123456789M"
+wrapper.vm.estimatedTime = 1
+wrapper.vm.maxDifficulty = 8
+wrapper.vm.householdName = "1234"
+//call a function from component
+
+const cancelButton = wrapper.findComponent('[data-testid="cancelButton"]')
+const button = wrapper.find("button")
+console.log("KI")
+console.log(button)
+cancelButton.trigger("click")
+await nextTick();
+expect(wrapper.vm.showDialog).toBe(false)
+
+//await wrapper.vm.createProfile()
+//console.log(wrapper.vm.errorMessages)
+//expect(wrapper.vm.errorMessages.houseName).toBe("Household name must be below 50 characters and have at least 1 letter")
 
 
 })
