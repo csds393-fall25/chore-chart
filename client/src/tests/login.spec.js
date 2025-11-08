@@ -15,6 +15,8 @@ const vuetify = createVuetify({
   directives,
 })
 
+vi.stubGlobal("visualViewport", new EventTarget())
+
 // example test format
 test("temp test", () => {
 
@@ -465,29 +467,41 @@ expect(wrapper.vm.errorMessages.houseName).toBe("Household name must be below 50
 
 })
 
-test("HCT-3 invalid household name", async () => {
+test("cancel", async () => {
     const wrapper = mount(Login, {
         global: {
   plugins: [
     createTestingPinia({createSpy: vi.fn}),
   [vuetify],
   ],
+  stubs: {
+    VDialog: {
+      name: "VDialog",
+      template: '<div class="v-dialog-stub"><slot /></div>',
+      props: ['modelValue',
+      ]
+    }
+  }
 }
 
 })
+wrapper.vm.isCreate = true;
 wrapper.vm.displayedName = "Mollie"
 wrapper.vm.username = "m@case.edu"
-wrapper.vm.password = "12345678M"
+wrapper.vm.password = "123456789M"
 wrapper.vm.repeatedPassword = "123456789M"
 wrapper.vm.estimatedTime = 1
 wrapper.vm.maxDifficulty = 8
-wrapper.vm.householdName = "1234"
+wrapper.vm.householdName = "HI"
+wrapper.vm.showDialog = true;
 //call a function from component
+await nextTick();
+const cancelButton = wrapper.find("#test")
 
-const cancelButton = wrapper.findComponent('[data-testid="cancelButton"]')
 const button = wrapper.find("button")
 console.log("KI")
 console.log(button)
+console.log(cancelButton)
 cancelButton.trigger("click")
 await nextTick();
 expect(wrapper.vm.showDialog).toBe(false)

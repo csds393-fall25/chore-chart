@@ -31,7 +31,7 @@
         <v-card :title="!isJoin ? 'Create a Household' : 'Join a Household'" max-width="400">
           <v-text-field   v-model = "householdName"  :label = " !isJoin ? 'Enter Household Name' : 'Enter Household Join Code'"></v-text-field>
           <v-card-actions>
-             <v-btn @click="showDialog = false" data-testid="cancelButton" > cancel
+             <v-btn id = "test" @click="showDialog = false" data-testid="cancelButton" > cancel
             </v-btn>
             <v-btn @click="showDialog = false" > create
             </v-btn>
