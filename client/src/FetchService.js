@@ -181,6 +181,7 @@ class FetchService {
             return result;
         } catch (error) {
             console.error(error.message);
+            return false;
         }
     }
 

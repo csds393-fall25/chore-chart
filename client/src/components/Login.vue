@@ -20,7 +20,7 @@
           <v-row v-if="isCreate" class="mx-auto my-auto">
             <v-col  v-if="isCreate" style = "font-size: x-small;" cols = "6">
               Estimated Time To Complete Chores (minutes)
-              <v-number-input v-if="isCreate" :error-messages="errorMessages.estTime" v-model = "estimatedTime" :min = '0' control-variant="split" ></v-number-input>
+              <v-number-input v-if="isCreate" :error-messages="errorMessages.estTime" v-model = "estimatedTime" :min = '1' control-variant="split" ></v-number-input>
             </v-col>
             <v-col v-if="isCreate"  style = "font-size: x-small;" cols = "6">
               Maximum Difficulty
@@ -29,11 +29,11 @@
 
             <v-dialog v-model="showDialog" width="500">
         <v-card :title="!isJoin ? 'Create a Household' : 'Join a Household'" max-width="400">
-          <v-text-field   v-model = "householdName"  :label = " !isJoin ? 'Enter Household Name' : 'Enter Household Join Code'"></v-text-field>
+          <v-text-field  :error-messages=" isJoin ? errorMessages.jc : errorMessages.houseName" v-model = "householdName"  :label = " !isJoin ? 'Enter Household Name' : 'Enter Household Join Code'"></v-text-field>
           <v-card-actions>
              <v-btn id = "test" @click="showDialog = false" data-testid="cancelButton" > cancel
             </v-btn>
-            <v-btn @click="showDialog = false" > create
+            <v-btn @click="createProfile()" > create
             </v-btn>
           </v-card-actions>
         </v-card>
@@ -42,12 +42,15 @@
 
           </v-row>
           <div>
-            <v-row v-if="isCreate" class="mx-auto my-auto">
-            <v-col  v-if="isCreate" style = "font-size: x-small;" cols = "6">
-  
-             <v-btn color="teal" @click ="validateProfile()">Create household</v-btn>
+            <v-row v-if="isCreate" class="mx-auto my-auto" style="align-items: center;">
+              <v-col v-if="isCreate"  style = "font-size: x-small; align-items: center; justify-content: center;" cols = "2">
+             <v-btn data-testid="cancelLogin"  color="teal" @click="switchLogin">Cancel</v-btn>
             </v-col>
-            <v-col v-if="isCreate"  style = "font-size: x-small;" cols = "6">
+            <v-col  v-if="isCreate"  style = "font-size: x-small; align-items: center; justify-content: center" cols = "5">
+  
+             <v-btn color="teal" @click ="CreateButtonSwitches()">Create household</v-btn>
+            </v-col>
+            <v-col v-if="isCreate"   style = "font-size: x-small; align-items: center; justify-content: center" cols = "5">
              <v-btn color="teal" @click="joinButtonSwitches()">Join household</v-btn>
             </v-col>
              </v-row>
@@ -69,24 +72,16 @@
   import { useAppStore } from '@/stores/app.js';
 
   const username = ref();
-  const usernameError = ref("Email must follow format xxx@xxx.xxx")
   const password = ref("");
-  const passwordError = ref("Password must be 8-25 characters and include at least one capital letter and one number")
   const isIncorrect = ref(false);
   const displayedName = ref()
-  const nameError = ref("Name must exist")
   const maxDifficulty = ref()
-  const maxDiffError = ref("Maximum difficulty must be between 1 and 10")
   const estimatedTime = ref()
-  const estTimeError = ref("Estimated time must be greater than 0")
   const repeatedPassword = ref("")
-  const repeatedPasswordError = ref("Passwords much match")
-  const errorMessages = ref({name: "", email: "", password: "", repeatedPassword: "", estTime: "", maxDiff: "", houseName: ""})
+  const errorMessages = ref({name: "", email: "", password: "", repeatedPassword: "", estTime: "", maxDiff: "", houseName: "", jc: ""})
   const isCreate = ref(false)
   const store = useAppStore()
   const showDialog = ref(false)
-  const test = ref(store.household.id)
-  const code = ref()
   const householdName = ref()
   const isJoin = ref(false)
   
@@ -110,6 +105,7 @@
       store.loggedIn = true;
     } catch (error) {
       console.error("Login failed:", error);
+      errorMessages.value.password = "incorrect username or password"
       isIncorrect.value = true;
     }
   }
@@ -119,6 +115,17 @@
     isIncorrect.value = false;
     username.value = ""
     password.value = ""
+    repeatedPassword.value = ""
+    estimatedTime.value = 0
+    maxDifficulty.value = 1
+    errorMessages.value.maxDiff = ""
+    errorMessages.value.estTime = ""
+    errorMessages.value.email = ""
+    errorMessages.value.name = ""
+    errorMessages.value.password = ""
+    errorMessages.value.repeatedPassword = ""
+    showDialog.value = false;
+
 
   }
 
@@ -126,10 +133,19 @@
     isCreate.value = false;
     username.value = ""
     password.value = ""
+    errorMessages.value.email = ""
+    errorMessages.value.password = ""
   }
 
   function joinButtonSwitches(){
     isJoin.value = true
+    if (validateProfile()){
+    showDialog.value = true
+    }
+  }
+
+  function CreateButtonSwitches(){
+    isJoin.value = false
     if (validateProfile()){
     showDialog.value = true
     }
@@ -197,6 +213,9 @@
   if (flag){
 
   showDialog.value = true
+  householdName.value = ""
+  errorMessages.value.houseName = ""
+  errorMessages.value.jc = ""
   }
 
   return flag
@@ -204,14 +223,21 @@
 }
 
   async function createProfile(){
+    if(!isJoin.value){
     if (!householdName.value || householdName.value.length > 50 || !(householdName.value.match(/\.*[A-Z]\.*/)  || householdName.value.match(/\.*[a-z]\.*/))){
       errorMessages.value.houseName = "Household name must be below 50 characters and have at least 1 letter"
       return false
     }
+  }
     const household = {
       name: householdName.value
     }
     let house = isJoin.value ? await FetchService.fetchHouseholdByJoin(household.name) : await FetchService.createHousehold(household)
+    if(!house){
+      errorMessages.value.jc = "Join code does not exist"
+      return false;
+    }
+     showDialog.value = false
     store.household.joinCode = house.joinCode
     const user = {
       name: displayedName.value,

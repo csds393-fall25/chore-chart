@@ -467,7 +467,7 @@ expect(wrapper.vm.errorMessages.houseName).toBe("Household name must be below 50
 
 })
 
-test("cancel", async () => {
+test("HCT-4 cancel household creation", async () => {
     const wrapper = mount(Login, {
         global: {
   plugins: [
@@ -497,21 +497,39 @@ wrapper.vm.showDialog = true;
 //call a function from component
 await nextTick();
 const cancelButton = wrapper.find("#test")
-
-const button = wrapper.find("button")
-console.log("KI")
-console.log(button)
-console.log(cancelButton)
 cancelButton.trigger("click")
 await nextTick();
 expect(wrapper.vm.showDialog).toBe(false)
 
-//await wrapper.vm.createProfile()
-//console.log(wrapper.vm.errorMessages)
-//expect(wrapper.vm.errorMessages.houseName).toBe("Household name must be below 50 characters and have at least 1 letter")
+})
 
+test("PCT-11 cancel profile creation", async () => {
+    const wrapper = mount(Login, {
+        global: {
+  plugins: [
+    createTestingPinia({createSpy: vi.fn}),
+  [vuetify],
+  ],
+  stubs: {
+    VDialog: {
+      name: "VDialog",
+      template: '<div class="v-dialog-stub"><slot /></div>',
+      props: ['modelValue',
+      ]
+    }
+  }
+}
 
 })
+wrapper.vm.isCreate = true
+await nextTick();
+const cancelButton = wrapper.findComponent('[data-testid="cancelLogin"]')
+cancelButton.trigger("click")
+await nextTick();
+expect(wrapper.vm.isCreate).toBe(false)
+
+})
+
 
 
 
