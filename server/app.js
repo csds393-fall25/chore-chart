@@ -6,6 +6,22 @@ import { fileURLToPath } from 'url';
 import cors from 'cors';
 import prisma from './prisma.js';
 import bodyParser from 'body-parser';
+import { S3Client, GetObjectCommand } from "@aws-sdk/client-s3";
+import { getSignedUrl } from "@aws-sdk/s3-request-presigner";
+
+const databaseUrl = process.env.DATABASE_URL
+const bucketName = process.env.BUCKET_NAME
+const bucketRegion = process.env.BUCKET_REGION
+const accessKey = process.env.ACCESS_KEY
+const secretAccessKey = process.env.SECRET_ACCESS_KEY
+
+const s3 = new S3Client({
+  credentials: {
+    accessKeyId: accessKey,
+    secretAccessKey: secretAccessKey,
+  },
+  region: bucketRegion
+})
 
 const __filename = fileURLToPath(import.meta.url);
 const __dirname = path.dirname(__filename);
@@ -275,6 +291,82 @@ app.delete('/api/chore/:id', async (req, res) => {
   try {
     const deleted = await prisma.chore.delete({ where: { id: Number(id) }});
     res.json({deleted: true, id: deleted.id});
+  } catch (err) {
+    res.status(500).json({error: err.message});
+  }
+});
+
+// Get avatar of the user
+// Response: Array of AvatarProp objects with url of images
+app.get('/api/avatar/:userId', async (req, res) => {
+  try {
+    const { userId } = req.params;
+    const avatar = await prisma.avatar.findUnique({
+      where: { ownerId: Number(userId) },
+      include: {
+        skinTone: true,
+        hat: true,
+        hair: true,
+        shirt: true,
+        background: true,
+        handProp: true,
+      },
+    });
+
+    if (!avatar) {
+      return res.status(404).json({ error: 'Avatar not found' });
+    }
+
+    const avatarParts = [
+      avatar.skinTone,
+      avatar.hat,
+      avatar.hair,
+      avatar.shirt,
+      avatar.background,
+      avatar.handProp,
+    ].filter(Boolean); // skip null/undefined
+
+    for (const part of avatarParts) {
+      // check that part has a name before trying to generate a signed URL
+      if (!part || !part.name) continue;
+
+      const getPartParams = {
+        Bucket: bucketName,
+        Key: `avatar-props/${part.name}.png`,
+      };
+      const command = new GetObjectCommand(getPartParams);
+      try {
+        const url = await getSignedUrl(s3, command, { expiresIn: 3600 });
+        part.url = url;
+      } catch (err) {
+        console.error('Failed to generate signed URL for', part.name, err?.message || err);
+      }
+    }
+
+    res.json(avatarParts);
+  } catch (err) {
+    res.status(500).json({ error: err.message });
+  }
+});
+
+// get all avatar props to display in the store
+app.get('/api/avatar-props', async (req, res) => {
+  try {
+    const props = await prisma.avatarProp.findMany();
+    for (const prop of props) {
+      const getPropsParams = {
+        Bucket: bucketName,
+        Key: `avatar-props/${prop.name}.png`
+      }
+      const command = new GetObjectCommand(getPropsParams);
+      try {
+          const url = await getSignedUrl(s3, command, { expiresIn: 3600 });
+          prop.url = url;
+      } catch (err) {
+        console.error('Failed to generate signed URL for', part.name, err?.message || err);
+      }
+    };
+    res.json(props);
   } catch (err) {
     res.status(500).json({error: err.message});
   }

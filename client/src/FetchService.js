@@ -354,6 +354,19 @@ class FetchService {
             console.error(error.message);
         }
     }
+    // Get avatar props to display in the store
+    static async getAvatarProps() {
+        try {
+            const response = await fetch(`${baseURL}/avatar-props`);
+            if (!response.ok) {
+                throw new Error(`Response status: ${response.status}`);
+            }
+            const result = await response.json();
+            return result;
+        } catch (error) {
+            console.error(error.message);
+        }
+    }
 }
 
 export default FetchService
