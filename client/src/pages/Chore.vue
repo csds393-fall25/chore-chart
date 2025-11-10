@@ -260,7 +260,7 @@
     } else {
       const filterResult = store.household.chores.filter(householdChore => householdChore.id == choreId);
       if(filterResult.length == 1) {
-        chore.value = filterResult[0];
+        chore.value = {...filterResult[0]};
         const choreDate = new Date(chore.value.dueDate);
         chore.value.dueDate = choreDate.toLocaleDateString('en-CA');
       } else {
@@ -334,7 +334,7 @@
       valid = false;
       errorMessages.value.dueDate = "Please enter a due date";
     } else {
-      const dueDate = new Date(chore.value.dueDate);
+      const dueDate = new Date(chore.value.dueDate + " EST");
       const currentDate = new Date();
       if(dueDate < currentDate) {
         valid = false;

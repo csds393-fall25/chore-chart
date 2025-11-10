@@ -78,7 +78,7 @@
                 {{ chore.name }}
               </v-col>
               <v-col cols="4">
-                {{ chore.difficulty * 5 }} pts
+                {{ chorePoints(chore) }} pts
               </v-col>
             </v-row>
           </template>
@@ -136,7 +136,7 @@
                 </v-avatar>
               </template>
               <template v-slot:append>
-                <v-card-subtitle>{{ chore.difficulty * 5 }} pts</v-card-subtitle>
+                <v-card-subtitle>{{ chorePoints(chore) }} pts</v-card-subtitle>
                 <v-btn
                   color="secondary"
                   density="compact"
@@ -195,7 +195,7 @@
                 {{ chore.name }}
               </v-col>
               <v-col cols="4">
-                {{ chore.difficulty * 5 }} pts
+                {{ chorePoints(chore) }} pts
               </v-col>
             </v-row>
           </template>
@@ -248,7 +248,7 @@
                 <v-avatar color="primary-lighten-1"></v-avatar>
               </template>
               <template v-slot:append>
-                <v-card-subtitle>{{ chore.difficulty * 5 }} pts</v-card-subtitle>
+                <v-card-subtitle>{{ chorePoints(chore) }} pts</v-card-subtitle>
                 <v-btn
                   color="secondary"
                   density="compact"
@@ -468,6 +468,17 @@
     completeDialogChore.value = null
   }
 
+  function chorePoints(chore) {
+    let currentDate = new Date();
+    let choreDate = new Date(chore.dueDate);
+
+    if(currentDate < choreDate) {
+      return 5 * chore.difficulty;
+    } else {
+      return 2 * chore.difficulty;
+    }
+  }
+
   async function completeChore(chore) {
     //TODO: Add points to the user upon chore completion
     const result = await FetchService.deleteChore(chore.id)
@@ -475,6 +486,10 @@
     completeDialogChore.value = null
     choreList.value = choreList.value.filter(listChore => listChore.id != chore.id)
     store.household.chores = store.household.chores.filter(listChore => listChore.id != chore.id)
+
+    const userResult = await FetchService.updateUserPoints(store.user.id, chorePoints(chore))
+
+    store.user = userResult;
 
     //TODO: add a toaster to confirm that the chore was completed.
   }
