@@ -12,6 +12,14 @@ export const useAppStore = defineStore('app', {
       role: "member",
       totalPoints: 0,
       maxChoreTime: 0,
+      avatar: {
+        skinTone: "",
+        hat: "",
+        hair: "",
+        shirt: "",
+        background: "",
+        handProp: ""
+      }
     },
     loggedIn: false,
     household: {
