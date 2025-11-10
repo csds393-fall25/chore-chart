@@ -44,14 +44,14 @@
           <div>
             <v-row v-if="isCreate"  style="align-items: center;">
               <v-col v-if="isCreate"  style = "font-size: x-small; align-items: center; justify-content: center;" cols = "3">
-             <v-btn data-testid="cancelLogin"  color="teal" @click="switchLogin">Cancel</v-btn>
+             <v-btn data-testid="cancelLogin"  color="error" @click="switchLogin" block>Cancel</v-btn>
             </v-col>
-            <v-col  v-if="isCreate"  style = "font-size: x-small; align-items: center; justify-content: center" cols = "3">
+            <v-col  v-if="isCreate"  style = "font-size: x-small; align-items: center; justify-content: center" cols = "3" offset="3">
   
-             <v-btn id="createH" data-testid="createHouse" color="teal" @click ="CreateButtonSwitches()">Create household</v-btn>
+             <v-btn id="createH" data-testid="createHouse" color="teal" @click ="CreateButtonSwitches()" block>Create household</v-btn>
             </v-col>
-            <v-col  v-if="isCreate"   style = "font-size: x-small; align-items: right; justify-content: right" cols = "6">
-             <v-btn id="joinH" color="teal" @click="joinButtonSwitches()">Join household</v-btn>
+            <v-col  v-if="isCreate"   style = "font-size: x-small; align-items: right; justify-content: right" cols = "3">
+             <v-btn id="joinH" color="teal" @click="joinButtonSwitches()" block>Join household</v-btn>
             </v-col>
              </v-row>
             <v-btn id="loginButton" v-if = "!isCreate" class = "elevation-0" color="teal" @click ="  validateLogin()">{{ 'Login'}}</v-btn>
