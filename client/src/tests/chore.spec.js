@@ -2991,3 +2991,88 @@ test("VCDT-3 - test edit button", async () => {
     expect(spy).toHaveBeenCalled()
 })
 
+test("CET-15 - Chore reroutes properly if a member tries to reroute to edit mode", async () => {
+    let router = createRouter({
+        history: createWebHistory(),
+        routes: routesList,
+    })
+
+    router.push('/chore/1')
+    await router.isReady()
+
+    const spy = vi.spyOn(router, 'push');
+
+    const wrapper = mount(Chore, {
+        global: {
+            plugins: [
+                createTestingPinia({
+                    createSpy: vi.fn,
+                    initialState: {
+                        app: {
+                            user: {
+                                id: 1,
+                                householdId: 1,
+                                role: "member",
+                            },
+                            household: {
+                                users: [
+                                    {
+                                        id: 4,
+                                        name: "test",
+                                        role: "member",
+                                    },
+                                ],
+                                chores: [
+                                    {
+                                        id: 1,
+                                        name: "test name",
+                                        description: "test description",
+                                        difficulty: 10,
+                                        location: "Kitchen",
+                                        estimatedTime: 20,
+                                        dueDate: new Date('2025-12-25'),
+                                        repeat: false,
+                                        householdId: 1,
+                                        assigneeId: null,
+                                    },
+                                    {
+                                        id: 2,
+                                        name: "test name result",
+                                        description: "test description result",
+                                        difficulty: 9,
+                                        location: "Living Room",
+                                        estimatedTime: 30,
+                                        dueDate: new Date('2025-12-25'),
+                                        repeat: false,
+                                        householdId: 1,
+                                        assigneeId: null,
+                                    }
+                                ]
+                            },
+                        },
+                    },
+                }),
+                [vuetify],
+                [router],
+            ],
+        },
+        props: {
+            viewMode: 'view',
+            choreId: 1,
+        }
+    })
+
+    console.log("before expected call")
+
+    router.push({
+        name: 'editChore',
+        params: { id: 1 }
+    })
+
+    nextTick()
+
+    expect(spy).toHaveBeenCalledWith({
+        name: 'viewChore',
+        params: { id: 1 }
+    });
+})
