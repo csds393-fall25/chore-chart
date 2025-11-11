@@ -320,6 +320,9 @@
     if(!chore.value.difficulty) {
       valid = false;
       errorMessages.value.difficulty = "Please enter a difficulty level";
+    } else if(chore.value.difficulty < 1 || chore.value.difficulty > 10) {
+      valid = false;
+      errorMessages.value.difficulty = "The difficulty value must be between 1-10";
     } else {
       errorMessages.value.difficulty = ''
     }
