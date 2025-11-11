@@ -231,18 +231,11 @@
   watch(
     () => route.name,
     (newName, oldName) => {
-      console.log("in watch")
-      console.log(newName)
       if(newName == "editChore" && store.user.role != 'leader') {
-        console.log("in if statement")
-        console.log(props.choreId)
-
         router.push({
           name: 'viewChore',
           params: { id: props.choreId }
         })
-
-        console.log("push should have happened")
         //TODO: add a toaster to indicate why it rerouted
       }
 
