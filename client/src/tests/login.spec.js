@@ -150,7 +150,7 @@ const store = useAppStore()
     expect(result.maxChoreTime).toBe(27)
     expect(houseResult.name).toBe("TESTHOUSEHOLD")
     await FetchService.deleteUser(result.id)
-    await FetchService.deleteHousehold(result.householdid)
+    await FetchService.deleteHousehold(result.householdId)
 })
 
 test("HJT-1 Valid household join code", async () => {
@@ -206,7 +206,7 @@ const store = useAppStore()
     expect(houseResult2.name).toBe("TESTHOUSEHOLD")
         await FetchService.deleteUser(result.id)
     await FetchService.deleteUser(result2.id)
-    await FetchService.deleteHousehold(result.householdid)
+    await FetchService.deleteHousehold(result.householdId)
 })
 
 
@@ -686,7 +686,7 @@ const store = useAppStore()
     expect(wrapper.vm.errorMessages.jc = "Join code does not exist")
         await FetchService.deleteUser(result.id)
     await FetchService.deleteUser(result2.id)
-    await FetchService.deleteHousehold(result.householdid)
+    await FetchService.deleteHousehold(result.householdId)
 })
 
 test("profile creation failed due to error", async () => {
