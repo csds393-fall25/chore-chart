@@ -51,6 +51,7 @@
               required
               variant="outlined"
               id="difficulty"
+              data-testid="difficulty"
               v-model="chore.difficulty"
               :items="[1, 2, 3, 4, 5, 6, 7, 8, 9, 10]"
               :error-messages="errorMessages.difficulty"
@@ -69,6 +70,7 @@
               required
               variant="outlined"
               id="location"
+              data-testid="location"
               v-model="chore.location"
               :items="['Kitchen', 'Dining Room', 'Living Room', 'Bedroom', 'Outside', 'Laundry Room', 'Bathroom', 'Office', 'Basement', 'Other']"
               :error-messages="errorMessages.location"
@@ -122,7 +124,8 @@
               placeholder="No One"
               required
               variant="outlined"
-              id="assignedTo"
+              id="assigneeId"
+              data-testid="assigneeId"
               v-model="chore.assigneeId"
               :items="members"
               item-title="name"
@@ -138,6 +141,7 @@
             <v-btn 
               color="secondary" 
               @click="createChore()"
+              id="createButton"
               block 
               v-if="props.viewMode == 'create'">
               Create
@@ -145,6 +149,7 @@
             <v-btn 
               color="secondary" 
               @click="updateChore()"
+              id="updateButton"
               block 
               v-else>
               Save
@@ -154,6 +159,7 @@
             <v-btn 
               color="error" 
               @click="cancel()"
+              id="cancelButton"
               block>Cancel</v-btn>
           </v-col>
         </v-row>
@@ -161,6 +167,7 @@
           <v-col cols="3">
             <v-btn
               color="secondary"
+              id="editButton"
               @click="enterEdit()"
               block
             >
@@ -188,7 +195,7 @@
   if(props.viewMode == "edit" && store.user.role != 'leader') {
     router.push({
       name: 'viewChore',
-      params: { choreId: props.choreId }
+      params: { id: props.choreId }
     })
     //TODO: add a toaster to indicate why it rerouted
   }
@@ -224,11 +231,18 @@
   watch(
     () => route.name,
     (newName, oldName) => {
+      console.log("in watch")
+      console.log(newName)
       if(newName == "editChore" && store.user.role != 'leader') {
+        console.log("in if statement")
+        console.log(props.choreId)
+
         router.push({
           name: 'viewChore',
-          params: { choreId: to.props.choreId }
+          params: { id: props.choreId }
         })
+
+        console.log("push should have happened")
         //TODO: add a toaster to indicate why it rerouted
       }
 

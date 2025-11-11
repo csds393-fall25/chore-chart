@@ -372,6 +372,10 @@
   import FetchService from '../FetchService.js'
 
   const store = useAppStore()
+
+  // console.log("in setup")
+  // console.log(store)
+
   const router = useRouter()
 
   const listMode = ref(true);
@@ -489,6 +493,8 @@
 
     const userResult = await FetchService.updateUserPoints(store.user.id, chorePoints(chore))
 
+    console.log("in chore");
+    console.log(userResult);
     store.user = userResult;
 
     //TODO: add a toaster to confirm that the chore was completed.
