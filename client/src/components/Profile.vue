@@ -70,6 +70,7 @@ async function updateProfile() {
   store.user.email = username.value
   store.user.difficulty = maxDifficulty.value
   store.user.maxChoreTime = estimatedTime.value
+  isUpdate.value = false;
   return true;
 
 }

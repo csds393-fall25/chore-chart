@@ -33,7 +33,7 @@
           <v-card-actions>
              <v-btn id = "test" @click="showDialog = false" data-testid="cancelButton" > cancel
             </v-btn>
-            <v-btn id = "createDialog" @click="createProfile()" > create
+            <v-btn id = "createDialog" @click="createProfile()" > {{isJoin ? "Join" : "Create"}}
             </v-btn>
           </v-card-actions>
         </v-card>
