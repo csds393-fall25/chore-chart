@@ -16,6 +16,7 @@ class FetchService {
                     email: user.email,
                     password_hash: user.password_hash,
                     totalPoints: 0,
+                    role: user.role,
                     householdId: user.householdId,
                     maxChoreTime: user.maxChoreTime
                     

@@ -99,7 +99,7 @@ app.post('/api/signup', async (req, res) => {
   try {
     const {name, email, password_hash, difficulty, totalPoints, maxChoreTime, householdId } = req.body;
     const result = await prisma.user.create({
-      data: { name, email, password_hash, difficulty, totalPoints, maxChoreTime, householdId },
+      data: { name, email, password_hash, role, difficulty, totalPoints, maxChoreTime, householdId },
     });
     res.json(result);
   } catch (err) {
