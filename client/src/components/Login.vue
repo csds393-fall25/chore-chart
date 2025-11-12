@@ -94,13 +94,9 @@
       }
       const result = await FetchService.login(user);
       console.log("Login successful!", result);
-      console.log(result.user)
       isIncorrect.value = false;
       store.user = (result.user)
       store.household = await FetchService.fetchHousehold(store.user.householdId);
-
-      console.log(store.household)
-
       //Needs to occur last so that all other data is retrieved before the page changes
       store.loggedIn = true;
     } catch (error) {
@@ -155,7 +151,6 @@
   function validateProfile(){
     let flag = true;
   if(!displayedName.value){
-    console.log("Name is wrong")
     errorMessages.value.name = "name must exist"
     flag = false;
   }
@@ -167,7 +162,6 @@
 
 
   if(!username.value || !regex  ){
-    console.log("email is wrong")
     errorMessages.value.email = "Email must follow format xxx@xxx.xxx"
     flag = false
   }
@@ -176,7 +170,6 @@
   }
   
   if (!password.value || password.value.length < 8 || password.value.length > 25 || !(password.value.match(/\.*\d\.*/) && password.value.match(/\.*[A-Z]\.*/) ) ){
-    console.log("password is wrong")
     errorMessages.value.password = "Password must be 8-25 characters and include at least one capital letter and one number"
       flag = false
     }
@@ -194,7 +187,6 @@
   }
 
   if(!estimatedTime.value || estimatedTime.value <= 0){
-    console.log("estimated time is wrong")
     errorMessages.value.estTime = "Estimated time must be greater than 0"
     flag = false
   }
@@ -204,7 +196,6 @@
   }
 
   if(!maxDifficulty.value || maxDifficulty.value < 1 || maxDifficulty.value > 10){
-    console.log("max difficulty is wrong")
     errorMessages.value.maxDiff = "Maximum difficulty must be between 1 and 10"
     flag =  false
   }
@@ -256,7 +247,7 @@
       const result = await FetchService.signup(user);
       showDialog.value = false;
       if (result == 513){
-        console.log("Violate unique constraint on email")
+        console.error("Violate unique constraint on email")
         errorMessages.value.email = "There already exists an account for this email"
       }
       else{

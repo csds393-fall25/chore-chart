@@ -84,7 +84,6 @@ function deleteProfile(id) {
 function validateProfile(){
     let flag = true;
   if(!name.value){
-    console.log("Name is wrong")
     errorMessages.value.name = "name must exist"
     flag = false;
   }
@@ -92,29 +91,7 @@ function validateProfile(){
     errorMessages.value.name = ""
   }
 
-
-
-
-  // if (!password.value || password.value.length < 8 || password.value.length > 25 || !(password.value.match(/\.*\d\.*/) && password.value.match(/\.*[A-Z]\.*/) ) ){
-  //   console.log("password is wrong")
-  //   errorMessages.value.password = "Password must be 8-25 characters and include at least one capital letter and one number"
-  //     flag = false
-  //   }
-  //   else{
-  //     errorMessages.value.password = ""
-  //   }
-
-  // if(!(repeatedPassword.value == password.value)){
-  //   flag = false
-  //   errorMessages.value.repeatedPassword = "Passwords do not match"
-
-  // }
-  // else{
-  //   errorMessages.value.repeatedPassword = ""
-  // }
-
   if(!estimatedTime.value || estimatedTime.value <= 0){
-    console.log("estimated time is wrong")
     errorMessages.value.estTime = "Estimated time must be greater than 0"
     flag = false
   }
@@ -124,7 +101,6 @@ function validateProfile(){
   }
 
   if(!maxDifficulty.value || maxDifficulty.value < 1 || maxDifficulty.value > 10){
-    console.log("max difficulty is wrong")
     errorMessages.value.maxDiff = "Maximum difficulty must be between 1 and 10"
     flag =  false
   }
