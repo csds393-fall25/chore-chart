@@ -25,6 +25,7 @@ export const useAppStore = defineStore('app', {
     household: {
       id: -1,
       joinCode: 0,
-    }
+    },
+    avatars: []
   }),
 })
