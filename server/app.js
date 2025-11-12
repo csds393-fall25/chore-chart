@@ -76,6 +76,9 @@ app.delete('/api/household/:id', async (req, res) => {
   const id = parseInt(req.params.id);
   if (Number.isNaN(id)) return res.status(400).json({ error: 'Invalid id' });
   try {
+    // delete all chores in the household
+    await prisma.chore.deleteMany({ where: { householdId: id } });
+    // delete household
     const deleted = await prisma.household.delete({ where: { id } });
     res.json({ deleted: true, id: deleted.id });
   } catch (err) {
@@ -261,13 +264,5 @@ app.delete('/api/chore/:id', async (req, res) => {
 });
 
 const port = process.env.PORT || 3000;
-
-// Only start server if not in test mode
-if (process.env.NODE_ENV !== 'test') {
-  app.listen(port, () => {
-    // eslint-disable-next-line no-console
-    console.log(`Server listening on port ${port}`);
-  });
-}
 
 export default app;
