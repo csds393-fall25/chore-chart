@@ -151,6 +151,25 @@ app.put('/api/user/:id', async (req, res) => {
   }
 });
 
+//update a user's points
+app.put('/api/user/:id/points', async (req, res) => {
+  const { id } = req.params;
+  if(Number.isNaN(id)) {
+    return res.status(400).json({ error: "Invalid id"});
+  }
+
+  const { points } = req.body;
+  if(Number.isNaN(id)) {
+    return res.status(400).json({ error: "Invalid points"});
+  }
+  try {
+    const updated = await prisma.user.update({ where: { id: Number(id) }, data: { totalPoints: { increment: Number(points)}}})
+    res.json(updated);
+  } catch (err) {
+    res.status(500).json({ error: err.message });
+  }
+});
+
 // delete user
 app.delete('/api/user/:id', async (req, res) => {
   const {id} = req.params;

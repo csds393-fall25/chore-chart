@@ -28,7 +28,7 @@ test("Dashboard renders correctly", () => {
                     initialState: {
                         app: {
                             user: {
-                                id: 0,
+                                id: 1,
                                 householdId: 1,
                                 role: "leader",
                             },
@@ -89,7 +89,7 @@ test("changeView updates the view mode", () => {
                     initialState: {
                         app: {
                             user: {
-                                id: 0,
+                                id: 1,
                                 householdId: 1,
                                 role: "leader",
                             },
@@ -158,7 +158,7 @@ test("user initials returns the correct initials for the userId", () => {
                     initialState: {
                         app: {
                             user: {
-                                id: 0,
+                                id: 1,
                                 householdId: 1,
                                 role: "leader",
                             },
@@ -225,7 +225,7 @@ test("promptDelete opens the delete dialog for the correct chore", () => {
                     initialState: {
                         app: {
                             user: {
-                                id: 0,
+                                id: 1,
                                 householdId: 1,
                                 role: "leader",
                             },
@@ -291,7 +291,7 @@ test("cancelDelete closes the delete dialog", () => {
                     initialState: {
                         app: {
                             user: {
-                                id: 0,
+                                id: 1,
                                 householdId: 1,
                                 role: "leader",
                             },
@@ -362,7 +362,7 @@ test("assignToSelfPrompt opens the assign dialog for the correct chore", () => {
                     initialState: {
                         app: {
                             user: {
-                                id: 0,
+                                id: 1,
                                 householdId: 1,
                                 role: "leader",
                             },
@@ -428,7 +428,7 @@ test("choreAssignable correctly determines if the chore can be assigned to the c
                     initialState: {
                         app: {
                             user: {
-                                id: 0,
+                                id: 1,
                                 householdId: 1,
                                 role: "member",
                                 difficulty: 5
@@ -495,7 +495,7 @@ test("cancelAssign closes the assign dialog", () => {
                     initialState: {
                         app: {
                             user: {
-                                id: 0,
+                                id: 1,
                                 householdId: 1,
                                 role: "leader",
                             },
@@ -566,7 +566,7 @@ test("completeChorePrompt opens the complete chore dialog with the correct chore
                     initialState: {
                         app: {
                             user: {
-                                id: 0,
+                                id: 1,
                                 householdId: 1,
                                 role: "leader",
                             },
@@ -632,7 +632,7 @@ test("cancelComplete closes the complete dialog", () => {
                     initialState: {
                         app: {
                             user: {
-                                id: 0,
+                                id: 1,
                                 householdId: 1,
                                 role: "leader",
                             },
@@ -703,7 +703,7 @@ test("filterChores filters to the correct chores in the database", () => {
                     initialState: {
                         app: {
                             user: {
-                                id: 0,
+                                id: 1,
                                 householdId: 1,
                                 role: "leader",
                             },
@@ -781,7 +781,7 @@ test("completeChore deletes the completed chore from the database", async () => 
                     initialState: {
                         app: {
                             user: {
-                                id: 0,
+                                id: 1,
                                 householdId: 1,
                                 role: "leader",
                             },
