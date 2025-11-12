@@ -1,17 +1,18 @@
 <template>
   <v-app>
     <v-container fluid class="fill-height pa-0" v-if="store.loggedIn">
-      <v-row class="pa-0 fill-height ma-0">
-        <v-col cols="3" lg="2" class="pa-0 ma-0">
+      <v-row class="pa-0 fill-height ma-0 w-100">
+        <v-col cols="3" lg="2" class="pa-0 ma-0 d-print-none">
           <NavigationBar/>
         </v-col>
-        <v-col class="pa-0 ma-0">
+        <v-col class="pa-0 ma-0" cols="9" lg="10">
           <Suspense>
             <router-view></router-view>
             <template #fallback><Loading /></template>
           </Suspense>
         </v-col>
       </v-row>
+
     </v-container>
 
     <v-container fluid class="fill-height pa-0 w-100" v-else>

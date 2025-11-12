@@ -2,6 +2,7 @@ import Chore from '../pages/Chore.vue'
 import index from '../pages/index.vue'
 import Dashboard from '../pages/Dashboard.vue'
 import Profile from '@/components/Profile.vue'
+import PrintPage from '../pages/PrintPage.vue'
 
 const routes = [
   { 
@@ -53,7 +54,7 @@ const routes = [
   { 
     path: '/print', 
     name: 'print',
-    component: index, 
+    component: PrintPage, 
     props: true 
   },
   { 
