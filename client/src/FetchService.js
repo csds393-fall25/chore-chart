@@ -326,6 +326,25 @@ class FetchService {
             console.error(error.message);
         }
     }
+
+    static async updateUserPoints(userId, points) {
+        try {
+            const response = await fetch(`${baseURL}/user/${userId}/points`, {
+                method: "PUT",
+                headers: {
+                    "Content-Type": "application/json",
+                },
+                body: JSON.stringify({points: points})
+            })
+            if(!response.ok) {
+                throw new Error(`Response status: ${response.status}`);
+            }
+            const result = await response.json();
+            return result;
+        } catch (error) {
+            console.error(error.message);
+        }
+    }
 }
 
 export default FetchService
