@@ -23,7 +23,9 @@
         <v-card title="Delete Profile?" max-width="400">
           <v-card-text>Are you sure you want to delete your profile? This action cannot be reversed.</v-card-text>
           <v-card-actions>
-            <v-btn @click="deleteProfile(store.user.id)" text="delete">
+            <v-btn id="delete" @click="deleteProfile(store.user.id)" text="delete">
+            </v-btn>
+             <v-btn id="cancel" @click="showDialog = false" text="cancel">
             </v-btn>
           </v-card-actions>
         </v-card>

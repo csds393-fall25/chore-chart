@@ -140,15 +140,20 @@ const store = useAppStore()
     wrapper.vm.householdName = "TESTHOUSEHOLD"
     wrapper.vm.isJoin = false
     const result = await wrapper.vm.createProfile()
-    console.log("result")
+    console.log("LOOK HERE")
     console.log(result)
+    console.log(store.household.joinCode)
     const houseResult = await FetchService.fetchHouseholdByJoin(store.household.joinCode)
+    console.log("LOOK")
+    console.log(houseResult)
     expect(result.email).toBe("validateProfile12@q.com")
     expect(result.name).toBe("Mollietest")
     expect(result.password_hash).toBe("Mtest1234")
     expect(result.difficulty).toBe(3)
     expect(result.maxChoreTime).toBe(27)
+
     expect(houseResult.name).toBe("TESTHOUSEHOLD")
+
     await FetchService.deleteUser(result.id)
     await FetchService.deleteHousehold(result.householdId)
 })
