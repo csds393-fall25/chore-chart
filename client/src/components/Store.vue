@@ -96,7 +96,6 @@
           </v-card>
         </v-col>
       </v-row>
-      
     </v-container>
     <!-- Delete Dialog -->
     <v-dialog v-model="deleteDialogOpen" max-width="500">
@@ -222,99 +221,6 @@
     console.log("HI")
   }
 
-  
-
-  function userInitials(userId) {
-    let filterResult = store.household.users.filter(user => user.id == userId)
-    if(filterResult.length == 1) {
-      return filterResult[0].name.substring(0, 1)
-    }
-    return "N/A"
-  }
-
-  function updateChore(choreId) {
-    router.push({ name: 'editChore', params: {id: choreId}})
-  }
-
-  function promptDelete(chore) {
-    deleteDialogChore.value = chore;
-    deleteDialogOpen.value = true
-  }
-
-  function cancelDelete() {
-    deleteDialogOpen.value = false
-    deleteDialogChore.value = null
-  }
-
-  async function deleteChore(choreId) {
-    const result = await FetchService.deleteChore(choreId)
-    deleteDialogOpen.value = false
-    deleteDialogChore.value = null
-    choreList.value = choreList.value.filter(chore => chore.id != choreId)
-    unassignedList.value = unassignedList.value.filter(chore => chore.id != choreId)
-    store.household.chores = store.household.chores.filter(chore => chore.id != choreId)
-
-    //TODO: add toaster that confirms it was deleted
-  }
-
-  function assignToSelfPrompt(chore) {
-    assignDialogChore.value = chore;
-    assignDialogOpen.value = true;
-  }
-
-  function choreAssignable(difficulty) {
-    return store.user.role == 'leader' || store.user.difficulty >= difficulty;
-  }
-
-  function cancelAssign() {
-    assignDialogOpen.value = false
-    assignDialogChore.value = null
-  }
-
-  async function assignToSelf(chore) {
-    let choreForDatabase = { ...chore };
-    choreForDatabase.assigneeId = store.user.id;
-
-    const result = await FetchService.editChore(chore.id, choreForDatabase);
-
-    assignDialogOpen.value = false;
-    assignDialogChore.value = null;
-
-    choreList.value.push(choreForDatabase)
-    unassignedList.value = unassignedList.value.filter(listChore => listChore.id != chore.id);
-    store.household.chores.filter(listChore => listChore.id == chore.id).forEach(listChore => listChore.assigneeId = store.user.id)
-
-    //TODO: add toaster to confirm the chore was able to be assigned
-  }
-
-  function completeChorePrompt(chore) {
-    completeDialogChore.value = chore;
-    completeDialogOpen.value = true;
-  }
-
-  function cancelComplete() {
-    completeDialogOpen.value = false;
-    completeDialogChore.value = null
-  }
-
-  async function completeChore(chore) {
-    //TODO: Add points to the user upon chore completion
-    const result = await FetchService.deleteChore(chore.id)
-    completeDialogOpen.value = false
-    completeDialogChore.value = null
-    choreList.value = choreList.value.filter(listChore => listChore.id != chore.id)
-    store.household.chores = store.household.chores.filter(listChore => listChore.id != chore.id)
-
-    //TODO: add a toaster to confirm that the chore was completed.
-  }
-
-  function filterChores() {
-    if(filterUserId.value) {
-      choreList.value = store.household.chores.filter(chore => chore.assigneeId == filterUserId.value)
-    } else {
-      choreList.value = store.household.chores.filter(chore => chore.assigneeId)
-    }
-  }
 </script>
 
 <style scoped>
