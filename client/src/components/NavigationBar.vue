@@ -5,7 +5,7 @@
         <v-row width="100%" class="mb-0 mr-0 ml-0">
           <v-col cols="6" offset="3" class="pa-0 position-static">
             <!-- <v-avatar size = "large" color="primary"></v-avatar> -->
-            <Avatar />
+            <Avatar :userId="store.user.id"/>
           </v-col>
         </v-row>
         <v-row width="100%" class="mr-0 ml-0 mt-0 position-relative">

@@ -66,7 +66,7 @@
             v-slot:prepend
           >
             <div style="width: 40px" class="mr-3">
-              <Avatar />
+              <Avatar :userId="chore.assigneeId"/>
             </div>
           </template>
 
@@ -130,7 +130,7 @@
             <v-card-item class="pr-0">
               <template v-slot:prepend>
                 <div style="width: 40px" class="mr-3">
-                  <Avatar />
+                  <Avatar :userId="chore.assigneeId"/>
                 </div>
               </template>
               <template v-slot:append>

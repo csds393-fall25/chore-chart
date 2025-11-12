@@ -11,12 +11,17 @@
 </template>
   
 <script setup>
-import { ref } from 'vue';
+import { ref, onMounted, defineProps } from 'vue';
 import FetchService from '@/FetchService';
 import { useAppStore } from "../stores/app.js";
 
+const props = defineProps({
+    userId: Number,
+  });
+
 const store = useAppStore();
 const avatar = ref({
+  userId: props.userId,
   skinTone: "",
   hat: "",
   hair: "",
@@ -25,41 +30,47 @@ const avatar = ref({
   handProp: ""
 });
 
-// Check if user is set in store
-if (store && store.user && store.user.id) {
-  // Fetch avatar once
-  if (!store.user.avatar) {
-    const avatarProps = await FetchService.getAvatar(store.user.id);
-    avatarProps.forEach((prop) => {
-      switch(prop.type) {
-        case "skinTone":
-          avatar.value.skinTone = prop.url;
-          break;
-        case "hat":
-          avatar.value.hat = prop.url;
-          break;
-        case "hair":
-          avatar.value.hair = prop.url;
-          break;
-        case "shirt":
-          avatar.value.shirt = prop.url;
-          break;
-        case "background":
-          avatar.value.background = prop.url;
-          break;
-        case "handProp":
-          avatar.value.handProp = prop.url;
-          break;
-        default:
-          console.log(`Unexpected prop type ${prop.type}`);
+onMounted(async () => {
+  // Check if user is set in store
+  if (store && store.household && store.household.users.some((user) => user.id == props.userId)) {
+    // Fetch avatar once
+    if (!store.avatars.some((avatar) => avatar.userId == userId)) {
+      const avatarProps = await FetchService.getAvatar(props.userId);
+      avatarProps.forEach((prop) => {
+        switch(prop.type) {
+          case "skinTone":
+            avatar.value.skinTone = prop.url;
+            break;
+          case "hat":
+            avatar.value.hat = prop.url;
+            break;
+          case "hair":
+            avatar.value.hair = prop.url;
+            break;
+          case "shirt":
+            avatar.value.shirt = prop.url;
+            break;
+          case "background":
+            avatar.value.background = prop.url;
+            break;
+          case "handProp":
+            avatar.value.handProp = prop.url;
+            break;
+          default:
+            console.log(`Unexpected prop type ${prop.type}`);
+        }
+      });
+      store.avatars.push = avatar.value;
+      if(props.userId == store.user.id) {
+        store.user.avatar = avatar.value
       }
-    });
-    store.user.avatar = avatar.value;
-  } else {
-    // Retrieve from store after first time fetching
-    avatar.value = store.user.avatar;
+    } else {
+      // Retrieve from store after first time fetching
+      avatar.value = store.avatar.find((avatar) => avatar.userId == props.userId);
+    }
   }
-} 
+})
+ 
 
 </script>
 <style scoped>

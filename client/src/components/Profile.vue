@@ -2,7 +2,7 @@
   <v-sheet class="fill-height w-100 " color="primary-darken-1">
     <v-row>
       <v-col cols="4" class="ma-4">
-          <Avatar />
+          <Avatar :userId="store.user.id"/>
       </v-col>
     </v-row>
     <v-form class="ma-4">

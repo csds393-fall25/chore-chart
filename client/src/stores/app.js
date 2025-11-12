@@ -24,6 +24,7 @@ export const useAppStore = defineStore('app', {
     loggedIn: false,
     household: {
       id: -1,
-    }
+    },
+    avatars: []
   }),
 })
