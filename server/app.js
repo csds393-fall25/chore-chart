@@ -45,6 +45,16 @@ app.get('/api/household/:id', async (req, res) => {
   }
 });
 
+// get household by join code
+app.get('/api/household/joinCode/:joinCode', async (req, res) => {
+  const id = req.params;
+  if (Number.isNaN(id)) return res.status(400).json({ error: 'Invalid Join Code' });
+
+  const household = await prisma.household.findUnique({ where: { joinCode: id.joinCode } });
+  if (!household) return res.status(404).json({ error: 'Not found' });
+  res.json(household);
+});
+
 // create household 
 app.post('/api/household', async (req, res) => {
   const { name } = req.body;
@@ -87,14 +97,21 @@ app.delete('/api/household/:id', async (req, res) => {
 app.post('/api/signup', async (req, res) => {
   
   try {
-    const {name, email, password_hash, difficulty, totalPoints, maxChoreTime, householdId } = req.body;
+    const {name, role, email, password_hash, difficulty, totalPoints, maxChoreTime, householdId } = req.body;
     const result = await prisma.user.create({
-      data: { name, email, password_hash, difficulty, totalPoints, maxChoreTime, householdId },
+      data: { name, email, password_hash, role, difficulty, totalPoints, maxChoreTime, householdId },
     });
     res.json(result);
   } catch (err) {
     console.log("Error: " + err);
+    console.log(err.code)
+    if (err.code === 'P2002'){
+      console.log("violated email constraint")
+      res.status(513).json({ error: err.message })
+    }
+    else{
     res.status(500).json({ error: err.message });
+    }
   }
 });
 
