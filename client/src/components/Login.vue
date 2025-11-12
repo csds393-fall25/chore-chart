@@ -237,7 +237,7 @@
       password_hash: password.value,
       householdId: house.id,
       totalPoints: 0,
-      role: isJoin? 'member' : 'leader',
+      role: isJoin.value ? 'member' : 'leader',
       difficulty: maxDifficulty.value,
       maxChoreTime: estimatedTime.value,
     }
