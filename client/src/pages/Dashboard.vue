@@ -405,6 +405,7 @@
   }
 
   function updateChore(choreId) {
+    console.log("in updateChore")
     router.push({ name: 'editChore', params: {id: choreId}})
   }
 
@@ -491,6 +492,9 @@
     const userResult = await FetchService.updateUserPoints(store.user.id, chorePoints(chore))
 
     store.user = userResult;
+
+    const householdUser = store.household.users.find((user) => user.id == store.user.id)
+    householdUser.totalPoints = userResult.totalPoints
 
     //TODO: add a toaster to confirm that the chore was completed.
   }

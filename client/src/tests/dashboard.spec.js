@@ -7,8 +7,11 @@ import { createVuetify } from 'vuetify'
 import * as components from 'vuetify/components'
 import * as directives from 'vuetify/directives'
 import { useAppStore } from "@/stores/app.js";
+import routesList from '../router/routes.js'
 import routes from '../router/router.js'
 import FetchService from '../FetchService.js'
+import { createRouter, createWebHistory } from 'vue-router'
+import { nextTick } from 'vue'
 
 
 // need this at the top
@@ -212,10 +215,81 @@ test("user initials returns the correct initials for the userId", () => {
 })
 
 
-// //updateChore(choreId)
-// //Only changes the router
+//updateChore(choreId)
+test("updateChore reroutes correctly", async () => {
 
-// //promptDelete(chore)
+    let router = createRouter({
+        history: createWebHistory(),
+        routes: routesList,
+    })
+
+    router.push('/chore/1/edit')
+    await router.isReady()
+
+    const spy = vi.spyOn(router, 'push');
+
+    const wrapper = mount(Dashboard, {
+        global: {
+            plugins: [
+                createTestingPinia({
+                    createSpy: vi.fn,
+                    initialState: {
+                        app: {
+                            user: {
+                                id: 1,
+                                householdId: 1,
+                                role: "leader",
+                            },
+                            household: {
+                                users: [
+                                    {
+                                        id: 4,
+                                        name: "test",
+                                        role: "member",
+                                    },
+                                ],
+                                chores: [
+                                    {
+                                        id: 1,
+                                        name: "test name",
+                                        description: "test description",
+                                        difficulty: 10,
+                                        location: "Kitchen",
+                                        estimatedTime: 20,
+                                        dueDate: new Date('2025-12-25'),
+                                        repeat: false,
+                                        householdId: 1,
+                                        assigneeId: null,
+                                    },
+                                    {
+                                        id: 2,
+                                        name: "test name result",
+                                        description: "test description result",
+                                        difficulty: 9,
+                                        location: "Living Room",
+                                        estimatedTime: 30,
+                                        dueDate: new Date('2025-12-25'),
+                                        repeat: false,
+                                        householdId: 1,
+                                        assigneeId: null,
+                                    }
+                                ]
+                            },
+                        },
+                    },
+                }),
+                [vuetify],
+                [router],
+            ],
+        }
+    })
+
+    wrapper.vm.updateChore(1)
+
+    expect(spy).toHaveBeenCalledWith({ name: 'editChore', params: {id: 1}})
+})
+
+//promptDelete(chore)
 test("promptDelete opens the delete dialog for the correct chore", () => {
     const wrapper = mount(Dashboard, {
         global: {
@@ -694,7 +768,7 @@ test("cancelComplete closes the complete dialog", () => {
 })
 
 //filterChores()
-test("filterChores filters to the correct chores in the database", () => {
+test("filterChores filters correctly for assigned chores", () => {
     const wrapper = mount(Dashboard, {
         global: {
             plugins: [
@@ -759,8 +833,79 @@ test("filterChores filters to the correct chores in the database", () => {
     expect(wrapper.vm.choreList).toContainEqual(store.household.chores[0])
 })
 
+test("filterChores filters to the correctly with no filter", () => {
+    const wrapper = mount(Dashboard, {
+        global: {
+            plugins: [
+                createTestingPinia({
+                    createSpy: vi.fn,
+                    initialState: {
+                        app: {
+                            user: {
+                                id: 1,
+                                householdId: 1,
+                                role: "leader",
+                            },
+                            household: {
+                                users: [
+                                    {
+                                        id: 4,
+                                        name: "test",
+                                        role: "member",
+                                    },
+                                ],
+                                chores: [
+                                    {
+                                        id: 1,
+                                        name: "test name",
+                                        description: "test description",
+                                        difficulty: 10,
+                                        location: "Kitchen",
+                                        estimatedTime: 20,
+                                        dueDate: new Date('2025-12-25'),
+                                        repeat: false,
+                                        householdId: 1,
+                                        assigneeId: 1,
+                                    },
+                                    {
+                                        id: 2,
+                                        name: "test name result",
+                                        description: "test description result",
+                                        difficulty: 9,
+                                        location: "Living Room",
+                                        estimatedTime: 30,
+                                        dueDate: new Date('2025-12-25'),
+                                        repeat: false,
+                                        householdId: 1,
+                                        assigneeId: 2,
+                                    }
+                                ]
+                            },
+                        },
+                    },
+                }),
+                [vuetify],
+                routes,
+            ],
+        }
+    })
+
+    const store = useAppStore()
+    wrapper.vm.filterUserId = 1;
+    wrapper.vm.filterChores();
+
+    expect(wrapper.vm.choreList.length).toBe(1)
+    expect(wrapper.vm.choreList).toContainEqual(store.household.chores[0])
+
+    wrapper.vm.filterUserId = null;
+    wrapper.vm.filterChores();
+
+    expect(wrapper.vm.choreList.length).toBe(2)
+    expect(wrapper.vm.choreList).toEqual(store.household.chores)
+})
+
 //async completeChore(chore)
-test("completeChore deletes the completed chore from the database", async () => {
+test("completeChore deletes the completed chore from the database and gives points", async () => {
     const result = await FetchService.createChore({
         name: "new test name",
         description: "new test description",
@@ -784,6 +929,7 @@ test("completeChore deletes the completed chore from the database", async () => 
                                 id: 1,
                                 householdId: 1,
                                 role: "leader",
+                                totalPoints: 0,
                             },
                             household: {
                                 users: [
@@ -792,6 +938,13 @@ test("completeChore deletes the completed chore from the database", async () => 
                                         name: "test",
                                         role: "member",
                                     },
+                                    {
+                                        id: 1,
+                                        name: "current user",
+                                        householdId: 1,
+                                        role: "leader",
+                                        totalPoints: 0,
+                                    }
                                 ],
                                 chores: [
                                     {
@@ -839,6 +992,10 @@ test("completeChore deletes the completed chore from the database", async () => 
     expect(wrapper.vm.choreList.length).toBe(2)
     expect(wrapper.vm.choreList).not.toContainEqual(result)
     expect(store.household.chores).not.toContainEqual(result)
+    expect(store.user.totalPoints).toBe(35)
+    expect(store.household.users[1].totalPoints).toBe(35)
+
+    await FetchService.updateUserPoints(1, -35)
 })
 
 let newChore = {}
@@ -1013,4 +1170,147 @@ test("deleteChore deletes the chore from the database", async () => {
     expect(wrapper.vm.choreList.length).toBe(2)
     expect(wrapper.vm.choreList).not.toContainEqual(newChore)
     expect(store.household.chores).not.toContainEqual(newChore)
+})
+
+//chorePoints
+test("chorePoints returns the correct value when curent date is after due date", async () => {
+    const wrapper = mount(Dashboard, {
+        global: {
+            plugins: [
+                createTestingPinia({
+                    createSpy: vi.fn,
+                    initialState: {
+                        app: {
+                            user: {
+                                id: 1,
+                                name: "test2",
+                                householdId: 1,
+                                role: "leader",
+                            },
+                            household: {
+                                users: [
+                                    {
+                                        id: 4,
+                                        name: "test",
+                                        role: "member",
+                                    },
+                                    {
+                                        id: 1,
+                                        householdId: 1,
+                                        name: "test2",
+                                        role: "leader",
+                                    }
+                                ],
+                                chores: [
+                                    {
+                                        id: 1,
+                                        name: "test name",
+                                        description: "test description",
+                                        difficulty: 10,
+                                        location: "Kitchen",
+                                        estimatedTime: 20,
+                                        dueDate: new Date('2035-12-25'),
+                                        repeat: false,
+                                        householdId: 1,
+                                        assigneeId: 1,
+                                    },
+                                    {
+                                        id: 2,
+                                        name: "test name result",
+                                        description: "test description result",
+                                        difficulty: 9,
+                                        location: "Living Room",
+                                        estimatedTime: 30,
+                                        dueDate: new Date('2015-12-25'),
+                                        repeat: false,
+                                        householdId: 1,
+                                        assigneeId: 2,
+                                    },
+                                ]
+                            },
+                        },
+                    },
+                }),
+                [vuetify],
+                routes,
+            ],
+        }
+    })
+
+    const store = useAppStore()
+
+    const result = wrapper.vm.chorePoints(store.household.chores[0])
+
+    expect(result).toBe(50)
+})
+
+test("chorePoints returns the correct value when curent date is before due date", async () => {
+    const wrapper = mount(Dashboard, {
+        global: {
+            plugins: [
+                createTestingPinia({
+                    createSpy: vi.fn,
+                    initialState: {
+                        app: {
+                            user: {
+                                id: 1,
+                                name: "test2",
+                                householdId: 1,
+                                role: "leader",
+                            },
+                            household: {
+                                users: [
+                                    {
+                                        id: 4,
+                                        name: "test",
+                                        role: "member",
+                                    },
+                                    {
+                                        id: 1,
+                                        householdId: 1,
+                                        name: "test2",
+                                        role: "leader",
+                                    }
+                                ],
+                                chores: [
+                                    {
+                                        id: 1,
+                                        name: "test name",
+                                        description: "test description",
+                                        difficulty: 10,
+                                        location: "Kitchen",
+                                        estimatedTime: 20,
+                                        dueDate: new Date('2035-12-25'),
+                                        repeat: false,
+                                        householdId: 1,
+                                        assigneeId: 1,
+                                    },
+                                    {
+                                        id: 2,
+                                        name: "test name result",
+                                        description: "test description result",
+                                        difficulty: 9,
+                                        location: "Living Room",
+                                        estimatedTime: 30,
+                                        dueDate: new Date('2015-12-25'),
+                                        repeat: false,
+                                        householdId: 1,
+                                        assigneeId: 2,
+                                    },
+                                ]
+                            },
+                        },
+                    },
+                }),
+                [vuetify],
+                routes,
+            ],
+        }
+    })
+
+    const store = useAppStore()
+
+    const result = wrapper.vm.chorePoints(store.household.chores[1])
+
+    expect(result).toBe(18)
 })
