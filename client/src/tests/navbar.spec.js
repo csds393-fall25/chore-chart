@@ -27,3 +27,16 @@ test("nav bar renders correctly", () => {
 
 expect(wrapper.text()).toContain('Store')
 })
+
+test("PT-1 User's number of points can be viewed from the nav bar", () => {
+    const wrapper = mount(NavigationBar, {
+        global: {
+  plugins: [
+    createTestingPinia({createSpy: vi.fn}),
+  [vuetify],
+  ],
+}
+})
+const store = useAppStore()
+expect(wrapper.text()).toContain(store.user.totalPoints + " pts")
+})
