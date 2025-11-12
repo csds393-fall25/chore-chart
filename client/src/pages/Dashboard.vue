@@ -372,6 +372,7 @@
   import FetchService from '../FetchService.js'
 
   const store = useAppStore()
+
   const router = useRouter()
 
   const listMode = ref(true);
