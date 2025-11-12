@@ -36,6 +36,8 @@ const customTheme = {
     'on-light-blue': '#192b40',
     teal: '#51d299',
     'on-teal': '#000000',
+    black: '#000000',
+    white: '#FFFFFF',
   },
   variables: {
     'border-color': '#000000',
