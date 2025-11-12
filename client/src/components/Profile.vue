@@ -2,24 +2,24 @@
   <v-sheet class="fill-height w-100 " color="primary-darken-1">
     <v-avatar class="ma-4" size="large" color="primary"></v-avatar>
     <v-form class="ma-4">
-      <v-text-field v-if="isUpdate" :error-messages="errorMessages.name" style="width: 75%; " label="Name" v-model="name"></v-text-field>
+      <v-text-field data-testid="name"  v-if="isUpdate" :error-messages="errorMessages.name" style="width: 75%; " label="Name" v-model="name"></v-text-field>
       <p v-if="!isUpdate">Name: {{name}}</p>
-      <v-text-field v-if="isUpdate" :error-messages="errorMessages.email" :disabled="true" style="width: 75%" v-model="username" label="Email"></v-text-field>
+      <v-text-field data-testid="email" v-if="isUpdate" :error-messages="errorMessages.email" :disabled="true" style="width: 75%" v-model="username" label="Email"></v-text-field>
       <!-- <v-text-field :error-messages="errorMessages.password" style="width: 75%; " label="password" v-model="password"></v-text-field>
       <v-text-field :error-messages="errorMessages.repeatedPassword" style="width: 75%" v-model="repeatedPassword" label="verify password"></v-text-field> -->
       <p v-if="!isUpdate">Email: {{username}}</p>
-      <p v-if="!isUpdate"> Estimated Time To Complete Chores (minutes): {{estimatedTime}}</p>
+      <p  v-if="!isUpdate"> Estimated Time To Complete Chores (minutes): {{estimatedTime}}</p>
       <p v-if="isUpdate">Estimated Time To Complete Chores (minutes)</p>
-      <v-number-input v-if="isUpdate" :disabled="!isUpdate" :error-messages="errorMessages.estTime" style="width: 75%" v-model="estimatedTime" :min='0' control-variant="split"></v-number-input>
+      <v-number-input data-testid="estTime" v-if="isUpdate" :disabled="!isUpdate" :error-messages="errorMessages.estTime" style="width: 75%" v-model="estimatedTime" :min='0' control-variant="split"></v-number-input>
         <p v-if="!isUpdate">Maximum Difficulty: {{maxDifficulty}}</p>
       <p v-if="isUpdate">Maximum Difficulty</p>
       <v-number-input v-if="isUpdate" :disabled="!isUpdate" :error-messages="errorMessages.maxDiff" style="width: 75%" v-model="maxDifficulty" :min='1' :max='10'
         control-variant="split"></v-number-input>
-      <v-btn class="elevation-0" style="background-color: #51d299 ; font-size: small; "
+      <v-btn id="update" class="elevation-0" style="background-color: #51d299 ; font-size: small; "
         @click=" !isUpdate ? updateButton() : updateProfile()">Update</v-btn>
-      <v-btn class="mx-auto my-auto elevation-0 ml-4" color="error" @click="showDialog = true"
+      <v-btn id="deleteButton" class="mx-auto my-auto elevation-0 ml-4" color="error" @click="showDialog = true"
         style=" font-size: small; "> Delete</v-btn>
-      <v-dialog v-model="showDialog" width="auto">
+      <v-dialog data-testid="dialog" v-model="showDialog" width="auto">
         <v-card title="Delete Profile?" max-width="400">
           <v-card-text>Are you sure you want to delete your profile? This action cannot be reversed.</v-card-text>
           <v-card-actions>

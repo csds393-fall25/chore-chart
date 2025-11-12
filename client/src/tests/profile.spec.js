@@ -42,8 +42,15 @@ test("PET-1 Editied fields are all valid", async () => {
     wrapper.vm.username = "x"
     wrapper.vm.maxDifficulty = randomdiff
     wrapper.vm.estimatedTime = randomtime
+    wrapper.vm.isUpdate = true
 
-    //call a function from component
+     await nextTick()
+    const spy = vi.spyOn(wrapper.vm, "updateProfile");
+        await wrapper.find("#update").trigger("click")
+             await nextTick()
+    
+        //await wrapper.findComponent('[data-testid="createHouse"]').trigger("click")
+        expect(spy).toHaveBeenCalled();
 
     await wrapper.vm.updateProfile()
 
@@ -237,7 +244,7 @@ test("PDT-1 Profile is deleted", async () => {
    
 
        wrapper.vm.displayedName = "Mollietest"
-    wrapper.vm.username = "validateProfile12@q.com" 
+    wrapper.vm.username = "validateProfile12@qq.com" 
     wrapper.vm.password = "Mtest1234"
     wrapper.vm.maxDifficulty = 3
     wrapper.vm.estimatedTime = 27
@@ -255,22 +262,14 @@ test("PDT-1 Profile is deleted", async () => {
     }
 
     const result = await FetchService.signup(user)
-    console.log("LOLO")
-    console.log(result)
-    FetchService.deleteUser(result.id)
+     await nextTick()
+        await wrapper.find("#deleteButton").trigger("click")
     
-
-    //call a function from component
-
-  
-
-
-
+        //await wrapper.findComponent('[data-testid="createHouse"]').trigger("click")
+        expect(wrapper.vm.showDialog).toBe(true);
     await nextTick()
     const spy = vi.spyOn(wrapper.vm, "deleteProfile");
         await wrapper.find("#delete").trigger("click")
-    
-        //await wrapper.findComponent('[data-testid="createHouse"]').trigger("click")
         expect(spy).toHaveBeenCalled();
 
 
@@ -353,7 +352,7 @@ test("PDT-2 Profile deletion is canceled", async () => {
    
 
        wrapper.vm.displayedName = "Mollietest"
-    wrapper.vm.username = "validateProfile12@q.com" 
+    wrapper.vm.username = "validateProfile12@qc.com" 
     wrapper.vm.password = "Mtest1234"
     wrapper.vm.maxDifficulty = 3
     wrapper.vm.estimatedTime = 27
@@ -371,20 +370,9 @@ test("PDT-2 Profile deletion is canceled", async () => {
     }
 
     const result = await FetchService.signup(user)
-    console.log("LOLO")
-    console.log(result)
     FetchService.deleteUser(result.id)
-    
-
-    //call a function from component
-
-  
-
-
-
     await nextTick()
- 
-        await wrapper.find("#cancel").trigger("click")
+    await wrapper.find("#cancel").trigger("click")
     
         //await wrapper.findComponent('[data-testid="createHouse"]').trigger("click")
         expect(wrapper.vm.showDialog).toBe(false);
@@ -394,3 +382,137 @@ test("PDT-2 Profile deletion is canceled", async () => {
     
  
 })
+
+
+
+test("testing name v-model", async () => {
+    const wrapper = mount(Profile, {
+        global: {
+  plugins: [
+    createTestingPinia({createSpy: vi.fn}),
+  [vuetify],
+  ],
+}
+})
+const store = useAppStore()
+// using the store
+wrapper.vm.isUpdate = true
+    await nextTick()
+
+const select = wrapper.findComponent('[data-testid="name"]');
+    await nextTick()
+    await select.setValue("x")
+    await nextTick()
+    expect(wrapper.vm.name).toBe("x")
+
+
+
+  
+    
+})
+
+test("testing email v-model", async () => {
+    const wrapper = mount(Profile, {
+        global: {
+  plugins: [
+    createTestingPinia({createSpy: vi.fn}),
+  [vuetify],
+  ],
+}
+})
+const store = useAppStore()
+// using the store
+wrapper.vm.isUpdate = true
+    await nextTick()
+
+const select = wrapper.findComponent('[data-testid="email"]');
+    await nextTick()
+    await select.setValue("x@x.com")
+    await nextTick()
+    expect(wrapper.vm.username).toBe("x@x.com")
+
+
+
+  
+    
+})
+
+
+test("testing estimated time v-model", async () => {
+    const wrapper = mount(Profile, {
+        global: {
+  plugins: [
+    createTestingPinia({createSpy: vi.fn}),
+  [vuetify],
+  ],
+}
+})
+const store = useAppStore()
+// using the store
+wrapper.vm.isUpdate = true
+    await nextTick()
+
+const select = wrapper.findComponent('[data-testid="estTime"]');
+    await nextTick()
+    await select.setValue(8)
+    await nextTick()
+    expect(wrapper.vm.estimatedTime).toBe(8)
+})
+
+test("testing showDialog v-model", async () => {
+    const wrapper = mount(Profile, {
+        global: {
+  plugins: [
+    createTestingPinia({createSpy: vi.fn}),
+  [vuetify],
+  ],
+  stubs: {
+    VDialog: {
+      name: "VDialog",
+      template: '<div class="v-dialog-stub"><slot /></div>',
+      props: ['modelValue',
+      ]
+    }
+  }
+}
+})
+const store = useAppStore()
+// using the store
+wrapper.vm.isCreate = true
+await nextTick()
+
+const select = wrapper.findComponent('[data-testid="dialog"]');
+    await select.setValue(true)
+    await nextTick()
+    expect(wrapper.vm.showDialog).toBe(true)
+})
+
+test("testing updateButton method", async () => {
+    const wrapper = mount(Profile, {
+        global: {
+  plugins: [
+    createTestingPinia({createSpy: vi.fn}),
+  [vuetify],
+  ],
+  stubs: {
+    VDialog: {
+      name: "VDialog",
+      template: '<div class="v-dialog-stub"><slot /></div>',
+      props: ['modelValue',
+      ]
+    }
+  }
+}
+})
+const store = useAppStore()
+// using the store
+wrapper.vm.isCreate = false
+await nextTick()
+
+   await wrapper.find("#update").trigger("click")
+ 
+        expect(wrapper.vm.isUpdate).toBe(true);
+
+})
+
+
