@@ -127,8 +127,6 @@
 
 
   function userInitials(name) {
-    console.log("HI")
-    console.log(name)
     return name.substring(0,1)
   }
 
