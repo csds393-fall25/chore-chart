@@ -3,6 +3,7 @@ import index from '../pages/index.vue'
 import Dashboard from '../pages/Dashboard.vue'
 import Profile from '@/components/Profile.vue'
 import PrintPage from '../pages/PrintPage.vue'
+import Household from '@/components/Household.vue'
 
 const routes = [
   { 
@@ -19,7 +20,7 @@ const routes = [
   { 
     path: '/house', 
     name: 'household',
-    component: index, 
+    component: Household, 
     props: true },
   { 
     path: '/chore/create', 

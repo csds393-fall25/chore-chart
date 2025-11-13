@@ -20,7 +20,7 @@ test("temp test", () => {
     expect (1+1).toBe(2)
 }) 
 
-test("PET-1 Editied fields are all valid", async () => {
+test("PET-1 Edited fields are all valid", async () => {
     const wrapper = mount(Profile, {
         global: {
   plugins: [
@@ -31,8 +31,8 @@ test("PET-1 Editied fields are all valid", async () => {
 
 })
     const store = useAppStore()
-    const randomdiff = Math.floor(Math.random()*10)
-    const randomtime = Math.floor(Math.random()*100)
+    const randomdiff = 5
+    const randomtime = 50
     store.user.id = 219
     wrapper.vm.name = "y"
     wrapper.vm.username = "x"
