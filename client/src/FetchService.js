@@ -333,6 +333,7 @@ class FetchService {
             const response = await fetch(`${baseURL}/chore/${choreId}`, {
                 method: "DELETE"
             });
+
             if(!response.ok) {
                 throw new Error(`Response status: ${response.status}`);
             }

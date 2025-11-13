@@ -12,6 +12,7 @@
             item-title="name"
             item-value="id"
             v-model="filterUserId"
+            data-testid="filteruserid"
           ></v-select>
         </v-col>
         <v-col cols="12" sm="3" md="2" class="pa-0 mb-1">
@@ -19,17 +20,18 @@
             color="secondary"
             block
             @click="filterChores()"
+            id="filterbutton"
           >
             Filter
           </v-btn>
         </v-col>
         <v-col cols="12" sm="6" md="2" offset-sm="6" offset-md="1" class="pr-0 pl-0 pt-0 mb-1">
-          <!-- <div class="pr-0 mr-0"> -->
             <v-btn
               color="secondary"
               class="mr-0"
               block
               @click="changeView()"
+              id="tilebutton"
               v-if="listMode"
             >
               Tile View
@@ -38,7 +40,8 @@
               color="secondary"
               class="mr-0"
               block
-              @click="changeView()"  
+              @click="changeView()"
+              id="listbutton"
               v-else
             >
               List View
@@ -46,12 +49,12 @@
             <v-btn
               color="secondary"
               class="mr-0 mt-1"
+              id="mychoresbutton"
               @click="filterUserId = store.user.id; filterChores()"
               block
             >
               My Chores
             </v-btn>
-          <!-- </div> -->
         </v-col>
       </v-row>
       <v-list 
@@ -289,7 +292,11 @@
       </v-row>
     </v-container>
     <!-- Delete Dialog -->
-    <v-dialog v-model="deleteDialogOpen" max-width="500">
+    <v-dialog 
+      v-model="deleteDialogOpen"
+      max-width="500"
+      data-testid="deleteDialog"
+    >
       <v-card>
         <v-card-item>
           <v-card-title>Delete?</v-card-title>
@@ -299,12 +306,14 @@
         <v-card-actions>
           <v-btn
             @click="cancelDelete()"
+            id="cancelDeleteButton"
           >
             Cancel
           </v-btn>
           <v-btn
             color="error"
             variant="elevated"
+            id="deleteChoreButton"
             @click="deleteChore(deleteDialogChore.id)"
           >
             Delete
@@ -313,7 +322,11 @@
       </v-card>
     </v-dialog>
     <!-- Assign Dialog -->
-    <v-dialog v-model="assignDialogOpen" max-width="500">
+    <v-dialog 
+      v-model="assignDialogOpen" 
+      max-width="500"
+      data-testid="assignDialog"
+    >
       <v-card>
         <v-card-item>
           <v-card-title>Assign to self</v-card-title>
@@ -324,12 +337,14 @@
         <v-card-actions>
           <v-btn
             @click="cancelAssign()"
+            id="cancelAssignButton"
           >
             Cancel
           </v-btn>
           <v-btn
             color="secondary"
             variant="elevated"
+            id="assignChoreButton"
             @click="assignToSelf(assignDialogChore)"
             v-if="assignDialogChore && choreAssignable(assignDialogChore.difficulty)"
           >
@@ -339,7 +354,11 @@
       </v-card>
     </v-dialog>
     <!-- Complete Dialog -->
-    <v-dialog v-model="completeDialogOpen" max-width="500">
+    <v-dialog 
+      v-model="completeDialogOpen" 
+      max-width="500"
+      data-testid="completeDialog"
+    >
       <v-card>
         <v-card-item>
           <v-card-title>Complete?</v-card-title>
@@ -349,12 +368,14 @@
         <v-card-actions>
           <v-btn
             @click="cancelComplete()"
+            id="cancelCompleteButton"
           >
             Cancel
           </v-btn>
           <v-btn
             color="secondary"
             variant="elevated"
+            id="completeChoreButton"
             @click="completeChore(completeDialogChore)"
           >
             Complete
@@ -405,6 +426,7 @@
   }
 
   function updateChore(choreId) {
+    console.log("in updateChore")
     router.push({ name: 'editChore', params: {id: choreId}})
   }
 
@@ -481,8 +503,8 @@
   }
 
   async function completeChore(chore) {
-    //TODO: Add points to the user upon chore completion
     const result = await FetchService.deleteChore(chore.id)
+
     completeDialogOpen.value = false
     completeDialogChore.value = null
     choreList.value = choreList.value.filter(listChore => listChore.id != chore.id)
@@ -491,6 +513,9 @@
     const userResult = await FetchService.updateUserPoints(store.user.id, chorePoints(chore))
 
     store.user = userResult;
+
+    const householdUser = store.household.users.find((user) => user.id == store.user.id)
+    householdUser.totalPoints = userResult.totalPoints
 
     //TODO: add a toaster to confirm that the chore was completed.
   }
