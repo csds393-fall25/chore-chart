@@ -3,8 +3,7 @@ class FetchService {
 
     // Sign up
     static async signup(user) {
-                try {
-
+        try {
             const response = await fetch(baseURL + "/signup", {
                 method: "POST",
                 headers: {
@@ -19,10 +18,8 @@ class FetchService {
                     role: user.role,
                     householdId: user.householdId,
                     maxChoreTime: user.maxChoreTime
-                    
-
-
-            })});
+                })
+            });
             if(!response.ok) {
                  return response.status          
             } 
@@ -35,8 +32,6 @@ class FetchService {
     
     // Signin
     static async login(user) {
-    
-        
         try {
             const response = await fetch(baseURL + "/login", {
                 method: "POST",
@@ -48,10 +43,8 @@ class FetchService {
                     password_hash: user.password_hash
                 })
             });
-
             
             if(!response.ok) {
-          
                 throw new Error(`Response status: ${response.status}`);
             }
        
@@ -65,7 +58,6 @@ class FetchService {
 
     // update user
     static async updateUser(userId, userData) {
-
         try {
             var stringified;
             if(Object.hasOwn(userData, 'password_hash')) {
