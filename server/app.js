@@ -6,6 +6,7 @@ import { fileURLToPath } from 'url';
 import cors from 'cors';
 import prisma from './prisma.js';
 import bodyParser from 'body-parser';
+import bcrypt from 'bcrypt';
 import { S3Client, GetObjectCommand } from "@aws-sdk/client-s3";
 import { getSignedUrl } from "@aws-sdk/s3-request-presigner";
 
@@ -22,6 +23,8 @@ const s3 = new S3Client({
   },
   region: bucketRegion
 })
+
+const saltRounds = 10;
 
 const __filename = fileURLToPath(import.meta.url);
 const __dirname = path.dirname(__filename);
@@ -112,7 +115,8 @@ app.delete('/api/household/:id', async (req, res) => {
   }
 });
 
-// signup
+
+// sign up
 app.post('/api/signup', async (req, res) => {
   let defaultAvatar = [
     {name: "YellowSmileyFace", type: "skinTone", id: 0},
@@ -123,7 +127,10 @@ app.post('/api/signup', async (req, res) => {
     {name: "BlueBook", type: "handProp", id: 0}
   ]
   try {
-    const {name, role, email, password_hash, difficulty, totalPoints, maxChoreTime, householdId } = req.body;
+    const {name, role, email, userPassword, difficulty, totalPoints, maxChoreTime, householdId } = req.body;
+
+    const password_hash = await bcrypt.hash(userPassword, saltRounds);
+
     for (let i=0; i < defaultAvatar.length; i++) {
       const avatarProp = await prisma.avatarProp.findUnique({ where: { name: defaultAvatar[i].name, type: defaultAvatar[i].type}});
       if (avatarProp && avatarProp.id) {
@@ -169,6 +176,7 @@ app.post('/api/signup', async (req, res) => {
       }
     });
     res.json(result);
+    
   } catch (err) {
     console.log("Error: " + err);
     console.log(err.code)
@@ -184,18 +192,15 @@ app.post('/api/signup', async (req, res) => {
 
 // login
 app.post('/api/login', async (req, res) => {
-  const { email, password_hash } = req.body;
-  if (!email || !password_hash) return res.status(400).json({ error: 'Missing email or password' });
+  const { email, userPassword } = req.body;
+  if (!email || !userPassword) return res.status(400).json({ error: 'Missing email or password' });
 
   try {
     const user = await prisma.user.findUnique({ where: { email } });
-    if (!user) return res.status(401).json({ error: 'Invalid credentials' });
+    if (!user) return res.status(401).json({ error: 'Email not found' });
 
-    // For now, compare the password_hash directly
-    // Future version: verify a hashed password with stored salt
-    if (user.password_hash !== password_hash) {
-      return res.status(401).json({ error: 'Invalid credentials' });
-    }
+    const isValid = await bcrypt.compare(userPassword, user.password_hash);
+    if (!isValid) return res.status(401).json({ error: 'Wrong password' });
 
     // hide password_hash and salt, return the rest of the user object
     const { password_hash: _hiddenPassword, salt: _hiddenSalt, ...safeUser } = user;
@@ -236,9 +241,12 @@ app.put('/api/user/leave', async (req, res) => {
 app.put('/api/user/:id', async (req, res) => {
   const { id } = req.params;
   if(Number.isNaN(id)) { return res.status(400).json({ error: "Invalid id" })};
-  const { name, email, password_hash, difficulty, maxChoreTime, householdId, role } = req.body;
+  const { name, email, userPassword, difficulty, maxChoreTime, householdId, role } = req.body;
+
+  const password_hash = await bcrypt.hash(userPassword, saltRounds);
+
   try {
-    const updated = await prisma.user.update({ where:  { id: Number(id) }, data: { name, email, password_hash, difficulty, maxChoreTime, householdId, role } });
+    const updated =  await prisma.user.update({ where:  { id: Number(id) }, data: { name, email, password_hash, difficulty, maxChoreTime, householdId, role } });
     res.json(updated);
   } catch (err) {
     res.status(500).json({ error: err.message });
