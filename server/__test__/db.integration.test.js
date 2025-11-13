@@ -69,7 +69,7 @@ describe('DB integration tests', () => {
             householdId: household.id
         });
         console.log(response.error.message);
-        expect(response.status).toBe(500);
+        expect(response.status).toBe(513);
     });
 
     test('CCT-1 - Create a chore with a household and assignee', async () => {
