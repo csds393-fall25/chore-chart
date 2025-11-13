@@ -16,14 +16,15 @@ class FetchService {
                     email: user.email,
                     password_hash: user.password_hash,
                     totalPoints: 0,
-                    householdId: 2,
+                    role: user.role,
+                    householdId: user.householdId,
                     maxChoreTime: user.maxChoreTime
                     
 
 
             })});
             if(!response.ok) {
-                throw new Error(`Response status: ${response.status}`);
+                 return response.status          
             } 
             const result = await response.json();
             return result;
@@ -167,6 +168,21 @@ class FetchService {
             return result;
         } catch (error) {
             console.error(error.message);
+        }
+    }
+
+        // Get household by join code
+    static async fetchHouseholdByJoin(joinCode) {
+        try {
+            const response = await fetch(`${baseURL}/household/joinCode/${joinCode}`);
+            if(!response.ok) {
+                throw new Error(`Response status: ${response.status}`);
+            }
+            const result = await response.json();
+            return result;
+        } catch (error) {
+            console.error(error.message);
+            return false;
         }
     }
 
@@ -317,6 +333,25 @@ class FetchService {
             const response = await fetch(`${baseURL}/chore/${choreId}`, {
                 method: "DELETE"
             });
+            if(!response.ok) {
+                throw new Error(`Response status: ${response.status}`);
+            }
+            const result = await response.json();
+            return result;
+        } catch (error) {
+            console.error(error.message);
+        }
+    }
+
+    static async updateUserPoints(userId, points) {
+        try {
+            const response = await fetch(`${baseURL}/user/${userId}/points`, {
+                method: "PUT",
+                headers: {
+                    "Content-Type": "application/json",
+                },
+                body: JSON.stringify({points: points})
+            })
             if(!response.ok) {
                 throw new Error(`Response status: ${response.status}`);
             }

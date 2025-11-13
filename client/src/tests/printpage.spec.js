@@ -1,4 +1,4 @@
-import Dashboard from '../pages/Dashboard.vue'
+import PrintPage from '../pages/PrintPage.vue'
 import { expect, test, vi } from 'vitest'
 import { mount } from '@vue/test-utils'
 import { useAppStore } from '@/stores/app.js';
@@ -8,7 +8,6 @@ import * as components from 'vuetify/components'
 import * as directives from 'vuetify/directives'
 import { useAppStore } from "@/stores/app.js";
 import routes from '../router/router.js'
-import FetchService from '../FetchService.js'
 
 
 // need this at the top
@@ -17,10 +16,8 @@ const vuetify = createVuetify({
     directives,
 })
 
-vi.stubGlobal('visualViewport', new EventTarget())
-
-test("Dashboard renders correctly", () => {
-    const wrapper = mount(Dashboard, {
+test("NOFT - PrintPage renders correctly", () => {
+    const wrapper = mount(PrintPage, {
         global: {
             plugins: [
                 createTestingPinia({
@@ -28,7 +25,7 @@ test("Dashboard renders correctly", () => {
                     initialState: {
                         app: {
                             user: {
-                                id: 1,
+                                id: 0,
                                 householdId: 1,
                                 role: "leader",
                             },
@@ -73,15 +70,18 @@ test("Dashboard renders correctly", () => {
                 [vuetify],
                 routes,
             ],
+        },
+        props: {
+            viewMode: 'create',
+            choreId: 0,
         }
     })
 
-    expect(wrapper.text()).toContain('Unassigned Chores')
+    expect(wrapper.text()).toContain('Mon')
 })
 
-//changeView()
-test("changeView updates the view mode", () => {
-    const wrapper = mount(Dashboard, {
+test("NOFT - Assigned to name returns correctly for assigned chore", () => {
+    const wrapper = mount(PrintPage, {
         global: {
             plugins: [
                 createTestingPinia({
@@ -89,7 +89,7 @@ test("changeView updates the view mode", () => {
                     initialState: {
                         app: {
                             user: {
-                                id: 1,
+                                id: 0,
                                 householdId: 1,
                                 role: "leader",
                             },
@@ -112,7 +112,7 @@ test("changeView updates the view mode", () => {
                                         dueDate: new Date('2025-12-25'),
                                         repeat: false,
                                         householdId: 1,
-                                        assigneeId: null,
+                                        assigneeId: 4,
                                     },
                                     {
                                         id: 2,
@@ -134,23 +134,20 @@ test("changeView updates the view mode", () => {
                 [vuetify],
                 routes,
             ],
+        },
+        props: {
+            viewMode: 'create',
+            choreId: 0,
         }
     })
 
-    expect(wrapper.vm.listMode).toBe(true);
+    const result = wrapper.vm.assignedToName(4);
 
-    wrapper.vm.changeView();
-
-    expect(wrapper.vm.listMode).toBe(false);
-
-    wrapper.vm.changeView();
-
-    expect(wrapper.vm.listMode).toBe(true);
+    expect(result).toEqual('test')
 })
 
-//userInitials(userId)
-test("user initials returns the correct initials for the userId", () => {
-    const wrapper = mount(Dashboard, {
+test("NOFT - Assigned to name returns correctly for unassigned chore", () => {
+    const wrapper = mount(PrintPage, {
         global: {
             plugins: [
                 createTestingPinia({
@@ -158,7 +155,7 @@ test("user initials returns the correct initials for the userId", () => {
                     initialState: {
                         app: {
                             user: {
-                                id: 1,
+                                id: 0,
                                 householdId: 1,
                                 role: "leader",
                             },
@@ -181,7 +178,7 @@ test("user initials returns the correct initials for the userId", () => {
                                         dueDate: new Date('2025-12-25'),
                                         repeat: false,
                                         householdId: 1,
-                                        assigneeId: null,
+                                        assigneeId: 4,
                                     },
                                     {
                                         id: 2,
@@ -203,21 +200,20 @@ test("user initials returns the correct initials for the userId", () => {
                 [vuetify],
                 routes,
             ],
+        },
+        props: {
+            viewMode: 'create',
+            choreId: 0,
         }
-        
     })
 
-    expect(wrapper.vm.userInitials(4)).toEqual("t");
-    expect(wrapper.vm.userInitials(0)).toEqual("N/A");
+    const result = wrapper.vm.assignedToName(null);
+
+    expect(result).toEqual('____________')
 })
 
-
-// //updateChore(choreId)
-// //Only changes the router
-
-// //promptDelete(chore)
-test("promptDelete opens the delete dialog for the correct chore", () => {
-    const wrapper = mount(Dashboard, {
+test("PCT-1 - Filter chores filtered for assigned to specific member", () => {
+    const wrapper = mount(PrintPage, {
         global: {
             plugins: [
                 createTestingPinia({
@@ -225,7 +221,7 @@ test("promptDelete opens the delete dialog for the correct chore", () => {
                     initialState: {
                         app: {
                             user: {
-                                id: 1,
+                                id: 0,
                                 householdId: 1,
                                 role: "leader",
                             },
@@ -248,7 +244,7 @@ test("promptDelete opens the delete dialog for the correct chore", () => {
                                         dueDate: new Date('2025-12-25'),
                                         repeat: false,
                                         householdId: 1,
-                                        assigneeId: null,
+                                        assigneeId: 4,
                                     },
                                     {
                                         id: 2,
@@ -261,64 +257,10 @@ test("promptDelete opens the delete dialog for the correct chore", () => {
                                         repeat: false,
                                         householdId: 1,
                                         assigneeId: null,
-                                    }
-                                ]
-                            },
-                        },
-                    },
-                }),
-                [vuetify],
-                routes,
-            ],
-        }
-    })
-
-    const store = useAppStore()
-
-    wrapper.vm.promptDelete(store.household.chores[0]);
-
-    expect(wrapper.vm.deleteDialogOpen).toBe(true)
-    expect(wrapper.vm.deleteDialogChore).toEqual(store.household.chores[0])
-})
-
-// //cancelDelete()
-test("cancelDelete closes the delete dialog", () => {
-    const wrapper = mount(Dashboard, {
-        global: {
-            plugins: [
-                createTestingPinia({
-                    createSpy: vi.fn,
-                    initialState: {
-                        app: {
-                            user: {
-                                id: 1,
-                                householdId: 1,
-                                role: "leader",
-                            },
-                            household: {
-                                users: [
-                                    {
-                                        id: 4,
-                                        name: "test",
-                                        role: "member",
-                                    },
-                                ],
-                                chores: [
-                                    {
-                                        id: 1,
-                                        name: "test name",
-                                        description: "test description",
-                                        difficulty: 10,
-                                        location: "Kitchen",
-                                        estimatedTime: 20,
-                                        dueDate: new Date('2025-12-25'),
-                                        repeat: false,
-                                        householdId: 1,
-                                        assigneeId: null,
                                     },
                                     {
-                                        id: 2,
-                                        name: "test name result",
+                                        id: 3,
+                                        name: "test name 2",
                                         description: "test description result",
                                         difficulty: 9,
                                         location: "Living Room",
@@ -326,7 +268,7 @@ test("cancelDelete closes the delete dialog", () => {
                                         dueDate: new Date('2025-12-25'),
                                         repeat: false,
                                         householdId: 1,
-                                        assigneeId: null,
+                                        assigneeId: 4,
                                     }
                                 ]
                             },
@@ -336,444 +278,57 @@ test("cancelDelete closes the delete dialog", () => {
                 [vuetify],
                 routes,
             ],
+        },
+        props: {
+            viewMode: 'create',
+            choreId: 0,
         }
     })
 
-    const store = useAppStore()
-
-    wrapper.vm.promptDelete(store.household.chores[0]);
-
-    expect(wrapper.vm.deleteDialogOpen).toBe(true)
-    expect(wrapper.vm.deleteDialogChore).toEqual(store.household.chores[0])
-
-    wrapper.vm.cancelDelete();
-
-    expect(wrapper.vm.deleteDialogOpen).toBe(false)
-    expect(wrapper.vm.deleteDialogChore).toBeNull()
-})
-
-//assignToSelfPrompt(chore)
-test("assignToSelfPrompt opens the assign dialog for the correct chore", () => {
-    const wrapper = mount(Dashboard, {
-        global: {
-            plugins: [
-                createTestingPinia({
-                    createSpy: vi.fn,
-                    initialState: {
-                        app: {
-                            user: {
-                                id: 1,
-                                householdId: 1,
-                                role: "leader",
-                            },
-                            household: {
-                                users: [
-                                    {
-                                        id: 4,
-                                        name: "test",
-                                        role: "member",
-                                    },
-                                ],
-                                chores: [
-                                    {
-                                        id: 1,
-                                        name: "test name",
-                                        description: "test description",
-                                        difficulty: 10,
-                                        location: "Kitchen",
-                                        estimatedTime: 20,
-                                        dueDate: new Date('2025-12-25'),
-                                        repeat: false,
-                                        householdId: 1,
-                                        assigneeId: null,
-                                    },
-                                    {
-                                        id: 2,
-                                        name: "test name result",
-                                        description: "test description result",
-                                        difficulty: 9,
-                                        location: "Living Room",
-                                        estimatedTime: 30,
-                                        dueDate: new Date('2025-12-25'),
-                                        repeat: false,
-                                        householdId: 1,
-                                        assigneeId: null,
-                                    }
-                                ]
-                            },
-                        },
-                    },
-                }),
-                [vuetify],
-                routes,
-            ],
-        }
-    })
-
-    const store = useAppStore()
-
-    wrapper.vm.assignToSelfPrompt(store.household.chores[0]);
-
-    expect(wrapper.vm.assignDialogOpen).toBe(true)
-    expect(wrapper.vm.assignDialogChore).toEqual(store.household.chores[0])
-})
-
-//choreAssignable(difficulty)
-test("choreAssignable correctly determines if the chore can be assigned to the current user", () => {
-    const wrapper = mount(Dashboard, {
-        global: {
-            plugins: [
-                createTestingPinia({
-                    createSpy: vi.fn,
-                    initialState: {
-                        app: {
-                            user: {
-                                id: 1,
-                                householdId: 1,
-                                role: "member",
-                                difficulty: 5
-                            },
-                            household: {
-                                users: [
-                                    {
-                                        id: 4,
-                                        name: "test",
-                                        role: "member",
-                                        difficulty: 5,
-                                    },
-                                ],
-                                chores: [
-                                    {
-                                        id: 1,
-                                        name: "test name",
-                                        description: "test description",
-                                        difficulty: 10,
-                                        location: "Kitchen",
-                                        estimatedTime: 20,
-                                        dueDate: new Date('2025-12-25'),
-                                        repeat: false,
-                                        householdId: 1,
-                                        assigneeId: null,
-                                    },
-                                    {
-                                        id: 2,
-                                        name: "test name result",
-                                        description: "test description result",
-                                        difficulty: 9,
-                                        location: "Living Room",
-                                        estimatedTime: 30,
-                                        dueDate: new Date('2025-12-25'),
-                                        repeat: false,
-                                        householdId: 1,
-                                        assigneeId: null,
-                                    }
-                                ]
-                            },
-                        },
-                    },
-                }),
-                [vuetify],
-                routes,
-            ],
-        }
-    })
-
-    const store = useAppStore()
-
-    expect(wrapper.vm.choreAssignable(5)).toBe(true)
-    expect(wrapper.vm.choreAssignable(10)).toBe(false)
-    expect(wrapper.vm.choreAssignable(2)).toBe(true)
-})
-
-//cancelAssign()
-test("cancelAssign closes the assign dialog", () => {
-    const wrapper = mount(Dashboard, {
-        global: {
-            plugins: [
-                createTestingPinia({
-                    createSpy: vi.fn,
-                    initialState: {
-                        app: {
-                            user: {
-                                id: 1,
-                                householdId: 1,
-                                role: "leader",
-                            },
-                            household: {
-                                users: [
-                                    {
-                                        id: 4,
-                                        name: "test",
-                                        role: "member",
-                                    },
-                                ],
-                                chores: [
-                                    {
-                                        id: 1,
-                                        name: "test name",
-                                        description: "test description",
-                                        difficulty: 10,
-                                        location: "Kitchen",
-                                        estimatedTime: 20,
-                                        dueDate: new Date('2025-12-25'),
-                                        repeat: false,
-                                        householdId: 1,
-                                        assigneeId: null,
-                                    },
-                                    {
-                                        id: 2,
-                                        name: "test name result",
-                                        description: "test description result",
-                                        difficulty: 9,
-                                        location: "Living Room",
-                                        estimatedTime: 30,
-                                        dueDate: new Date('2025-12-25'),
-                                        repeat: false,
-                                        householdId: 1,
-                                        assigneeId: null,
-                                    }
-                                ]
-                            },
-                        },
-                    },
-                }),
-                [vuetify],
-                routes,
-            ],
-        }
-    })
-
-    const store = useAppStore()
-
-    wrapper.vm.assignToSelfPrompt(store.household.chores[0]);
-
-    expect(wrapper.vm.assignDialogOpen).toBe(true)
-    expect(wrapper.vm.assignDialogChore).toEqual(store.household.chores[0])
-
-    wrapper.vm.cancelAssign();
-
-    expect(wrapper.vm.assignDialogOpen).toBe(false)
-    expect(wrapper.vm.assignDialogChore).toBeNull()
-})
-
-//completeChorePrompt(chore)
-test("completeChorePrompt opens the complete chore dialog with the correct chore", () => {
-    const wrapper = mount(Dashboard, {
-        global: {
-            plugins: [
-                createTestingPinia({
-                    createSpy: vi.fn,
-                    initialState: {
-                        app: {
-                            user: {
-                                id: 1,
-                                householdId: 1,
-                                role: "leader",
-                            },
-                            household: {
-                                users: [
-                                    {
-                                        id: 4,
-                                        name: "test",
-                                        role: "member",
-                                    },
-                                ],
-                                chores: [
-                                    {
-                                        id: 1,
-                                        name: "test name",
-                                        description: "test description",
-                                        difficulty: 10,
-                                        location: "Kitchen",
-                                        estimatedTime: 20,
-                                        dueDate: new Date('2025-12-25'),
-                                        repeat: false,
-                                        householdId: 1,
-                                        assigneeId: null,
-                                    },
-                                    {
-                                        id: 2,
-                                        name: "test name result",
-                                        description: "test description result",
-                                        difficulty: 9,
-                                        location: "Living Room",
-                                        estimatedTime: 30,
-                                        dueDate: new Date('2025-12-25'),
-                                        repeat: false,
-                                        householdId: 1,
-                                        assigneeId: null,
-                                    }
-                                ]
-                            },
-                        },
-                    },
-                }),
-                [vuetify],
-                routes,
-            ],
-        }
-    })
-
-    const store = useAppStore()
-
-    wrapper.vm.completeChorePrompt(store.household.chores[0]);
-
-    expect(wrapper.vm.completeDialogOpen).toBe(true)
-    expect(wrapper.vm.completeDialogChore).toEqual(store.household.chores[0])
-})
-
-//cancelComplete()
-test("cancelComplete closes the complete dialog", () => {
-    const wrapper = mount(Dashboard, {
-        global: {
-            plugins: [
-                createTestingPinia({
-                    createSpy: vi.fn,
-                    initialState: {
-                        app: {
-                            user: {
-                                id: 1,
-                                householdId: 1,
-                                role: "leader",
-                            },
-                            household: {
-                                users: [
-                                    {
-                                        id: 4,
-                                        name: "test",
-                                        role: "member",
-                                    },
-                                ],
-                                chores: [
-                                    {
-                                        id: 1,
-                                        name: "test name",
-                                        description: "test description",
-                                        difficulty: 10,
-                                        location: "Kitchen",
-                                        estimatedTime: 20,
-                                        dueDate: new Date('2025-12-25'),
-                                        repeat: false,
-                                        householdId: 1,
-                                        assigneeId: null,
-                                    },
-                                    {
-                                        id: 2,
-                                        name: "test name result",
-                                        description: "test description result",
-                                        difficulty: 9,
-                                        location: "Living Room",
-                                        estimatedTime: 30,
-                                        dueDate: new Date('2025-12-25'),
-                                        repeat: false,
-                                        householdId: 1,
-                                        assigneeId: null,
-                                    }
-                                ]
-                            },
-                        },
-                    },
-                }),
-                [vuetify],
-                routes,
-            ],
-        }
-    })
-
-    const store = useAppStore()
-
-    wrapper.vm.completeChorePrompt(store.household.chores[0]);
-
-    expect(wrapper.vm.completeDialogOpen).toBe(true)
-    expect(wrapper.vm.completeDialogChore).toEqual(store.household.chores[0])
-
-    wrapper.vm.cancelComplete();
-
-    expect(wrapper.vm.completeDialogOpen).toBe(false)
-    expect(wrapper.vm.completeDialogChore).toBeNull()
-})
-
-//filterChores()
-test("filterChores filters to the correct chores in the database", () => {
-    const wrapper = mount(Dashboard, {
-        global: {
-            plugins: [
-                createTestingPinia({
-                    createSpy: vi.fn,
-                    initialState: {
-                        app: {
-                            user: {
-                                id: 1,
-                                householdId: 1,
-                                role: "leader",
-                            },
-                            household: {
-                                users: [
-                                    {
-                                        id: 4,
-                                        name: "test",
-                                        role: "member",
-                                    },
-                                ],
-                                chores: [
-                                    {
-                                        id: 1,
-                                        name: "test name",
-                                        description: "test description",
-                                        difficulty: 10,
-                                        location: "Kitchen",
-                                        estimatedTime: 20,
-                                        dueDate: new Date('2025-12-25'),
-                                        repeat: false,
-                                        householdId: 1,
-                                        assigneeId: 1,
-                                    },
-                                    {
-                                        id: 2,
-                                        name: "test name result",
-                                        description: "test description result",
-                                        difficulty: 9,
-                                        location: "Living Room",
-                                        estimatedTime: 30,
-                                        dueDate: new Date('2025-12-25'),
-                                        repeat: false,
-                                        householdId: 1,
-                                        assigneeId: 2,
-                                    }
-                                ]
-                            },
-                        },
-                    },
-                }),
-                [vuetify],
-                routes,
-            ],
-        }
-    })
-
-    const store = useAppStore()
-    wrapper.vm.filterUserId = 1;
+    wrapper.vm.filterUserId = 4
     wrapper.vm.filterChores();
 
-    expect(wrapper.vm.choreList.length).toBe(1)
-    expect(wrapper.vm.choreList).toContainEqual(store.household.chores[0])
+    expect(wrapper.vm.choreList).toContainEqual({
+                                        id: 1,
+                                        name: "test name",
+                                        description: "test description",
+                                        difficulty: 10,
+                                        location: "Kitchen",
+                                        estimatedTime: 20,
+                                        dueDate: new Date('2025-12-25'),
+                                        repeat: false,
+                                        householdId: 1,
+                                        assigneeId: 4,
+                                    })
+    expect(wrapper.vm.choreList).toContainEqual({
+                                        id: 3,
+                                        name: "test name 2",
+                                        description: "test description result",
+                                        difficulty: 9,
+                                        location: "Living Room",
+                                        estimatedTime: 30,
+                                        dueDate: new Date('2025-12-25'),
+                                        repeat: false,
+                                        householdId: 1,
+                                        assigneeId: 4,
+                                    })
+    expect(wrapper.vm.choreList).not.toContainEqual({
+                                        id: 2,
+                                        name: "test name result",
+                                        description: "test description result",
+                                        difficulty: 9,
+                                        location: "Living Room",
+                                        estimatedTime: 30,
+                                        dueDate: new Date('2025-12-25'),
+                                        repeat: false,
+                                        householdId: 1,
+                                        assigneeId: null,
+                                    })
+    expect(wrapper.vm.choreList.length).toEqual(2)
 })
 
-//async completeChore(chore)
-test("completeChore deletes the completed chore from the database", async () => {
-    const result = await FetchService.createChore({
-        name: "new test name",
-        description: "new test description",
-        difficulty: 7,
-        location: "Basement",
-        estimatedTime: 20,
-        dueDate: new Date("2025-12-30 EST"),
-        repeat: false,
-        householdId: 1,
-        assigneeId: null,
-    })
-    
-    const wrapper = mount(Dashboard, {
+test("PCT-1 - Filter chores filtered for unassigned", () => {
+    const wrapper = mount(PrintPage, {
         global: {
             plugins: [
                 createTestingPinia({
@@ -781,7 +336,7 @@ test("completeChore deletes the completed chore from the database", async () => 
                     initialState: {
                         app: {
                             user: {
-                                id: 1,
+                                id: 0,
                                 householdId: 1,
                                 role: "leader",
                             },
@@ -804,7 +359,7 @@ test("completeChore deletes the completed chore from the database", async () => 
                                         dueDate: new Date('2025-12-25'),
                                         repeat: false,
                                         householdId: 1,
-                                        assigneeId: 1,
+                                        assigneeId: 4,
                                     },
                                     {
                                         id: 2,
@@ -816,78 +371,39 @@ test("completeChore deletes the completed chore from the database", async () => 
                                         dueDate: new Date('2025-12-25'),
                                         repeat: false,
                                         householdId: 1,
-                                        assigneeId: 2,
-                                    },
-                                    result
-                                ]
-                            },
-                        },
-                    },
-                }),
-                [vuetify],
-                routes,
-            ],
-        }
-    })
-
-    const store = useAppStore()
-
-    wrapper.vm.completeDialogChore = result
-
-    await wrapper.vm.completeChore(result)
-
-    expect(wrapper.vm.choreList.length).toBe(2)
-    expect(wrapper.vm.choreList).not.toContainEqual(result)
-    expect(store.household.chores).not.toContainEqual(result)
-})
-
-let newChore = {}
-
-//async assignToSelf(chore)
-test("assignToSelf assigns the given chore to the current user", async () => {
-    const result = await FetchService.createChore({
-        name: "new test name",
-        description: "new test description",
-        difficulty: 7,
-        location: "Basement",
-        estimatedTime: 20,
-        dueDate: new Date("2025-12-30 EST"),
-        repeat: false,
-        householdId: 1,
-        assigneeId: null,
-    })
-
-    newChore = {...result}
-    
-    const wrapper = mount(Dashboard, {
-        global: {
-            plugins: [
-                createTestingPinia({
-                    createSpy: vi.fn,
-                    initialState: {
-                        app: {
-                            user: {
-                                id: 1,
-                                name: "test2",
-                                householdId: 1,
-                                role: "leader",
-                            },
-                            household: {
-                                users: [
-                                    {
-                                        id: 4,
-                                        name: "test",
-                                        role: "member",
+                                        assigneeId: null,
                                     },
                                     {
-                                        id: 1,
+                                        id: 3,
+                                        name: "test name 2",
+                                        description: "test description result",
+                                        difficulty: 9,
+                                        location: "Living Room",
+                                        estimatedTime: 30,
+                                        dueDate: new Date('2025-12-25'),
+                                        repeat: false,
                                         householdId: 1,
-                                        name: "test2",
-                                        role: "leader",
+                                        assigneeId: 4,
                                     }
-                                ],
-                                chores: [
-                                    {
+                                ]
+                            },
+                        },
+                    },
+                }),
+                [vuetify],
+                routes,
+            ],
+        },
+        props: {
+            viewMode: 'create',
+            choreId: 0,
+        }
+    })
+
+    wrapper.vm.filterUserId = -1
+    wrapper.vm.filterChores();
+
+    expect(wrapper.vm.choreList).not.toContainEqual({
                                         id: 1,
                                         name: "test name",
                                         description: "test description",
@@ -897,9 +413,21 @@ test("assignToSelf assigns the given chore to the current user", async () => {
                                         dueDate: new Date('2025-12-25'),
                                         repeat: false,
                                         householdId: 1,
-                                        assigneeId: 1,
-                                    },
-                                    {
+                                        assigneeId: 4,
+                                    })
+    expect(wrapper.vm.choreList).not.toContainEqual({
+                                        id: 3,
+                                        name: "test name 2",
+                                        description: "test description result",
+                                        difficulty: 9,
+                                        location: "Living Room",
+                                        estimatedTime: 30,
+                                        dueDate: new Date('2025-12-25'),
+                                        repeat: false,
+                                        householdId: 1,
+                                        assigneeId: 4,
+                                    })
+    expect(wrapper.vm.choreList).toContainEqual({
                                         id: 2,
                                         name: "test name result",
                                         description: "test description result",
@@ -909,38 +437,13 @@ test("assignToSelf assigns the given chore to the current user", async () => {
                                         dueDate: new Date('2025-12-25'),
                                         repeat: false,
                                         householdId: 1,
-                                        assigneeId: 2,
-                                    },
-                                    result
-                                ]
-                            },
-                        },
-                    },
-                }),
-                [vuetify],
-                routes,
-            ],
-        }
-    })
-
-    const store = useAppStore()
-
-    wrapper.vm.assignDialogChore = result
-
-    await wrapper.vm.assignToSelf(result)
-
-    expect(wrapper.vm.choreList.length).toBe(3)
-    expect(wrapper.vm.choreList).not.toContainEqual(newChore)
-    expect(store.household.chores).not.toContainEqual(newChore)
-    expect(wrapper.vm.choreList).toContainEqual(result)
-    expect(store.household.chores).toContainEqual(result)
-
-    newChore.assigneeId = 1
+                                        assigneeId: null,
+                                    })
+    expect(wrapper.vm.choreList.length).toEqual(1)
 })
 
-//async deleteChore(choreId)
-test("deleteChore deletes the chore from the database", async () => {
-    const wrapper = mount(Dashboard, {
+test("PCT-2 - Filter chores filtered for all chores", () => {
+    const wrapper = mount(PrintPage, {
         global: {
             plugins: [
                 createTestingPinia({
@@ -948,8 +451,7 @@ test("deleteChore deletes the chore from the database", async () => {
                     initialState: {
                         app: {
                             user: {
-                                id: 1,
-                                name: "test2",
+                                id: 0,
                                 householdId: 1,
                                 role: "leader",
                             },
@@ -960,12 +462,6 @@ test("deleteChore deletes the chore from the database", async () => {
                                         name: "test",
                                         role: "member",
                                     },
-                                    {
-                                        id: 1,
-                                        householdId: 1,
-                                        name: "test2",
-                                        role: "leader",
-                                    }
                                 ],
                                 chores: [
                                     {
@@ -978,7 +474,7 @@ test("deleteChore deletes the chore from the database", async () => {
                                         dueDate: new Date('2025-12-25'),
                                         repeat: false,
                                         householdId: 1,
-                                        assigneeId: 1,
+                                        assigneeId: 4,
                                     },
                                     {
                                         id: 2,
@@ -990,9 +486,20 @@ test("deleteChore deletes the chore from the database", async () => {
                                         dueDate: new Date('2025-12-25'),
                                         repeat: false,
                                         householdId: 1,
-                                        assigneeId: 2,
+                                        assigneeId: null,
                                     },
-                                    newChore
+                                    {
+                                        id: 3,
+                                        name: "test name 2",
+                                        description: "test description result",
+                                        difficulty: 9,
+                                        location: "Living Room",
+                                        estimatedTime: 30,
+                                        dueDate: new Date('2025-12-25'),
+                                        repeat: false,
+                                        householdId: 1,
+                                        assigneeId: 4,
+                                    }
                                 ]
                             },
                         },
@@ -1001,16 +508,367 @@ test("deleteChore deletes the chore from the database", async () => {
                 [vuetify],
                 routes,
             ],
+        },
+        props: {
+            viewMode: 'create',
+            choreId: 0,
         }
     })
 
-    const store = useAppStore()
+    wrapper.vm.filterUserId = null
+    wrapper.vm.filterChores();
 
-    wrapper.vm.deleteDialogChore = newChore
+    expect(wrapper.vm.choreList).toContainEqual({
+                                        id: 1,
+                                        name: "test name",
+                                        description: "test description",
+                                        difficulty: 10,
+                                        location: "Kitchen",
+                                        estimatedTime: 20,
+                                        dueDate: new Date('2025-12-25'),
+                                        repeat: false,
+                                        householdId: 1,
+                                        assigneeId: 4,
+                                    })
+    expect(wrapper.vm.choreList).toContainEqual({
+                                        id: 3,
+                                        name: "test name 2",
+                                        description: "test description result",
+                                        difficulty: 9,
+                                        location: "Living Room",
+                                        estimatedTime: 30,
+                                        dueDate: new Date('2025-12-25'),
+                                        repeat: false,
+                                        householdId: 1,
+                                        assigneeId: 4,
+                                    })
+    expect(wrapper.vm.choreList).toContainEqual({
+                                        id: 2,
+                                        name: "test name result",
+                                        description: "test description result",
+                                        difficulty: 9,
+                                        location: "Living Room",
+                                        estimatedTime: 30,
+                                        dueDate: new Date('2025-12-25'),
+                                        repeat: false,
+                                        householdId: 1,
+                                        assigneeId: null,
+                                    })
+    expect(wrapper.vm.choreList.length).toEqual(3)
+})
 
-    await wrapper.vm.deleteChore(newChore.id)
+test("PCT-1 and PCT-2 - printChoreChart calls window.print", () => {
+    const wrapper = mount(PrintPage, {
+        global: {
+            plugins: [
+                createTestingPinia({
+                    createSpy: vi.fn,
+                    initialState: {
+                        app: {
+                            user: {
+                                id: 0,
+                                householdId: 1,
+                                role: "leader",
+                            },
+                            household: {
+                                users: [
+                                    {
+                                        id: 4,
+                                        name: "test",
+                                        role: "member",
+                                    },
+                                ],
+                                chores: [
+                                    {
+                                        id: 1,
+                                        name: "test name",
+                                        description: "test description",
+                                        difficulty: 10,
+                                        location: "Kitchen",
+                                        estimatedTime: 20,
+                                        dueDate: new Date('2025-12-25'),
+                                        repeat: false,
+                                        householdId: 1,
+                                        assigneeId: 4,
+                                    },
+                                    {
+                                        id: 2,
+                                        name: "test name result",
+                                        description: "test description result",
+                                        difficulty: 9,
+                                        location: "Living Room",
+                                        estimatedTime: 30,
+                                        dueDate: new Date('2025-12-25'),
+                                        repeat: false,
+                                        householdId: 1,
+                                        assigneeId: null,
+                                    },
+                                    {
+                                        id: 3,
+                                        name: "test name 2",
+                                        description: "test description result",
+                                        difficulty: 9,
+                                        location: "Living Room",
+                                        estimatedTime: 30,
+                                        dueDate: new Date('2025-12-25'),
+                                        repeat: false,
+                                        householdId: 1,
+                                        assigneeId: 4,
+                                    }
+                                ]
+                            },
+                        },
+                    },
+                }),
+                [vuetify],
+                routes,
+            ],
+        },
+        props: {
+            viewMode: 'create',
+            choreId: 0,
+        }
+    })
 
-    expect(wrapper.vm.choreList.length).toBe(2)
-    expect(wrapper.vm.choreList).not.toContainEqual(newChore)
-    expect(store.household.chores).not.toContainEqual(newChore)
+    const spy = vi.spyOn(window, 'print');
+
+    wrapper.vm.printChoreChart();
+
+    expect(spy).toHaveBeenCalled()
+})
+
+test("NOFT - test filterUserId v-model", async () => {
+    const wrapper = mount(PrintPage, {
+        global: {
+            plugins: [
+                createTestingPinia({
+                    createSpy: vi.fn,
+                    initialState: {
+                        app: {
+                            user: {
+                                id: 0,
+                                householdId: 1,
+                                role: "leader",
+                            },
+                            household: {
+                                users: [
+                                    {
+                                        id: 4,
+                                        name: "test",
+                                        role: "member",
+                                    },
+                                ],
+                                chores: [
+                                    {
+                                        id: 1,
+                                        name: "test name",
+                                        description: "test description",
+                                        difficulty: 10,
+                                        location: "Kitchen",
+                                        estimatedTime: 20,
+                                        dueDate: new Date('2025-12-25'),
+                                        repeat: false,
+                                        householdId: 1,
+                                        assigneeId: 4,
+                                    },
+                                    {
+                                        id: 2,
+                                        name: "test name result",
+                                        description: "test description result",
+                                        difficulty: 9,
+                                        location: "Living Room",
+                                        estimatedTime: 30,
+                                        dueDate: new Date('2025-12-25'),
+                                        repeat: false,
+                                        householdId: 1,
+                                        assigneeId: null,
+                                    },
+                                    {
+                                        id: 3,
+                                        name: "test name 2",
+                                        description: "test description result",
+                                        difficulty: 9,
+                                        location: "Living Room",
+                                        estimatedTime: 30,
+                                        dueDate: new Date('2025-12-25'),
+                                        repeat: false,
+                                        householdId: 1,
+                                        assigneeId: 4,
+                                    }
+                                ]
+                            },
+                        },
+                    },
+                }),
+                [vuetify],
+                routes,
+            ],
+        },
+        props: {
+            viewMode: 'create',
+            choreId: 0,
+        }
+    })
+
+    const select = wrapper.findComponent('[data-testid="filteruserselect"]');
+    await select.setValue(4)
+    expect(wrapper.vm.filterUserId).toBe(4)
+})
+
+test("PCT-1 and PCT-2 - test filter button click", async () => {
+    const wrapper = mount(PrintPage, {
+        global: {
+            plugins: [
+                createTestingPinia({
+                    createSpy: vi.fn,
+                    initialState: {
+                        app: {
+                            user: {
+                                id: 0,
+                                householdId: 1,
+                                role: "leader",
+                            },
+                            household: {
+                                users: [
+                                    {
+                                        id: 4,
+                                        name: "test",
+                                        role: "member",
+                                    },
+                                ],
+                                chores: [
+                                    {
+                                        id: 1,
+                                        name: "test name",
+                                        description: "test description",
+                                        difficulty: 10,
+                                        location: "Kitchen",
+                                        estimatedTime: 20,
+                                        dueDate: new Date('2025-12-25'),
+                                        repeat: false,
+                                        householdId: 1,
+                                        assigneeId: 4,
+                                    },
+                                    {
+                                        id: 2,
+                                        name: "test name result",
+                                        description: "test description result",
+                                        difficulty: 9,
+                                        location: "Living Room",
+                                        estimatedTime: 30,
+                                        dueDate: new Date('2025-12-25'),
+                                        repeat: false,
+                                        householdId: 1,
+                                        assigneeId: null,
+                                    },
+                                    {
+                                        id: 3,
+                                        name: "test name 2",
+                                        description: "test description result",
+                                        difficulty: 9,
+                                        location: "Living Room",
+                                        estimatedTime: 30,
+                                        dueDate: new Date('2025-12-25'),
+                                        repeat: false,
+                                        householdId: 1,
+                                        assigneeId: 4,
+                                    }
+                                ]
+                            },
+                        },
+                    },
+                }),
+                [vuetify],
+                routes,
+            ],
+        },
+        props: {
+            viewMode: 'create',
+            choreId: 0,
+        }
+    })
+
+    const spy = vi.spyOn(wrapper.vm, 'filterChores');
+
+    await wrapper.find('#filterbutton').trigger("click")
+    expect(spy).toHaveBeenCalled();
+})
+
+test("PCT-1 and PCT-2 - test print button click", async () => {
+    const wrapper = mount(PrintPage, {
+        global: {
+            plugins: [
+                createTestingPinia({
+                    createSpy: vi.fn,
+                    initialState: {
+                        app: {
+                            user: {
+                                id: 0,
+                                householdId: 1,
+                                role: "leader",
+                            },
+                            household: {
+                                users: [
+                                    {
+                                        id: 4,
+                                        name: "test",
+                                        role: "member",
+                                    },
+                                ],
+                                chores: [
+                                    {
+                                        id: 1,
+                                        name: "test name",
+                                        description: "test description",
+                                        difficulty: 10,
+                                        location: "Kitchen",
+                                        estimatedTime: 20,
+                                        dueDate: new Date('2025-12-25'),
+                                        repeat: false,
+                                        householdId: 1,
+                                        assigneeId: 4,
+                                    },
+                                    {
+                                        id: 2,
+                                        name: "test name result",
+                                        description: "test description result",
+                                        difficulty: 9,
+                                        location: "Living Room",
+                                        estimatedTime: 30,
+                                        dueDate: new Date('2025-12-25'),
+                                        repeat: false,
+                                        householdId: 1,
+                                        assigneeId: null,
+                                    },
+                                    {
+                                        id: 3,
+                                        name: "test name 2",
+                                        description: "test description result",
+                                        difficulty: 9,
+                                        location: "Living Room",
+                                        estimatedTime: 30,
+                                        dueDate: new Date('2025-12-25'),
+                                        repeat: false,
+                                        householdId: 1,
+                                        assigneeId: 4,
+                                    }
+                                ]
+                            },
+                        },
+                    },
+                }),
+                [vuetify],
+                routes,
+            ],
+        },
+        props: {
+            viewMode: 'create',
+            choreId: 0,
+        }
+    })
+
+    const spy = vi.spyOn(wrapper.vm, 'printChoreChart');
+
+    await wrapper.find('#printbutton').trigger("click")
+    expect(spy).toHaveBeenCalled();
 })
