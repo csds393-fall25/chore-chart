@@ -1526,7 +1526,7 @@ test("CCT-1 and CET-1 - validateChore returns correctly for correct chore", () =
     expect(result).toBe(true)
 })
 
-test("CCT-14 - error messages are removed after information is corrected", () => {
+test("CCT-14 and CET-16 - error messages are removed after information is corrected", () => {
     const wrapper = mount(Chore, {
         global: {
             plugins: [
