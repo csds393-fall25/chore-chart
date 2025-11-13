@@ -4,6 +4,7 @@
     <v-form class="ma-4">
       <v-text-field data-testid="name"  v-if="isUpdate" :error-messages="errorMessages.name" style="width: 75%; " label="Name" v-model="name"></v-text-field>
       <p v-if="!isUpdate">Name: {{name}}</p>
+      <p v-if="!isUpdate"> Points: {{store.user.totalPoints}}</p>
       <v-text-field data-testid="email" v-if="isUpdate" :error-messages="errorMessages.email" :disabled="true" style="width: 75%" v-model="username" label="Email"></v-text-field>
       <!-- <v-text-field :error-messages="errorMessages.password" style="width: 75%; " label="password" v-model="password"></v-text-field>
       <v-text-field :error-messages="errorMessages.repeatedPassword" style="width: 75%" v-model="repeatedPassword" label="verify password"></v-text-field> -->

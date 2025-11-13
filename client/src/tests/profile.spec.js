@@ -399,3 +399,15 @@ await nextTick()
 await wrapper.find("#update").trigger("click")
 expect(wrapper.vm.isUpdate).toBe(true);
 })
+
+test("PT-1 User's number of points can be viewed from  profile", async () => {
+    const wrapper = mount(Profile, {
+        global: {
+  plugins: [
+    createTestingPinia({createSpy: vi.fn}),
+  [vuetify],
+  ],
+}
+})
+  expect(wrapper.text()).toContain('Points: 0')
+})

@@ -570,7 +570,7 @@ test("HJT-2 Invalid household join code ", async () => {
 })
 const store = useAppStore()
   wrapper.vm.displayedName = "Mollietest"
-  wrapper.vm.username = "validateProfile@test.com" 
+  wrapper.vm.username = "validateProfile@test2.com" 
   wrapper.vm.password = "Mtest"
   wrapper.vm.maxDifficulty = 3
   wrapper.vm.estimatedTime = 27
@@ -579,7 +579,7 @@ const store = useAppStore()
   wrapper.vm.isJoin = false
   const result = await wrapper.vm.createProfile()
   const houseResult = await FetchService.fetchHouseholdByJoin(store.household.joinCode)
-  expect(result.email).toBe("validateProfile@test.com")
+  expect(result.email).toBe("validateProfile@test2.com")
   expect(result.name).toBe("Mollietest")
   expect(result.password_hash).toBe("Mtest")
   expect(result.difficulty).toBe(3)
