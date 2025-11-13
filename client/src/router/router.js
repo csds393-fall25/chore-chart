@@ -3,8 +3,7 @@ import Chore from '../pages/Chore.vue'
 import index from '../pages/index.vue'
 import Dashboard from '../pages/Dashboard.vue'
 import Profile from '@/components/Profile.vue'
-import store from '@/components/store.vue'
-import Store from '@/components/store.vue'
+import Store from '@/components/Store.vue'
 
 const routes = [
   { 
