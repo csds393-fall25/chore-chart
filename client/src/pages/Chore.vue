@@ -176,6 +176,48 @@
           </v-col>
         </v-row>
       </v-form>
+      <!-- Difficulty Warning Dialog -->
+      <v-dialog 
+        v-model="difficultyDialogOpen" 
+        max-width="500"
+        data-testid="completeDialog"
+      >
+        <v-card>
+          <v-card-text>This chore is above the maximum difficulty level for the person you are assigning it to.</v-card-text>
+          <v-card-actions>
+            <v-row>
+              <v-col cols="3">
+                <v-btn
+                  @click="cancelDifficulty()"
+                  id="cancelDifficultyButton"
+                >
+                  Edit Chore
+                </v-btn>
+              </v-col>
+              <v-col cols="3">
+                <v-btn
+                  color="secondary"
+                  variant="elevated"
+                  id="leaveUnassignedButton"
+                  @click="leaveUnassigned(completeDialogChore)"
+                >
+                  Leave Unassigned
+                </v-btn>
+              </v-col>
+              <v-col cols=3>
+                <v-btn
+                  color="secondary"
+                  variant="elevated"
+                  id="assignAnywayButton"
+                  @click="completeChore(completeDialogChore)"
+                >
+                  Assign Anyway
+                </v-btn>
+              </v-col>
+            </v-row>
+          </v-card-actions>
+        </v-card>
+      </v-dialog>
     </v-sheet>
 </template>
 <script setup>
@@ -191,6 +233,7 @@
   });
   const router = useRouter();
   const route = useRoute();
+  const difficultyDialogOpen = ref(false);
 
   if(props.viewMode == "edit" && store.user.role != 'leader') {
     router.push({
@@ -361,24 +404,28 @@
 
   async function createChore() {
     if(validateChore()) {
-      const choreForDatabase = {
-        name: chore.value.name,
-        description: chore.value.description,
-        difficulty: chore.value.difficulty,
-        location: chore.value.location,
-        estimatedTime: parseInt(chore.value.estimatedTime),
-        dueDate: new Date(chore.value.dueDate + " EST"),
-        repeat: chore.value.repeat,
-        householdId: chore.value.householdId,
-        assigneeId: chore.value.assigneeId
+      if(chore.value.assigneeId && store.household.users.find((user) => user.id == chore.value.assigneeId) && store.household.users.find((user) => user.id == chore.value.assigneeId).maxDifficulty < chore.value.difficulty) {
+
+      } else {
+        const choreForDatabase = {
+          name: chore.value.name,
+          description: chore.value.description,
+          difficulty: chore.value.difficulty,
+          location: chore.value.location,
+          estimatedTime: parseInt(chore.value.estimatedTime),
+          dueDate: new Date(chore.value.dueDate + " EST"),
+          repeat: chore.value.repeat,
+          householdId: chore.value.householdId,
+          assigneeId: chore.value.assigneeId
+        }
+
+        const result = await FetchService.createChore(choreForDatabase);
+        //TODO: add a toast if the create failed
+        store.household.chores.push(result);
+
+        router.push({ name: 'home'});
+        return result;
       }
-
-      const result = await FetchService.createChore(choreForDatabase);
-      //TODO: add a toast if the create failed
-      store.household.chores.push(result);
-
-      router.push({ name: 'home'});
-      return result;
     }
   }
 
