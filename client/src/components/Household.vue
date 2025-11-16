@@ -24,9 +24,9 @@
           <v-card-actions>
              <v-btn id = "test" @click="cancel()" data-testid="cancelButton" > cancel
             </v-btn>
-            <v-btn id = "createDialog" @click="createNewHousehold()" > Create New
+            <v-btn id = "newHouse" @click="createNewHousehold()" > Create New
             </v-btn>
-            <v-btn id = "createDialog" @click="joinNewHousehold()" > Join Existing
+            <v-btn id = "existingHouse" @click="joinNewHousehold()" > Join Existing
             </v-btn>
           </v-card-actions>
         </v-card>
@@ -119,6 +119,7 @@
 
   const listMode = ref(true);
   const errorMessages = ref({household: ""})
+  const joinCode = ref()
 
 
   let members = store.household.users
@@ -178,6 +179,10 @@
     store.household.id = house.id
     store.household.name = house.name
     store.household.joinCode = house.joinCode
+    joinCode.value = house.joinCode
+    console.log(joinCode.value)
+    console.log("IN household")
+    console.log(store.household.joinCode)
     const result = await FetchService.updateUser(store.user.id, {householdId: house.id} );
     householdName.value = ""
     store.household = await FetchService.fetchHousehold(house.id);

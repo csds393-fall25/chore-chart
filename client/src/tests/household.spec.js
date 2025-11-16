@@ -9,6 +9,7 @@ import Household from "@/components/Household.vue";
 import FetchService from "@/FetchService";
 import ValidateLogin from "@/components/Login.vue"
 import { useAppStore } from "@/stores/app.js";
+import { nextTick } from "vue";
 
 const vuetify = createVuetify({
   components,
@@ -65,5 +66,85 @@ store.household = 1;
 
 expect(wrapper.text()).toContain(wrapper.vm.members[0].name)
 expect(wrapper.text()).toContain(wrapper.vm.members[1].name)
+
+})
+
+test("LH-1 Leave as not last member and provide valid input", async () => {
+    const wrapper = mount(Household, {
+        global: {
+            plugins: [
+                createTestingPinia({
+                    createSpy: vi.fn,
+                    initialState: {
+                        app: {
+                            user: {
+                                id: 0,
+                                householdId: 1,
+                                role: "leader",
+                            },
+                            household: {
+
+                                users: [
+                                    {
+                                        id: 0,
+                                        name: "test",
+                                        role: "member",
+                                    },
+                                 {
+                                id: 482,
+                                name: "test2",
+                                householdId: 1,
+                                role: "leader",
+                            },
+                                ],
+                            },
+                        },
+                    },
+                }),
+                [vuetify],
+            
+            ],
+
+             stubs: {
+    VDialog: {
+      name: "VDialog",
+      template: '<div class="v-dialog-stub"><slot /></div>',
+      props: ['modelValue',
+      ]
+    }
+  }
+        },
+       
+    })
+
+    const store = useAppStore()
+
+console.log(store.user)
+wrapper.vm.showDialog = true
+wrapper.vm.householdName = "THouse"
+
+//  const spy = vi.spyOn(wrapper.vm, "createNewHousehold");
+//     await wrapper.find("#newHouse").trigger("click")
+//     await nextTick()
+//     expect(spy).toHaveBeenCalled();
+    wrapper.vm.createNewHousehold()
+    await nextTick()
+    console.log("join Code")
+    console.log(store.household.name)
+    console.log(store.household.joinCode)
+    console.log(wrapper.vm.householdName)
+    console.log(wrapper.vm.joinCode)
+    const houseResult = await FetchService.fetchHouseholdByJoin(store.household.joinCode)
+    console.log("houseResult")
+    console.log(houseResult)
+        console.log(store.household.joinCode)
+
+    //expect(store.household.).toBe(houseResult)
+
+
+
+
+
+
 
 })
