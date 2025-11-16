@@ -19,12 +19,14 @@
             </v-btn>
 
             <v-dialog data-testid="dialog" v-model="showDialog" width="500">
-        <v-card :title="!isJoin ? 'Create a Household' : 'Join a Household'" max-width="400">
-          <v-text-field data-testid="houseName"   v-model = "householdName"  :label = " !isJoin ? 'Enter Household Name' : 'Enter Household Join Code'"></v-text-field>
+        <v-card title="Join or Create a new household" max-width="400">
+          <v-text-field data-testid="houseName" :error-messages="errorMessages.household"  v-model = "householdName"  label =  "Enter household name for new household or join code for existing one"></v-text-field>
           <v-card-actions>
-             <v-btn id = "test" @click="showDialog = false" data-testid="cancelButton" > cancel
+             <v-btn id = "test" @click="cancel()" data-testid="cancelButton" > cancel
             </v-btn>
-            <v-btn id = "createDialog" @click="joinHousehold()" > join
+            <v-btn id = "createDialog" @click="createNewHousehold()" > Create New
+            </v-btn>
+            <v-btn id = "createDialog" @click="joinNewHousehold()" > Join Existing
             </v-btn>
           </v-card-actions>
         </v-card>
@@ -34,6 +36,7 @@
       </v-row>
       <v-list 
         class="pb-0 pt-0"
+        :key = "showDialog"
       
       >
         <v-list-item
@@ -115,9 +118,10 @@
   const store = useAppStore()
 
   const listMode = ref(true);
+  const errorMessages = ref({household: ""})
 
 
-  const members = store.household.users
+  let members = store.household.users
     .map(user => { return {id: user.id, name: user.name, points: user.totalPoints}});
 
 
@@ -131,15 +135,60 @@
   }
 
  
-  // function LeaveHousehold(){
-  //   console.log("HI")
-  //   showDialog.value = true;
+   function LeaveHousehold(){
+     showDialog.value = true;
     
-  // }
-  // function joinHousehold(){
-  //   FetchService.deleteUser(store.user.id)
+   }
+   async function joinNewHousehold(){
 
-  // }
+    let house =  await FetchService.fetchHouseholdByJoin(householdName.value) 
+    if(!house){
+      errorMessages.value.household = "Join code does not exist" 
+    }
+    else{
+      store.household.id = house.id
+      store.household.name = house.name
+      store.household.joinCode = house.joinCode
+      const result = await FetchService.updateUser(store.user.id, {householdId: house.id} );
+      householdName.value = ""
+      store.household = await FetchService.fetchHousehold(house.id);
+      members = store.household.users
+      .map(user => { return {id: user.id, name: user.name, points: user.totalPoints}});
+      showDialog.value = false
+      errorMessages.value.household= ""
+    }
+   }
+
+   function cancel(){
+    showDialog.value = false
+    errorMessages.value.household = ""
+    householdName.value = ""
+   }
+
+  async function createNewHousehold(){
+    if (!householdName.value || householdName.value.length > 50 || !(householdName.value.match(/\.*[A-Z]\.*/)  || householdName.value.match(/\.*[a-z]\.*/))){
+      errorMessages.value.household = "Household name must be below 50 characters and have at least 1 letter"
+      return false
+    }
+    const household = {
+      name: householdName.value
+    }
+
+    let house = await FetchService.createHousehold(household)
+    store.household.id = house.id
+    store.household.name = house.name
+    store.household.joinCode = house.joinCode
+    const result = await FetchService.updateUser(store.user.id, {householdId: house.id} );
+    householdName.value = ""
+    store.household = await FetchService.fetchHousehold(house.id);
+    members = store.household.users
+    .map(user => { return {id: user.id, name: user.name, points: user.totalPoints}});
+      showDialog.value = false
+    }
+    errorMessages.value.household = ""
+
+
+   
 </script>
 
 <style scoped>

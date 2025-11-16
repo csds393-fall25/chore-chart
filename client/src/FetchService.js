@@ -60,6 +60,8 @@ class FetchService {
     static async updateUser(userId, userData) {
         try {
             var stringified;
+            console.log(userData)
+          
             if(Object.hasOwn(userData, 'password_hash')) {
                 console.log("IN HERE")
                 stringified = JSON.stringify({
@@ -67,7 +69,8 @@ class FetchService {
                     email: userData.email,
                     password_hash: userData.password_hash,
                     difficulty: userData.difficulty,
-                    maxChoreTime: userData.maxChoreTime
+                    maxChoreTime: userData.maxChoreTime,
+                    householdId: userData.householdId,
                 })
             } else {
                 stringified = JSON.stringify({
@@ -76,6 +79,14 @@ class FetchService {
                     difficulty: userData.difficulty,
                     maxChoreTime: userData.maxChoreTime
                 })
+
+            }
+
+              if(Object.hasOwn(userData, 'householdId')){
+                  stringified = JSON.stringify({
+                    householdId: userData.householdId,
+                })
+
             }
 
             const response = await fetch(`${baseURL}/user/${userId}`, {

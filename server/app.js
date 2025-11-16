@@ -209,9 +209,9 @@ app.post('/api/login', async (req, res) => {
 app.put('/api/user/:id', async (req, res) => {
   const { id } = req.params;
   if(Number.isNaN(id)) { return res.status(400).json({ error: "Invalid id" })};
-  const { name, email, password_hash, difficulty, maxChoreTime } = req.body;
+  const { name, email, password_hash, difficulty, maxChoreTime, householdId } = req.body;
   try {
-    const updated = await prisma.user.update({ where:  { id: Number(id) }, data: { name, email, password_hash, difficulty, maxChoreTime } });
+    const updated = await prisma.user.update({ where:  { id: Number(id) }, data: { name, email, password_hash, difficulty, maxChoreTime, householdId } });
     res.json(updated);
   } catch (err) {
     res.status(500).json({ error: err.message });
