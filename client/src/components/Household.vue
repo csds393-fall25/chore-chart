@@ -31,6 +31,17 @@
           </v-card-actions>
         </v-card>
       </v-dialog>
+      <v-dialog data-testid="dialog" v-model="showLastToLeaveDialog" width="500">
+        <v-card title="You are the last member in your household!" max-width="400">
+          <p>If you leave, your household will be deleted</p>
+          <v-card-actions>
+             <v-btn id = "test" @click="cancel()" data-testid="cancelButton" > cancel
+            </v-btn>
+            <v-btn id = "newHouse" @click="switchDialogs" > Okay
+            </v-btn>
+          </v-card-actions>
+        </v-card>
+      </v-dialog>
           <!-- </div> -->
         </v-col>
       </v-row>
@@ -120,6 +131,8 @@
   const listMode = ref(true);
   const errorMessages = ref({household: ""})
   const joinCode = ref()
+  const showLastToLeaveDialog = ref(false)
+  const lastFlag = ref(false)
 
 
   let members = store.household.users
@@ -137,12 +150,20 @@
 
  
    function LeaveHousehold(){
-     showDialog.value = true;
+    if (members.length == 1){
+       showLastToLeaveDialog.value = true;
+       lastFlag.value = true
+    
+    }
+    else{
+      showDialog.value = true
+    }
+  
     
    }
    async function joinNewHousehold(){
-
     let house =  await FetchService.fetchHouseholdByJoin(householdName.value) 
+    let lastHouseId = store.household.id
     if(!house){
       errorMessages.value.household = "Join code does not exist" 
     }
@@ -157,16 +178,22 @@
       .map(user => { return {id: user.id, name: user.name, points: user.totalPoints}});
       showDialog.value = false
       errorMessages.value.household= ""
+      if (lastFlag){
+        await FetchService.deleteHousehold(lastHouseId)
+
+      }
     }
    }
 
    function cancel(){
     showDialog.value = false
+    showLastToLeaveDialog.value = false
     errorMessages.value.household = ""
     householdName.value = ""
    }
 
   async function createNewHousehold(){
+    let lastHouseId = store.household.id
     if (!householdName.value || householdName.value.length > 50 || !(householdName.value.match(/\.*[A-Z]\.*/)  || householdName.value.match(/\.*[a-z]\.*/))){
       errorMessages.value.household = "Household name must be below 50 characters and have at least 1 letter"
       return false
@@ -180,17 +207,24 @@
     store.household.name = house.name
     store.household.joinCode = house.joinCode
     joinCode.value = house.joinCode
-    console.log(joinCode.value)
-    console.log("IN household")
-    console.log(store.household.joinCode)
     const result = await FetchService.updateUser(store.user.id, {householdId: house.id} );
     householdName.value = ""
     store.household = await FetchService.fetchHousehold(house.id);
     members = store.household.users
     .map(user => { return {id: user.id, name: user.name, points: user.totalPoints}});
-      showDialog.value = false
-    }
+    showDialog.value = false
     errorMessages.value.household = ""
+       if (lastFlag){
+        await FetchService.deleteHousehold(lastHouseId)
+
+      }
+    }
+
+    function switchDialogs(){
+      showLastToLeaveDialog.value = false
+      showDialog.value = true
+    }
+
 
 
    
