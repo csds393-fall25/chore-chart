@@ -60,34 +60,46 @@ class FetchService {
     static async updateUser(userId, userData) {
         try {
             var stringified;
-            console.log(userData)
-          
-            if(Object.hasOwn(userData, 'password_hash')) {
-                console.log("IN HERE")
-                stringified = JSON.stringify({
-                    name: userData.name,
-                    email: userData.email,
-                    password_hash: userData.password_hash,
-                    difficulty: userData.difficulty,
-                    maxChoreTime: userData.maxChoreTime,
-                    householdId: userData.householdId,
-                })
-            } else {
-                stringified = JSON.stringify({
-                    name: userData.name,
-                    email: userData.email,
-                    difficulty: userData.difficulty,
-                    maxChoreTime: userData.maxChoreTime
-                })
+            let temp = {};
 
+            if(Object.hasOwn(userData, 'name')){
+                temp.name = userData.name
+            } 
+             if(Object.hasOwn(userData, 'email')){
+                temp.email = userData.email
+            } 
+
+             if(Object.hasOwn(userData, 'password_hash')){
+                
+                temp.password_hash = userData.password_hash
+               
+            } 
+
+              if(Object.hasOwn(userData, 'difficulty')){
+                
+                  temp.difficulty = userData.difficulty
+                
+            }
+            
+               if(Object.hasOwn(userData, 'maxChoreTime')){
+              
+                temp.maxChoreTime = userData.maxChoreTime
+                
             }
 
-              if(Object.hasOwn(userData, 'householdId')){
-                  stringified = JSON.stringify({
-                    householdId: userData.householdId,
-                })
-
+                if(Object.hasOwn(userData, 'householdId')){
+              
+                temp.householdId=  userData.householdId
+                
             }
+
+                 if(Object.hasOwn(userData, 'role')){
+              
+                temp.role=  userData.role
+                
+            }
+            
+          stringified = JSON.stringify(temp)
 
             const response = await fetch(`${baseURL}/user/${userId}`, {
                 method: "PUT",
@@ -177,6 +189,8 @@ class FetchService {
 
         // Get household by join code
     static async fetchHouseholdByJoin(joinCode) {
+        console.log("HI")
+        console.log(joinCode)
         try {
             const response = await fetch(`${baseURL}/household/joinCode/${joinCode}`);
             if(!response.ok) {

@@ -12,7 +12,7 @@
             <v-btn
               color="secondary"
               class="mr-0 mt-1"
-              @click="LeaveHousehold()"
+              @click="leaveHousehold()"
               block
             >
               Leave
@@ -45,11 +45,69 @@
           <!-- </div> -->
         </v-col>
       </v-row>
+
+            
+ <div class="bg-primary text-center text-h5 pb-2 pt-2 mb-2">Leaders</div>
       <v-list 
         class="pb-0 pt-0"
         :key = "showDialog"
       
       >
+        <v-list-item
+          v-for="(chore) in leaders"
+          :key="chore.id"
+          class="border-b-thin"
+           variant="outlined"
+        >
+          <template
+            v-slot:prepend
+          >
+            <v-avatar color="primary">
+              <span class="text-h5">{{ userInitials(chore.name) }}</span>
+            </v-avatar>
+          </template>
+
+          <template v-slot:default>
+            <v-row>
+              <v-col cols="8">
+                {{ chore.name }}
+              </v-col>
+              <v-col cols="4">
+                {{ chore.totalPoints}} pts
+              </v-col>
+            </v-row>
+          </template>
+
+          <template
+            v-slot:append
+          >
+            <div
+              class="list-append"
+            >
+            
+              <v-btn
+               v-if="store.user.role == 'leader' && chore.id != store.user.id"
+                block
+                color="secondary"
+                density="compact"
+                class="mt-1 mb-1"
+                @click = "changeToMember(chore.id)"
+                 
+              >
+                Make Member
+              </v-btn>
+        
+            </div>
+          </template>
+        </v-list-item>
+
+
+
+        
+      </v-list >
+ <div class="bg-primary text-center text-h5 pb-2 pt-2 mt-2">Members</div>
+      <v-list class = "pt-0 pb-0">
+        
         <v-list-item
           v-for="(chore) in members"
           :key="chore.id"
@@ -70,7 +128,7 @@
                 {{ chore.name }}
               </v-col>
               <v-col cols="4">
-                {{ chore.points}} pts
+                {{ chore.totalPoints}} pts
               </v-col>
             </v-row>
           </template>
@@ -81,38 +139,21 @@
             <div
               class="list-append"
             >
+
+            
               <v-btn
-                block
-                color="secondary"
-                density="compact"
-                class="mb-1"
-                @click.prevent="completeChorePrompt(chore)"
-                v-if="chore.assigneeId == store.user.id"
-              >
-                Complete
-              </v-btn>
-              <v-btn
+               v-if="store.user.role == 'leader' && chore.id != store.user.id"
                 block
                 color="secondary"
                 density="compact"
                 class="mt-1 mb-1"
-                @click.prevent="updateChore(chore.id)"
-                  v-if="false"
+                @click = "changeToLeader(chore.id)"
+                 
               >
-                Edit
+                Make Leader
               </v-btn>
-              <v-btn
-              v-if="false"
-                block
-                color="error"
-                density="compact"
-                class="mt-1"
-                @click.prevent="promptDelete(chore)"
-               
-              >
-                Delete
-              </v-btn>
-            </div>
+             
+             </div>
           </template>
         </v-list-item>
       </v-list>
@@ -134,9 +175,8 @@
   const showLastToLeaveDialog = ref(false)
   const lastFlag = ref(false)
 
-
-  let members = store.household.users
-    .map(user => { return {id: user.id, name: user.name, points: user.totalPoints}});
+  const members = ref(store.household.users.filter((user) => user.role == 'member'))
+  const leaders = ref(store.household.users.filter((user) => user.role == 'leader'))
 
 
   const showDialog = ref(false);
@@ -149,8 +189,8 @@
   }
 
  
-   function LeaveHousehold(){
-    if (members.length == 1){
+   function leaveHousehold(){
+    if (members.value.length == 1){
        showLastToLeaveDialog.value = true;
        lastFlag.value = true
     
@@ -162,7 +202,11 @@
     
    }
    async function joinNewHousehold(){
+    console.log("Join new")
+    console.log(householdName.value)
     let house =  await FetchService.fetchHouseholdByJoin(householdName.value) 
+    console.log("house")
+    console.log(house)
     let lastHouseId = store.household.id
     if(!house){
       errorMessages.value.household = "Join code does not exist" 
@@ -174,8 +218,8 @@
       const result = await FetchService.updateUser(store.user.id, {householdId: house.id} );
       householdName.value = ""
       store.household = await FetchService.fetchHousehold(house.id);
-      members = store.household.users
-      .map(user => { return {id: user.id, name: user.name, points: user.totalPoints}});
+      members.value = store.household.users.filter(user => user.role == 'member')
+    leaders.value = store.household.users.filter(user => user.role == 'leader')
       showDialog.value = false
       errorMessages.value.household= ""
       if (lastFlag){
@@ -210,8 +254,9 @@
     const result = await FetchService.updateUser(store.user.id, {householdId: house.id} );
     householdName.value = ""
     store.household = await FetchService.fetchHousehold(house.id);
-    members = store.household.users
-    .map(user => { return {id: user.id, name: user.name, points: user.totalPoints}});
+
+    members.value = store.household.users.filter((user) => user.role == 'member')
+    leaders.value = store.household.users.filter((user) => user.role == 'leader')
     showDialog.value = false
     errorMessages.value.household = ""
        if (lastFlag){
@@ -223,6 +268,24 @@
     function switchDialogs(){
       showLastToLeaveDialog.value = false
       showDialog.value = true
+    }
+
+    function changeToLeader(id){
+      console.log("HI")
+      FetchService.updateUser(id, {role: 'leader' })
+      store.household.users.find((user)=> user.id == id ).role ='leader'
+      members.value = store.household.users.filter((user) => user.role == 'member')
+      leaders.value = store.household.users.filter((user) => user.role == 'leader')
+    }
+
+      function changeToMember(id){
+      console.log("HI")
+      FetchService.updateUser(id, {role: 'member' })
+      store.household.users.find((user)=> user.id == id ).role ='member'
+      members.value = store.household.users.filter((user) => user.role == 'member')
+      leaders.value = store.household.users.filter((user) => user.role == 'leader')
+            console.log(members.value)
+            console.log(leaders.value)
     }
 
 

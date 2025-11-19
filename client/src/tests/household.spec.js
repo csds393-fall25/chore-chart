@@ -180,6 +180,7 @@ test("LH-1 Leave as not last member and provide valid input (join an existing ho
     wrapper.vm.householdName = "Codorado1234"
     await wrapper.vm.joinNewHousehold()
     await nextTick()
+    console.log(store.household.id)
     const houseResult = await FetchService.fetchHouseholdByJoin(store.household.joinCode)
     expect(store.household.id).toBe(houseResult.id)
 
@@ -411,6 +412,57 @@ test("LH-3 Invalid input (join an existing household)", async () => {
     await nextTick()
     expect(wrapper.vm.errorMessages.household).toBe("Join code does not exist" )
 })
+
+test("LH-2 Last member leaving", async () => {
+    const wrapper = mount(Household, {
+        global: {
+            plugins: [
+                createTestingPinia({
+                    createSpy: vi.fn,
+                    initialState: {
+                        app: {
+                            user: {
+                                id: 0,
+                                householdId: 1,
+                                role: "leader",
+                            },
+                            household: {
+
+                                users: [
+                                    {
+                                        id: 0,
+                                        name: "test",
+                                        role: "leader",
+                                    },
+                                 
+                              
+                                ],
+                            },
+                        },
+                    },
+                }),
+                [vuetify],
+            
+            ],
+
+             stubs: {
+    VDialog: {
+      name: "VDialog",
+      template: '<div class="v-dialog-stub"><slot /></div>',
+      props: ['modelValue',
+      ]
+    }
+  }
+        },
+       
+    })
+
+    const store = useAppStore()
+    wrapper.vm.householdName = ""
+    wrapper.vm.leaveHousehold()
+    expect(wrapper.vm.showLastToLeaveDialog).toBe(true)
+})
+
 
 
 
