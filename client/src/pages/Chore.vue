@@ -140,7 +140,7 @@
           <v-col cols="3">
             <v-btn 
               color="secondary" 
-              @click="createChore()"
+              @click="checkChore()"
               id="createButton"
               block 
               v-if="props.viewMode == 'create'">
@@ -148,7 +148,7 @@
             </v-btn>
             <v-btn 
               color="secondary" 
-              @click="updateChore()"
+              @click="checkChore()"
               id="updateButton"
               block 
               v-else>
@@ -179,37 +179,41 @@
       <!-- Difficulty Warning Dialog -->
       <v-dialog 
         v-model="difficultyDialogOpen" 
-        max-width="500"
+        max-width="750"
         data-testid="completeDialog"
       >
         <v-card>
           <v-card-text>This chore is above the maximum difficulty level for the person you are assigning it to.</v-card-text>
           <v-card-actions>
             <v-row>
-              <v-col cols="3">
+              <v-col cols="4" class="pb-0 pt-0">
                 <v-btn
+                  block
                   @click="cancelDifficulty()"
                   id="cancelDifficultyButton"
                 >
                   Edit Chore
                 </v-btn>
               </v-col>
-              <v-col cols="3">
+              <v-col cols="4" class="pb-0 pt-0">
                 <v-btn
                   color="secondary"
                   variant="elevated"
                   id="leaveUnassignedButton"
+                  block
                   @click="leaveUnassigned(completeDialogChore)"
                 >
                   Leave Unassigned
                 </v-btn>
               </v-col>
-              <v-col cols=3>
+              <v-col cols="4" class="pb-0 pt-0">
                 <v-btn
+                  v-if="store.user.role == 'leader'"
                   color="secondary"
                   variant="elevated"
                   id="assignAnywayButton"
-                  @click="completeChore(completeDialogChore)"
+                  block
+                  @click="assignChoreAnyway(completeDialogChore)"
                 >
                   Assign Anyway
                 </v-btn>
@@ -404,28 +408,24 @@
 
   async function createChore() {
     if(validateChore()) {
-      if(chore.value.assigneeId && store.household.users.find((user) => user.id == chore.value.assigneeId) && store.household.users.find((user) => user.id == chore.value.assigneeId).maxDifficulty < chore.value.difficulty) {
-
-      } else {
-        const choreForDatabase = {
-          name: chore.value.name,
-          description: chore.value.description,
-          difficulty: chore.value.difficulty,
-          location: chore.value.location,
-          estimatedTime: parseInt(chore.value.estimatedTime),
-          dueDate: new Date(chore.value.dueDate + " EST"),
-          repeat: chore.value.repeat,
-          householdId: chore.value.householdId,
-          assigneeId: chore.value.assigneeId
-        }
-
-        const result = await FetchService.createChore(choreForDatabase);
-        //TODO: add a toast if the create failed
-        store.household.chores.push(result);
-
-        router.push({ name: 'home'});
-        return result;
+      const choreForDatabase = {
+        name: chore.value.name,
+        description: chore.value.description,
+        difficulty: chore.value.difficulty,
+        location: chore.value.location,
+        estimatedTime: parseInt(chore.value.estimatedTime),
+        dueDate: new Date(chore.value.dueDate + " EST"),
+        repeat: chore.value.repeat,
+        householdId: chore.value.householdId,
+        assigneeId: chore.value.assigneeId
       }
+
+      const result = await FetchService.createChore(choreForDatabase);
+      //TODO: add a toast if the create failed
+      store.household.chores.push(result);
+
+      router.push({ name: 'home'});
+      return result;
     }
   }
 
@@ -472,5 +472,46 @@
 
   function enterEdit() {
     router.push({ name: 'editChore', params: {id: props.choreId}})
+  }
+
+  async function leaveUnassigned() {
+    chore.value.assigneeId = null
+    difficultyDialogOpen.value = false;
+    if(props.viewMode == 'edit') {
+      await updateChore()
+    } else {
+      await createChore()
+    }
+  }
+
+  async function assignChoreAnyway() {
+    difficultyDialogOpen.value = false;
+    if(props.viewMode == 'edit') {
+      await updateChore()
+    } else {
+      await createChore()
+    }
+  }
+
+  function cancelDifficulty() {
+    difficultyDialogOpen.value = false;
+  }
+
+  async function checkChore() {
+    console.log("in check chore")
+    if(validateChore()) {
+      console.log("chore is valid")
+      if(chore.value.assigneeId && store.household.users.find((user) => user.id == chore.value.assigneeId) && store.household.users.find((user) => user.id == chore.value.assigneeId).difficulty < chore.value.difficulty) {
+        console.log("opening dialog")
+        difficultyDialogOpen.value = true;
+      } else {
+        console.log("don't need to open dialog")
+        if(props.viewMode == 'edit') {
+          await updateChore()
+        } else {
+          await createChore()
+        }
+      }
+    }
   }
 </script>
