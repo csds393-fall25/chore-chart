@@ -190,7 +190,7 @@
 
  
    function leaveHousehold(){
-    if (members.value.length == 1){
+    if (members.value.length + leaders.value.length == 1){
        showLastToLeaveDialog.value = true;
        lastFlag.value = true
     
@@ -222,8 +222,11 @@
     leaders.value = store.household.users.filter(user => user.role == 'leader')
       showDialog.value = false
       errorMessages.value.household= ""
-      if (lastFlag){
+      if (lastFlag.value){
+        console.log("bad")
+        console.log(lastHouseId)
         await FetchService.deleteHousehold(lastHouseId)
+        lastFlag.value = false
 
       }
     }
@@ -259,8 +262,11 @@
     leaders.value = store.household.users.filter((user) => user.role == 'leader')
     showDialog.value = false
     errorMessages.value.household = ""
-       if (lastFlag){
+       if (lastFlag.value){
+         console.log("badCreate")
+        console.log(lastHouseId)
         await FetchService.deleteHousehold(lastHouseId)
+        lastFlag.value = false
 
       }
     }
