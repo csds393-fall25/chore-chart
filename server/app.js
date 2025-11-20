@@ -114,11 +114,59 @@ app.delete('/api/household/:id', async (req, res) => {
 
 // signup
 app.post('/api/signup', async (req, res) => {
-  
+  let defaultAvatar = [
+    {name: "YellowSmileyFace", type: "skinTone", id: 0},
+    {name: "PurpleBeanie", type: "hat", id: 0},
+    {name: "LongMediumBrownHair", type: "hair", id: 0},
+    {name: "BlueWolfShirt", type: "shirt", id: 0},
+    {name: "LightBlueBackground", type: "background", id: 0},
+    {name: "BlueBook", type: "handProp", id: 0}
+  ]
   try {
     const {name, role, email, password_hash, difficulty, totalPoints, maxChoreTime, householdId } = req.body;
+    for (let i=0; i < defaultAvatar.length; i++) {
+      const avatarProp = await prisma.avatarProp.findUnique({ where: { name: defaultAvatar[i].name, type: defaultAvatar[i].type}});
+      if (avatarProp && avatarProp.id) {
+        defaultAvatar[i].id = avatarProp.id;
+      } else {
+        return res.status(514).json({ error: `Can't fetch default avatar prop ${ defaultAvatar[i].name }` });
+      }
+    }
     const result = await prisma.user.create({
-      data: { name, email, password_hash, role, difficulty, totalPoints, maxChoreTime, householdId },
+      data: {
+        name,
+        email,
+        password_hash, 
+        role,
+        difficulty,
+        totalPoints,
+        maxChoreTime,
+        householdId,
+        avatar: {
+          create: {
+            skinToneId: defaultAvatar[0].id,
+            hatId: defaultAvatar[1].id,
+            hairId: defaultAvatar[2].id,
+            shirtId: defaultAvatar[3].id,
+            backgroundId: defaultAvatar[4].id,
+            handPropId: defaultAvatar[5].id
+          }
+        },
+        userAvatarProps: {
+          create: [
+            { propId: defaultAvatar[0].id },
+            { propId: defaultAvatar[1].id },
+            { propId: defaultAvatar[2].id },
+            { propId: defaultAvatar[3].id },
+            { propId: defaultAvatar[4].id },
+            { propId: defaultAvatar[5].id },
+          ]
+        }
+      },
+      include: {
+        avatar: true,
+        userAvatarProps: true
+      }
     });
     res.json(result);
   } catch (err) {
