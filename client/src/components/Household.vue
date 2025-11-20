@@ -69,8 +69,14 @@
 
           <template v-slot:default>
             <v-row>
-              <v-col cols="8">
+              <v-col cols="3">
                 {{ chore.name }}
+              </v-col>
+              <v-col cols="2">
+                {{ chore.difficulty }}
+              </v-col>
+              <v-col cols="3">
+                {{ chore.maxChoreTime }} mins
               </v-col>
               <v-col cols="4">
                 {{ chore.totalPoints}} pts
@@ -92,6 +98,7 @@
                 density="compact"
                 class="mt-1 mb-1"
                 @click = "changeToMember(chore.id)"
+                min-width="8em"
                  
               >
                 Make Member
@@ -124,8 +131,14 @@
 
           <template v-slot:default>
             <v-row>
-              <v-col cols="8">
+              <v-col cols="3">
                 {{ chore.name }}
+              </v-col>
+              <v-col cols="2">
+                {{ chore.difficulty }}
+              </v-col>
+              <v-col cols="3">
+                {{ chore.maxChoreTime }} mins
               </v-col>
               <v-col cols="4">
                 {{ chore.totalPoints}} pts
@@ -148,6 +161,7 @@
                 density="compact"
                 class="mt-1 mb-1"
                 @click = "changeToLeader(chore.id)"
+                min-width="8em"
                  
               >
                 Make Leader
