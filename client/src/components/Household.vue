@@ -67,6 +67,16 @@
           </v-card-actions>
         </v-card>
       </v-dialog>
+
+      <v-dialog data-testid="dialog" v-model="showLastLeaderDialog" width="500">
+        <v-card title="You are the last leader" max-width="400">
+          <p>You must assign someone else a leader before you leave</p>
+           <v-card-actions>
+             <v-btn id = "test" @click="cancel()" data-testid="cancelButton" > cancel
+            </v-btn>
+          </v-card-actions>
+        </v-card>
+      </v-dialog>
           <!-- </div> -->
         </v-col>
       </v-row>
@@ -292,7 +302,7 @@
   const joinCode = ref()
   const showLastToLeaveDialog = ref(false)
   const lastFlag = ref(false)
-
+  const showLastLeaderDialog = ref(false)
   const members = ref(store.household.users.filter((user) => user.role == 'member'))
   const leaders = ref(store.household.users.filter((user) => user.role == 'leader'))
   const showEditDialog = ref(false)
@@ -313,6 +323,9 @@
        showLastToLeaveDialog.value = true;
        lastFlag.value = true
     
+    }
+    else if(leaders.value.length == 1 && store.user.role == 'leader'){
+        showLastLeaderDialog.value = true;
     }
     else{
       showDialog.value = true
@@ -357,6 +370,7 @@
     errorMessages.value.household = ""
     householdName.value = ""
     showEditDialog.value = false
+    showLastLeaderDialog.value = false
    }
 
   async function createNewHousehold(){
