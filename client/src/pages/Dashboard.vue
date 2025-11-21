@@ -426,7 +426,6 @@
   }
 
   function updateChore(choreId) {
-    console.log("in updateChore")
     router.push({ name: 'editChore', params: {id: choreId}})
   }
 

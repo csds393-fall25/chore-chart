@@ -180,7 +180,7 @@
       <v-dialog 
         v-model="difficultyDialogOpen" 
         max-width="750"
-        data-testid="completeDialog"
+        data-testid="difficultyDialog"
       >
         <v-card>
           <v-card-text>This chore is above the maximum difficulty level for the person you are assigning it to.</v-card-text>
@@ -487,9 +487,9 @@
   async function assignChoreAnyway() {
     difficultyDialogOpen.value = false;
     if(props.viewMode == 'edit') {
-      await updateChore()
+      return await updateChore()
     } else {
-      await createChore()
+      return await createChore()
     }
   }
 
@@ -498,20 +498,21 @@
   }
 
   async function checkChore() {
-    console.log("in check chore")
     if(validateChore()) {
-      console.log("chore is valid")
       if(chore.value.assigneeId && store.household.users.find((user) => user.id == chore.value.assigneeId) && store.household.users.find((user) => user.id == chore.value.assigneeId).difficulty < chore.value.difficulty) {
-        console.log("opening dialog")
         difficultyDialogOpen.value = true;
+        return 'too difficult'
       } else {
-        console.log("don't need to open dialog")
         if(props.viewMode == 'edit') {
           await updateChore()
+          return 'edit'
         } else {
           await createChore()
+          return 'create'
         }
       }
+    } else {
+      return 'invalid';
     }
   }
 </script>
