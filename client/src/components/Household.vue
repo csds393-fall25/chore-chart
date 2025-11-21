@@ -14,6 +14,7 @@
             <v-btn
               color="error"
               class="mr-0 mt-1"
+              id = "leave"
               @click="leaveHousehold()"
               block
             >
@@ -23,6 +24,7 @@
             <v-btn
               v-if="store.user.role == 'leader'"
               color="secondary"
+              id="edit"
               class="mr-0 mt-1"
               @click="editHousehold()"
               block
@@ -36,7 +38,7 @@
         <v-card title="Join or Create a new household" max-width="400">
           <v-text-field data-testid="houseName" :error-messages="errorMessages.household"  v-model = "householdName"  label =  "Enter household name for new household or join code for existing one"></v-text-field>
           <v-card-actions>
-             <v-btn id = "test" @click="cancel()" data-testid="cancelButton" > cancel
+             <v-btn id = "cancel" @click="cancel()" data-testid="cancelButton" > cancel
             </v-btn>
             <v-btn id = "newHouse" @click="createNewHousehold()" > Create New
             </v-btn>
@@ -45,23 +47,34 @@
           </v-card-actions>
         </v-card>
       </v-dialog>
-      <v-dialog data-testid="dialog" v-model="showLastToLeaveDialog" width="500">
+      <v-dialog data-testid="lastToLeaveDialog" v-model="showLastToLeaveDialog" width="500">
         <v-card title="You are the last member in your household!" max-width="400">
           <p>If you leave, your household will be deleted</p>
           <v-card-actions>
-             <v-btn id = "test" @click="cancel()" data-testid="cancelButton" > cancel
+             <v-btn id = "cancelLast" @click="cancel()" data-testid="cancelButton" > cancel
             </v-btn>
             <v-btn id = "newHouse" @click="switchDialogs" > Okay
             </v-btn>
           </v-card-actions>
         </v-card>
       </v-dialog>
+          <v-dialog data-testid="confirmation" v-model="showConfirmation" width="500">
+        <v-card title="You are changing the following:" max-width="400">
+          <p>{} will become a {}</p>
+          <v-card-actions>
+             <v-btn id = "confirmationCancel" @click="cancel()" data-testid="cancelButton" > cancel
+            </v-btn>
+            <v-btn id = "changeRoles" @click="changeRoles()" > Proceed
+            </v-btn>
+          </v-card-actions>
+        </v-card>
+      </v-dialog>
 
-         <v-dialog data-testid="dialog" v-model="showEditDialog" width="500">
+         <v-dialog data-testid="ShowEditdialog" v-model="showEditDialog" width="500">
         <v-card title="Edit Household" max-width="400">
           <v-text-field data-testid="houseName" :error-messages="errorMessages.household"  v-model = "householdName"  label =  "Enter a household name"></v-text-field>
           <v-card-actions>
-             <v-btn id = "test" @click="cancel()" data-testid="cancelButton" > cancel
+             <v-btn id = "cancelEdit" @click="cancel()" data-testid="cancelButton" > cancel
             </v-btn>
             <v-btn id = "editHouse" @click="editHouseholdData(store.household.id)" > Change Name
             </v-btn>
@@ -69,11 +82,11 @@
         </v-card>
       </v-dialog>
 
-      <v-dialog data-testid="dialog" v-model="showLastLeaderDialog" width="500">
+      <v-dialog data-testid="lastLeaderDialog" v-model="showLastLeaderDialog" width="500">
         <v-card title="You are the last leader" max-width="400">
           <p>You must assign someone else a leader before you leave</p>
            <v-card-actions>
-             <v-btn id = "test" @click="cancel()" data-testid="cancelButton" > cancel
+             <v-btn id = "lastLeaderCancel" @click="cancel()" data-testid="cancelButton" > cancel
             </v-btn>
           </v-card-actions>
         </v-card>
@@ -83,7 +96,7 @@
       </v-row>
 
             
- <div class="bg-primary text-center text-h5 pb-2 pt-2 mb-2">Leaders</div>
+ <div class="bg-primary text-center text-h5 pb-2 pt-2">Leaders</div>
      
  <v-list 
         class="pb-0 pt-0"
@@ -91,7 +104,7 @@
       
       >
       <v-list-item
-          class="border-b-thin h-25 "
+          class="border-b-thin h-25 bg-secondary "
            variant="outlined"
            
         >
@@ -131,7 +144,7 @@
         <v-list-item
           v-for="(chore) in leaders"
           :key="chore.id"
-          class="border-b-thin"
+          class="border-b-thin "
            variant="outlined"
         >
           <template
@@ -170,9 +183,10 @@
                v-if="store.user.role == 'leader' && chore.id != store.user.id"
                 block
                 color="secondary"
+                id="makeMember"
                 density="compact"
                 class="mt-1 mb-1"
-                @click = "changeToMember(chore.id)"
+                @click ="confirmation('member', chore.id)"
                 min-width="8em"
                  
               >
@@ -193,8 +207,9 @@
 
   
       <v-list-item
-          class="border-b-thin"
+          class="border-b-thin bg-secondary"
            variant="outlined"
+           
         >
           <template
             v-slot:prepend
@@ -272,10 +287,11 @@
               <v-btn
                v-if="store.user.role == 'leader' && chore.id != store.user.id"
                 block
+                id="makeLeader"
                 color="secondary"
                 density="compact"
                 class="mt-1 mb-1"
-                @click = "changeToLeader(chore.id)"
+                @click = "confirmation('leader', chore.id)"
                 min-width="8em"
                  
               >
@@ -307,6 +323,10 @@
   const members = ref(store.household.users.filter((user) => user.role == 'member'))
   const leaders = ref(store.household.users.filter((user) => user.role == 'leader'))
   const showEditDialog = ref(false)
+  const showConfirmation = ref(false)
+  const changeRole = ref(false)
+  const roleChangingID = ref()
+  const roleChanging = ref()
 
 
   const showDialog = ref(false);
@@ -372,6 +392,7 @@
     householdName.value = ""
     showEditDialog.value = false
     showLastLeaderDialog.value = false
+    showConfirmation.value = false
    }
 
   async function createNewHousehold(){
@@ -435,16 +456,38 @@
     }
     
     function editHouseholdData(hid){
+      console.log("LOOK HERE")
+      console.log(hid)
        if (!householdName.value || householdName.value.length > 50 || !(householdName.value.match(/\.*[A-Z]\.*/)  || householdName.value.match(/\.*[a-z]\.*/))){
       errorMessages.value.household = "Household name must be below 50 characters and have at least 1 letter"
       return false
     }
     let house = {id: hid, name: householdName.value}
+    console.log("HIHI")
       FetchService.editHousehold(house)
       showEditDialog.value = false
       store.household.name = householdName
       errorMessages.value.household = ""
 
+
+    }
+
+    function confirmation(role, id){
+      roleChangingID.value = id
+      roleChanging.value = role
+      showConfirmation.value = true
+
+
+    }
+
+    function changeRoles(){
+      showConfirmation.value = false
+      if (roleChanging.value == "leader"){
+        changeToLeader(roleChangingID.value)
+      }
+      else{
+        changeToMember(roleChangingID.value)
+      }
 
     }
 
