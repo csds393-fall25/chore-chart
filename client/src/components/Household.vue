@@ -21,6 +21,7 @@
             </v-btn>
             
             <v-btn
+              v-if="store.user.role == 'leader'"
               color="secondary"
               class="mr-0 mt-1"
               @click="editHousehold()"
