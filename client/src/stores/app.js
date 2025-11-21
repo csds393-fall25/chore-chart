@@ -19,13 +19,15 @@ export const useAppStore = defineStore('app', {
         shirt: "",
         background: "",
         handProp: ""
-      }
+      },
+      props: [],
     },
     loggedIn: false,
     household: {
       id: -1,
       joinCode: 0,
     },
-    avatars: []
+    avatars: [],
+    allProps: []
   }),
 })

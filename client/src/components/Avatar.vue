@@ -66,7 +66,7 @@ onMounted(async () => {
       }
     } else {
       // Retrieve from store after first time fetching
-      avatar.value = store.avatar.find((avatar) => avatar.userId == props.userId);
+      avatar.value = store.avatars.find((avatar) => avatar.userId == props.userId);
     }
   }
 })

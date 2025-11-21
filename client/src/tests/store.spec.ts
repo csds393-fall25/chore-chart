@@ -5,7 +5,7 @@ import { createTestingPinia } from '@pinia/testing'
 import { createVuetify } from 'vuetify'
 import * as components from 'vuetify/components'
 import * as directives from 'vuetify/directives'
-import Store from "../components/Store.vue";
+import Store from "../pages/Store.vue";
 import { useAppStore } from "@/stores/app.js";
 import routes from "../router/router.js";
 
