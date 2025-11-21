@@ -131,7 +131,8 @@ exports.Prisma.UserScalarFieldEnum = {
   role: 'role',
   difficulty: 'difficulty',
   maxChoreTime: 'maxChoreTime',
-  totalPoints: 'totalPoints'
+  totalPoints: 'totalPoints',
+  currentPoints: 'currentPoints'
 };
 
 exports.Prisma.HouseholdScalarFieldEnum = {
