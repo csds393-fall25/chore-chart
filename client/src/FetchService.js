@@ -206,6 +206,7 @@ class FetchService {
 
     // Edit household
     static async editHousehold(household) {
+        console.log(household)
         try {
             const response = await fetch(`${baseURL}/household/${household.id}`, {
                 method: "PUT",
