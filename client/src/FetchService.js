@@ -200,6 +200,7 @@ class FetchService {
             return result;
         } catch (error) {
             console.error(error.message);
+            console.log("In here")
             return false;
         }
     }

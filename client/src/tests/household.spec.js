@@ -429,14 +429,10 @@ test("LH-2 Last member leaving", async () => {
                             household: {
 
                                 users: [
-                                    {
-                                        id: 2,
-                                        name: "test",
-                                        role: "leader",
-                                    },
+                                  
                                      {
-                                        id: 3,
-                                        name: "test",
+                                        id: 457,
+                                        name: "y",
                                         role: "member",
                                     },
                                  
@@ -461,6 +457,7 @@ test("LH-2 Last member leaving", async () => {
         },
        
     })
+    wrapper.vm.showLastToLeaveDialog = false
 
     const store = useAppStore()
     wrapper.vm.householdName = ""
@@ -1462,6 +1459,689 @@ test("cancel last leader runs", async () => {
 
     
 })
+
+
+test("confirmation runs on click", async () => {
+    const wrapper = mount(Household, {
+        global: {
+            plugins: [
+                createTestingPinia({
+                    createSpy: vi.fn,
+                    initialState: {
+                        app: {
+                            user: {
+                                id: 0,
+                                householdId: 137,
+                                role: "leader",
+                            },
+                            household: {
+                                id: 137,
+
+                                users: [
+                                     {
+                                        id: 457,
+                                        name: "y",
+                                        role: "member",
+                                    },
+
+                                    {
+                                        id: 1,
+                                        name: "unitTest",
+                                        role: "leader",
+                                    },
+                                 
+                              
+                                ],
+                            },
+                        },
+                    },
+                }),
+                [vuetify],
+            
+            ],
+
+             stubs: {
+    VDialog: {
+      name: "VDialog",
+      template: '<div class="v-dialog-stub"><slot /></div>',
+      props: ['modelValue',
+      ]
+    }
+  }
+        },
+       
+    })
+
+    const store = useAppStore()
+     const spy = vi.spyOn(wrapper.vm, "confirmation");
+    await wrapper.find("#makeMember").trigger("click")
+    await nextTick()
+    expect(spy).toHaveBeenCalled();
+    
+
+    
+})
+
+test("confirmation runs on click", async () => {
+    const wrapper = mount(Household, {
+        global: {
+            plugins: [
+                createTestingPinia({
+                    createSpy: vi.fn,
+                    initialState: {
+                        app: {
+                            user: {
+                                id: 0,
+                                householdId: 137,
+                                role: "leader",
+                            },
+                            household: {
+                                id: 137,
+
+                                users: [
+                                     {
+                                        id: 457,
+                                        name: "y",
+                                        role: "member",
+                                    },
+
+                                    {
+                                        id: 1,
+                                        name: "unitTest",
+                                        role: "member",
+                                    },
+                                 
+                              
+                                ],
+                            },
+                        },
+                    },
+                }),
+                [vuetify],
+            
+            ],
+
+             stubs: {
+    VDialog: {
+      name: "VDialog",
+      template: '<div class="v-dialog-stub"><slot /></div>',
+      props: ['modelValue',
+      ]
+    }
+  }
+        },
+       
+    })
+
+    const store = useAppStore()
+     const spy = vi.spyOn(wrapper.vm, "confirmation");
+    await wrapper.find("#makeLeader").trigger("click")
+    await nextTick()
+    expect(spy).toHaveBeenCalled();
+    
+
+    
+})
+
+test("leaveHousehold shows warning if user leaving is the last leader", async () => {
+    const wrapper = mount(Household, {
+        global: {
+            plugins: [
+                createTestingPinia({
+                    createSpy: vi.fn,
+                    initialState: {
+                        app: {
+                            user: {
+                                id: 219,
+                                householdId: 137,
+                                name: "x",
+                                role: "leader",
+                            },
+                            household: {
+                                id: 137,
+
+                                users: [
+                                      {
+                                id: 219,
+                                householdId: 137,
+                                name: "x",
+                                role: "leader",
+                            },
+                                     {
+                                        id: 457,
+                                        name: "y",
+                                        role: "member",
+                                    },
+
+                                    {
+                                        id: 1,
+                                        name: "unitTest",
+                                        role: "member",
+                                    },
+                                 
+                              
+                                ],
+                            },
+                        },
+                    },
+                }),
+                [vuetify],
+            
+            ],
+
+             stubs: {
+    VDialog: {
+      name: "VDialog",
+      template: '<div class="v-dialog-stub"><slot /></div>',
+      props: ['modelValue',
+      ]
+    }
+  }
+        },
+       
+    })
+
+    const store = useAppStore()
+     const spy = vi.spyOn(wrapper.vm, "leaveHousehold");
+    await wrapper.find("#leave").trigger("click")
+    await nextTick()
+    expect(spy).toHaveBeenCalled();
+    await nextTick()
+    expect(wrapper.vm.showLastLeaderDialog).toBe(true)
+
+    
+
+    
+})
+
+test("leaveHousehold prceeds if user can leave without warnings", async () => {
+    const wrapper = mount(Household, {
+        global: {
+            plugins: [
+                createTestingPinia({
+                    createSpy: vi.fn,
+                    initialState: {
+                        app: {
+                            user: {
+                                id: 219,
+                                householdId: 137,
+                                name: "x",
+                                role: "leader",
+                            },
+                            household: {
+                                id: 137,
+
+                                users: [
+                                      {
+                                id: 219,
+                                householdId: 137,
+                                name: "x",
+                                role: "leader",
+                            },
+                                     {
+                                        id: 457,
+                                        name: "y",
+                                        role: "leader",
+                                    },
+
+                                    {
+                                        id: 1,
+                                        name: "unitTest",
+                                        role: "member",
+                                    },
+                                 
+                              
+                                ],
+                            },
+                        },
+                    },
+                }),
+                [vuetify],
+            
+            ],
+
+             stubs: {
+    VDialog: {
+      name: "VDialog",
+      template: '<div class="v-dialog-stub"><slot /></div>',
+      props: ['modelValue',
+      ]
+    }
+  }
+        },
+       
+    })
+
+    const store = useAppStore()
+     const spy = vi.spyOn(wrapper.vm, "leaveHousehold");
+    await wrapper.find("#leave").trigger("click")
+    await nextTick()
+    expect(spy).toHaveBeenCalled();
+    await nextTick()
+    expect(wrapper.vm.showDialog).toBe(true)
+
+    
+
+    
+})
+
+test("JoinNewHousehold deletes household if the last user leaves", async () => {
+    let result = await FetchService.createHousehold({name: "delete"})
+    const wrapper = mount(Household, {
+        global: {
+            plugins: [
+                createTestingPinia({
+                    createSpy: vi.fn,
+                    initialState: {
+                        app: {
+                            user: {
+                                id: 219,
+                                householdId: result.id,
+                                name: "x",
+                                role: "leader",
+                            },
+                            household: {
+                                id: result.id,
+
+                                users: [
+                                      {
+                                id: 219,
+                                householdId: result.id,
+                                name: "x",
+                                role: "leader",
+                            },  
+                              
+                                ],
+                            },
+                        },
+                    },
+                }),
+                [vuetify],
+            
+            ],
+
+             stubs: {
+    VDialog: {
+      name: "VDialog",
+      template: '<div class="v-dialog-stub"><slot /></div>',
+      props: ['modelValue',
+      ]
+    }
+  }
+        },
+       
+    })
+    const store = useAppStore()
+    console.log("result")
+    console.log(result)
+    wrapper.vm.lastFlag = true
+    wrapper.vm.householdName = "efgh"
+    await wrapper.vm.joinNewHousehold()
+    expect(wrapper.vm.lastFlag).toBe(false)
+
+
+
+
+    
+
+    
+})
+
+test("SwitchDialogs works correctly", async () => {
+    const wrapper = mount(Household, {
+        global: {
+            plugins: [
+                createTestingPinia({
+                    createSpy: vi.fn,
+                    initialState: {
+                        app: {
+                            user: {
+                                id: 219,
+                                householdId: 137,
+                                name: "x",
+                                role: "leader",
+                            },
+                            household: {
+                                id: 137,
+
+                                users: [
+                                      {
+                                id: 219,
+                                householdId: 137,
+                                name: "x",
+                                role: "leader",
+                            },  
+                              
+                                ],
+                            },
+                        },
+                    },
+                }),
+                [vuetify],
+            
+            ],
+
+             stubs: {
+    VDialog: {
+      name: "VDialog",
+      template: '<div class="v-dialog-stub"><slot /></div>',
+      props: ['modelValue',
+      ]
+    }
+  }
+        },
+       
+    })
+    const store = useAppStore()
+    wrapper.vm.switchDialogs()
+    expect(wrapper.vm.showLastToLeaveDialog).toBe(false)
+    expect(wrapper.vm.showDialog).toBe(true)
+
+
+
+    
+
+    
+})
+
+test("createNewHousehold deletes household if the last user leaves", async () => {
+    let result = await FetchService.createHousehold({name: "delete"})
+    const wrapper = mount(Household, {
+        global: {
+            plugins: [
+                createTestingPinia({
+                    createSpy: vi.fn,
+                    initialState: {
+                        app: {
+                            user: {
+                                id: 219,
+                                householdId: result.id,
+                                name: "x",
+                                role: "leader",
+                            },
+                            household: {
+                                id: result.id,
+
+                                users: [
+                                      {
+                                id: 219,
+                                householdId: result.id,
+                                name: "x",
+                                role: "leader",
+                            },  
+                              
+                                ],
+                            },
+                        },
+                    },
+                }),
+                [vuetify],
+            
+            ],
+
+             stubs: {
+    VDialog: {
+      name: "VDialog",
+      template: '<div class="v-dialog-stub"><slot /></div>',
+      props: ['modelValue',
+      ]
+    }
+  }
+        },
+       
+    })
+    const store = useAppStore()
+    console.log("result")
+    console.log(result)
+    wrapper.vm.lastFlag = true
+    wrapper.vm.householdName = "efgh"
+    await wrapper.vm.createNewHousehold()
+    expect(wrapper.vm.lastFlag).toBe(false)
+
+
+
+
+    
+
+    
+})
+
+test("changeRoles changeToLeader runs ", async () => {
+    const wrapper = mount(Household, {
+        global: {
+            plugins: [
+                createTestingPinia({
+                    createSpy: vi.fn,
+                    initialState: {
+                        app: {
+                            user: {
+                                id: 219,
+                                householdId: 137,
+                                name: "x",
+                                role: "leader",
+                            },
+                            household: {
+                                id: 137,
+
+                                users: [
+                                      {
+                                id: 219,
+                                householdId: 137,
+                                name: "x",
+                                role: "leader",
+                            },  
+                                      {
+                                id: 457,
+                                householdId: 137,
+                                name: "y",
+                                role: "member",
+                            },
+                              
+                                ],
+                            },
+                        },
+                    },
+                }),
+                [vuetify],
+            
+            ],
+
+             stubs: {
+    VDialog: {
+      name: "VDialog",
+      template: '<div class="v-dialog-stub"><slot /></div>',
+      props: ['modelValue',
+      ]
+    }
+  }
+        },
+       
+    })
+
+    const store = useAppStore()
+    wrapper.vm.roleChanging = "leader"
+    wrapper.vm.roleChangingID = 457
+  
+    await wrapper.vm.changeRoles()
+    const spy = vi.spyOn(wrapper.vm, "changeToLeader");
+    expect(store.household.users[1].role).toBe("leader")
+
+
+
+
+    
+
+    
+})
+
+test("householdName v-model works", async () => {
+    const wrapper = mount(Household, {
+        global: {
+            plugins: [
+                createTestingPinia({
+                    createSpy: vi.fn,
+                    initialState: {
+                        app: {
+                            user: {
+                                id: 0,
+                                householdId: 137,
+                                role: "leader",
+                            },
+                            household: {
+                                id: 137,
+
+                                users: [
+                                    {
+                                        id: 0,
+                                        name: "test",
+                                        role: "leader",
+                                    },
+                                 
+                              
+                                ],
+                            },
+                        },
+                    },
+                }),
+                [vuetify],
+            
+            ],
+
+             stubs: {
+    VDialog: {
+      name: "VDialog",
+      template: '<div class="v-dialog-stub"><slot /></div>',
+      props: ['modelValue',
+      ]
+    }
+  }
+        },
+       
+    })
+
+  
+
+  const select = wrapper.findComponent('[data-testid="houseName"]');
+  await select.setValue("HI")
+  await nextTick()
+  expect(wrapper.vm.householdName).toBe("HI")
+})
+
+test("second householdName v-model works", async () => {
+    const wrapper = mount(Household, {
+        global: {
+            plugins: [
+                createTestingPinia({
+                    createSpy: vi.fn,
+                    initialState: {
+                        app: {
+                            user: {
+                                id: 0,
+                                householdId: 137,
+                                role: "leader",
+                            },
+                            household: {
+                                id: 137,
+
+                                users: [
+                                    {
+                                        id: 0,
+                                        name: "test",
+                                        role: "leader",
+                                    },
+                                 
+                              
+                                ],
+                            },
+                        },
+                    },
+                }),
+                [vuetify],
+            
+            ],
+
+             stubs: {
+    VDialog: {
+      name: "VDialog",
+      template: '<div class="v-dialog-stub"><slot /></div>',
+      props: ['modelValue',
+      ]
+    }
+  }
+        },
+       
+    })
+
+  
+
+  const select = wrapper.findComponent('[data-testid="houseEditName"]');
+  await select.setValue("HI")
+  await nextTick()
+  expect(wrapper.vm.householdName).toBe("HI")
+})
+
+test("A household is attempted to be edited with a name that doesn't have letters", async () => {
+    const wrapper = mount(Household, {
+        global: {
+            plugins: [
+                createTestingPinia({
+                    createSpy: vi.fn,
+                    initialState: {
+                        app: {
+                            user: {
+                                id: 219,
+                                householdId: 137,
+                                role: "leader",
+                            },
+                            household: {
+
+                                users: [
+
+                                         {
+                                        id: 457,
+                                        name: "y",
+                                        role: "member",
+                                    },
+                                 
+                              
+                                ],
+                            },
+                        },
+                    },
+                }),
+                [vuetify],
+            
+            ],
+
+             stubs: {
+    VDialog: {
+      name: "VDialog",
+      template: '<div class="v-dialog-stub"><slot /></div>',
+      props: ['modelValue',
+      ]
+    }
+  }
+        },
+       
+    })
+    await wrapper.vm.changeToLeader(457)
+
+    const store = useAppStore()
+    wrapper.vm.householdName = "123"
+    
+    await wrapper.vm.editHouseholdData(137)
+
+    expect(wrapper.vm.errorMessages.household).toBe("Household name must be below 50 characters and have at least 1 letter")
+     wrapper.vm.householdName = "HI"
+    
+    await wrapper.vm.editHouseholdData(137)
+    
+})
+
+
+
+
+
 
 
 
