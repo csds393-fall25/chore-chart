@@ -22,7 +22,7 @@ const vuetify = createVuetify({
 
 vi.stubGlobal('visualViewport', new EventTarget())
 
-test("Random renders correctly", () => {
+test("NOFT - Random renders correctly", () => {
     const wrapper = mount(Random, {
         global: {
             plugins: [
@@ -84,7 +84,7 @@ test("Random renders correctly", () => {
     expect(wrapper.text()).toContain('Random Assignment')
 })
 
-test("userName returns correctly", () => {
+test("NOFT - userName returns correctly", () => {
     const wrapper = mount(Random, {
         global: {
             plugins: [
@@ -146,7 +146,7 @@ test("userName returns correctly", () => {
     expect(wrapper.vm.userName(4)).toBe('test')
 })
 
-test("cancel reroutes correctly", async () => {
+test("RCAT-3 - cancel reroutes correctly", async () => {
 
     let router = createRouter({
         history: createWebHistory(),
@@ -219,7 +219,7 @@ test("cancel reroutes correctly", async () => {
     expect(spy).toHaveBeenCalledWith({ name: 'home' })
 })
 
-test("randomize lists the chores correctly", async () => {
+test("RCAT-1, RCAT-2 and RCAT-4 - randomize lists the chores correctly", async () => {
     const wrapper = mount(Random, {
         global: {
             plugins: [
@@ -355,7 +355,7 @@ test("randomize lists the chores correctly", async () => {
     expect(wrapper.vm.unassignedChores.length).toBe(3)
 })
 
-test("assignChores assigns correctly", async () => {
+test("RCAT-1 - assignChores assigns correctly", async () => {
 
     let router = createRouter({
         history: createWebHistory(),
@@ -475,4 +475,201 @@ test("assignChores assigns correctly", async () => {
 
     await FetchService.editChore(2, {assigneeId: null})
     await FetchService.editChore(3, {assigneeId: null})
+})
+
+test("RCAT-3 - test cancelButton", async () => {
+
+    const wrapper = mount(Random, {
+        global: {
+            plugins: [
+                createTestingPinia({
+                    createSpy: vi.fn,
+                    initialState: {
+                        app: {
+                            user: {
+                                id: 4,
+                                householdId: 3,
+                                role: "leader",
+                                name: "test"
+                            },
+                            household: {
+                                users: [
+                                    {
+                                        id: 4,
+                                        name: "test",
+                                        role: "member",
+                                        difficulty: 5,
+                                        maxChoreTime: 20
+                                    }
+                                ],
+                                chores: [
+                                    {
+                                        id: 2,
+                                        name: "test name",
+                                        difficulty: 1,
+                                        estimatedTime: 1,
+                                        householdId: 3,
+                                        assigneeId: null,
+                                    },
+                                    {
+                                        id: 3,
+                                        name: "test name",
+                                        difficulty: 1,
+                                        estimatedTime: 1,
+                                        householdId: 3,
+                                        assigneeId: null,
+                                    },
+                                ]
+                            },
+                        },
+                    },
+                }),
+                [vuetify],
+                routes,
+            ],
+        }
+    })
+
+    //flushPromises wouldn't work for some reason so I need to wait for a state to change at the end of onMounted manually
+    while(!wrapper.vm.mounted) {
+        await new Promise(resolve => setTimeout(resolve, 50))
+    }
+
+    const spy = vi.spyOn(wrapper.vm, 'cancel')
+
+    await wrapper.find('#cancelButton').trigger("click")
+
+    expect(spy).toHaveBeenCalled()
+})
+
+test("RCAT-2 - test randomizeButton", async () => {
+
+    const wrapper = mount(Random, {
+        global: {
+            plugins: [
+                createTestingPinia({
+                    createSpy: vi.fn,
+                    initialState: {
+                        app: {
+                            user: {
+                                id: 4,
+                                householdId: 3,
+                                role: "leader",
+                                name: "test"
+                            },
+                            household: {
+                                users: [
+                                    {
+                                        id: 4,
+                                        name: "test",
+                                        role: "member",
+                                        difficulty: 5,
+                                        maxChoreTime: 20
+                                    }
+                                ],
+                                chores: [
+                                    {
+                                        id: 2,
+                                        name: "test name",
+                                        difficulty: 1,
+                                        estimatedTime: 1,
+                                        householdId: 3,
+                                        assigneeId: null,
+                                    },
+                                    {
+                                        id: 3,
+                                        name: "test name",
+                                        difficulty: 1,
+                                        estimatedTime: 1,
+                                        householdId: 3,
+                                        assigneeId: null,
+                                    },
+                                ]
+                            },
+                        },
+                    },
+                }),
+                [vuetify],
+                routes,
+            ],
+        }
+    })
+
+    //flushPromises wouldn't work for some reason so I need to wait for a state to change at the end of onMounted manually
+    while(!wrapper.vm.mounted) {
+        await new Promise(resolve => setTimeout(resolve, 50))
+    }
+
+    const spy = vi.spyOn(wrapper.vm, 'randomize')
+
+    await wrapper.find('#randomizeButton').trigger("click")
+
+    expect(spy).toHaveBeenCalled()
+})
+
+test("RCAT-1 - test assignButton", async () => {
+
+    const wrapper = mount(Random, {
+        global: {
+            plugins: [
+                createTestingPinia({
+                    createSpy: vi.fn,
+                    initialState: {
+                        app: {
+                            user: {
+                                id: 4,
+                                householdId: 3,
+                                role: "leader",
+                                name: "test"
+                            },
+                            household: {
+                                users: [
+                                    {
+                                        id: 4,
+                                        name: "test",
+                                        role: "member",
+                                        difficulty: 5,
+                                        maxChoreTime: 20
+                                    }
+                                ],
+                                chores: [
+                                    {
+                                        id: 2,
+                                        name: "test name",
+                                        difficulty: 1,
+                                        estimatedTime: 1,
+                                        householdId: 3,
+                                        assigneeId: null,
+                                    },
+                                    {
+                                        id: 3,
+                                        name: "test name",
+                                        difficulty: 1,
+                                        estimatedTime: 1,
+                                        householdId: 3,
+                                        assigneeId: null,
+                                    },
+                                ]
+                            },
+                        },
+                    },
+                }),
+                [vuetify],
+                routes,
+            ],
+        }
+    })
+
+    //flushPromises wouldn't work for some reason so I need to wait for a state to change at the end of onMounted manually
+    while(!wrapper.vm.mounted) {
+        await new Promise(resolve => setTimeout(resolve, 50))
+    }
+
+    const fetchSpy = vi.spyOn(wrapper.vm.FetchService, 'editChore').mockImplementation((id, chore) => chore)
+
+    const spy = vi.spyOn(wrapper.vm, 'assignChores')
+
+    await wrapper.find('#assignChoresButton').trigger("click")
+
+    expect(spy).toHaveBeenCalled()
 })
