@@ -4,6 +4,7 @@ import Dashboard from '../pages/Dashboard.vue'
 import Profile from '@/components/Profile.vue'
 import PrintPage from '../pages/PrintPage.vue'
 import Household from '@/components/Household.vue'
+import Leaderboard from '@/components/leaderboard.vue'
 
 const routes = [
   { 
@@ -67,7 +68,7 @@ const routes = [
   { 
     path: '/leaderboard', 
     name: 'leaderboard',
-    component: index, 
+    component: Leaderboard, 
     props: true 
   },
   { 
