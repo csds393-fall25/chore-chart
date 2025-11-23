@@ -395,6 +395,81 @@ class FetchService {
             console.error(error.message);
         }
     }
+
+    // Buy prop
+    static async buyProp(userId, propId) {
+        try {
+            const response = await fetch(`${baseURL}/prop/buy`, {
+                method: "PUT",
+                headers: {
+                    "Content-Type": "application/json",
+                },
+                body: JSON.stringify({ 
+                    userId: userId, 
+                    propId: propId,
+                })
+            }); 
+            if (!response.ok) {
+                throw new Error(`Response status: ${response.status}`);
+            }
+            const result = await response.json();
+            return result;
+        } catch (error) {
+            console.error(error.message);
+        }
+    }
+
+    // Unbuy prop
+    static async unbuyProp(userId, propId) {
+        try {
+            const response = await fetch(`${baseURL}/prop/unbuy`, {
+                method: "PUT",
+                headers: {
+                    "Content-Type": "application/json",
+                },
+                body: JSON.stringify({ 
+                    userId: userId, 
+                    propId: propId,
+                })
+            }); 
+            if (!response.ok) {
+                throw new Error(`Response status: ${response.status}`);
+            }
+            const result = await response.json();
+            return result;
+        } catch (error) {
+            console.error(error.message);
+        }
+    }
+
+    // Modify a user's avatar by equipping a prop
+    // Takes the user id and a prop object with id (int) and type (string)
+    // Returns the new avatar (list of props)
+    static async equipProp(ownerId, prop) {
+        try {
+            const response = await fetch(`${baseURL}/prop/equip`, {
+                method: "PUT",
+                headers: {
+                    "Content-Type": "application/json",
+                },
+                body: JSON.stringify({ 
+                    ownerId: ownerId, 
+                    prop: {
+                        id: prop.id,
+                        type: prop.type,
+                    },
+                })
+            }); 
+            if (!response.ok) {
+                throw new Error(`Response status: ${response.status}`);
+            }
+            const result = await response.json();
+            return result;
+        } catch (error) {
+            console.error(error.message);
+        }
+    }
+
 }
 
 export default FetchService
