@@ -673,3 +673,69 @@ test("RCAT-1 - test assignButton", async () => {
 
     expect(spy).toHaveBeenCalled()
 })
+
+test("NOFT - reroutes correctly when a member tries to access", async () => {
+
+    let router = createRouter({
+        history: createWebHistory(),
+        routes: routesList,
+    })
+
+    router.push('/random')
+    await router.isReady()
+
+    const spy = vi.spyOn(router, 'push');
+
+    const wrapper = mount(Random, {
+        global: {
+            plugins: [
+                createTestingPinia({
+                    createSpy: vi.fn,
+                    initialState: {
+                        app: {
+                            user: {
+                                id: 4,
+                                householdId: 3,
+                                role: "member",
+                                name: "test"
+                            },
+                            household: {
+                                users: [
+                                    {
+                                        id: 4,
+                                        name: "test",
+                                        role: "member",
+                                        difficulty: 5,
+                                        maxChoreTime: 20
+                                    }
+                                ],
+                                chores: [
+                                    {
+                                        id: 2,
+                                        name: "test name",
+                                        difficulty: 1,
+                                        estimatedTime: 1,
+                                        householdId: 3,
+                                        assigneeId: null,
+                                    },
+                                    {
+                                        id: 3,
+                                        name: "test name",
+                                        difficulty: 1,
+                                        estimatedTime: 1,
+                                        householdId: 3,
+                                        assigneeId: null,
+                                    },
+                                ]
+                            },
+                        },
+                    },
+                }),
+                [vuetify],
+                [router],
+            ],
+        }
+    })
+
+    expect(spy).toHaveBeenCalledWith({name: 'home'})
+})

@@ -116,6 +116,13 @@
   const unassignedChores = ref([])
   const mounted = ref(false)
 
+  if(store.user.role != 'leader') {
+    router.push({
+      name: 'home'
+    })
+    //TODO: add a toaster to indicate why it rerouted
+  }
+
   onMounted(async () => {
     store.household = await FetchService.fetchHousehold(store.user.householdId)
     randomize()
