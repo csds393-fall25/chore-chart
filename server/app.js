@@ -442,7 +442,7 @@ app.get('/api/avatar-props', async (req, res) => {
 app.get('/api/avatar-props/:userId', async (req, res) => {
   try {
     const userId = Number(req.params.userId);
-    const userProps = await prisma.userAvatarProps.findMany({ where: userId });
+    const userProps = await prisma.userAvatarProps.findMany({ where: { userId } });
     const propIds = userProps.map((userProp) => userProp.propId)
     res.json(propIds);
   } catch (err) {
