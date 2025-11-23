@@ -381,6 +381,20 @@ class FetchService {
             console.error(error.message);
         }
     }
+
+    // Get ids of props owned by user
+    static async getOwnedProps(userId) {
+        try {
+            const response = await fetch(`${baseURL}/avatar-props/${userId}`);
+            if(!response.ok) {
+                throw new Error(`Response status: ${response.status}`);
+            }
+            const ownedPropIds = await response.json();
+            return ownedPropIds;
+        } catch (error) {
+            console.error(error.message);
+        }
+    }
 }
 
 export default FetchService
