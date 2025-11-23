@@ -58,6 +58,7 @@
   const propsList = ref([])
 
   const usersAvatar = ref(store.avatars.find((avatar) => avatar.userId == store.user.id))
+  const mounted = ref(false)
 
   onMounted(async () => {
     if (store.allProps.length == 0) {
@@ -107,9 +108,11 @@
             console.log(`Unexpected prop type ${prop.type}`);
         }
       });
-      store.avatars.push = avatar.value;
+      store.avatars.push(avatar.value);
       usersAvatar.value = avatar.value
     }
+
+    mounted.value = true
   })
 
   function isOwned(prop) {

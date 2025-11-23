@@ -60,7 +60,7 @@ onMounted(async () => {
             console.log(`Unexpected prop type ${prop.type}`);
         }
       });
-      store.avatars.push = avatar.value;
+      store.avatars.push(avatar.value);
       if(props.userId == store.user.id) {
         store.user.avatar = avatar.value
       }
