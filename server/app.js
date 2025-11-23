@@ -398,23 +398,6 @@ app.get('/api/avatar/:userId', async (req, res) => {
   }
 });
 
-// equip avatar with a prop
-// Takes an ownerId and a prop object that contains attributes id and type
-app.put('/api/avatar/', async (req, res) => {
-  const { ownerId, prop } = req.body;
-  try {
-    const result = await prisma.avatar.update({
-      where: { ownerId: Number(ownerId) },
-      data: {
-        [`${prop.type}Id`]: prop.id,
-      },
-    });
-    res.json(result);
-  } catch (err) {
-    res.status(500).json({ error: err.message });
-  }
-});
-
 // get all avatar props to display in the store
 app.get('/api/avatar-props', async (req, res) => {
   try {
@@ -456,9 +439,15 @@ app.put('/api/prop/buy', async (req, res) => {
   try {
     const user = await prisma.user.findUnique({ where: { id: Number(userId) } });
     const prop = await prisma.avatarProp.findUnique({ where: { id: Number(propId) }});
+    const userProps = await prisma.userAvatarProps.findMany({ where: { userId: Number(userId) }});
+    const ownedPropIds = userProps.map((userProp) => userProp.propId);
     // Error if user try to buy props more expensive than their available balance
     if (user.currentPoints < prop.cost) {
       res.status(403).json({ error: "Insufficient point balance."});
+    }
+    // Error if user try to buy props they already own
+    else if(ownedPropIds.includes(prop.id)) {
+      res.status(403).json({ error: "Prop already purchased."});
     }
     else {
       // deduct points
@@ -474,6 +463,61 @@ app.put('/api/prop/buy', async (req, res) => {
         data: {
           userId: user.id,
           propId: prop.id,
+        },
+      });
+      res.json(result);
+    }
+  } catch (err) {
+    res.status(500).json({ error: err.message });
+  }
+});
+
+// unbuy prop (for testing purpose)
+app.put('/api/prop/unbuy', async (req, res) => {
+  const { userId, propId } = req.body;
+  try {
+    const user = await prisma.user.findUnique({ where: { id: Number(userId) } });
+    const prop = await prisma.avatarProp.findUnique({ where: { id: Number(propId) }});
+    // refund points
+    const newPoints = user.currentPoints + prop.cost;
+    await prisma.user.update({ 
+      where: { id: user.id }, 
+      data: {
+        currentPoints: newPoints,
+      },
+    })
+    // unlink prop from user
+    const result = await prisma.userAvatarProps.delete({
+      where: {
+        userId_propId: {
+          userId: user.id,
+          propId: prop.id,
+        }
+      },
+    });
+    res.json(result);
+  } catch (err) {
+    res.status(500).json({ error: err.message });
+  }
+});
+
+// equip avatar with a prop
+// Takes an ownerId and a prop object that contains attributes id and type
+app.put('/api/prop/equip', async (req, res) => {
+  const { ownerId, prop } = req.body;
+  try {
+    // check if user owns the prop
+    const userProps = await prisma.userAvatarProps.findMany({ where: { userId: Number(ownerId) }});
+    const ownedPropIds = userProps.map((userProp) => userProp.propId);
+    if (!ownedPropIds.includes(prop.id)) {
+      res.status(403).json({ error: "Can not equip prop that is not owned by user."})
+    }
+    else {
+      // equip
+      const result = await prisma.avatar.update({
+        where: { ownerId: Number(ownerId) },
+        data: {
+          [`${prop.type}Id`]: prop.id,
         },
       });
       res.json(result);
