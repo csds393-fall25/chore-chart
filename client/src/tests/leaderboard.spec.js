@@ -102,44 +102,8 @@ test("LT-2 Users change spots on the leaderboard. ", async () => {
     expect(wrapper.vm.members[0].name).toBe("xx")
     expect(wrapper.vm.members[1].name).toBe("yy")
     store.household.users[1].totalPoints = 30
-    wrapper.unmount()
+    console.log(store.household.users[1].name)
     await nextTick()
-    const wrapper2 = mount(Leaderboard, {
-        global: {
-            plugins: [
-                createTestingPinia({
-                    createSpy: vi.fn,
-                    initialState: {
-                        app: {
-                           
-                            household: {
-                                users: [
-                                    {
-                                        id: 8,
-                                        name: "xx",
-                                        totalPoints:20 
-                                     
-                                       
-                                    },
-                                 {
-                                id: 5,
-                                name: "yy",
-                                totalPoints:30
-                               
-                             
-                            },
-                                ],
-                            },
-                        },
-                    },
-                }),
-                [vuetify],
-            
-            ],
-        },
-       
-    })
-
-    expect(wrapper2.vm.members[1].name).toBe("xx") //yy
-    expect(wrapper2.vm.members[0].name).toBe("yy") //xx
+    expect(wrapper.vm.members[1].name).toBe("xx") //yy
+    expect(wrapper.vm.members[0].name).toBe("yy") //xx
 })

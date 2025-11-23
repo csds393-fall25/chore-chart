@@ -3,11 +3,7 @@
     <v-container>
         <div class="text-h5 ml-1">
             {{store.household.name}} Leaderboard
-
         </div>
-     
-      
-      
       <v-list 
         class="pb-0 pt-0"
       >
@@ -34,20 +30,7 @@
               </v-col>
             </v-row>
           </template>
-
-
-        
-           
-
-
       </v-list-item>
-
-
-        
-
-
-
-
         <v-list-item
           v-for="(member) in members"
           :key="member.id"
@@ -81,37 +64,22 @@
 <script setup>
   import { ref } from 'vue'
   import { useAppStore } from '@/stores/app';
-  import { useRouter } from 'vue-router'
-  import FetchService from '../FetchService.js'
+  import { watch } from 'vue';
 
   const store = useAppStore()
-
-  const listMode = ref(true);
-
-
-  const members = store.household.users.sort((i, j)=> j.totalPoints-i.totalPoints )
-    
-
-
-  const showDialog = ref(false);
-  const isJoin = ref(true)
-  const householdName = ref()
-
+  const members = ref(store.household.users.sort((i, j)=> j.totalPoints-i.totalPoints ))
 
   function userInitials(name) {
     return name.substring(0,1)
   }
 
- 
-  // function LeaveHousehold(){
-  //   console.log("HI")
-  //   showDialog.value = true;
-    
-  // }
-  // function joinHousehold(){
-  //   FetchService.deleteUser(store.user.id)
+  watch (members =>  {
+    members.value = store.household.users.sort((i, j)=> j.totalPoints-i.totalPoints)
+  
 
-  // }
+  }
+)
+
 </script>
 
 <style scoped>
