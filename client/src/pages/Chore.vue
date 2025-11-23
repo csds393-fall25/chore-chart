@@ -186,6 +186,7 @@
           <v-card-text>This chore is above the maximum difficulty level for the person you are assigning it to.</v-card-text>
           <v-card-actions>
             <v-row>
+              <v-col cols="4" class="pb-0 pt-0" v-if="store.user.role=='member'"></v-col>
               <v-col cols="4" class="pb-0 pt-0">
                 <v-btn
                   block
@@ -206,9 +207,8 @@
                   Leave Unassigned
                 </v-btn>
               </v-col>
-              <v-col cols="4" class="pb-0 pt-0">
+              <v-col cols="4" class="pb-0 pt-0" v-if="store.user.role == 'leader'">
                 <v-btn
-                  v-if="store.user.role == 'leader'"
                   color="secondary"
                   variant="elevated"
                   id="assignAnywayButton"
