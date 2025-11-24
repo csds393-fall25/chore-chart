@@ -1530,6 +1530,7 @@ export namespace Prisma {
     difficulty: number | null
     maxChoreTime: number | null
     totalPoints: number | null
+    currentPoints: number | null
   }
 
   export type UserSumAggregateOutputType = {
@@ -1538,6 +1539,7 @@ export namespace Prisma {
     difficulty: number | null
     maxChoreTime: number | null
     totalPoints: number | null
+    currentPoints: number | null
   }
 
   export type UserMinAggregateOutputType = {
@@ -1552,6 +1554,7 @@ export namespace Prisma {
     difficulty: number | null
     maxChoreTime: number | null
     totalPoints: number | null
+    currentPoints: number | null
   }
 
   export type UserMaxAggregateOutputType = {
@@ -1566,6 +1569,7 @@ export namespace Prisma {
     difficulty: number | null
     maxChoreTime: number | null
     totalPoints: number | null
+    currentPoints: number | null
   }
 
   export type UserCountAggregateOutputType = {
@@ -1580,6 +1584,7 @@ export namespace Prisma {
     difficulty: number
     maxChoreTime: number
     totalPoints: number
+    currentPoints: number
     _all: number
   }
 
@@ -1590,6 +1595,7 @@ export namespace Prisma {
     difficulty?: true
     maxChoreTime?: true
     totalPoints?: true
+    currentPoints?: true
   }
 
   export type UserSumAggregateInputType = {
@@ -1598,6 +1604,7 @@ export namespace Prisma {
     difficulty?: true
     maxChoreTime?: true
     totalPoints?: true
+    currentPoints?: true
   }
 
   export type UserMinAggregateInputType = {
@@ -1612,6 +1619,7 @@ export namespace Prisma {
     difficulty?: true
     maxChoreTime?: true
     totalPoints?: true
+    currentPoints?: true
   }
 
   export type UserMaxAggregateInputType = {
@@ -1626,6 +1634,7 @@ export namespace Prisma {
     difficulty?: true
     maxChoreTime?: true
     totalPoints?: true
+    currentPoints?: true
   }
 
   export type UserCountAggregateInputType = {
@@ -1640,6 +1649,7 @@ export namespace Prisma {
     difficulty?: true
     maxChoreTime?: true
     totalPoints?: true
+    currentPoints?: true
     _all?: true
   }
 
@@ -1737,10 +1747,11 @@ export namespace Prisma {
     password_hash: string
     salt: string | null
     householdId: number | null
-    role: $Enums.Role | null
+    role: $Enums.Role
     difficulty: number | null
     maxChoreTime: number | null
-    totalPoints: number | null
+    totalPoints: number
+    currentPoints: number
     _count: UserCountAggregateOutputType | null
     _avg: UserAvgAggregateOutputType | null
     _sum: UserSumAggregateOutputType | null
@@ -1774,6 +1785,7 @@ export namespace Prisma {
     difficulty?: boolean
     maxChoreTime?: boolean
     totalPoints?: boolean
+    currentPoints?: boolean
     household?: boolean | User$householdArgs<ExtArgs>
     assignedChores?: boolean | User$assignedChoresArgs<ExtArgs>
     avatar?: boolean | User$avatarArgs<ExtArgs>
@@ -1793,6 +1805,7 @@ export namespace Prisma {
     difficulty?: boolean
     maxChoreTime?: boolean
     totalPoints?: boolean
+    currentPoints?: boolean
     household?: boolean | User$householdArgs<ExtArgs>
   }, ExtArgs["result"]["user"]>
 
@@ -1808,6 +1821,7 @@ export namespace Prisma {
     difficulty?: boolean
     maxChoreTime?: boolean
     totalPoints?: boolean
+    currentPoints?: boolean
     household?: boolean | User$householdArgs<ExtArgs>
   }, ExtArgs["result"]["user"]>
 
@@ -1823,9 +1837,10 @@ export namespace Prisma {
     difficulty?: boolean
     maxChoreTime?: boolean
     totalPoints?: boolean
+    currentPoints?: boolean
   }
 
-  export type UserOmit<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetOmit<"id" | "createdAt" | "email" | "name" | "password_hash" | "salt" | "householdId" | "role" | "difficulty" | "maxChoreTime" | "totalPoints", ExtArgs["result"]["user"]>
+  export type UserOmit<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetOmit<"id" | "createdAt" | "email" | "name" | "password_hash" | "salt" | "householdId" | "role" | "difficulty" | "maxChoreTime" | "totalPoints" | "currentPoints", ExtArgs["result"]["user"]>
   export type UserInclude<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
     household?: boolean | User$householdArgs<ExtArgs>
     assignedChores?: boolean | User$assignedChoresArgs<ExtArgs>
@@ -1856,10 +1871,11 @@ export namespace Prisma {
       password_hash: string
       salt: string | null
       householdId: number | null
-      role: $Enums.Role | null
+      role: $Enums.Role
       difficulty: number | null
       maxChoreTime: number | null
-      totalPoints: number | null
+      totalPoints: number
+      currentPoints: number
     }, ExtArgs["result"]["user"]>
     composites: {}
   }
@@ -2298,6 +2314,7 @@ export namespace Prisma {
     readonly difficulty: FieldRef<"User", 'Int'>
     readonly maxChoreTime: FieldRef<"User", 'Int'>
     readonly totalPoints: FieldRef<"User", 'Int'>
+    readonly currentPoints: FieldRef<"User", 'Int'>
   }
     
 
@@ -8647,7 +8664,8 @@ export namespace Prisma {
     role: 'role',
     difficulty: 'difficulty',
     maxChoreTime: 'maxChoreTime',
-    totalPoints: 'totalPoints'
+    totalPoints: 'totalPoints',
+    currentPoints: 'currentPoints'
   };
 
   export type UserScalarFieldEnum = (typeof UserScalarFieldEnum)[keyof typeof UserScalarFieldEnum]
@@ -8843,10 +8861,11 @@ export namespace Prisma {
     password_hash?: StringFilter<"User"> | string
     salt?: StringNullableFilter<"User"> | string | null
     householdId?: IntNullableFilter<"User"> | number | null
-    role?: EnumRoleNullableFilter<"User"> | $Enums.Role | null
+    role?: EnumRoleFilter<"User"> | $Enums.Role
     difficulty?: IntNullableFilter<"User"> | number | null
     maxChoreTime?: IntNullableFilter<"User"> | number | null
-    totalPoints?: IntNullableFilter<"User"> | number | null
+    totalPoints?: IntFilter<"User"> | number
+    currentPoints?: IntFilter<"User"> | number
     household?: XOR<HouseholdNullableScalarRelationFilter, HouseholdWhereInput> | null
     assignedChores?: ChoreListRelationFilter
     avatar?: XOR<AvatarNullableScalarRelationFilter, AvatarWhereInput> | null
@@ -8861,10 +8880,11 @@ export namespace Prisma {
     password_hash?: SortOrder
     salt?: SortOrderInput | SortOrder
     householdId?: SortOrderInput | SortOrder
-    role?: SortOrderInput | SortOrder
+    role?: SortOrder
     difficulty?: SortOrderInput | SortOrder
     maxChoreTime?: SortOrderInput | SortOrder
-    totalPoints?: SortOrderInput | SortOrder
+    totalPoints?: SortOrder
+    currentPoints?: SortOrder
     household?: HouseholdOrderByWithRelationInput
     assignedChores?: ChoreOrderByRelationAggregateInput
     avatar?: AvatarOrderByWithRelationInput
@@ -8882,10 +8902,11 @@ export namespace Prisma {
     password_hash?: StringFilter<"User"> | string
     salt?: StringNullableFilter<"User"> | string | null
     householdId?: IntNullableFilter<"User"> | number | null
-    role?: EnumRoleNullableFilter<"User"> | $Enums.Role | null
+    role?: EnumRoleFilter<"User"> | $Enums.Role
     difficulty?: IntNullableFilter<"User"> | number | null
     maxChoreTime?: IntNullableFilter<"User"> | number | null
-    totalPoints?: IntNullableFilter<"User"> | number | null
+    totalPoints?: IntFilter<"User"> | number
+    currentPoints?: IntFilter<"User"> | number
     household?: XOR<HouseholdNullableScalarRelationFilter, HouseholdWhereInput> | null
     assignedChores?: ChoreListRelationFilter
     avatar?: XOR<AvatarNullableScalarRelationFilter, AvatarWhereInput> | null
@@ -8900,10 +8921,11 @@ export namespace Prisma {
     password_hash?: SortOrder
     salt?: SortOrderInput | SortOrder
     householdId?: SortOrderInput | SortOrder
-    role?: SortOrderInput | SortOrder
+    role?: SortOrder
     difficulty?: SortOrderInput | SortOrder
     maxChoreTime?: SortOrderInput | SortOrder
-    totalPoints?: SortOrderInput | SortOrder
+    totalPoints?: SortOrder
+    currentPoints?: SortOrder
     _count?: UserCountOrderByAggregateInput
     _avg?: UserAvgOrderByAggregateInput
     _max?: UserMaxOrderByAggregateInput
@@ -8922,10 +8944,11 @@ export namespace Prisma {
     password_hash?: StringWithAggregatesFilter<"User"> | string
     salt?: StringNullableWithAggregatesFilter<"User"> | string | null
     householdId?: IntNullableWithAggregatesFilter<"User"> | number | null
-    role?: EnumRoleNullableWithAggregatesFilter<"User"> | $Enums.Role | null
+    role?: EnumRoleWithAggregatesFilter<"User"> | $Enums.Role
     difficulty?: IntNullableWithAggregatesFilter<"User"> | number | null
     maxChoreTime?: IntNullableWithAggregatesFilter<"User"> | number | null
-    totalPoints?: IntNullableWithAggregatesFilter<"User"> | number | null
+    totalPoints?: IntWithAggregatesFilter<"User"> | number
+    currentPoints?: IntWithAggregatesFilter<"User"> | number
   }
 
   export type HouseholdWhereInput = {
@@ -9270,10 +9293,11 @@ export namespace Prisma {
     name: string
     password_hash: string
     salt?: string | null
-    role?: $Enums.Role | null
+    role?: $Enums.Role
     difficulty?: number | null
     maxChoreTime?: number | null
-    totalPoints?: number | null
+    totalPoints?: number
+    currentPoints?: number
     household?: HouseholdCreateNestedOneWithoutUsersInput
     assignedChores?: ChoreCreateNestedManyWithoutAssigneeInput
     avatar?: AvatarCreateNestedOneWithoutOwnerInput
@@ -9288,10 +9312,11 @@ export namespace Prisma {
     password_hash: string
     salt?: string | null
     householdId?: number | null
-    role?: $Enums.Role | null
+    role?: $Enums.Role
     difficulty?: number | null
     maxChoreTime?: number | null
-    totalPoints?: number | null
+    totalPoints?: number
+    currentPoints?: number
     assignedChores?: ChoreUncheckedCreateNestedManyWithoutAssigneeInput
     avatar?: AvatarUncheckedCreateNestedOneWithoutOwnerInput
     userAvatarProps?: UserAvatarPropsUncheckedCreateNestedManyWithoutUserInput
@@ -9303,10 +9328,11 @@ export namespace Prisma {
     name?: StringFieldUpdateOperationsInput | string
     password_hash?: StringFieldUpdateOperationsInput | string
     salt?: NullableStringFieldUpdateOperationsInput | string | null
-    role?: NullableEnumRoleFieldUpdateOperationsInput | $Enums.Role | null
+    role?: EnumRoleFieldUpdateOperationsInput | $Enums.Role
     difficulty?: NullableIntFieldUpdateOperationsInput | number | null
     maxChoreTime?: NullableIntFieldUpdateOperationsInput | number | null
-    totalPoints?: NullableIntFieldUpdateOperationsInput | number | null
+    totalPoints?: IntFieldUpdateOperationsInput | number
+    currentPoints?: IntFieldUpdateOperationsInput | number
     household?: HouseholdUpdateOneWithoutUsersNestedInput
     assignedChores?: ChoreUpdateManyWithoutAssigneeNestedInput
     avatar?: AvatarUpdateOneWithoutOwnerNestedInput
@@ -9321,10 +9347,11 @@ export namespace Prisma {
     password_hash?: StringFieldUpdateOperationsInput | string
     salt?: NullableStringFieldUpdateOperationsInput | string | null
     householdId?: NullableIntFieldUpdateOperationsInput | number | null
-    role?: NullableEnumRoleFieldUpdateOperationsInput | $Enums.Role | null
+    role?: EnumRoleFieldUpdateOperationsInput | $Enums.Role
     difficulty?: NullableIntFieldUpdateOperationsInput | number | null
     maxChoreTime?: NullableIntFieldUpdateOperationsInput | number | null
-    totalPoints?: NullableIntFieldUpdateOperationsInput | number | null
+    totalPoints?: IntFieldUpdateOperationsInput | number
+    currentPoints?: IntFieldUpdateOperationsInput | number
     assignedChores?: ChoreUncheckedUpdateManyWithoutAssigneeNestedInput
     avatar?: AvatarUncheckedUpdateOneWithoutOwnerNestedInput
     userAvatarProps?: UserAvatarPropsUncheckedUpdateManyWithoutUserNestedInput
@@ -9338,10 +9365,11 @@ export namespace Prisma {
     password_hash: string
     salt?: string | null
     householdId?: number | null
-    role?: $Enums.Role | null
+    role?: $Enums.Role
     difficulty?: number | null
     maxChoreTime?: number | null
-    totalPoints?: number | null
+    totalPoints?: number
+    currentPoints?: number
   }
 
   export type UserUpdateManyMutationInput = {
@@ -9350,10 +9378,11 @@ export namespace Prisma {
     name?: StringFieldUpdateOperationsInput | string
     password_hash?: StringFieldUpdateOperationsInput | string
     salt?: NullableStringFieldUpdateOperationsInput | string | null
-    role?: NullableEnumRoleFieldUpdateOperationsInput | $Enums.Role | null
+    role?: EnumRoleFieldUpdateOperationsInput | $Enums.Role
     difficulty?: NullableIntFieldUpdateOperationsInput | number | null
     maxChoreTime?: NullableIntFieldUpdateOperationsInput | number | null
-    totalPoints?: NullableIntFieldUpdateOperationsInput | number | null
+    totalPoints?: IntFieldUpdateOperationsInput | number
+    currentPoints?: IntFieldUpdateOperationsInput | number
   }
 
   export type UserUncheckedUpdateManyInput = {
@@ -9364,10 +9393,11 @@ export namespace Prisma {
     password_hash?: StringFieldUpdateOperationsInput | string
     salt?: NullableStringFieldUpdateOperationsInput | string | null
     householdId?: NullableIntFieldUpdateOperationsInput | number | null
-    role?: NullableEnumRoleFieldUpdateOperationsInput | $Enums.Role | null
+    role?: EnumRoleFieldUpdateOperationsInput | $Enums.Role
     difficulty?: NullableIntFieldUpdateOperationsInput | number | null
     maxChoreTime?: NullableIntFieldUpdateOperationsInput | number | null
-    totalPoints?: NullableIntFieldUpdateOperationsInput | number | null
+    totalPoints?: IntFieldUpdateOperationsInput | number
+    currentPoints?: IntFieldUpdateOperationsInput | number
   }
 
   export type HouseholdCreateInput = {
@@ -9738,11 +9768,11 @@ export namespace Prisma {
     not?: NestedIntNullableFilter<$PrismaModel> | number | null
   }
 
-  export type EnumRoleNullableFilter<$PrismaModel = never> = {
-    equals?: $Enums.Role | EnumRoleFieldRefInput<$PrismaModel> | null
-    in?: $Enums.Role[] | ListEnumRoleFieldRefInput<$PrismaModel> | null
-    notIn?: $Enums.Role[] | ListEnumRoleFieldRefInput<$PrismaModel> | null
-    not?: NestedEnumRoleNullableFilter<$PrismaModel> | $Enums.Role | null
+  export type EnumRoleFilter<$PrismaModel = never> = {
+    equals?: $Enums.Role | EnumRoleFieldRefInput<$PrismaModel>
+    in?: $Enums.Role[] | ListEnumRoleFieldRefInput<$PrismaModel>
+    notIn?: $Enums.Role[] | ListEnumRoleFieldRefInput<$PrismaModel>
+    not?: NestedEnumRoleFilter<$PrismaModel> | $Enums.Role
   }
 
   export type HouseholdNullableScalarRelationFilter = {
@@ -9792,6 +9822,7 @@ export namespace Prisma {
     difficulty?: SortOrder
     maxChoreTime?: SortOrder
     totalPoints?: SortOrder
+    currentPoints?: SortOrder
   }
 
   export type UserAvgOrderByAggregateInput = {
@@ -9800,6 +9831,7 @@ export namespace Prisma {
     difficulty?: SortOrder
     maxChoreTime?: SortOrder
     totalPoints?: SortOrder
+    currentPoints?: SortOrder
   }
 
   export type UserMaxOrderByAggregateInput = {
@@ -9814,6 +9846,7 @@ export namespace Prisma {
     difficulty?: SortOrder
     maxChoreTime?: SortOrder
     totalPoints?: SortOrder
+    currentPoints?: SortOrder
   }
 
   export type UserMinOrderByAggregateInput = {
@@ -9828,6 +9861,7 @@ export namespace Prisma {
     difficulty?: SortOrder
     maxChoreTime?: SortOrder
     totalPoints?: SortOrder
+    currentPoints?: SortOrder
   }
 
   export type UserSumOrderByAggregateInput = {
@@ -9836,6 +9870,7 @@ export namespace Prisma {
     difficulty?: SortOrder
     maxChoreTime?: SortOrder
     totalPoints?: SortOrder
+    currentPoints?: SortOrder
   }
 
   export type IntWithAggregatesFilter<$PrismaModel = never> = {
@@ -9920,14 +9955,14 @@ export namespace Prisma {
     _max?: NestedIntNullableFilter<$PrismaModel>
   }
 
-  export type EnumRoleNullableWithAggregatesFilter<$PrismaModel = never> = {
-    equals?: $Enums.Role | EnumRoleFieldRefInput<$PrismaModel> | null
-    in?: $Enums.Role[] | ListEnumRoleFieldRefInput<$PrismaModel> | null
-    notIn?: $Enums.Role[] | ListEnumRoleFieldRefInput<$PrismaModel> | null
-    not?: NestedEnumRoleNullableWithAggregatesFilter<$PrismaModel> | $Enums.Role | null
-    _count?: NestedIntNullableFilter<$PrismaModel>
-    _min?: NestedEnumRoleNullableFilter<$PrismaModel>
-    _max?: NestedEnumRoleNullableFilter<$PrismaModel>
+  export type EnumRoleWithAggregatesFilter<$PrismaModel = never> = {
+    equals?: $Enums.Role | EnumRoleFieldRefInput<$PrismaModel>
+    in?: $Enums.Role[] | ListEnumRoleFieldRefInput<$PrismaModel>
+    notIn?: $Enums.Role[] | ListEnumRoleFieldRefInput<$PrismaModel>
+    not?: NestedEnumRoleWithAggregatesFilter<$PrismaModel> | $Enums.Role
+    _count?: NestedIntFilter<$PrismaModel>
+    _min?: NestedEnumRoleFilter<$PrismaModel>
+    _max?: NestedEnumRoleFilter<$PrismaModel>
   }
 
   export type UserListRelationFilter = {
@@ -10250,12 +10285,20 @@ export namespace Prisma {
     set?: string | null
   }
 
-  export type NullableEnumRoleFieldUpdateOperationsInput = {
-    set?: $Enums.Role | null
+  export type EnumRoleFieldUpdateOperationsInput = {
+    set?: $Enums.Role
   }
 
   export type NullableIntFieldUpdateOperationsInput = {
     set?: number | null
+    increment?: number
+    decrement?: number
+    multiply?: number
+    divide?: number
+  }
+
+  export type IntFieldUpdateOperationsInput = {
+    set?: number
     increment?: number
     decrement?: number
     multiply?: number
@@ -10308,14 +10351,6 @@ export namespace Prisma {
     update?: UserAvatarPropsUpdateWithWhereUniqueWithoutUserInput | UserAvatarPropsUpdateWithWhereUniqueWithoutUserInput[]
     updateMany?: UserAvatarPropsUpdateManyWithWhereWithoutUserInput | UserAvatarPropsUpdateManyWithWhereWithoutUserInput[]
     deleteMany?: UserAvatarPropsScalarWhereInput | UserAvatarPropsScalarWhereInput[]
-  }
-
-  export type IntFieldUpdateOperationsInput = {
-    set?: number
-    increment?: number
-    decrement?: number
-    multiply?: number
-    divide?: number
   }
 
   export type ChoreUncheckedUpdateManyWithoutAssigneeNestedInput = {
@@ -10959,11 +10994,11 @@ export namespace Prisma {
     not?: NestedIntNullableFilter<$PrismaModel> | number | null
   }
 
-  export type NestedEnumRoleNullableFilter<$PrismaModel = never> = {
-    equals?: $Enums.Role | EnumRoleFieldRefInput<$PrismaModel> | null
-    in?: $Enums.Role[] | ListEnumRoleFieldRefInput<$PrismaModel> | null
-    notIn?: $Enums.Role[] | ListEnumRoleFieldRefInput<$PrismaModel> | null
-    not?: NestedEnumRoleNullableFilter<$PrismaModel> | $Enums.Role | null
+  export type NestedEnumRoleFilter<$PrismaModel = never> = {
+    equals?: $Enums.Role | EnumRoleFieldRefInput<$PrismaModel>
+    in?: $Enums.Role[] | ListEnumRoleFieldRefInput<$PrismaModel>
+    notIn?: $Enums.Role[] | ListEnumRoleFieldRefInput<$PrismaModel>
+    not?: NestedEnumRoleFilter<$PrismaModel> | $Enums.Role
   }
 
   export type NestedIntWithAggregatesFilter<$PrismaModel = never> = {
@@ -11068,14 +11103,14 @@ export namespace Prisma {
     not?: NestedFloatNullableFilter<$PrismaModel> | number | null
   }
 
-  export type NestedEnumRoleNullableWithAggregatesFilter<$PrismaModel = never> = {
-    equals?: $Enums.Role | EnumRoleFieldRefInput<$PrismaModel> | null
-    in?: $Enums.Role[] | ListEnumRoleFieldRefInput<$PrismaModel> | null
-    notIn?: $Enums.Role[] | ListEnumRoleFieldRefInput<$PrismaModel> | null
-    not?: NestedEnumRoleNullableWithAggregatesFilter<$PrismaModel> | $Enums.Role | null
-    _count?: NestedIntNullableFilter<$PrismaModel>
-    _min?: NestedEnumRoleNullableFilter<$PrismaModel>
-    _max?: NestedEnumRoleNullableFilter<$PrismaModel>
+  export type NestedEnumRoleWithAggregatesFilter<$PrismaModel = never> = {
+    equals?: $Enums.Role | EnumRoleFieldRefInput<$PrismaModel>
+    in?: $Enums.Role[] | ListEnumRoleFieldRefInput<$PrismaModel>
+    notIn?: $Enums.Role[] | ListEnumRoleFieldRefInput<$PrismaModel>
+    not?: NestedEnumRoleWithAggregatesFilter<$PrismaModel> | $Enums.Role
+    _count?: NestedIntFilter<$PrismaModel>
+    _min?: NestedEnumRoleFilter<$PrismaModel>
+    _max?: NestedEnumRoleFilter<$PrismaModel>
   }
 
   export type NestedBoolFilter<$PrismaModel = never> = {
@@ -11315,10 +11350,11 @@ export namespace Prisma {
     name: string
     password_hash: string
     salt?: string | null
-    role?: $Enums.Role | null
+    role?: $Enums.Role
     difficulty?: number | null
     maxChoreTime?: number | null
-    totalPoints?: number | null
+    totalPoints?: number
+    currentPoints?: number
     assignedChores?: ChoreCreateNestedManyWithoutAssigneeInput
     avatar?: AvatarCreateNestedOneWithoutOwnerInput
     userAvatarProps?: UserAvatarPropsCreateNestedManyWithoutUserInput
@@ -11331,10 +11367,11 @@ export namespace Prisma {
     name: string
     password_hash: string
     salt?: string | null
-    role?: $Enums.Role | null
+    role?: $Enums.Role
     difficulty?: number | null
     maxChoreTime?: number | null
-    totalPoints?: number | null
+    totalPoints?: number
+    currentPoints?: number
     assignedChores?: ChoreUncheckedCreateNestedManyWithoutAssigneeInput
     avatar?: AvatarUncheckedCreateNestedOneWithoutOwnerInput
     userAvatarProps?: UserAvatarPropsUncheckedCreateNestedManyWithoutUserInput
@@ -11410,10 +11447,11 @@ export namespace Prisma {
     password_hash?: StringFilter<"User"> | string
     salt?: StringNullableFilter<"User"> | string | null
     householdId?: IntNullableFilter<"User"> | number | null
-    role?: EnumRoleNullableFilter<"User"> | $Enums.Role | null
+    role?: EnumRoleFilter<"User"> | $Enums.Role
     difficulty?: IntNullableFilter<"User"> | number | null
     maxChoreTime?: IntNullableFilter<"User"> | number | null
-    totalPoints?: IntNullableFilter<"User"> | number | null
+    totalPoints?: IntFilter<"User"> | number
+    currentPoints?: IntFilter<"User"> | number
   }
 
   export type ChoreUpsertWithWhereUniqueWithoutHouseholdInput = {
@@ -11456,10 +11494,11 @@ export namespace Prisma {
     name: string
     password_hash: string
     salt?: string | null
-    role?: $Enums.Role | null
+    role?: $Enums.Role
     difficulty?: number | null
     maxChoreTime?: number | null
-    totalPoints?: number | null
+    totalPoints?: number
+    currentPoints?: number
     household?: HouseholdCreateNestedOneWithoutUsersInput
     avatar?: AvatarCreateNestedOneWithoutOwnerInput
     userAvatarProps?: UserAvatarPropsCreateNestedManyWithoutUserInput
@@ -11473,10 +11512,11 @@ export namespace Prisma {
     password_hash: string
     salt?: string | null
     householdId?: number | null
-    role?: $Enums.Role | null
+    role?: $Enums.Role
     difficulty?: number | null
     maxChoreTime?: number | null
-    totalPoints?: number | null
+    totalPoints?: number
+    currentPoints?: number
     avatar?: AvatarUncheckedCreateNestedOneWithoutOwnerInput
     userAvatarProps?: UserAvatarPropsUncheckedCreateNestedManyWithoutUserInput
   }
@@ -11527,10 +11567,11 @@ export namespace Prisma {
     name?: StringFieldUpdateOperationsInput | string
     password_hash?: StringFieldUpdateOperationsInput | string
     salt?: NullableStringFieldUpdateOperationsInput | string | null
-    role?: NullableEnumRoleFieldUpdateOperationsInput | $Enums.Role | null
+    role?: EnumRoleFieldUpdateOperationsInput | $Enums.Role
     difficulty?: NullableIntFieldUpdateOperationsInput | number | null
     maxChoreTime?: NullableIntFieldUpdateOperationsInput | number | null
-    totalPoints?: NullableIntFieldUpdateOperationsInput | number | null
+    totalPoints?: IntFieldUpdateOperationsInput | number
+    currentPoints?: IntFieldUpdateOperationsInput | number
     household?: HouseholdUpdateOneWithoutUsersNestedInput
     avatar?: AvatarUpdateOneWithoutOwnerNestedInput
     userAvatarProps?: UserAvatarPropsUpdateManyWithoutUserNestedInput
@@ -11544,10 +11585,11 @@ export namespace Prisma {
     password_hash?: StringFieldUpdateOperationsInput | string
     salt?: NullableStringFieldUpdateOperationsInput | string | null
     householdId?: NullableIntFieldUpdateOperationsInput | number | null
-    role?: NullableEnumRoleFieldUpdateOperationsInput | $Enums.Role | null
+    role?: EnumRoleFieldUpdateOperationsInput | $Enums.Role
     difficulty?: NullableIntFieldUpdateOperationsInput | number | null
     maxChoreTime?: NullableIntFieldUpdateOperationsInput | number | null
-    totalPoints?: NullableIntFieldUpdateOperationsInput | number | null
+    totalPoints?: IntFieldUpdateOperationsInput | number
+    currentPoints?: IntFieldUpdateOperationsInput | number
     avatar?: AvatarUncheckedUpdateOneWithoutOwnerNestedInput
     userAvatarProps?: UserAvatarPropsUncheckedUpdateManyWithoutUserNestedInput
   }
@@ -11558,10 +11600,11 @@ export namespace Prisma {
     name: string
     password_hash: string
     salt?: string | null
-    role?: $Enums.Role | null
+    role?: $Enums.Role
     difficulty?: number | null
     maxChoreTime?: number | null
-    totalPoints?: number | null
+    totalPoints?: number
+    currentPoints?: number
     household?: HouseholdCreateNestedOneWithoutUsersInput
     assignedChores?: ChoreCreateNestedManyWithoutAssigneeInput
     userAvatarProps?: UserAvatarPropsCreateNestedManyWithoutUserInput
@@ -11575,10 +11618,11 @@ export namespace Prisma {
     password_hash: string
     salt?: string | null
     householdId?: number | null
-    role?: $Enums.Role | null
+    role?: $Enums.Role
     difficulty?: number | null
     maxChoreTime?: number | null
-    totalPoints?: number | null
+    totalPoints?: number
+    currentPoints?: number
     assignedChores?: ChoreUncheckedCreateNestedManyWithoutAssigneeInput
     userAvatarProps?: UserAvatarPropsUncheckedCreateNestedManyWithoutUserInput
   }
@@ -11785,10 +11829,11 @@ export namespace Prisma {
     name?: StringFieldUpdateOperationsInput | string
     password_hash?: StringFieldUpdateOperationsInput | string
     salt?: NullableStringFieldUpdateOperationsInput | string | null
-    role?: NullableEnumRoleFieldUpdateOperationsInput | $Enums.Role | null
+    role?: EnumRoleFieldUpdateOperationsInput | $Enums.Role
     difficulty?: NullableIntFieldUpdateOperationsInput | number | null
     maxChoreTime?: NullableIntFieldUpdateOperationsInput | number | null
-    totalPoints?: NullableIntFieldUpdateOperationsInput | number | null
+    totalPoints?: IntFieldUpdateOperationsInput | number
+    currentPoints?: IntFieldUpdateOperationsInput | number
     household?: HouseholdUpdateOneWithoutUsersNestedInput
     assignedChores?: ChoreUpdateManyWithoutAssigneeNestedInput
     userAvatarProps?: UserAvatarPropsUpdateManyWithoutUserNestedInput
@@ -11802,10 +11847,11 @@ export namespace Prisma {
     password_hash?: StringFieldUpdateOperationsInput | string
     salt?: NullableStringFieldUpdateOperationsInput | string | null
     householdId?: NullableIntFieldUpdateOperationsInput | number | null
-    role?: NullableEnumRoleFieldUpdateOperationsInput | $Enums.Role | null
+    role?: EnumRoleFieldUpdateOperationsInput | $Enums.Role
     difficulty?: NullableIntFieldUpdateOperationsInput | number | null
     maxChoreTime?: NullableIntFieldUpdateOperationsInput | number | null
-    totalPoints?: NullableIntFieldUpdateOperationsInput | number | null
+    totalPoints?: IntFieldUpdateOperationsInput | number
+    currentPoints?: IntFieldUpdateOperationsInput | number
     assignedChores?: ChoreUncheckedUpdateManyWithoutAssigneeNestedInput
     userAvatarProps?: UserAvatarPropsUncheckedUpdateManyWithoutUserNestedInput
   }
@@ -12032,10 +12078,11 @@ export namespace Prisma {
     name: string
     password_hash: string
     salt?: string | null
-    role?: $Enums.Role | null
+    role?: $Enums.Role
     difficulty?: number | null
     maxChoreTime?: number | null
-    totalPoints?: number | null
+    totalPoints?: number
+    currentPoints?: number
     household?: HouseholdCreateNestedOneWithoutUsersInput
     assignedChores?: ChoreCreateNestedManyWithoutAssigneeInput
     avatar?: AvatarCreateNestedOneWithoutOwnerInput
@@ -12049,10 +12096,11 @@ export namespace Prisma {
     password_hash: string
     salt?: string | null
     householdId?: number | null
-    role?: $Enums.Role | null
+    role?: $Enums.Role
     difficulty?: number | null
     maxChoreTime?: number | null
-    totalPoints?: number | null
+    totalPoints?: number
+    currentPoints?: number
     assignedChores?: ChoreUncheckedCreateNestedManyWithoutAssigneeInput
     avatar?: AvatarUncheckedCreateNestedOneWithoutOwnerInput
   }
@@ -12109,10 +12157,11 @@ export namespace Prisma {
     name?: StringFieldUpdateOperationsInput | string
     password_hash?: StringFieldUpdateOperationsInput | string
     salt?: NullableStringFieldUpdateOperationsInput | string | null
-    role?: NullableEnumRoleFieldUpdateOperationsInput | $Enums.Role | null
+    role?: EnumRoleFieldUpdateOperationsInput | $Enums.Role
     difficulty?: NullableIntFieldUpdateOperationsInput | number | null
     maxChoreTime?: NullableIntFieldUpdateOperationsInput | number | null
-    totalPoints?: NullableIntFieldUpdateOperationsInput | number | null
+    totalPoints?: IntFieldUpdateOperationsInput | number
+    currentPoints?: IntFieldUpdateOperationsInput | number
     household?: HouseholdUpdateOneWithoutUsersNestedInput
     assignedChores?: ChoreUpdateManyWithoutAssigneeNestedInput
     avatar?: AvatarUpdateOneWithoutOwnerNestedInput
@@ -12126,10 +12175,11 @@ export namespace Prisma {
     password_hash?: StringFieldUpdateOperationsInput | string
     salt?: NullableStringFieldUpdateOperationsInput | string | null
     householdId?: NullableIntFieldUpdateOperationsInput | number | null
-    role?: NullableEnumRoleFieldUpdateOperationsInput | $Enums.Role | null
+    role?: EnumRoleFieldUpdateOperationsInput | $Enums.Role
     difficulty?: NullableIntFieldUpdateOperationsInput | number | null
     maxChoreTime?: NullableIntFieldUpdateOperationsInput | number | null
-    totalPoints?: NullableIntFieldUpdateOperationsInput | number | null
+    totalPoints?: IntFieldUpdateOperationsInput | number
+    currentPoints?: IntFieldUpdateOperationsInput | number
     assignedChores?: ChoreUncheckedUpdateManyWithoutAssigneeNestedInput
     avatar?: AvatarUncheckedUpdateOneWithoutOwnerNestedInput
   }
@@ -12551,10 +12601,11 @@ export namespace Prisma {
     name: string
     password_hash: string
     salt?: string | null
-    role?: $Enums.Role | null
+    role?: $Enums.Role
     difficulty?: number | null
     maxChoreTime?: number | null
-    totalPoints?: number | null
+    totalPoints?: number
+    currentPoints?: number
   }
 
   export type ChoreCreateManyHouseholdInput = {
@@ -12575,10 +12626,11 @@ export namespace Prisma {
     name?: StringFieldUpdateOperationsInput | string
     password_hash?: StringFieldUpdateOperationsInput | string
     salt?: NullableStringFieldUpdateOperationsInput | string | null
-    role?: NullableEnumRoleFieldUpdateOperationsInput | $Enums.Role | null
+    role?: EnumRoleFieldUpdateOperationsInput | $Enums.Role
     difficulty?: NullableIntFieldUpdateOperationsInput | number | null
     maxChoreTime?: NullableIntFieldUpdateOperationsInput | number | null
-    totalPoints?: NullableIntFieldUpdateOperationsInput | number | null
+    totalPoints?: IntFieldUpdateOperationsInput | number
+    currentPoints?: IntFieldUpdateOperationsInput | number
     assignedChores?: ChoreUpdateManyWithoutAssigneeNestedInput
     avatar?: AvatarUpdateOneWithoutOwnerNestedInput
     userAvatarProps?: UserAvatarPropsUpdateManyWithoutUserNestedInput
@@ -12591,10 +12643,11 @@ export namespace Prisma {
     name?: StringFieldUpdateOperationsInput | string
     password_hash?: StringFieldUpdateOperationsInput | string
     salt?: NullableStringFieldUpdateOperationsInput | string | null
-    role?: NullableEnumRoleFieldUpdateOperationsInput | $Enums.Role | null
+    role?: EnumRoleFieldUpdateOperationsInput | $Enums.Role
     difficulty?: NullableIntFieldUpdateOperationsInput | number | null
     maxChoreTime?: NullableIntFieldUpdateOperationsInput | number | null
-    totalPoints?: NullableIntFieldUpdateOperationsInput | number | null
+    totalPoints?: IntFieldUpdateOperationsInput | number
+    currentPoints?: IntFieldUpdateOperationsInput | number
     assignedChores?: ChoreUncheckedUpdateManyWithoutAssigneeNestedInput
     avatar?: AvatarUncheckedUpdateOneWithoutOwnerNestedInput
     userAvatarProps?: UserAvatarPropsUncheckedUpdateManyWithoutUserNestedInput
@@ -12607,10 +12660,11 @@ export namespace Prisma {
     name?: StringFieldUpdateOperationsInput | string
     password_hash?: StringFieldUpdateOperationsInput | string
     salt?: NullableStringFieldUpdateOperationsInput | string | null
-    role?: NullableEnumRoleFieldUpdateOperationsInput | $Enums.Role | null
+    role?: EnumRoleFieldUpdateOperationsInput | $Enums.Role
     difficulty?: NullableIntFieldUpdateOperationsInput | number | null
     maxChoreTime?: NullableIntFieldUpdateOperationsInput | number | null
-    totalPoints?: NullableIntFieldUpdateOperationsInput | number | null
+    totalPoints?: IntFieldUpdateOperationsInput | number
+    currentPoints?: IntFieldUpdateOperationsInput | number
   }
 
   export type ChoreUpdateWithoutHouseholdInput = {

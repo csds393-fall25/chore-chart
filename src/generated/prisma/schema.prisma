@@ -18,10 +18,11 @@ model User {
   salt          String?
   household     Household? @relation(fields: [householdId], references: [id])
   householdId   Int?
-  role          Role?      @default(member)
+  role          Role       @default(member)
   difficulty    Int?
   maxChoreTime  Int? // in minutes/week
-  totalPoints   Int?       @default(0)
+  totalPoints   Int        @default(0)
+  currentPoints Int        @default(0)
 
   // Opposite relation fields:
   assignedChores  Chore[] // chores assigned to this user
