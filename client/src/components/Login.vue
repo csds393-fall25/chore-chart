@@ -93,6 +93,7 @@
         email: username.value,
         password_hash: password.value
       }
+      console.log(user)
       const result = await FetchService.login(user);
       console.log("Login successful!", result);
       isIncorrect.value = false;
