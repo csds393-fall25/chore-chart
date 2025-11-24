@@ -61,6 +61,7 @@ class FetchService {
         try {
             var stringified;
             if(Object.hasOwn(userData, 'password_hash')) {
+                console.log("IN HERE")
                 stringified = JSON.stringify({
                     name: userData.name,
                     email: userData.email,

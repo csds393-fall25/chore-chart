@@ -5,6 +5,7 @@ import Profile from '@/components/Profile.vue'
 import PrintPage from '../pages/PrintPage.vue'
 import Household from '@/components/Household.vue'
 import Store from '../pages/Store.vue'
+import Leaderboard from '@/components/leaderboard.vue'
 import Random from '../pages/Random.vue'
 
 const routes = [
@@ -69,7 +70,7 @@ const routes = [
   { 
     path: '/leaderboard', 
     name: 'leaderboard',
-    component: index, 
+    component: Leaderboard, 
     props: true 
   },
   { 
