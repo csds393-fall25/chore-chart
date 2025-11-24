@@ -119,11 +119,12 @@ test("LH-1 Leave as not last member and provide valid input (create new househol
 
     const store = useAppStore()
     wrapper.vm.showDialog = true
-    wrapper.vm.householdName = "THouse"
+    wrapper.vm.householdName = "THouse1"
     await wrapper.vm.createNewHousehold()
     await nextTick()
     const houseResult = await FetchService.fetchHouseholdByJoin(store.household.joinCode)
     expect(store.household.id).toBe(houseResult.id)
+    FetchService.deleteHousehold(houseResult.id)
 
 })
 
@@ -236,11 +237,20 @@ test("createNewHousehold is run when button is pressed ", async () => {
 
     const store = useAppStore()
     wrapper.vm.showDialog = true
-    wrapper.vm.householdName = "THouse"
+    wrapper.vm.householdName = "THouse2"
+     const household = {
+      name: wrapper.vm.householdName
+    }
  const spy = vi.spyOn(wrapper.vm, "createNewHousehold");
     await wrapper.find("#newHouse").trigger("click")
     await nextTick()
     expect(spy).toHaveBeenCalled();
+
+
+     const spyOn = vi.spyOn(wrapper.vm.FetchService, "createHousehold").mockImplementation((household) => household)
+      const spyOn = vi.spyOn(wrapper.vm.FetchService, "createHousehold").mockImplementation((household) => household)
+    const houseResult = await FetchService.fetchHouseholdByJoin(store.household.joinCode)
+    FetchService.deleteHousehold(houseResult.id)
 })
 
 test("joinNewHousehold is run when button is pressed ", async () => {
@@ -1897,6 +1907,9 @@ test("createNewHousehold deletes household if the last user leaves", async () =>
     wrapper.vm.householdName = "efgh"
     await wrapper.vm.createNewHousehold()
     expect(wrapper.vm.lastFlag).toBe(false)
+    let house = await FetchService.fetchHouseholdByJoin(wrapper.vm.joinCode)
+    await nextTick()
+    await FetchService.deleteHousehold(house.id)
 
 
 
