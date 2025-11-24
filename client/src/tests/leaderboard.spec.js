@@ -102,7 +102,6 @@ test("LT-2 Users change spots on the leaderboard. ", async () => {
     expect(wrapper.vm.members[0].name).toBe("xx")
     expect(wrapper.vm.members[1].name).toBe("yy")
     store.household.users[1].totalPoints = 30
-    console.log(store.household.users[1].name)
     await nextTick()
     expect(wrapper.vm.members[1].name).toBe("xx") //yy
     expect(wrapper.vm.members[0].name).toBe("yy") //xx
