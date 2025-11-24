@@ -25,7 +25,7 @@
         <v-list-item title = "Chores" value = "chores" to="/chores"></v-list-item>
         <v-list-item title = "House" value = "house" to="/house"></v-list-item>
         <v-list-item title = "Create" value = "create" to="/chore/create"></v-list-item>
-        <v-list-item title = "Random" value = "random" to="/random">
+        <v-list-item v-if="store.user.role == 'leader'" title = "Random" value = "random" to="/random">
         </v-list-item>
         <v-list-item title = "Print" value = "print" to="/print"></v-list-item>
         <v-list-item title = "Help" value = "help" to="/help"></v-list-item>

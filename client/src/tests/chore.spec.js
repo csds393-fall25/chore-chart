@@ -20,6 +20,8 @@ const vuetify = createVuetify({
     directives,
 })
 
+vi.stubGlobal('visualViewport', new EventTarget())
+
 test("NOFT - Chore renders correctly", () => {
     const wrapper = mount(Chore, {
         global: {
@@ -2110,7 +2112,897 @@ test("VCDT-3 - enter edit reroutes properly", async () => {
     expect(spy).toHaveBeenCalledWith({ name: 'editChore', params: {id: 1}})
 })
 
+//checkChore
+test("checkChore invalid chore", async () => {
+    const wrapper = mount(Chore, {
+        global: {
+            plugins: [
+                createTestingPinia({
+                    createSpy: vi.fn,
+                    initialState: {
+                        app: {
+                            user: {
+                                id: 0,
+                                householdId: 1,
+                                role: "leader",
+                            },
+                            household: {
+                                users: [
+                                    {
+                                        id: 4,
+                                        name: "test",
+                                        role: "member",
+                                    },
+                                ],
+                                chores: [
+                                    {
+                                        id: 1,
+                                        name: "test name",
+                                        description: "test description",
+                                        difficulty: 10,
+                                        location: "Kitchen",
+                                        estimatedTime: 20,
+                                        dueDate: new Date('2025-12-25 EST'),
+                                        repeat: false,
+                                        householdId: 1,
+                                        assigneeId: null,
+                                    },
+                                    {
+                                        id: 2,
+                                        name: "test name result",
+                                        description: "test description result",
+                                        difficulty: 9,
+                                        location: "Living Room",
+                                        estimatedTime: 30,
+                                        dueDate: new Date('2025-12-25 EST'),
+                                        repeat: false,
+                                        householdId: 1,
+                                        assigneeId: null,
+                                    }
+                                ]
+                            },
+                        },
+                    },
+                }),
+                [vuetify],
+                routes,
+            ],
+        },
+        props: {
+            viewMode: 'view',
+            choreId: 1,
+        }
+    })
+
+    const createSpy = vi.spyOn(wrapper.vm.FetchService, 'createChore').mockImplementation((input) => input)
+    const updateSpy = vi.spyOn(wrapper.vm.FetchService, 'editChore').mockImplementation((id, chore) => chore)
+
+    wrapper.vm.chore = {
+        id: 0,
+        name: "",
+        description: "update test description",
+        difficulty: -3,
+        location: "",
+        estimatedTime: -10,
+        dueDate: '',
+        repeat: false,
+        householdId: 1,
+        assigneeId: null,
+    }
+
+    const result = await wrapper.vm.checkChore()
+
+    expect(result).toBe('invalid')
+    expect(createSpy).not.toHaveBeenCalled()
+    expect(updateSpy).not.toHaveBeenCalled()
+    expect(wrapper.vm.difficultyDialogOpen).toBe(false)
+})
+
+test("checkChore too difficult", async () => {
+    const wrapper = mount(Chore, {
+        global: {
+            plugins: [
+                createTestingPinia({
+                    createSpy: vi.fn,
+                    initialState: {
+                        app: {
+                            user: {
+                                id: 0,
+                                householdId: 1,
+                                role: "leader",
+                            },
+                            household: {
+                                users: [
+                                    {
+                                        id: 4,
+                                        name: "test",
+                                        role: "member",
+                                        difficulty: 3
+                                    },
+                                ],
+                                chores: [
+                                    {
+                                        id: 1,
+                                        name: "test name",
+                                        description: "test description",
+                                        difficulty: 10,
+                                        location: "Kitchen",
+                                        estimatedTime: 20,
+                                        dueDate: new Date('2025-12-25 EST'),
+                                        repeat: false,
+                                        householdId: 1,
+                                        assigneeId: null,
+                                    },
+                                    {
+                                        id: 2,
+                                        name: "test name result",
+                                        description: "test description result",
+                                        difficulty: 9,
+                                        location: "Living Room",
+                                        estimatedTime: 30,
+                                        dueDate: new Date('2025-12-25 EST'),
+                                        repeat: false,
+                                        householdId: 1,
+                                        assigneeId: null,
+                                    }
+                                ]
+                            },
+                        },
+                    },
+                }),
+                [vuetify],
+                routes,
+            ],
+        },
+        props: {
+            viewMode: 'view',
+            choreId: 1,
+        }
+    })
+
+    const createSpy = vi.spyOn(wrapper.vm.FetchService, 'createChore').mockImplementation((input) => input)
+    const updateSpy = vi.spyOn(wrapper.vm.FetchService, 'editChore').mockImplementation((id, chore) => chore)
+
+    wrapper.vm.chore = {
+        id: 0,
+        name: "test chore",
+        description: "update test description",
+        difficulty: 9,
+        location: "Kitchen",
+        estimatedTime: 10,
+        dueDate: '2035-10-10',
+        repeat: false,
+        householdId: 1,
+        assigneeId: 4,
+    }
+
+    const result = await wrapper.vm.checkChore()
+
+    expect(result).toBe('too difficult')
+    expect(createSpy).not.toHaveBeenCalled()
+    expect(updateSpy).not.toHaveBeenCalled()
+    expect(wrapper.vm.difficultyDialogOpen).toBe(true)
+})
+
+test("checkChore not too difficult create", async () => {
+    const wrapper = mount(Chore, {
+        global: {
+            plugins: [
+                createTestingPinia({
+                    createSpy: vi.fn,
+                    initialState: {
+                        app: {
+                            user: {
+                                id: 0,
+                                householdId: 1,
+                                role: "leader",
+                            },
+                            household: {
+                                users: [
+                                    {
+                                        id: 4,
+                                        name: "test",
+                                        role: "member",
+                                        difficulty: 3
+                                    },
+                                ],
+                                chores: [
+                                    {
+                                        id: 1,
+                                        name: "test name",
+                                        description: "test description",
+                                        difficulty: 10,
+                                        location: "Kitchen",
+                                        estimatedTime: 20,
+                                        dueDate: new Date('2025-12-25 EST'),
+                                        repeat: false,
+                                        householdId: 1,
+                                        assigneeId: null,
+                                    },
+                                    {
+                                        id: 2,
+                                        name: "test name result",
+                                        description: "test description result",
+                                        difficulty: 9,
+                                        location: "Living Room",
+                                        estimatedTime: 30,
+                                        dueDate: new Date('2025-12-25 EST'),
+                                        repeat: false,
+                                        householdId: 1,
+                                        assigneeId: null,
+                                    }
+                                ]
+                            },
+                        },
+                    },
+                }),
+                [vuetify],
+                routes,
+            ],
+        },
+        props: {
+            viewMode: 'create',
+            choreId: 1,
+        }
+    })
+
+    const createSpy = vi.spyOn(wrapper.vm.FetchService, 'createChore').mockImplementation((input) => input)
+    const updateSpy = vi.spyOn(wrapper.vm.FetchService, 'editChore').mockImplementation((id, chore) => chore)
+
+    wrapper.vm.chore = {
+        id: 0,
+        name: "test chore",
+        description: "update test description",
+        difficulty: 9,
+        location: "Kitchen",
+        estimatedTime: 10,
+        dueDate: '2035-10-10',
+        repeat: false,
+        householdId: 1,
+        assigneeId: null,
+    }
+
+    const result = await wrapper.vm.checkChore()
+
+    expect(result).toBe('create')
+    expect(wrapper.vm.difficultyDialogOpen).toBe(false)
+    expect(createSpy).toHaveBeenCalled()
+    expect(updateSpy).not.toHaveBeenCalled()
+})
+
+test("checkChore not too difficult create", async () => {
+    const wrapper = mount(Chore, {
+        global: {
+            plugins: [
+                createTestingPinia({
+                    createSpy: vi.fn,
+                    initialState: {
+                        app: {
+                            user: {
+                                id: 0,
+                                householdId: 1,
+                                role: "leader",
+                            },
+                            household: {
+                                users: [
+                                    {
+                                        id: 4,
+                                        name: "test",
+                                        role: "member",
+                                        difficulty: 3
+                                    },
+                                ],
+                                chores: [
+                                    {
+                                        id: 1,
+                                        name: "test name",
+                                        description: "test description",
+                                        difficulty: 10,
+                                        location: "Kitchen",
+                                        estimatedTime: 20,
+                                        dueDate: new Date('2025-12-25 EST'),
+                                        repeat: false,
+                                        householdId: 1,
+                                        assigneeId: null,
+                                    },
+                                    {
+                                        id: 2,
+                                        name: "test name result",
+                                        description: "test description result",
+                                        difficulty: 9,
+                                        location: "Living Room",
+                                        estimatedTime: 30,
+                                        dueDate: new Date('2025-12-25 EST'),
+                                        repeat: false,
+                                        householdId: 1,
+                                        assigneeId: null,
+                                    }
+                                ]
+                            },
+                        },
+                    },
+                }),
+                [vuetify],
+                routes,
+            ],
+        },
+        props: {
+            viewMode: 'edit',
+            choreId: 1,
+        }
+    })
+
+    const createSpy = vi.spyOn(wrapper.vm.FetchService, 'createChore').mockImplementation((input) => input)
+    const updateSpy = vi.spyOn(wrapper.vm.FetchService, 'editChore').mockImplementation((id, chore) => chore)
+
+    wrapper.vm.chore = {
+        id: 0,
+        name: "test chore",
+        description: "update test description",
+        difficulty: 9,
+        location: "Kitchen",
+        estimatedTime: 10,
+        dueDate: '2035-10-10',
+        repeat: false,
+        householdId: 1,
+        assigneeId: null,
+    }
+
+    const result = await wrapper.vm.checkChore()
+
+    expect(result).toBe('edit')
+    expect(wrapper.vm.difficultyDialogOpen).toBe(false)
+    expect(createSpy).not.toHaveBeenCalled()
+    expect(updateSpy).toHaveBeenCalled()
+})
+
+//assignChoreAnyway
+test("CET-10 - assignChoreAnyway edit", async () => {
+    const wrapper = mount(Chore, {
+        global: {
+            plugins: [
+                createTestingPinia({
+                    createSpy: vi.fn,
+                    initialState: {
+                        app: {
+                            user: {
+                                id: 0,
+                                householdId: 1,
+                                role: "leader",
+                            },
+                            household: {
+                                users: [
+                                    {
+                                        id: 4,
+                                        name: "test",
+                                        role: "member",
+                                        difficulty: 3
+                                    },
+                                ],
+                                chores: [
+                                    {
+                                        id: 1,
+                                        name: "test name",
+                                        description: "test description",
+                                        difficulty: 10,
+                                        location: "Kitchen",
+                                        estimatedTime: 20,
+                                        dueDate: new Date('2025-12-25 EST'),
+                                        repeat: false,
+                                        householdId: 1,
+                                        assigneeId: null,
+                                    },
+                                    {
+                                        id: 2,
+                                        name: "test name result",
+                                        description: "test description result",
+                                        difficulty: 9,
+                                        location: "Living Room",
+                                        estimatedTime: 30,
+                                        dueDate: new Date('2025-12-25 EST'),
+                                        repeat: false,
+                                        householdId: 1,
+                                        assigneeId: null,
+                                    }
+                                ]
+                            },
+                        },
+                    },
+                }),
+                [vuetify],
+                routes,
+            ],
+        },
+        props: {
+            viewMode: 'edit',
+            choreId: 1,
+        }
+    })
+
+    const createSpy = vi.spyOn(wrapper.vm.FetchService, 'createChore').mockImplementation((input) => input)
+    const updateSpy = vi.spyOn(wrapper.vm.FetchService, 'editChore').mockImplementation((id, chore) => chore)
+
+    wrapper.vm.chore = {
+        id: 0,
+        name: "test chore",
+        description: "update test description",
+        difficulty: 9,
+        location: "Kitchen",
+        estimatedTime: 10,
+        dueDate: '2035-10-10',
+        repeat: false,
+        householdId: 1,
+        assigneeId: 4,
+    }
+
+    wrapper.vm.difficultyDialogOpen = true
+
+    const result = await wrapper.vm.assignChoreAnyway()
+
+    expect(wrapper.vm.difficultyDialogOpen).toBe(false)
+    expect(createSpy).not.toHaveBeenCalled()
+    expect(updateSpy).toHaveBeenCalled()
+    expect(updateSpy).toHaveLastReturnedWith({
+        id: 0,
+        name: "test chore",
+        description: "update test description",
+        difficulty: 9,
+        location: "Kitchen",
+        estimatedTime: 10,
+        dueDate: new Date('2035-10-10 EST'),
+        repeat: false,
+        householdId: 1,
+        assigneeId: 4,
+    })
+})
+
+test("CCT-10 assignChoreAnyway create", async () => {
+    const wrapper = mount(Chore, {
+        global: {
+            plugins: [
+                createTestingPinia({
+                    createSpy: vi.fn,
+                    initialState: {
+                        app: {
+                            user: {
+                                id: 0,
+                                householdId: 1,
+                                role: "leader",
+                            },
+                            household: {
+                                users: [
+                                    {
+                                        id: 4,
+                                        name: "test",
+                                        role: "member",
+                                        difficulty: 3
+                                    },
+                                ],
+                                chores: [
+                                    {
+                                        id: 1,
+                                        name: "test name",
+                                        description: "test description",
+                                        difficulty: 10,
+                                        location: "Kitchen",
+                                        estimatedTime: 20,
+                                        dueDate: new Date('2025-12-25 EST'),
+                                        repeat: false,
+                                        householdId: 1,
+                                        assigneeId: null,
+                                    },
+                                    {
+                                        id: 2,
+                                        name: "test name result",
+                                        description: "test description result",
+                                        difficulty: 9,
+                                        location: "Living Room",
+                                        estimatedTime: 30,
+                                        dueDate: new Date('2025-12-25 EST'),
+                                        repeat: false,
+                                        householdId: 1,
+                                        assigneeId: null,
+                                    }
+                                ]
+                            },
+                        },
+                    },
+                }),
+                [vuetify],
+                routes,
+            ],
+        },
+        props: {
+            viewMode: 'create',
+            choreId: 1,
+        }
+    })
+
+    const createSpy = vi.spyOn(wrapper.vm.FetchService, 'createChore').mockImplementation((input) => input)
+    const updateSpy = vi.spyOn(wrapper.vm.FetchService, 'editChore').mockImplementation((id, chore) => chore)
+
+    wrapper.vm.chore = {
+        name: "test chore",
+        description: "update test description",
+        difficulty: 9,
+        location: "Kitchen",
+        estimatedTime: 10,
+        dueDate: '2035-10-10',
+        repeat: false,
+        householdId: 1,
+        assigneeId: 4,
+    }
+
+    wrapper.vm.difficultyDialogOpen = true
+
+    const result = await wrapper.vm.assignChoreAnyway()
+
+    expect(wrapper.vm.difficultyDialogOpen).toBe(false)
+    expect(createSpy).toHaveBeenCalled()
+    expect(updateSpy).not.toHaveBeenCalled()
+    expect(createSpy).toHaveLastReturnedWith({
+        name: "test chore",
+        description: "update test description",
+        difficulty: 9,
+        location: "Kitchen",
+        estimatedTime: 10,
+        dueDate: new Date('2035-10-10 EST'),
+        repeat: false,
+        householdId: 1,
+        assigneeId: 4,
+    })
+})
+
+//leaveUnassigned
+test("CET-11 - leaveUnassigned edit", async () => {
+    const wrapper = mount(Chore, {
+        global: {
+            plugins: [
+                createTestingPinia({
+                    createSpy: vi.fn,
+                    initialState: {
+                        app: {
+                            user: {
+                                id: 0,
+                                householdId: 1,
+                                role: "leader",
+                            },
+                            household: {
+                                users: [
+                                    {
+                                        id: 4,
+                                        name: "test",
+                                        role: "member",
+                                        difficulty: 3
+                                    },
+                                ],
+                                chores: [
+                                    {
+                                        id: 1,
+                                        name: "test name",
+                                        description: "test description",
+                                        difficulty: 10,
+                                        location: "Kitchen",
+                                        estimatedTime: 20,
+                                        dueDate: new Date('2025-12-25 EST'),
+                                        repeat: false,
+                                        householdId: 1,
+                                        assigneeId: null,
+                                    },
+                                    {
+                                        id: 2,
+                                        name: "test name result",
+                                        description: "test description result",
+                                        difficulty: 9,
+                                        location: "Living Room",
+                                        estimatedTime: 30,
+                                        dueDate: new Date('2025-12-25 EST'),
+                                        repeat: false,
+                                        householdId: 1,
+                                        assigneeId: null,
+                                    }
+                                ]
+                            },
+                        },
+                    },
+                }),
+                [vuetify],
+                routes,
+            ],
+        },
+        props: {
+            viewMode: 'edit',
+            choreId: 1,
+        }
+    })
+
+    const createSpy = vi.spyOn(wrapper.vm.FetchService, 'createChore').mockImplementation((input) => input)
+    const updateSpy = vi.spyOn(wrapper.vm.FetchService, 'editChore').mockImplementation((id, chore) => chore)
+
+    wrapper.vm.chore = {
+        id: 0,
+        name: "test chore",
+        description: "update test description",
+        difficulty: 9,
+        location: "Kitchen",
+        estimatedTime: 10,
+        dueDate: '2035-10-10',
+        repeat: false,
+        householdId: 1,
+        assigneeId: 4,
+    }
+
+    wrapper.vm.difficultyDialogOpen = true
+
+    const result = await wrapper.vm.leaveUnassigned()
+
+    expect(wrapper.vm.difficultyDialogOpen).toBe(false)
+    expect(createSpy).not.toHaveBeenCalled()
+    expect(updateSpy).toHaveBeenCalled()
+    expect(updateSpy).toHaveLastReturnedWith({
+        id: 0,
+        name: "test chore",
+        description: "update test description",
+        difficulty: 9,
+        location: "Kitchen",
+        estimatedTime: 10,
+        dueDate: new Date('2035-10-10 EST'),
+        repeat: false,
+        householdId: 1,
+        assigneeId: null,
+    })
+})
+
+test("CCT-11 - leaveUnassigned create", async () => {
+    const wrapper = mount(Chore, {
+        global: {
+            plugins: [
+                createTestingPinia({
+                    createSpy: vi.fn,
+                    initialState: {
+                        app: {
+                            user: {
+                                id: 0,
+                                householdId: 1,
+                                role: "leader",
+                            },
+                            household: {
+                                users: [
+                                    {
+                                        id: 4,
+                                        name: "test",
+                                        role: "member",
+                                        difficulty: 3
+                                    },
+                                ],
+                                chores: [
+                                    {
+                                        id: 1,
+                                        name: "test name",
+                                        description: "test description",
+                                        difficulty: 10,
+                                        location: "Kitchen",
+                                        estimatedTime: 20,
+                                        dueDate: new Date('2025-12-25 EST'),
+                                        repeat: false,
+                                        householdId: 1,
+                                        assigneeId: null,
+                                    },
+                                    {
+                                        id: 2,
+                                        name: "test name result",
+                                        description: "test description result",
+                                        difficulty: 9,
+                                        location: "Living Room",
+                                        estimatedTime: 30,
+                                        dueDate: new Date('2025-12-25 EST'),
+                                        repeat: false,
+                                        householdId: 1,
+                                        assigneeId: null,
+                                    }
+                                ]
+                            },
+                        },
+                    },
+                }),
+                [vuetify],
+                routes,
+            ],
+        },
+        props: {
+            viewMode: 'create',
+            choreId: 1,
+        }
+    })
+
+    const createSpy = vi.spyOn(wrapper.vm.FetchService, 'createChore').mockImplementation((input) => input)
+    const updateSpy = vi.spyOn(wrapper.vm.FetchService, 'editChore').mockImplementation((id, chore) => chore)
+
+    wrapper.vm.chore = {
+        name: "test chore",
+        description: "update test description",
+        difficulty: 9,
+        location: "Kitchen",
+        estimatedTime: 10,
+        dueDate: '2035-10-10',
+        repeat: false,
+        householdId: 1,
+        assigneeId: 4,
+    }
+
+    wrapper.vm.difficultyDialogOpen = true
+
+    const result = await wrapper.vm.leaveUnassigned()
+
+    expect(wrapper.vm.difficultyDialogOpen).toBe(false)
+    expect(createSpy).toHaveBeenCalled()
+    expect(updateSpy).not.toHaveBeenCalled()
+    expect(createSpy).toHaveLastReturnedWith({
+        name: "test chore",
+        description: "update test description",
+        difficulty: 9,
+        location: "Kitchen",
+        estimatedTime: 10,
+        dueDate: new Date('2035-10-10 EST'),
+        repeat: false,
+        householdId: 1,
+        assigneeId: null,
+    })
+})
+
+//cancelDifficulty
+test("CCT-12 and CET-12 - cancelDifficulty closes the dialog", async () => {
+    const wrapper = mount(Chore, {
+        global: {
+            plugins: [
+                createTestingPinia({
+                    createSpy: vi.fn,
+                    initialState: {
+                        app: {
+                            user: {
+                                id: 0,
+                                householdId: 1,
+                                role: "leader",
+                            },
+                            household: {
+                                users: [
+                                    {
+                                        id: 4,
+                                        name: "test",
+                                        role: "member",
+                                        difficulty: 3
+                                    },
+                                ],
+                                chores: [
+                                    {
+                                        id: 1,
+                                        name: "test name",
+                                        description: "test description",
+                                        difficulty: 10,
+                                        location: "Kitchen",
+                                        estimatedTime: 20,
+                                        dueDate: new Date('2025-12-25 EST'),
+                                        repeat: false,
+                                        householdId: 1,
+                                        assigneeId: null,
+                                    },
+                                    {
+                                        id: 2,
+                                        name: "test name result",
+                                        description: "test description result",
+                                        difficulty: 9,
+                                        location: "Living Room",
+                                        estimatedTime: 30,
+                                        dueDate: new Date('2025-12-25 EST'),
+                                        repeat: false,
+                                        householdId: 1,
+                                        assigneeId: null,
+                                    }
+                                ]
+                            },
+                        },
+                    },
+                }),
+                [vuetify],
+                routes,
+            ],
+        },
+        props: {
+            viewMode: 'create',
+            choreId: 1,
+        }
+    })
+
+    wrapper.vm.difficultyDialogOpen = true
+
+    wrapper.vm.cancelDifficulty()
+
+    expect(wrapper.vm.difficultyDialogOpen).toBe(false)
+})
+
 //Test v-models
+test("test the difficulty warning dialog v-model", async () => {
+    const wrapper = mount(Chore, {
+        global: {
+            plugins: [
+                createTestingPinia({
+                    createSpy: vi.fn,
+                    initialState: {
+                        app: {
+                            user: {
+                                id: 0,
+                                householdId: 1,
+                                role: "leader",
+                            },
+                            household: {
+                                users: [
+                                    {
+                                        id: 4,
+                                        name: "test",
+                                        role: "member",
+                                        difficulty: 3
+                                    },
+                                ],
+                                chores: [
+                                    {
+                                        id: 1,
+                                        name: "test name",
+                                        description: "test description",
+                                        difficulty: 10,
+                                        location: "Kitchen",
+                                        estimatedTime: 20,
+                                        dueDate: new Date('2025-12-25 EST'),
+                                        repeat: false,
+                                        householdId: 1,
+                                        assigneeId: null,
+                                    },
+                                    {
+                                        id: 2,
+                                        name: "test name result",
+                                        description: "test description result",
+                                        difficulty: 9,
+                                        location: "Living Room",
+                                        estimatedTime: 30,
+                                        dueDate: new Date('2025-12-25 EST'),
+                                        repeat: false,
+                                        householdId: 1,
+                                        assigneeId: null,
+                                    }
+                                ]
+                            },
+                        },
+                    },
+                }),
+                [vuetify],
+                routes,
+            ],
+            stubs: {
+                VDialog: {
+                    name: "VDialog",
+                    template: '<div class="v-dialog-stub"><slot /></div>',
+                    props: ['modelValue'],
+                }
+            },
+        },
+        props: {
+            viewMode: 'create',
+            choreId: 1,
+        }
+    })
+
+    wrapper.vm.difficultyDialogOpen = true;
+
+    await nextTick()
+
+    const dialog = wrapper.findComponent('[data-testid="difficultyDialog"]')
+
+    await dialog.setValue(false)
+
+    await nextTick()
+
+    expect(wrapper.vm.difficultyDialogOpen).toBe(false);
+})
+
 test("NOFT - test v-model chore.name", async () => {
     const wrapper = mount(Chore, {
         global: {
@@ -2743,7 +3635,7 @@ test("CCT-1 - test create button", async () => {
 
     const store = useAppStore()
 
-    const spy = vi.spyOn(wrapper.vm, 'createChore')
+    const spy = vi.spyOn(wrapper.vm, 'checkChore')
     await wrapper.find("#createButton").trigger('click')
     expect(spy).toHaveBeenCalled()
 })
@@ -2826,7 +3718,7 @@ test("CET-1 - test update button", async () => {
     wrapper.vm.chore.dueDate = ''
     wrapper.vm.chore.name = ''
 
-    const spy = vi.spyOn(wrapper.vm, 'updateChore')
+    const spy = vi.spyOn(wrapper.vm, 'checkChore')
     await wrapper.find("#updateButton").trigger('click')
     expect(spy).toHaveBeenCalled()
 })
@@ -2991,3 +3883,260 @@ test("VCDT-3 - test edit button", async () => {
     expect(spy).toHaveBeenCalled()
 })
 
+test("NOFT - test the cancelDifficultyButton", async () => {
+    const wrapper = mount(Chore, {
+        global: {
+            plugins: [
+                createTestingPinia({
+                    createSpy: vi.fn,
+                    initialState: {
+                        app: {
+                            user: {
+                                id: 0,
+                                householdId: 1,
+                                role: "leader",
+                            },
+                            household: {
+                                users: [
+                                    {
+                                        id: 4,
+                                        name: "test",
+                                        role: "member",
+                                        difficulty: 3
+                                    },
+                                ],
+                                chores: [
+                                    {
+                                        id: 1,
+                                        name: "test name",
+                                        description: "test description",
+                                        difficulty: 10,
+                                        location: "Kitchen",
+                                        estimatedTime: 20,
+                                        dueDate: new Date('2025-12-25 EST'),
+                                        repeat: false,
+                                        householdId: 1,
+                                        assigneeId: null,
+                                    },
+                                    {
+                                        id: 2,
+                                        name: "test name result",
+                                        description: "test description result",
+                                        difficulty: 9,
+                                        location: "Living Room",
+                                        estimatedTime: 30,
+                                        dueDate: new Date('2025-12-25 EST'),
+                                        repeat: false,
+                                        householdId: 1,
+                                        assigneeId: null,
+                                    }
+                                ]
+                            },
+                        },
+                    },
+                }),
+                [vuetify],
+                routes,
+            ],
+            stubs: {
+                VDialog: {
+                    name: "VDialog",
+                    template: '<div class="v-dialog-stub"><slot /></div>',
+                    props: ['modelValue'],
+                }
+            },
+        },
+        props: {
+            viewMode: 'create',
+            choreId: 1,
+        }
+    })
+
+    wrapper.vm.difficultyDialogOpen = true;
+
+    await nextTick()
+
+    const spy = vi.spyOn(wrapper.vm, 'cancelDifficulty')
+    await wrapper.find("#cancelDifficultyButton").trigger('click')
+    expect(spy).toHaveBeenCalled()
+})
+
+test("NOFT - test the leaveUnassignedButton", async () => {
+    const wrapper = mount(Chore, {
+        global: {
+            plugins: [
+                createTestingPinia({
+                    createSpy: vi.fn,
+                    initialState: {
+                        app: {
+                            user: {
+                                id: 0,
+                                householdId: 1,
+                                role: "leader",
+                            },
+                            household: {
+                                users: [
+                                    {
+                                        id: 4,
+                                        name: "test",
+                                        role: "member",
+                                        difficulty: 3
+                                    },
+                                ],
+                                chores: [
+                                    {
+                                        id: 1,
+                                        name: "test name",
+                                        description: "test description",
+                                        difficulty: 10,
+                                        location: "Kitchen",
+                                        estimatedTime: 20,
+                                        dueDate: new Date('2025-12-25 EST'),
+                                        repeat: false,
+                                        householdId: 1,
+                                        assigneeId: null,
+                                    },
+                                    {
+                                        id: 2,
+                                        name: "test name result",
+                                        description: "test description result",
+                                        difficulty: 9,
+                                        location: "Living Room",
+                                        estimatedTime: 30,
+                                        dueDate: new Date('2025-12-25 EST'),
+                                        repeat: false,
+                                        householdId: 1,
+                                        assigneeId: null,
+                                    }
+                                ]
+                            },
+                        },
+                    },
+                }),
+                [vuetify],
+                routes,
+            ],
+            stubs: {
+                VDialog: {
+                    name: "VDialog",
+                    template: '<div class="v-dialog-stub"><slot /></div>',
+                    props: ['modelValue'],
+                }
+            },
+        },
+        props: {
+            viewMode: 'create',
+            choreId: 1,
+        }
+    })
+
+    wrapper.vm.chore = {
+        name: '',
+        description: '',
+        difficulty: -10,
+        location: "",
+        estimatedTime: -20,
+        dueDate: '',
+        repeat: false,
+        householdId: 1,
+        assigneeId: null,
+    }
+
+    wrapper.vm.difficultyDialogOpen = true;
+
+    await nextTick()
+
+    const spy = vi.spyOn(wrapper.vm, 'leaveUnassigned')
+    await wrapper.find("#leaveUnassignedButton").trigger('click')
+    expect(spy).toHaveBeenCalled()
+})
+
+test("NOFT - test the assignAnywayButton", async () => {
+    const wrapper = mount(Chore, {
+        global: {
+            plugins: [
+                createTestingPinia({
+                    createSpy: vi.fn,
+                    initialState: {
+                        app: {
+                            user: {
+                                id: 0,
+                                householdId: 1,
+                                role: "leader",
+                            },
+                            household: {
+                                users: [
+                                    {
+                                        id: 4,
+                                        name: "test",
+                                        role: "member",
+                                        difficulty: 3
+                                    },
+                                ],
+                                chores: [
+                                    {
+                                        id: 1,
+                                        name: "test name",
+                                        description: "test description",
+                                        difficulty: 10,
+                                        location: "Kitchen",
+                                        estimatedTime: 20,
+                                        dueDate: new Date('2025-12-25 EST'),
+                                        repeat: false,
+                                        householdId: 1,
+                                        assigneeId: null,
+                                    },
+                                    {
+                                        id: 2,
+                                        name: "test name result",
+                                        description: "test description result",
+                                        difficulty: 9,
+                                        location: "Living Room",
+                                        estimatedTime: 30,
+                                        dueDate: new Date('2025-12-25 EST'),
+                                        repeat: false,
+                                        householdId: 1,
+                                        assigneeId: null,
+                                    }
+                                ]
+                            },
+                        },
+                    },
+                }),
+                [vuetify],
+                routes,
+            ],
+            stubs: {
+                VDialog: {
+                    name: "VDialog",
+                    template: '<div class="v-dialog-stub"><slot /></div>',
+                    props: ['modelValue'],
+                }
+            },
+        },
+        props: {
+            viewMode: 'create',
+            choreId: 1,
+        }
+    })
+
+    wrapper.vm.chore = {
+        name: '',
+        description: '',
+        difficulty: -10,
+        location: "",
+        estimatedTime: -20,
+        dueDate: '',
+        repeat: false,
+        householdId: 1,
+        assigneeId: null,
+    }
+
+    wrapper.vm.difficultyDialogOpen = true;
+
+    await nextTick()
+
+    const spy = vi.spyOn(wrapper.vm, 'assignChoreAnyway')
+    await wrapper.find("#assignAnywayButton").trigger('click')
+    expect(spy).toHaveBeenCalled()
+})
