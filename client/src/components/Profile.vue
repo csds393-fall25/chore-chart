@@ -6,8 +6,8 @@
       <p v-if="!isUpdate">Name: {{name}}</p>
       <p v-if="!isUpdate"> Points: {{store.user.totalPoints}}</p>
       <v-text-field data-testid="email" v-if="isUpdate" :error-messages="errorMessages.email" :disabled="true" style="width: 75%" v-model="username" label="Email"></v-text-field>
-      <!-- <v-text-field :error-messages="errorMessages.password" style="width: 75%; " label="password" v-model="password"></v-text-field>
-      <v-text-field :error-messages="errorMessages.repeatedPassword" style="width: 75%" v-model="repeatedPassword" label="verify password"></v-text-field> -->
+      <v-text-field data-testid="password" v-if="isUpdate" :error-messages="errorMessages.password" style="width: 75%; " type="password" label="new password" v-model="password"></v-text-field>
+      <v-text-field v-if="isUpdate" data-testid="repeatedPassword" :error-messages="errorMessages.repeatedPassword" style="width: 75%" type="password" v-model="repeatedPassword" label="verify new password"></v-text-field> 
       <p v-if="!isUpdate">Email: {{username}}</p>
       <p  v-if="!isUpdate"> Estimated Time To Complete Chores (minutes): {{estimatedTime}}</p>
       <p v-if="isUpdate">Estimated Time To Complete Chores (minutes)</p>
@@ -31,6 +31,17 @@
           </v-card-actions>
         </v-card>
       </v-dialog>
+       <v-dialog data-testid="passwordDialog" v-model="showPasswordDialog" width="auto" >
+        <v-card title="change Password?" >
+          <v-text-field data-testid="prevPass" :error-messages="errorMessages.previousPassword" class="ml-1 mr-1" v-model="previousPassword" type="password" label="Previous Password"></v-text-field> 
+          <v-card-actions>
+            <v-btn id="confirm" @click="confirm" text="Confirm">
+            </v-btn>
+             <v-btn id="cancel" @click="cancel" text="cancel">
+            </v-btn>
+          </v-card-actions>
+        </v-card>
+      </v-dialog>
     </v-form>
   </v-sheet>
 </template>
@@ -47,31 +58,77 @@ const name = ref(store.user.name)
 const maxDifficulty = ref(store.user.difficulty)
 const estimatedTime = ref(store.user.maxChoreTime)
 const showDialog = ref(false)
-const errorMessages = ref({name: "", email: "", password: "", repeatedPassword: "", estTime: "", maxDiff: "", houseName: "", jc: ""})
+const errorMessages = ref({name: "", email: "", password: "", repeatedPassword: "", estTime: "", maxDiff: "", houseName: "", jc: "", previousPassword: ""})
+const showPasswordDialog = ref(false)
+const previousPassword = ref()
+const confirmed = ref(false)
+const test = ref (true)
 
 function updateButton(){
   isUpdate.value = true
 }
 
 async function updateProfile() {
+  
 
-  if(!validateProfile()){
+  if(!validateProfile() && !confirmed.value){
     return
 
   }
- 
+  
+  if (password.value && !confirmed.value ){
+    showPasswordDialog.value = true
+    return
+  }
+
+  if(password.value && confirmed.value){
+    const user = {
+        email: store.user.email,
+        password_hash: previousPassword.value
+      }
+    let pastPass = await FetchService.login(user)
+    if(pastPass){
+    const result = await FetchService.updateUser(store.user.id, {
+    name: name.value,
+    email: username.value,
+    password_hash: password.value,
+    difficulty: maxDifficulty.value,
+    maxChoreTime: estimatedTime.value
+    
+  })
+  showPasswordDialog.value = false
+  confirmed.value = false
+  password.value = ""
+  repeatedPassword.value = ""
+  store.user.name = name.value
+  store.user.email = username.value
+  store.user.difficulty = maxDifficulty.value
+  store.user.maxChoreTime = estimatedTime.value
+  isUpdate.value = false;
+  errorMessages.value.previousPassword = ""
+  return true;
+  }
+  else{
+    errorMessages.value.previousPassword = "Please enter correct password"
+    test.value = false
+    return
+  }
+  }
+  else{
   const result = await FetchService.updateUser(store.user.id, {
     name: name.value,
     email: username.value,
     difficulty: maxDifficulty.value,
     maxChoreTime: estimatedTime.value
   })
+  }
 
   store.user.name = name.value
   store.user.email = username.value
   store.user.difficulty = maxDifficulty.value
   store.user.maxChoreTime = estimatedTime.value
   isUpdate.value = false;
+  errorMessages.value.previousPassword = ""
   return true;
 
 }
@@ -85,6 +142,10 @@ function deleteProfile(id) {
 
 function validateProfile(){
     let flag = true;
+  
+
+
+
   if(!name.value){
     errorMessages.value.name = "name must exist"
     flag = false;
@@ -116,8 +177,46 @@ function validateProfile(){
   errorMessages.value.jc = ""
   }
 
+  if (password.value){
+    if(!password.value || password.value.length < 8 || password.value.length > 25 || !(password.value.match(/\.*\d\.*/) && password.value.match(/\.*[A-Z]\.*/) ) ){
+      errorMessages.value.password = "Password must be 8-25 characters and include at least one capital letter and one number"
+      flag = false
+    }
+    else{
+      errorMessages.value.password = ""
+      
+     
+
+    }
+
+    if(password.value != repeatedPassword.value){
+      errorMessages.value.repeatedPassword = "Passswords do not match"
+      flag = false
+
+    }
+    else{
+      errorMessages.value.repeatedPassword = ""
+
+    }
+    
+  }
+
   return flag
 
+}
+
+function cancel(){
+  showPasswordDialog.value = false
+  password.value = ""
+  repeatedPassword.value =""
+  confirmed.value=false
+  previousPassword.value=""
+  errorMessages.value.previousPassword = ""
+}
+
+function confirm(){
+  confirmed.value = true
+  updateProfile()
 }
 
 
