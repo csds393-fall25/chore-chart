@@ -802,3 +802,96 @@ test("NOFT - test equipButton", async () => {
     await wrapper.find('#equipButton').trigger("click")
     expect(spy).toHaveBeenCalled();
 })
+
+test("NOFT - test don't update all props if already have them", async () => {
+    const wrapper = mount(Store, {
+        global: {
+            plugins: [
+                createTestingPinia({
+                    createSpy: vi.fn,
+                    initialState: {
+                        app: {
+                            user: {
+                                id: 6,
+                                householdId: 1,
+                                role: "leader",
+                            },
+                            household: {
+                                users: [
+                                    {
+                                        id: 4,
+                                        name: "test",
+                                        role: "member",
+                                    },
+                                ],
+                                chores: [
+                                    {
+                                        id: 1,
+                                        name: "test name",
+                                        description: "test description",
+                                        difficulty: 10,
+                                        location: "Kitchen",
+                                        estimatedTime: 20,
+                                        dueDate: new Date('2025-12-25'),
+                                        repeat: false,
+                                        householdId: 1,
+                                        assigneeId: null,
+                                    },
+                                    {
+                                        id: 2,
+                                        name: "test name result",
+                                        description: "test description result",
+                                        difficulty: 9,
+                                        location: "Living Room",
+                                        estimatedTime: 30,
+                                        dueDate: new Date('2025-12-25'),
+                                        repeat: false,
+                                        householdId: 1,
+                                        assigneeId: null,
+                                    }
+                                ]
+                            },
+                            avatars: [
+                                {
+                                    userId: 6,
+                                    skinTone: "skinToneURL",
+                                    hat: "hatURL",
+                                    hair: "hairURL",
+                                    shirt: "shirtURL",
+                                    background: "backgroundURL",
+                                    handProp: "handPropURL"
+                                }
+                            ],
+                            allProps: [
+                                {
+                                    id: 1,
+                                    name: 'BlueBook',
+                                    type: 'handProp',
+                                    cost: 150,
+                                    url: 'https://chore-chart-s3.s3.us-east-1.amazonaws.com/avatar-props/BlueBook.png?X-Amz-Algorithm=AWS4-HMAC-SHA256&X-Amz-Content-Sha256=UNSIGNED-PAYLOAD&X-Amz-Credential=AKIA5SLACB4XQIT5NCIR%2F20251124%2Fus-east-1%2Fs3%2Faws4_request&X-Amz-Date=20251124T015043Z&X-Amz-Expires=3600&X-Amz-Signature=7321c9975e8d826832e0596baecdb58fb5a43bcfbc92dadc16869ce16d08d832&X-Amz-SignedHeaders=host&x-amz-checksum-mode=ENABLED&x-id=GetObject'
+                                }
+                            ]
+                        },
+                    },
+                }),
+                [vuetify],
+                routes,
+            ],
+            stubs: {
+                VDialog: {
+                    name: "VDialog",
+                    template: '<div class="v-dialog-stub"><slot /></div>',
+                    props: ['modelValue'],
+                }
+            },
+        }
+    })
+
+    //flushPromises wouldn't work for some reason so I need to wait for a state to change at the end of onMounted manually
+    while(!wrapper.vm.mounted) {
+        await new Promise(resolve => setTimeout(resolve, 50))
+    }
+
+    const spy = vi.spyOn(wrapper.vm.FetchService, 'getAvatarProps')
+    expect(spy).not.toHaveBeenCalled();
+})
