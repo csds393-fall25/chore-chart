@@ -73,12 +73,12 @@
     return name.substring(0,1)
   }
 
-  watch (members =>  {
-    members.value = store.household.users.sort((i, j)=> j.totalPoints-i.totalPoints)
-  
-
-  }
-)
+  watch(
+    () => members,
+    () => {
+      members.value = store.household.users.sort((i, j)=> j.totalPoints-i.totalPoints)
+    }
+  )
 
 </script>
 
