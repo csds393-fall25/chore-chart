@@ -33,7 +33,7 @@
       </v-dialog>
        <v-dialog data-testid="passwordDialog" v-model="showPasswordDialog" width="auto" >
         <v-card title="change Password?" >
-          <v-text-field data-testid="prevPass" :error-messages="errorMessages.previousPassword" class="ml-1 mr-1" v-model="previousPassword" label="Previous Password"></v-text-field> 
+          <v-text-field data-testid="prevPass" :error-messages="errorMessages.previousPassword" class="ml-1 mr-1" v-model="previousPassword" type="password" label="Previous Password"></v-text-field> 
           <v-card-actions>
             <v-btn id="confirm" @click="confirm" text="Confirm">
             </v-btn>
@@ -111,7 +111,6 @@ async function updateProfile() {
   else{
     errorMessages.value.previousPassword = "Please enter correct password"
     test.value = false
-    console.log(test.value)
     return
   }
   }
