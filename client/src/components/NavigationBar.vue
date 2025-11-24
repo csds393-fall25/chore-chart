@@ -15,7 +15,7 @@
         </v-row>
         <v-row width="100%" class="mr-0 ml-0 position-relative">
           <v-col cols="12" class="pt-0">
-            <p class = "text-subtitle-2">{{ store.user.totalPoints }} pts</p>
+            <p class = "text-subtitle-2">{{ store.user.currentPoints }} pts</p>
           </v-col>
         </v-row>
       </v-container>

@@ -138,23 +138,21 @@
       propsList.value = store.allProps
     }
 
-    //TODO: retrieve the props owned by the user and store them in ownedProps
+    ownedProps.value = await FetchService.getOwnedProps(store.user.id)
 
     mounted.value = true
   })
 
   function isOwned(prop) {
-    return ownedProps.value.some((ownedProp) => ownedProp.id == prop.id)
+    return ownedProps.value.some((ownedProp) => ownedProp == prop.id)
   }
 
-  function buyProp(prop) {
-    //TODO: update to be current points
-    if(store.user.totalPoints >= prop.cost) {
-      ownedProps.value.push(prop)
+  async function buyProp(prop) {
+    if(store.user.currentPoints >= prop.cost) {
+      let result = await FetchService.buyProp(store.user.id, prop.id)
 
-      //TODO: Update users current points in the database to subtract the prop cost
-
-      // TODO: implement buy prop function from database
+      ownedProps.value.push(prop.id)
+      store.user.currentPoints = result.currentPoints
 
       return true;
     } else {
@@ -163,11 +161,11 @@
     }
   }
 
-  function equipProp(prop) {
+  async function equipProp(prop) {
+    let result = await FetchService.equipProp(store.user.id, prop)
+
     usersAvatar.value[prop.type] = prop.url;
     store.avatars.find((avatar) => avatar.userId == store.user.id)[prop.type] = prop.url
-
-    // TODO: implement updating the users avatar in the database
 
     return true;
   }

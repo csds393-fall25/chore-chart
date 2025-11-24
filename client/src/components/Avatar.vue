@@ -34,7 +34,7 @@ onMounted(async () => {
   // Check if user is set in store
   if (store && store.household && store.household.users.some((user) => user.id == props.userId)) {
     // Fetch avatar once
-    if (!store.avatars.some((avatar) => avatar.userId == userId)) {
+    if (!store.avatars.some((avatar) => avatar.userId == props.userId)) {
       const avatarProps = await FetchService.getAvatar(props.userId);
       avatarProps.forEach((prop) => {
         switch(prop.type) {
