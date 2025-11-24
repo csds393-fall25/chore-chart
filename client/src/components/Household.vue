@@ -48,8 +48,13 @@
         </v-card>
       </v-dialog>
       <v-dialog data-testid="lastToLeaveDialog" v-model="showLastToLeaveDialog" width="500">
-        <v-card title="You are the last member in your household!" max-width="400">
-          <p>If you leave, your household will be deleted</p>
+        <v-card max-width="500" color="error">
+          <v-card-title>
+            <p>You are the last member in your household!</p>
+          </v-card-title>
+          <v-card-text>
+            <p>If you leave, your household will be deleted</p>
+          </v-card-text>  
           <v-card-actions>
              <v-btn id = "cancelLast" @click="cancel()" data-testid="cancelButton" > cancel
             </v-btn>
@@ -373,7 +378,7 @@
       store.household.id = house.id
       store.household.name = house.name
       store.household.joinCode = house.joinCode
-      const result = await FetchService.updateUser(store.user.id, {householdId: house.id} );
+      const result = await FetchService.leaveHousehold(store.user.id, house.id);
       householdName.value = ""
       store.household = await FetchService.fetchHousehold(house.id);
       members.value = store.household.users.filter(user => user.role == 'member')
@@ -418,7 +423,7 @@
     store.household.name = house.name
     store.household.joinCode = house.joinCode
     joinCode.value = house.joinCode
-    const result = await FetchService.updateUser(store.user.id, {householdId: house.id} );
+    const result = await FetchService.leaveHousehold(store.user.id, house.id);
     householdName.value = ""
     store.household = await FetchService.fetchHousehold(house.id);
 

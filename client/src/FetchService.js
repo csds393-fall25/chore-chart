@@ -150,6 +150,29 @@ class FetchService {
         }
     }
 
+    // User leaving household
+    static async leaveHousehold(userId, newHouseholdId) {
+        try {
+            const response = await fetch(`${baseURL}/user/leave`, {
+                method: "PUT",
+                headers: {
+                    "Content-Type": "application/json",
+                },
+                body: JSON.stringify({
+                    userId: userId,
+                    newHouseholdId: newHouseholdId
+                })
+            });
+            if(!response.ok) {
+                throw new Error(`Response status: ${response.status}`);
+            }
+            const result = await response.json();
+            return result;
+        } catch (error) {
+            console.error(error.message);
+        }
+    }
+
     // Create household
     static async createHousehold(household) {
         try {
