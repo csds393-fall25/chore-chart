@@ -230,7 +230,10 @@ app.put('/api/user/:id/points', async (req, res) => {
     return res.status(400).json({ error: "Invalid points"});
   }
   try {
-    const updated = await prisma.user.update({ where: { id: Number(id) }, data: { totalPoints: { increment: Number(points)}}})
+    const updated = await prisma.user.update({ where: { id: Number(id) }, data: { 
+      totalPoints: { increment: Number(points)},
+      currentPoints: { increment: Number(points)},
+    }})
     res.json(updated);
   } catch (err) {
     res.status(500).json({ error: err.message });
@@ -465,6 +468,8 @@ app.put('/api/prop/buy', async (req, res) => {
           propId: prop.id,
         },
       });
+
+      result.currentPoints = newPoints
       res.json(result);
     }
   } catch (err) {

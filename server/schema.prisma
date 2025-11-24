@@ -57,7 +57,7 @@ model Chore {
 
 model Avatar {
   ownerId       Int @id
-  owner         User @relation(fields: [ownerId], references: [id])
+  owner         User @relation(fields: [ownerId], references: [id], onDelete: Cascade)
   skinTone      AvatarProp @relation("skinTone", fields: [skinToneId], references: [id])
   hat           AvatarProp @relation("hat", fields: [hatId], references: [id])
   hair          AvatarProp @relation("hair", fields: [hairId], references: [id])
@@ -74,7 +74,7 @@ model Avatar {
 
 model UserAvatarProps {
   userId  Int 
-  user    User @relation(fields: [userId], references: [id])
+  user    User @relation(fields: [userId], references: [id], onDelete: Cascade)
   propId  Int
   prop    AvatarProp @relation(fields: [propId], references: [id])
   @@id([userId, propId])

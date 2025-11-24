@@ -9,6 +9,7 @@ import { useAppStore } from "@/stores/app.js";
 import routes from "../router/router.js";
 import routesList from "../router/routes.js"
 import { nextTick } from 'vue'
+import FetchService from '../FetchService.js'
 
 const vuetify = createVuetify({
   components,
@@ -80,9 +81,6 @@ test("ST-3 and ST-4 - Store renders correctly", async () => {
         }
     })
 
-    //TODO: remove once Fetching owned props is complete
-    wrapper.vm.ownedProps = [{id: 1}]
-
     //flushPromises wouldn't work for some reason so I need to wait for a state to change at the end of onMounted manually
     while(!wrapper.vm.mounted) {
         await new Promise(resolve => setTimeout(resolve, 50))
@@ -96,7 +94,7 @@ test("ST-3 and ST-4 - Store renders correctly", async () => {
 })
 
 //isOwned
-test("ST-3 - isOwned returns correctly", () => {
+test("ST-3 - isOwned returns correctly", async () => {
     const wrapper = mount(Store, {
         global: {
             plugins: [
@@ -153,11 +151,15 @@ test("ST-3 - isOwned returns correctly", () => {
         }
     })
 
-    //TODO: Remove this once ownedProps are able to be populated correctly
-    wrapper.vm.ownedProps = [{id: 7, name: "YellowFace", type: "skinTone"}]
+    const store = useAppStore()
 
-    expect(wrapper.vm.isOwned({id: 7, name: "YellowFace", type: "skinTone"})).toBe(true)
-    expect(wrapper.vm.isOwned({id: -1, name: "FakeProp"})).toBe(false)
+    //flushPromises wouldn't work for some reason so I need to wait for a state to change at the end of onMounted manually
+    while(!wrapper.vm.mounted) {
+        await new Promise(resolve => setTimeout(resolve, 50))
+    }
+
+    expect(wrapper.vm.isOwned(store.allProps.find((prop) => prop.id == 7))).toBe(true)
+    expect(wrapper.vm.isOwned(store.allProps.find((prop) => prop.id == 15))).toBe(false)
 })
 
 //buyProp
@@ -233,13 +235,10 @@ test("ST-1 and ST-5 - buyProps purchases correctly when user can afford the prop
     let result = await wrapper.vm.buyProp(store.allProps.find((prop) => prop.id == 10))
 
     expect(result).toBe(true)
-    expect(wrapper.vm.ownedProps.some((prop) => prop.id == 10)).toBe(true)
+    expect(wrapper.vm.ownedProps.some((prop) => prop == 10)).toBe(true)
+    expect(store.user.currentPoints).toBe(20)
 
-    //TODO: add checks that involve something the database updated
-
-    //TODO: check that the users current points were updated
-
-    //TODO: reset the users to not have prop with id == 10
+    await FetchService.unbuyProp(6, 10)
 })
 
 test("ST-2 - buyProps purchases correctly when user can't afford the prop", async () => {
@@ -309,9 +308,10 @@ test("ST-2 - buyProps purchases correctly when user can't afford the prop", asyn
         await new Promise(resolve => setTimeout(resolve, 50))
     }
 
-    await wrapper.vm.buyProp(store.allProps.find((prop) => prop.id == 9))
+    let result = await wrapper.vm.buyProp(store.allProps.find((prop) => prop.id == 9))
 
     expect(wrapper.vm.tooExpensiveDialogOpen).toBe(true)
+    expect(result).toBe(false)
 })
 
 //equipProp
@@ -384,10 +384,6 @@ test("ACT-1 and ACT-2 - equipProp equips correctly", async () => {
 
     expect(wrapper.vm.usersAvatar.hat).toEqual(store.allProps.find((prop) => prop.id == 8).url)
     expect(store.avatars.find((avatar) => avatar.userId == 6).hat).toBe(store.allProps.find((prop) => prop.id == 8).url)
-
-    //TODO: add checks that involve something the database updated
-
-    //TODO: reset the users equiped avatar to have the hat with id == 2
 })
 
 //isEquipped
@@ -795,9 +791,6 @@ test("NOFT - test equipButton", async () => {
             },
         }
     })
-
-    //TODO: remove once Fetching owned props is complete
-    wrapper.vm.ownedProps = [{id: 1}]
 
     //flushPromises wouldn't work for some reason so I need to wait for a state to change at the end of onMounted manually
     while(!wrapper.vm.mounted) {
