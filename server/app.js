@@ -205,6 +205,29 @@ app.post('/api/login', async (req, res) => {
   }
 });
 
+// user leaving household
+app.put('/api/user/leave', async (req, res) => {
+  const { userId, newHouseholdId } = req.body;
+  try {
+    // delete all user's chores and change householdId to new one
+    const result = await prisma.user.update({
+      where: { id: Number(userId) },
+      data: {
+        householdId: Number(newHouseholdId),
+        assignedChores: {
+          deleteMany: {},
+        },
+      },
+      include: {
+        assignedChores: true,
+      },
+    });
+    res.json(result);
+  } catch (err) {
+    res.status(500).json({ error: err.message});
+  }
+});
+
 // update user
 app.put('/api/user/:id', async (req, res) => {
   const { id } = req.params;
