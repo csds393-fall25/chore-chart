@@ -6,8 +6,8 @@
       <p v-if="!isUpdate">Name: {{name}}</p>
       <p v-if="!isUpdate"> Points: {{store.user.totalPoints}}</p>
       <v-text-field data-testid="email" v-if="isUpdate" :error-messages="errorMessages.email" :disabled="true" style="width: 75%" v-model="username" label="Email"></v-text-field>
-      <v-text-field v-if="isUpdate" :error-messages="errorMessages.password" style="width: 75%; " label="new password" v-model="password"></v-text-field>
-      <v-text-field v-if="isUpdate" :error-messages="errorMessages.repeatedPassword" style="width: 75%" v-model="repeatedPassword" label="verify new password"></v-text-field> 
+      <v-text-field data-testid="password" v-if="isUpdate" :error-messages="errorMessages.password" style="width: 75%; " type="password" label="new password" v-model="password"></v-text-field>
+      <v-text-field v-if="isUpdate" data-testid="repeatedPassword" :error-messages="errorMessages.repeatedPassword" style="width: 75%" type="password" v-model="repeatedPassword" label="verify new password"></v-text-field> 
       <p v-if="!isUpdate">Email: {{username}}</p>
       <p  v-if="!isUpdate"> Estimated Time To Complete Chores (minutes): {{estimatedTime}}</p>
       <p v-if="isUpdate">Estimated Time To Complete Chores (minutes)</p>
@@ -31,11 +31,11 @@
           </v-card-actions>
         </v-card>
       </v-dialog>
-       <v-dialog data-testid="passowrdDialog" v-model="showPasswordDialog" width="auto">
-        <v-card title="change Password?" max-width="400">
-          <v-text-field :error-messages="errorMessages.previousPassword" style="width: 75%" v-model="previousPassword" label="Previous Password"></v-text-field> 
+       <v-dialog data-testid="passwordDialog" v-model="showPasswordDialog" width="auto" >
+        <v-card title="change Password?" >
+          <v-text-field data-testid="prevPass" :error-messages="errorMessages.previousPassword" class="ml-1 mr-1" v-model="previousPassword" label="Previous Password"></v-text-field> 
           <v-card-actions>
-            <v-btn id="delete" @click="confirm" text="Confirm">
+            <v-btn id="confirm" @click="confirm" text="Confirm">
             </v-btn>
              <v-btn id="cancel" @click="cancel" text="cancel">
             </v-btn>
@@ -62,6 +62,7 @@ const errorMessages = ref({name: "", email: "", password: "", repeatedPassword: 
 const showPasswordDialog = ref(false)
 const previousPassword = ref()
 const confirmed = ref(false)
+const test = ref (true)
 
 function updateButton(){
   isUpdate.value = true
@@ -71,19 +72,16 @@ async function updateProfile() {
   
 
   if(!validateProfile() && !confirmed.value){
-    console.log("HI")
     return
 
   }
   
   if (password.value && !confirmed.value ){
     showPasswordDialog.value = true
-    console.log("INININ")
     return
   }
 
   if(password.value && confirmed.value){
-    console.log("HOLA")
     const user = {
         email: store.user.email,
         password_hash: previousPassword.value
@@ -98,15 +96,26 @@ async function updateProfile() {
     maxChoreTime: estimatedTime.value
     
   })
+  showPasswordDialog.value = false
   confirmed.value = false
   password.value = ""
   repeatedPassword.value = ""
-  }
-
-
+  store.user.name = name.value
+  store.user.email = username.value
+  store.user.difficulty = maxDifficulty.value
+  store.user.maxChoreTime = estimatedTime.value
+  isUpdate.value = false;
+  errorMessages.value.previousPassword = ""
+  return true;
   }
   else{
- 
+    errorMessages.value.previousPassword = "Please enter correct password"
+    test.value = false
+    console.log(test.value)
+    return
+  }
+  }
+  else{
   const result = await FetchService.updateUser(store.user.id, {
     name: name.value,
     email: username.value,
@@ -120,6 +129,7 @@ async function updateProfile() {
   store.user.difficulty = maxDifficulty.value
   store.user.maxChoreTime = estimatedTime.value
   isUpdate.value = false;
+  errorMessages.value.previousPassword = ""
   return true;
 
 }
@@ -200,12 +210,13 @@ function cancel(){
   showPasswordDialog.value = false
   password.value = ""
   repeatedPassword.value =""
-
+  confirmed.value=false
+  previousPassword.value=""
+  errorMessages.value.previousPassword = ""
 }
 
 function confirm(){
   confirmed.value = true
-  showPasswordDialog.value = false
   updateProfile()
 }
 
