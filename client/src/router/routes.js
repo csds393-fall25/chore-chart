@@ -4,6 +4,7 @@ import Dashboard from '../pages/Dashboard.vue'
 import Profile from '@/components/Profile.vue'
 import PrintPage from '../pages/PrintPage.vue'
 import Household from '@/components/Household.vue'
+import Random from '../pages/Random.vue'
 
 const routes = [
   { 
@@ -49,7 +50,7 @@ const routes = [
   { 
     path: '/random', 
     name: 'random',
-    component: index, 
+    component: Random, 
     props: true 
   },
   { 
