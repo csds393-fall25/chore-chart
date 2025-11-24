@@ -14,8 +14,11 @@
             <v-card-item class="pr-0 pl-0 w-100 text-center">
                 <img class="pl-0" :src="prop.url" alt="prop image">
             </v-card-item>
-            <v-card-text class="text-center text-body-1">
+            <v-card-text class="text-center text-body-1 mb-0 pb-0">
               {{ prop.name }}
+            </v-card-text>
+            <v-card-text class="text-center text-body-1 mt-0 pt-0 mb-0 pb-0">
+              {{ prop.cost }} pts
             </v-card-text>
             <v-card-actions>
               <v-btn
@@ -25,6 +28,7 @@
                 variant="elevated"
                 density="compact"
                 @click="buyProp(prop)"
+                id="buyButton"
               >
                 Buy
               </v-btn>
@@ -36,6 +40,7 @@
                 density="compact"
                 @click="equipProp(prop)"
                 :disabled="isEquipped(prop)"
+                id="equipButton"
               >
                 {{ isEquipped(prop) ? 'Equipped' : 'Equip' }}
               </v-btn>
@@ -44,6 +49,27 @@
         </v-col>
       </v-row>
     </v-container>
+
+    <v-dialog 
+      v-model="tooExpensiveDialogOpen" 
+      max-width="500"
+      data-testid="tooExpensiveDialog"
+    >
+      <v-card>
+        <v-card-item>
+          <v-card-title>Too Expensive</v-card-title>
+        </v-card-item>
+        <v-card-text>This prop is too expensive for you to purchase.</v-card-text>
+        <v-card-actions>
+          <v-btn
+            @click="tooExpensiveDialogOpen = false"
+            id="cancelButton"
+          >
+            Cancel
+          </v-btn>
+        </v-card-actions>
+      </v-card>
+    </v-dialog>
   </v-sheet>
 </template>
 
@@ -60,17 +86,9 @@
   const usersAvatar = ref(store.avatars.find((avatar) => avatar.userId == store.user.id))
   const mounted = ref(false)
 
+  const tooExpensiveDialogOpen = ref(false)
+
   onMounted(async () => {
-    if (store.allProps.length == 0) {
-      const result = await FetchService.getAvatarProps()
-      store.allProps = result
-      propsList.value = result
-    } else {
-      propsList.value = store.allProps
-    }
-
-    //TODO: retrieve the props owned by the user and store them in ownedProps
-
     //If the user's avatar couldn't be found, fetch it
     if(!usersAvatar.value) {
       let avatar = ref({
@@ -112,6 +130,16 @@
       usersAvatar.value = avatar.value
     }
 
+    if (store.allProps.length == 0) {
+      const result = await FetchService.getAvatarProps()
+      store.allProps = result
+      propsList.value = result
+    } else {
+      propsList.value = store.allProps
+    }
+
+    //TODO: retrieve the props owned by the user and store them in ownedProps
+
     mounted.value = true
   })
 
@@ -120,9 +148,19 @@
   }
 
   function buyProp(prop) {
-    ownedProps.value.push(prop)
+    //TODO: update to be current points
+    if(store.user.totalPoints >= prop.cost) {
+      ownedProps.value.push(prop)
 
-    // TODO: implement buy prop function from database
+      //TODO: Update users current points in the database to subtract the prop cost
+
+      // TODO: implement buy prop function from database
+
+      return true;
+    } else {
+      tooExpensiveDialogOpen.value = true;
+      return false
+    }
   }
 
   function equipProp(prop) {
@@ -130,6 +168,8 @@
     store.avatars.find((avatar) => avatar.userId == store.user.id)[prop.type] = prop.url
 
     // TODO: implement updating the users avatar in the database
+
+    return true;
   }
 
   function isEquipped(prop) {
