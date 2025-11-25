@@ -60,23 +60,46 @@ class FetchService {
     static async updateUser(userId, userData) {
         try {
             var stringified;
-            if(Object.hasOwn(userData, 'password_hash')) {
-                console.log("IN HERE")
-                stringified = JSON.stringify({
-                    name: userData.name,
-                    email: userData.email,
-                    password_hash: userData.password_hash,
-                    difficulty: userData.difficulty,
-                    maxChoreTime: userData.maxChoreTime
-                })
-            } else {
-                stringified = JSON.stringify({
-                    name: userData.name,
-                    email: userData.email,
-                    difficulty: userData.difficulty,
-                    maxChoreTime: userData.maxChoreTime
-                })
+            let temp = {};
+
+            if(Object.hasOwn(userData, 'name')){
+                temp.name = userData.name
+            } 
+             if(Object.hasOwn(userData, 'email')){
+                temp.email = userData.email
+            } 
+
+             if(Object.hasOwn(userData, 'password_hash')){
+                
+                temp.password_hash = userData.password_hash
+               
+            } 
+
+              if(Object.hasOwn(userData, 'difficulty')){
+                
+                  temp.difficulty = userData.difficulty
+                
             }
+            
+               if(Object.hasOwn(userData, 'maxChoreTime')){
+              
+                temp.maxChoreTime = userData.maxChoreTime
+                
+            }
+
+                if(Object.hasOwn(userData, 'householdId')){
+              
+                temp.householdId=  userData.householdId
+                
+            }
+
+                 if(Object.hasOwn(userData, 'role')){
+              
+                temp.role=  userData.role
+                
+            }
+            
+          stringified = JSON.stringify(temp)
 
             const response = await fetch(`${baseURL}/user/${userId}`, {
                 method: "PUT",
@@ -118,6 +141,29 @@ class FetchService {
                 method: "DELETE"
             });
             if (!response.ok) {
+                throw new Error(`Response status: ${response.status}`);
+            }
+            const result = await response.json();
+            return result;
+        } catch (error) {
+            console.error(error.message);
+        }
+    }
+
+    // User leaving household
+    static async leaveHousehold(userId, newHouseholdId) {
+        try {
+            const response = await fetch(`${baseURL}/user/leave`, {
+                method: "PUT",
+                headers: {
+                    "Content-Type": "application/json",
+                },
+                body: JSON.stringify({
+                    userId: userId,
+                    newHouseholdId: newHouseholdId
+                })
+            });
+            if(!response.ok) {
                 throw new Error(`Response status: ${response.status}`);
             }
             const result = await response.json();

@@ -9,22 +9,89 @@
       
         <v-col cols="4" sm="6" md="2" offset-sm="6" offset-md="1" class="pr-0 pl-0 pt-0 mb-1">
           <!-- <div class="pr-0 mr-0"> -->
+           
+           
             <v-btn
-              color="secondary"
+              color="error"
               class="mr-0 mt-1"
-              @click="LeaveHousehold()"
+              id = "leave"
+              @click="leaveHousehold()"
               block
             >
               Leave
             </v-btn>
+            
+            <v-btn
+              v-if="store.user.role == 'leader'"
+              color="secondary"
+              id="edit"
+              class="mr-0 mt-1"
+              @click="editHousehold()"
+              block
+            >
+              Edit
+            </v-btn>
+            
+
 
             <v-dialog data-testid="dialog" v-model="showDialog" width="500">
-        <v-card :title="!isJoin ? 'Create a Household' : 'Join a Household'" max-width="400">
-          <v-text-field data-testid="houseName"   v-model = "householdName"  :label = " !isJoin ? 'Enter Household Name' : 'Enter Household Join Code'"></v-text-field>
+        <v-card title="Join or Create a new household" max-width="400">
+          <v-text-field class = "ml-2 mr-2" data-testid="houseName" :error-messages="errorMessages.household"  v-model = "householdName"  label =  "Enter a new name or an existing join code"></v-text-field>
           <v-card-actions>
-             <v-btn id = "test" @click="showDialog = false" data-testid="cancelButton" > cancel
+             <v-btn id = "cancel" @click="cancel()" data-testid="cancelButton" > cancel
             </v-btn>
-            <v-btn id = "createDialog" @click="joinHousehold()" > join
+            <v-btn id = "newHouse" @click="createNewHousehold()" > Create New
+            </v-btn>
+            <v-btn id = "existingHouse" @click="joinNewHousehold()" > Join Existing
+            </v-btn>
+          </v-card-actions>
+        </v-card>
+      </v-dialog>
+      <v-dialog data-testid="lastToLeaveDialog" v-model="showLastToLeaveDialog" width="500">
+        <v-card max-width="500" color="error">
+          <v-card-title>
+            <p>You are the last member in your household!</p>
+          </v-card-title>
+          <v-card-text>
+            <p>If you leave, your household will be deleted</p>
+          </v-card-text>  
+          <v-card-actions>
+             <v-btn id = "cancelLast" @click="cancel()" data-testid="cancelButton" > cancel
+            </v-btn>
+            <v-btn id = "newHouse" @click="switchDialogs" > Okay
+            </v-btn>
+          </v-card-actions>
+        </v-card>
+      </v-dialog>
+          <v-dialog data-testid="confirmation" v-model="showConfirmation" width="500">
+        <v-card title="You are changing the following:" max-width="400">
+          <p>{} will become a {}</p>
+          <v-card-actions>
+             <v-btn id = "confirmationCancel" @click="cancel()" data-testid="cancelButton" > cancel
+            </v-btn>
+            <v-btn id = "changeRoles" @click="changeRoles()" > Proceed
+            </v-btn>
+          </v-card-actions>
+        </v-card>
+      </v-dialog>
+
+         <v-dialog data-testid="ShowEditdialog" v-model="showEditDialog" width="500">
+        <v-card title="Edit Household" max-width="400">
+          <v-text-field class="ml-2 mr-2" data-testid="houseEditName" :error-messages="errorMessages.household"  v-model = "householdName"  label =  "Enter a household name"></v-text-field>
+          <v-card-actions>
+             <v-btn id = "cancelEdit" @click="cancel()" data-testid="cancelButton" > cancel
+            </v-btn>
+            <v-btn id = "editHouse" @click="editHouseholdData(store.household.id)" > Change Name
+            </v-btn>
+          </v-card-actions>
+        </v-card>
+      </v-dialog>
+
+      <v-dialog data-testid="lastLeaderDialog" v-model="showLastLeaderDialog" width="500">
+        <v-card title="You are the last leader" max-width="400">
+          <p>You must assign someone else a leader before you leave</p>
+           <v-card-actions>
+             <v-btn id = "lastLeaderCancel" @click="cancel()" data-testid="cancelButton" > cancel
             </v-btn>
           </v-card-actions>
         </v-card>
@@ -32,10 +99,157 @@
           <!-- </div> -->
         </v-col>
       </v-row>
-      <v-list 
+
+            
+ <div class="bg-primary text-center text-h5 pb-2 pt-2">Leaders</div>
+     
+ <v-list 
         class="pb-0 pt-0"
+        :key = "showDialog"
       
       >
+      <v-list-item
+          class="border-b-thin h-25 bg-secondary "
+           variant="outlined"
+           
+        >
+          <template
+            v-slot:prepend
+          >
+            <v-avatar></v-avatar>
+          </template>
+
+          <template v-slot:default>
+            <v-row>
+              <v-col cols="3">
+                Name
+              </v-col>
+              <v-col cols="2">
+                Difficulty
+              </v-col>
+              <v-col cols="3">
+                Max Chore Time
+              </v-col>
+              <v-col cols="4">
+                Points
+              </v-col>
+            </v-row>
+          </template>
+
+          <template
+            v-slot:append
+            min-width="8em"
+          >
+            <div
+              class="list-append"
+            >
+             </div>
+          </template>
+        </v-list-item>
+        <v-list-item
+          v-for="(chore) in leaders"
+          :key="chore.id"
+          class="border-b-thin "
+           variant="outlined"
+        >
+          <template
+            v-slot:prepend
+          >
+            <v-avatar color="primary">
+              <span class="text-h5">{{ userInitials(chore.name) }}</span>
+            </v-avatar>
+          </template>
+
+          <template v-slot:default>
+            <v-row>
+              <v-col cols="3">
+                {{ chore.name }}
+              </v-col>
+              <v-col cols="2">
+                {{ chore.difficulty }}
+              </v-col>
+              <v-col cols="3">
+                {{ chore.maxChoreTime }} {{chore.maxChoreTime == 1 ? 'min' : 'mins'}}
+              </v-col>
+              <v-col cols="4">
+                {{ chore.totalPoints}} pts
+              </v-col>
+            </v-row>
+          </template>
+
+          <template
+            v-slot:append
+          >
+            <div
+              class="list-append"
+            >
+            
+              <v-btn
+               v-if="store.user.role == 'leader' && chore.id != store.user.id"
+                block
+                color="secondary"
+                id="makeMember"
+                density="compact"
+                class="mt-1 mb-1"
+                @click ="confirmation('member', chore.id)"
+                min-width="8em"
+                 
+              >
+                Make Member
+              </v-btn>
+        
+            </div>
+          </template>
+        </v-list-item>
+
+
+
+        
+      </v-list >
+ <div class="bg-primary text-center text-h5 pb-2 pt-2 mt-2">Members</div>
+ 
+ <v-list class = "pt-0 pb-0">
+
+  
+      <v-list-item
+          class="border-b-thin bg-secondary"
+           variant="outlined"
+           
+        >
+          <template
+            v-slot:prepend
+          >
+            <v-avatar></v-avatar>
+          </template>
+
+          <template v-slot:default>
+            <v-row>
+              <v-col cols="3">
+                Name
+              </v-col>
+              <v-col cols="2">
+                Difficulty
+              </v-col>
+              <v-col cols="3">
+                Max Chore Time
+              </v-col>
+              <v-col cols="4">
+                Points
+              </v-col>
+            </v-row>
+          </template>
+
+          <template
+            v-slot:append
+            min-width="8em"
+          >
+            <div
+              class="list-append"
+            >
+             </div>
+          </template>
+        </v-list-item>
+        
         <v-list-item
           v-for="(chore) in members"
           :key="chore.id"
@@ -52,11 +266,17 @@
 
           <template v-slot:default>
             <v-row>
-              <v-col cols="8">
+              <v-col cols="3">
                 {{ chore.name }}
               </v-col>
+              <v-col cols="2">
+                {{ chore.difficulty }}
+              </v-col>
+              <v-col cols="3">
+                {{ chore.maxChoreTime }} {{chore.maxChoreTime == 1 ? 'min' : 'mins'}}
+              </v-col>
               <v-col cols="4">
-                {{ chore.points}} pts
+                {{ chore.totalPoints}} pts
               </v-col>
             </v-row>
           </template>
@@ -67,38 +287,23 @@
             <div
               class="list-append"
             >
+
+            
               <v-btn
+               v-if="store.user.role == 'leader' && chore.id != store.user.id"
                 block
-                color="secondary"
-                density="compact"
-                class="mb-1"
-                @click.prevent="completeChorePrompt(chore)"
-                v-if="chore.assigneeId == store.user.id"
-              >
-                Complete
-              </v-btn>
-              <v-btn
-                block
+                id="makeLeader"
                 color="secondary"
                 density="compact"
                 class="mt-1 mb-1"
-                @click.prevent="updateChore(chore.id)"
-                  v-if="false"
+                @click = "confirmation('leader', chore.id)"
+                min-width="8em"
+                 
               >
-                Edit
+                Make Leader
               </v-btn>
-              <v-btn
-              v-if="false"
-                block
-                color="error"
-                density="compact"
-                class="mt-1"
-                @click.prevent="promptDelete(chore)"
-               
-              >
-                Delete
-              </v-btn>
-            </div>
+             
+             </div>
           </template>
         </v-list-item>
       </v-list>
@@ -115,11 +320,19 @@
   const store = useAppStore()
 
   const listMode = ref(true);
-
-
-  const members = store.household.users
-    .map(user => { return {id: user.id, name: user.name, points: user.totalPoints}});
-
+  const errorMessages = ref({household: ""})
+  const joinCode = ref()
+  const showLastToLeaveDialog = ref(false)
+  const lastFlag = ref(false)
+  const showLastLeaderDialog = ref(false)
+  const members = ref(store.household.users.filter((user) => user.role == 'member'))
+  const leaders = ref(store.household.users.filter((user) => user.role == 'leader'))
+  const showEditDialog = ref(false)
+  const showConfirmation = ref(false)
+  const changeRole = ref(false)
+  const roleChangingID = ref()
+  const roleChanging = ref()
+  const methodComplete = ref(false)
 
   const showDialog = ref(false);
   const isJoin = ref(true)
@@ -131,15 +344,149 @@
   }
 
  
-  // function LeaveHousehold(){
-  //   console.log("HI")
-  //   showDialog.value = true;
+   function leaveHousehold(){
+    if (members.value.length + leaders.value.length == 1){
+       showLastToLeaveDialog.value = true;
+       lastFlag.value = true
     
-  // }
-  // function joinHousehold(){
-  //   FetchService.deleteUser(store.user.id)
+    }
+    else if(leaders.value.length == 1 && store.user.role == 'leader'){
+        showLastLeaderDialog.value = true;
+    }
+    else{
+      showDialog.value = true
+    }
+  
+    
+   }
+   async function joinNewHousehold(){
+    let house =  await FetchService.fetchHouseholdByJoin(householdName.value) 
+    let lastHouseId = store.household.id
+    if(!house){
+      errorMessages.value.household = "Join code does not exist" 
+    }
+    else{
+      store.household.id = house.id
+      store.household.name = house.name
+      store.household.joinCode = house.joinCode
+      const result = await FetchService.leaveHousehold(store.user.id, house.id);
+      householdName.value = ""
+      store.household = await FetchService.fetchHousehold(house.id);
+      members.value = store.household.users.filter(user => user.role == 'member')
+    leaders.value = store.household.users.filter(user => user.role == 'leader')
+      showDialog.value = false
+      errorMessages.value.household= ""
+      if (lastFlag.value){
+        await FetchService.deleteHousehold(lastHouseId)
+        lastFlag.value = false
 
-  // }
+      }
+    }
+    methodComplete.value = true;
+   }
+
+   function cancel(){
+    showDialog.value = false
+    showLastToLeaveDialog.value = false
+    errorMessages.value.household = ""
+    householdName.value = ""
+    showEditDialog.value = false
+    showLastLeaderDialog.value = false
+    showConfirmation.value = false
+   }
+
+  async function createNewHousehold(){
+    let lastHouseId = store.household.id
+    if (!householdName.value || householdName.value.length > 50 || ((!householdName.value.match(/\.*[A-Z]\.*/)  && !householdName.value.match(/\.*[a-z]\.*/)))){
+      errorMessages.value.household = "Household name must be below 50 characters and have at least 1 letter"
+      return false
+    }
+    const household = {
+      name: householdName.value
+    }
+
+    let house = await FetchService.createHousehold(household)
+    store.household.id = house.id
+    store.household.name = house.name
+    store.household.joinCode = house.joinCode
+    joinCode.value = house.joinCode
+    const result = await FetchService.leaveHousehold(store.user.id, house.id);
+    householdName.value = ""
+    store.household = await FetchService.fetchHousehold(house.id);
+
+    members.value = store.household.users.filter((user) => user.role == 'member')
+    leaders.value = store.household.users.filter((user) => user.role == 'leader')
+    showDialog.value = false
+    errorMessages.value.household = ""
+       if (lastFlag.value){
+        await FetchService.deleteHousehold(lastHouseId)
+        lastFlag.value = false
+
+      }
+    methodComplete.value = true;
+    }
+
+    function switchDialogs(){
+      showLastToLeaveDialog.value = false
+      showDialog.value = true
+    }
+
+    function changeToLeader(id){
+      FetchService.updateUser(id, {role: 'leader' })
+      store.household.users.find((user)=> user.id == id ).role ='leader'
+      members.value = store.household.users.filter((user) => user.role == 'member')
+      leaders.value = store.household.users.filter((user) => user.role == 'leader')
+    }
+
+      function changeToMember(id){
+      FetchService.updateUser(id, {role: 'member' })
+      if(store.household.users.find((user)=> user.id == id )){
+      store.household.users.find((user)=> user.id == id ).role ='member'
+      }
+      members.value = store.household.users.filter((user) => user.role == 'member')
+      leaders.value = store.household.users.filter((user) => user.role == 'leader')
+    }
+
+    function editHousehold(){
+      showEditDialog.value = true;
+    }
+    
+    function editHouseholdData(hid){
+       if (!householdName.value || householdName.value.length > 50 || ((!householdName.value.match(/\.*[A-Z]\.*/)  && !householdName.value.match(/\.*[a-z]\.*/)))){
+      errorMessages.value.household = "Household name must be below 50 characters and have at least 1 letter"
+      return false
+    }
+    let house = {id: hid, name: householdName.value}
+      FetchService.editHousehold(house)
+      showEditDialog.value = false
+      store.household.name = householdName
+      errorMessages.value.household = ""
+
+
+    }
+
+    function confirmation(role, id){
+      roleChangingID.value = id
+      roleChanging.value = role
+      showConfirmation.value = true
+
+
+    }
+
+    function changeRoles(){
+      showConfirmation.value = false
+      if (roleChanging.value == "leader"){
+        changeToLeader(roleChangingID.value)
+      }
+      else{
+        changeToMember(roleChangingID.value)
+      }
+
+    }
+
+
+
+   
 </script>
 
 <style scoped>
