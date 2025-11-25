@@ -7,6 +7,7 @@ import Household from '@/components/Household.vue'
 import Store from '../pages/Store.vue'
 import Leaderboard from '@/components/leaderboard.vue'
 import Random from '../pages/Random.vue'
+import Help from '../pages/Help.vue'
 
 const routes = [
   { 
@@ -64,7 +65,7 @@ const routes = [
   { 
     path: '/help', 
     name: 'help',
-    component: index, 
+    component: Help, 
     props: true 
   },
   { 
