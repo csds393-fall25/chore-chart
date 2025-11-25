@@ -687,3 +687,27 @@ const select = wrapper.findComponent('[data-testid="prevPass"]');
     await nextTick()
     expect(wrapper.vm.previousPassword).toBe("1234")
 })
+
+test("testing logout button", async () => {
+    const wrapper = mount(Profile, {
+        global: {
+  plugins: [
+    createTestingPinia({createSpy: vi.fn}),
+  [vuetify],
+  ],
+   stubs: {
+    VDialog: {
+      name: "VDialog",
+      template: '<div class="v-dialog-stub"><slot /></div>',
+      props: ['modelValue',
+      ]
+    }
+  }
+  
+}
+})
+    const store = useAppStore()
+    store.user.id=3765
+    await wrapper.find("#logout").trigger("click")
+    expect(store.loggedIn).toBe(false)
+})
