@@ -98,8 +98,9 @@ test("LT-1 Successful login to account", async () => {
 
 })
 const store = useAppStore()
-wrapper.vm.username = 'x'
-wrapper.vm.password = '12345678B'
+wrapper.vm.username = 'login'
+//store.user.id=219
+wrapper.vm.password = '1234'
 
 await wrapper.vm.validateLogin()
 expect(store.loggedIn).toBe(true)
