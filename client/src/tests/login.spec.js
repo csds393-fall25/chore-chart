@@ -98,8 +98,9 @@ test("LT-1 Successful login to account", async () => {
 
 })
 const store = useAppStore()
-wrapper.vm.username = 'x'
-wrapper.vm.password = 'x'
+wrapper.vm.username = 'login'
+//store.user.id=219
+wrapper.vm.password = '1234'
 
 await wrapper.vm.validateLogin()
 expect(store.loggedIn).toBe(true)
@@ -121,7 +122,7 @@ const store = useAppStore()
     wrapper.vm.maxDifficulty = 3
     wrapper.vm.estimatedTime = 27
     wrapper.vm.repeatedPassword = "Mtest1234"
-    wrapper.vm.householdName = "TESTHOUSEHOLD"
+    wrapper.vm.householdName = "TESTHOUSEHOLD1"
     wrapper.vm.isJoin = false
     const result = await wrapper.vm.createProfile()
     const houseResult = await FetchService.fetchHouseholdByJoin(store.household.joinCode)
@@ -130,7 +131,7 @@ const store = useAppStore()
     expect(result.password_hash).toBe("Mtest1234")
     expect(result.difficulty).toBe(3)
     expect(result.maxChoreTime).toBe(27)
-    expect(houseResult.name).toBe("TESTHOUSEHOLD")
+    expect(houseResult.name).toBe("TESTHOUSEHOLD1")
     await FetchService.deleteUser(result.id)
     await FetchService.deleteHousehold(result.householdId)
 })
@@ -151,7 +152,7 @@ const store = useAppStore()
     wrapper.vm.maxDifficulty = 3
     wrapper.vm.estimatedTime = 27
     wrapper.vm.repeatedPassword = "Mtest"
-    wrapper.vm.householdName = "TESTHOUSEHOLD"
+    wrapper.vm.householdName = "TESTHOUSEHOLD2"
     wrapper.vm.isJoin = false
     const result = await wrapper.vm.createProfile()
     const houseResult = await FetchService.fetchHouseholdByJoin(store.household.joinCode)
@@ -160,7 +161,7 @@ const store = useAppStore()
     expect(result.password_hash).toBe("Mtest")
     expect(result.difficulty).toBe(3)
     expect(result.maxChoreTime).toBe(27)
-    expect(houseResult.name).toBe("TESTHOUSEHOLD")
+    expect(houseResult.name).toBe("TESTHOUSEHOLD2")
     wrapper.vm.displayedName = "Mollietest2"
     wrapper.vm.username = "validateProfile2" 
     wrapper.vm.password = "Mtest1234"
@@ -176,7 +177,7 @@ const store = useAppStore()
     expect(result2.password_hash).toBe("Mtest1234")
     expect(result2.difficulty).toBe(3)
     expect(result2.maxChoreTime).toBe(27)
-    expect(houseResult2.name).toBe("TESTHOUSEHOLD")
+    expect(houseResult2.name).toBe("TESTHOUSEHOLD2")
     await FetchService.deleteUser(result.id)
     await FetchService.deleteUser(result2.id)
     await FetchService.deleteHousehold(result.householdId)
@@ -370,10 +371,11 @@ wrapper.vm.password = "12345678M"
 wrapper.vm.repeatedPassword = "12345678M"
 wrapper.vm.estimatedTime = 30
 wrapper.vm.maxDifficulty = 5
-wrapper.vm.householdName = "TESTHOUSEHOLD"
+wrapper.vm.householdName = "TESTHOUSEHOLD3"
 wrapper.vm.IsJoin = false
 await wrapper.vm.createProfile()
 expect(wrapper.vm.errorMessages.email).toBe("There already exists an account for this email")
+
 })
 
 test("HCT-2 Household name not provided", async () => {
@@ -575,7 +577,7 @@ const store = useAppStore()
   wrapper.vm.maxDifficulty = 3
   wrapper.vm.estimatedTime = 27
   wrapper.vm.repeatedPassword = "Mtest"
-  wrapper.vm.householdName = "TESTHOUSEHOLD"
+  wrapper.vm.householdName = "TESTHOUSEHOLD4"
   wrapper.vm.isJoin = false
   const result = await wrapper.vm.createProfile()
   const houseResult = await FetchService.fetchHouseholdByJoin(store.household.joinCode)
@@ -584,7 +586,7 @@ const store = useAppStore()
   expect(result.password_hash).toBe("Mtest")
   expect(result.difficulty).toBe(3)
   expect(result.maxChoreTime).toBe(27)
-  expect(houseResult.name).toBe("TESTHOUSEHOLD")
+  expect(houseResult.name).toBe("TESTHOUSEHOLD4")
   wrapper.vm.displayedName = "Mollietest2"
   wrapper.vm.username = "validateProfile2" 
   wrapper.vm.password = "Mtest1234"
@@ -614,7 +616,7 @@ test("profile creation failed due to error", async () => {
   wrapper.vm.maxDifficulty = 3
   wrapper.vm.estimatedTime = 27
   wrapper.vm.repeatedPassword = "Mtest1234"
-  wrapper.vm.householdName = "TESTHOUSEHOLD"
+  wrapper.vm.householdName = "TESTHOUSEHOLD5"
   wrapper.vm.isJoin = false
   const result = await wrapper.vm.createProfile()
   expect(result).toBe(500)
@@ -839,7 +841,7 @@ test("joinButtonSwitches is called", async () => {
   wrapper.vm.maxDifficulty = 3
   wrapper.vm.estimatedTime = 27
   wrapper.vm.repeatedPassword = "Mtest1234"
-  wrapper.vm.householdName = "TESTHOUSEHOLD"
+  wrapper.vm.householdName = "TESTHOUSEHOLD6"
   wrapper.vm.isJoin = false
   await nextTick()
   const spy = vi.spyOn(wrapper.vm, "joinButtonSwitches");
@@ -870,7 +872,7 @@ test("switchCreate is called", async () => {
   wrapper.vm.maxDifficulty = 3
   wrapper.vm.estimatedTime = 27
   wrapper.vm.repeatedPassword = "Mtest1234"
-  wrapper.vm.householdName = "TESTHOUSEHOLD"
+  wrapper.vm.householdName = "TESTHOUSEHOLD7"
   wrapper.vm.isJoin = false
   await nextTick()
   const spy = vi.spyOn(wrapper.vm, "switchCreate");

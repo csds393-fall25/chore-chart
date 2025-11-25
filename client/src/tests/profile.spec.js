@@ -411,3 +411,303 @@ test("PT-1 User's number of points can be viewed from  profile", async () => {
 })
   expect(wrapper.text()).toContain('Points: 0')
 })
+
+test("PET-5 Password is updated but not valid", async () => {
+    const wrapper = mount(Profile, {
+        global: {
+  plugins: [
+    createTestingPinia({createSpy: vi.fn}),
+  [vuetify],
+  ],
+}
+
+})
+    const store = useAppStore()
+    store.user.id = 219
+    wrapper.vm.name = "x"
+    wrapper.vm.username = "x"
+    wrapper.vm.maxDifficulty = 10
+    wrapper.vm.estimatedTime = 50
+    wrapper.vm.password = '12345678'
+    wrapper.vm.confirmed = true
+    await wrapper.vm.updateProfile()
+    expect(wrapper.vm.errorMessages.password).toBe("Password must be 8-25 characters and include at least one capital letter and one number")
+})
+
+test("PET-5 Password is updated but not valid with repeated password", async () => {
+    const wrapper = mount(Profile, {
+        global: {
+  plugins: [
+    createTestingPinia({createSpy: vi.fn}),
+  [vuetify],
+  ],
+}
+
+})
+    const store = useAppStore()
+    store.user.id = 219
+    wrapper.vm.name = "x"
+    wrapper.vm.username = "x"
+    wrapper.vm.maxDifficulty = 10
+    wrapper.vm.estimatedTime = 50
+    wrapper.vm.password = '12345678B'
+    wrapper.vm.repeatedPassword = 'x'
+    wrapper.vm.confirmed = true
+    await wrapper.vm.updateProfile()
+    expect(wrapper.vm.errorMessages.repeatedPassword).toBe("Passswords do not match")
+})
+
+
+test("PET-5 Password is updated but not valid with previous password", async () => {
+    const wrapper = mount(Profile, {
+        global: {
+  plugins: [
+    createTestingPinia({createSpy: vi.fn}),
+  [vuetify],
+  ],
+}
+
+})
+    const store = useAppStore()
+    store.user.id = 219
+    wrapper.vm.name = "x"
+    wrapper.vm.username = "x"
+    store.user.email = "x"
+    wrapper.vm.maxDifficulty = 10
+    wrapper.vm.estimatedTime = 50
+    wrapper.vm.password = '12345678B'
+    wrapper.vm.repeatedPassword = '12345678B'
+    wrapper.vm.previousPassword = 'y'
+    wrapper.vm.confirmed = true
+    await wrapper.vm.updateProfile()
+    expect(wrapper.vm.errorMessages.previousPassword).toBe("Please enter correct password")
+})
+
+test("PET-1 Edited fields are all valid (including password)", async () => {
+    const wrapper = mount(Profile, {
+        global: {
+  plugins: [
+    createTestingPinia({createSpy: vi.fn}),
+  [vuetify],
+  ],
+}
+
+})
+    const store = useAppStore()
+    store.user.id = 219
+    wrapper.vm.name = "x"
+    store.user.email = "x"
+    wrapper.vm.username = "x"
+    wrapper.vm.maxDifficulty = 10
+    wrapper.vm.estimatedTime = 50
+    wrapper.vm.password = '12345678B'
+    wrapper.vm.repeatedPassword = '12345678B'
+    wrapper.vm.previousPassword = '12345678B'
+    wrapper.vm.confirmed = true
+    const result = await wrapper.vm.updateProfile()
+    expect(result).toBe(true)
+})
+
+test("showPasswordDialog shows", async () => {
+    const wrapper = mount(Profile, {
+        global: {
+  plugins: [
+    createTestingPinia({createSpy: vi.fn}),
+  [vuetify],
+  ],
+  stubs: {
+    VDialog: {
+      name: "VDialog",
+      template: '<div class="v-dialog-stub"><slot /></div>',
+      props: ['modelValue',
+      ]
+    }
+  }
+}
+
+})
+    const store = useAppStore()
+    store.user.id = 219
+    wrapper.vm.name = "x"
+    store.user.email = "x"
+    wrapper.vm.username = "x"
+    wrapper.vm.maxDifficulty = 10
+    wrapper.vm.estimatedTime = 50
+    wrapper.vm.password = '12345678B'
+    wrapper.vm.repeatedPassword = '12345678B'
+    wrapper.vm.previousPassword = '12345678B'
+    wrapper.vm.confirmed = false
+    const result = await wrapper.vm.updateProfile()
+    expect(wrapper.vm.showPasswordDialog).toBe(true)
+})
+
+test("cancel function works", async () => {
+    const wrapper = mount(Profile, {
+        global: {
+  plugins: [
+    createTestingPinia({createSpy: vi.fn}),
+  [vuetify],
+  ],
+  stubs: {
+    VDialog: {
+      name: "VDialog",
+      template: '<div class="v-dialog-stub"><slot /></div>',
+      props: ['modelValue',
+      ]
+    }
+  }
+}
+
+})
+    const store = useAppStore()
+    wrapper.vm.showPasswordDialog = true
+    store.user.id = 219
+    wrapper.vm.cancel()
+    expect(wrapper.vm.showPasswordDialog).toBe(false)
+})
+
+test("confirm function works", async () => {
+    const wrapper = mount(Profile, {
+        global: {
+  plugins: [
+    createTestingPinia({createSpy: vi.fn}),
+  [vuetify],
+  ],
+  stubs: {
+    VDialog: {
+      name: "VDialog",
+      template: '<div class="v-dialog-stub"><slot /></div>',
+      props: ['modelValue',
+      ]
+    }
+  }
+}
+
+})
+    const store = useAppStore()
+    wrapper.vm.showPasswordDialog = true
+    store.user.id = 219
+    wrapper.vm.confirm()
+    expect(wrapper.vm.confirmed).toBe(true)
+})
+
+test("testing password v-model", async () => {
+    const wrapper = mount(Profile, {
+        global: {
+  plugins: [
+    createTestingPinia({createSpy: vi.fn}),
+  [vuetify],
+  ],
+}
+})
+const store = useAppStore()
+wrapper.vm.isUpdate = true
+    await nextTick()
+
+const select = wrapper.findComponent('[data-testid="password"]');
+    await nextTick()
+    await select.setValue("x")
+    await nextTick()
+    expect(wrapper.vm.password).toBe("x")
+})
+test("testing repeatedPassword v-model", async () => {
+    const wrapper = mount(Profile, {
+        global: {
+  plugins: [
+    createTestingPinia({createSpy: vi.fn}),
+  [vuetify],
+  ],
+}
+})
+const store = useAppStore()
+wrapper.vm.isUpdate = true
+    await nextTick()
+
+const select = wrapper.findComponent('[data-testid="repeatedPassword"]');
+    await nextTick()
+    await select.setValue("x")
+    await nextTick()
+    expect(wrapper.vm.repeatedPassword).toBe("x")
+})
+
+test("testing showPasswordDialog v-model", async () => {
+    const wrapper = mount(Profile, {
+        global: {
+  plugins: [
+    createTestingPinia({createSpy: vi.fn}),
+  [vuetify],
+  ],
+   stubs: {
+    VDialog: {
+      name: "VDialog",
+      template: '<div class="v-dialog-stub"><slot /></div>',
+      props: ['modelValue',
+      ]
+    }
+  }
+  
+}
+})
+const store = useAppStore()
+wrapper.vm.isUpdate = true
+    await nextTick()
+
+const select = wrapper.findComponent('[data-testid="passwordDialog"]');
+    await nextTick()
+    await select.setValue(false)
+    await nextTick()
+    expect(wrapper.vm.showPasswordDialog).toBe(false)
+})
+
+test("testing previousPassword v-model", async () => {
+    const wrapper = mount(Profile, {
+        global: {
+  plugins: [
+    createTestingPinia({createSpy: vi.fn}),
+  [vuetify],
+  ],
+   stubs: {
+    VDialog: {
+      name: "VDialog",
+      template: '<div class="v-dialog-stub"><slot /></div>',
+      props: ['modelValue',
+      ]
+    }
+  }
+  
+}
+})
+const store = useAppStore()
+wrapper.vm.isUpdate = true
+    await nextTick()
+
+const select = wrapper.findComponent('[data-testid="prevPass"]');
+    await nextTick()
+    await select.setValue("1234")
+    await nextTick()
+    expect(wrapper.vm.previousPassword).toBe("1234")
+})
+
+test("testing logout button", async () => {
+    const wrapper = mount(Profile, {
+        global: {
+  plugins: [
+    createTestingPinia({createSpy: vi.fn}),
+  [vuetify],
+  ],
+   stubs: {
+    VDialog: {
+      name: "VDialog",
+      template: '<div class="v-dialog-stub"><slot /></div>',
+      props: ['modelValue',
+      ]
+    }
+  }
+  
+}
+})
+    const store = useAppStore()
+    store.user.id=3765
+    await wrapper.find("#logout").trigger("click")
+    expect(store.loggedIn).toBe(false)
+})

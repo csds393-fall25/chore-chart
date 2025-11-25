@@ -11,12 +11,16 @@ export const useAppStore = defineStore('app', {
       householdId: 0,
       role: "member",
       totalPoints: 0,
+      currentPoints: 0,
       maxChoreTime: 0,
     },
     loggedIn: false,
     household: {
       id: -1,
       joinCode: 0,
-    }
+      users: [],
+    },
+    avatars: [],
+    allProps: []
   }),
 })

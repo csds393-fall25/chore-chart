@@ -61,7 +61,8 @@ export const PropType: {
   hair: 'hair',
   shirt: 'shirt',
   background: 'background',
-  handProp: 'handProp'
+  handProp: 'handProp',
+  skinTone: 'skinTone'
 };
 
 export type PropType = (typeof PropType)[keyof typeof PropType]
@@ -1427,6 +1428,7 @@ export namespace Prisma {
    */
 
   export type AvatarPropCountOutputType = {
+    skinToneInAvatars: number
     hatInAvatars: number
     hairInAvatars: number
     shirtInAvatars: number
@@ -1436,6 +1438,7 @@ export namespace Prisma {
   }
 
   export type AvatarPropCountOutputTypeSelect<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    skinToneInAvatars?: boolean | AvatarPropCountOutputTypeCountSkinToneInAvatarsArgs
     hatInAvatars?: boolean | AvatarPropCountOutputTypeCountHatInAvatarsArgs
     hairInAvatars?: boolean | AvatarPropCountOutputTypeCountHairInAvatarsArgs
     shirtInAvatars?: boolean | AvatarPropCountOutputTypeCountShirtInAvatarsArgs
@@ -1453,6 +1456,13 @@ export namespace Prisma {
      * Select specific fields to fetch from the AvatarPropCountOutputType
      */
     select?: AvatarPropCountOutputTypeSelect<ExtArgs> | null
+  }
+
+  /**
+   * AvatarPropCountOutputType without action
+   */
+  export type AvatarPropCountOutputTypeCountSkinToneInAvatarsArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    where?: AvatarWhereInput
   }
 
   /**
@@ -1520,6 +1530,7 @@ export namespace Prisma {
     difficulty: number | null
     maxChoreTime: number | null
     totalPoints: number | null
+    currentPoints: number | null
   }
 
   export type UserSumAggregateOutputType = {
@@ -1528,6 +1539,7 @@ export namespace Prisma {
     difficulty: number | null
     maxChoreTime: number | null
     totalPoints: number | null
+    currentPoints: number | null
   }
 
   export type UserMinAggregateOutputType = {
@@ -1542,6 +1554,7 @@ export namespace Prisma {
     difficulty: number | null
     maxChoreTime: number | null
     totalPoints: number | null
+    currentPoints: number | null
   }
 
   export type UserMaxAggregateOutputType = {
@@ -1556,6 +1569,7 @@ export namespace Prisma {
     difficulty: number | null
     maxChoreTime: number | null
     totalPoints: number | null
+    currentPoints: number | null
   }
 
   export type UserCountAggregateOutputType = {
@@ -1570,6 +1584,7 @@ export namespace Prisma {
     difficulty: number
     maxChoreTime: number
     totalPoints: number
+    currentPoints: number
     _all: number
   }
 
@@ -1580,6 +1595,7 @@ export namespace Prisma {
     difficulty?: true
     maxChoreTime?: true
     totalPoints?: true
+    currentPoints?: true
   }
 
   export type UserSumAggregateInputType = {
@@ -1588,6 +1604,7 @@ export namespace Prisma {
     difficulty?: true
     maxChoreTime?: true
     totalPoints?: true
+    currentPoints?: true
   }
 
   export type UserMinAggregateInputType = {
@@ -1602,6 +1619,7 @@ export namespace Prisma {
     difficulty?: true
     maxChoreTime?: true
     totalPoints?: true
+    currentPoints?: true
   }
 
   export type UserMaxAggregateInputType = {
@@ -1616,6 +1634,7 @@ export namespace Prisma {
     difficulty?: true
     maxChoreTime?: true
     totalPoints?: true
+    currentPoints?: true
   }
 
   export type UserCountAggregateInputType = {
@@ -1630,6 +1649,7 @@ export namespace Prisma {
     difficulty?: true
     maxChoreTime?: true
     totalPoints?: true
+    currentPoints?: true
     _all?: true
   }
 
@@ -1727,10 +1747,11 @@ export namespace Prisma {
     password_hash: string
     salt: string | null
     householdId: number | null
-    role: $Enums.Role | null
+    role: $Enums.Role
     difficulty: number | null
     maxChoreTime: number | null
-    totalPoints: number | null
+    totalPoints: number
+    currentPoints: number
     _count: UserCountAggregateOutputType | null
     _avg: UserAvgAggregateOutputType | null
     _sum: UserSumAggregateOutputType | null
@@ -1764,6 +1785,7 @@ export namespace Prisma {
     difficulty?: boolean
     maxChoreTime?: boolean
     totalPoints?: boolean
+    currentPoints?: boolean
     household?: boolean | User$householdArgs<ExtArgs>
     assignedChores?: boolean | User$assignedChoresArgs<ExtArgs>
     avatar?: boolean | User$avatarArgs<ExtArgs>
@@ -1783,6 +1805,7 @@ export namespace Prisma {
     difficulty?: boolean
     maxChoreTime?: boolean
     totalPoints?: boolean
+    currentPoints?: boolean
     household?: boolean | User$householdArgs<ExtArgs>
   }, ExtArgs["result"]["user"]>
 
@@ -1798,6 +1821,7 @@ export namespace Prisma {
     difficulty?: boolean
     maxChoreTime?: boolean
     totalPoints?: boolean
+    currentPoints?: boolean
     household?: boolean | User$householdArgs<ExtArgs>
   }, ExtArgs["result"]["user"]>
 
@@ -1813,9 +1837,10 @@ export namespace Prisma {
     difficulty?: boolean
     maxChoreTime?: boolean
     totalPoints?: boolean
+    currentPoints?: boolean
   }
 
-  export type UserOmit<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetOmit<"id" | "createdAt" | "email" | "name" | "password_hash" | "salt" | "householdId" | "role" | "difficulty" | "maxChoreTime" | "totalPoints", ExtArgs["result"]["user"]>
+  export type UserOmit<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetOmit<"id" | "createdAt" | "email" | "name" | "password_hash" | "salt" | "householdId" | "role" | "difficulty" | "maxChoreTime" | "totalPoints" | "currentPoints", ExtArgs["result"]["user"]>
   export type UserInclude<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
     household?: boolean | User$householdArgs<ExtArgs>
     assignedChores?: boolean | User$assignedChoresArgs<ExtArgs>
@@ -1846,10 +1871,11 @@ export namespace Prisma {
       password_hash: string
       salt: string | null
       householdId: number | null
-      role: $Enums.Role | null
+      role: $Enums.Role
       difficulty: number | null
       maxChoreTime: number | null
-      totalPoints: number | null
+      totalPoints: number
+      currentPoints: number
     }, ExtArgs["result"]["user"]>
     composites: {}
   }
@@ -2288,6 +2314,7 @@ export namespace Prisma {
     readonly difficulty: FieldRef<"User", 'Int'>
     readonly maxChoreTime: FieldRef<"User", 'Int'>
     readonly totalPoints: FieldRef<"User", 'Int'>
+    readonly currentPoints: FieldRef<"User", 'Int'>
   }
     
 
@@ -5108,6 +5135,7 @@ export namespace Prisma {
 
   export type AvatarAvgAggregateOutputType = {
     ownerId: number | null
+    skinToneId: number | null
     hatId: number | null
     hairId: number | null
     shirtId: number | null
@@ -5117,6 +5145,7 @@ export namespace Prisma {
 
   export type AvatarSumAggregateOutputType = {
     ownerId: number | null
+    skinToneId: number | null
     hatId: number | null
     hairId: number | null
     shirtId: number | null
@@ -5126,6 +5155,7 @@ export namespace Prisma {
 
   export type AvatarMinAggregateOutputType = {
     ownerId: number | null
+    skinToneId: number | null
     hatId: number | null
     hairId: number | null
     shirtId: number | null
@@ -5135,6 +5165,7 @@ export namespace Prisma {
 
   export type AvatarMaxAggregateOutputType = {
     ownerId: number | null
+    skinToneId: number | null
     hatId: number | null
     hairId: number | null
     shirtId: number | null
@@ -5144,6 +5175,7 @@ export namespace Prisma {
 
   export type AvatarCountAggregateOutputType = {
     ownerId: number
+    skinToneId: number
     hatId: number
     hairId: number
     shirtId: number
@@ -5155,6 +5187,7 @@ export namespace Prisma {
 
   export type AvatarAvgAggregateInputType = {
     ownerId?: true
+    skinToneId?: true
     hatId?: true
     hairId?: true
     shirtId?: true
@@ -5164,6 +5197,7 @@ export namespace Prisma {
 
   export type AvatarSumAggregateInputType = {
     ownerId?: true
+    skinToneId?: true
     hatId?: true
     hairId?: true
     shirtId?: true
@@ -5173,6 +5207,7 @@ export namespace Prisma {
 
   export type AvatarMinAggregateInputType = {
     ownerId?: true
+    skinToneId?: true
     hatId?: true
     hairId?: true
     shirtId?: true
@@ -5182,6 +5217,7 @@ export namespace Prisma {
 
   export type AvatarMaxAggregateInputType = {
     ownerId?: true
+    skinToneId?: true
     hatId?: true
     hairId?: true
     shirtId?: true
@@ -5191,6 +5227,7 @@ export namespace Prisma {
 
   export type AvatarCountAggregateInputType = {
     ownerId?: true
+    skinToneId?: true
     hatId?: true
     hairId?: true
     shirtId?: true
@@ -5287,6 +5324,7 @@ export namespace Prisma {
 
   export type AvatarGroupByOutputType = {
     ownerId: number
+    skinToneId: number
     hatId: number
     hairId: number
     shirtId: number
@@ -5315,12 +5353,14 @@ export namespace Prisma {
 
   export type AvatarSelect<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetSelect<{
     ownerId?: boolean
+    skinToneId?: boolean
     hatId?: boolean
     hairId?: boolean
     shirtId?: boolean
     backgroundId?: boolean
     handPropId?: boolean
     owner?: boolean | UserDefaultArgs<ExtArgs>
+    skinTone?: boolean | AvatarPropDefaultArgs<ExtArgs>
     hat?: boolean | AvatarPropDefaultArgs<ExtArgs>
     hair?: boolean | AvatarPropDefaultArgs<ExtArgs>
     shirt?: boolean | AvatarPropDefaultArgs<ExtArgs>
@@ -5330,12 +5370,14 @@ export namespace Prisma {
 
   export type AvatarSelectCreateManyAndReturn<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetSelect<{
     ownerId?: boolean
+    skinToneId?: boolean
     hatId?: boolean
     hairId?: boolean
     shirtId?: boolean
     backgroundId?: boolean
     handPropId?: boolean
     owner?: boolean | UserDefaultArgs<ExtArgs>
+    skinTone?: boolean | AvatarPropDefaultArgs<ExtArgs>
     hat?: boolean | AvatarPropDefaultArgs<ExtArgs>
     hair?: boolean | AvatarPropDefaultArgs<ExtArgs>
     shirt?: boolean | AvatarPropDefaultArgs<ExtArgs>
@@ -5345,12 +5387,14 @@ export namespace Prisma {
 
   export type AvatarSelectUpdateManyAndReturn<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetSelect<{
     ownerId?: boolean
+    skinToneId?: boolean
     hatId?: boolean
     hairId?: boolean
     shirtId?: boolean
     backgroundId?: boolean
     handPropId?: boolean
     owner?: boolean | UserDefaultArgs<ExtArgs>
+    skinTone?: boolean | AvatarPropDefaultArgs<ExtArgs>
     hat?: boolean | AvatarPropDefaultArgs<ExtArgs>
     hair?: boolean | AvatarPropDefaultArgs<ExtArgs>
     shirt?: boolean | AvatarPropDefaultArgs<ExtArgs>
@@ -5360,6 +5404,7 @@ export namespace Prisma {
 
   export type AvatarSelectScalar = {
     ownerId?: boolean
+    skinToneId?: boolean
     hatId?: boolean
     hairId?: boolean
     shirtId?: boolean
@@ -5367,9 +5412,10 @@ export namespace Prisma {
     handPropId?: boolean
   }
 
-  export type AvatarOmit<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetOmit<"ownerId" | "hatId" | "hairId" | "shirtId" | "backgroundId" | "handPropId", ExtArgs["result"]["avatar"]>
+  export type AvatarOmit<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetOmit<"ownerId" | "skinToneId" | "hatId" | "hairId" | "shirtId" | "backgroundId" | "handPropId", ExtArgs["result"]["avatar"]>
   export type AvatarInclude<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
     owner?: boolean | UserDefaultArgs<ExtArgs>
+    skinTone?: boolean | AvatarPropDefaultArgs<ExtArgs>
     hat?: boolean | AvatarPropDefaultArgs<ExtArgs>
     hair?: boolean | AvatarPropDefaultArgs<ExtArgs>
     shirt?: boolean | AvatarPropDefaultArgs<ExtArgs>
@@ -5378,6 +5424,7 @@ export namespace Prisma {
   }
   export type AvatarIncludeCreateManyAndReturn<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
     owner?: boolean | UserDefaultArgs<ExtArgs>
+    skinTone?: boolean | AvatarPropDefaultArgs<ExtArgs>
     hat?: boolean | AvatarPropDefaultArgs<ExtArgs>
     hair?: boolean | AvatarPropDefaultArgs<ExtArgs>
     shirt?: boolean | AvatarPropDefaultArgs<ExtArgs>
@@ -5386,6 +5433,7 @@ export namespace Prisma {
   }
   export type AvatarIncludeUpdateManyAndReturn<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
     owner?: boolean | UserDefaultArgs<ExtArgs>
+    skinTone?: boolean | AvatarPropDefaultArgs<ExtArgs>
     hat?: boolean | AvatarPropDefaultArgs<ExtArgs>
     hair?: boolean | AvatarPropDefaultArgs<ExtArgs>
     shirt?: boolean | AvatarPropDefaultArgs<ExtArgs>
@@ -5397,6 +5445,7 @@ export namespace Prisma {
     name: "Avatar"
     objects: {
       owner: Prisma.$UserPayload<ExtArgs>
+      skinTone: Prisma.$AvatarPropPayload<ExtArgs>
       hat: Prisma.$AvatarPropPayload<ExtArgs>
       hair: Prisma.$AvatarPropPayload<ExtArgs>
       shirt: Prisma.$AvatarPropPayload<ExtArgs>
@@ -5405,6 +5454,7 @@ export namespace Prisma {
     }
     scalars: $Extensions.GetPayloadResult<{
       ownerId: number
+      skinToneId: number
       hatId: number
       hairId: number
       shirtId: number
@@ -5805,6 +5855,7 @@ export namespace Prisma {
   export interface Prisma__AvatarClient<T, Null = never, ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs, GlobalOmitOptions = {}> extends Prisma.PrismaPromise<T> {
     readonly [Symbol.toStringTag]: "PrismaPromise"
     owner<T extends UserDefaultArgs<ExtArgs> = {}>(args?: Subset<T, UserDefaultArgs<ExtArgs>>): Prisma__UserClient<$Result.GetResult<Prisma.$UserPayload<ExtArgs>, T, "findUniqueOrThrow", GlobalOmitOptions> | Null, Null, ExtArgs, GlobalOmitOptions>
+    skinTone<T extends AvatarPropDefaultArgs<ExtArgs> = {}>(args?: Subset<T, AvatarPropDefaultArgs<ExtArgs>>): Prisma__AvatarPropClient<$Result.GetResult<Prisma.$AvatarPropPayload<ExtArgs>, T, "findUniqueOrThrow", GlobalOmitOptions> | Null, Null, ExtArgs, GlobalOmitOptions>
     hat<T extends AvatarPropDefaultArgs<ExtArgs> = {}>(args?: Subset<T, AvatarPropDefaultArgs<ExtArgs>>): Prisma__AvatarPropClient<$Result.GetResult<Prisma.$AvatarPropPayload<ExtArgs>, T, "findUniqueOrThrow", GlobalOmitOptions> | Null, Null, ExtArgs, GlobalOmitOptions>
     hair<T extends AvatarPropDefaultArgs<ExtArgs> = {}>(args?: Subset<T, AvatarPropDefaultArgs<ExtArgs>>): Prisma__AvatarPropClient<$Result.GetResult<Prisma.$AvatarPropPayload<ExtArgs>, T, "findUniqueOrThrow", GlobalOmitOptions> | Null, Null, ExtArgs, GlobalOmitOptions>
     shirt<T extends AvatarPropDefaultArgs<ExtArgs> = {}>(args?: Subset<T, AvatarPropDefaultArgs<ExtArgs>>): Prisma__AvatarPropClient<$Result.GetResult<Prisma.$AvatarPropPayload<ExtArgs>, T, "findUniqueOrThrow", GlobalOmitOptions> | Null, Null, ExtArgs, GlobalOmitOptions>
@@ -5840,6 +5891,7 @@ export namespace Prisma {
    */
   interface AvatarFieldRefs {
     readonly ownerId: FieldRef<"Avatar", 'Int'>
+    readonly skinToneId: FieldRef<"Avatar", 'Int'>
     readonly hatId: FieldRef<"Avatar", 'Int'>
     readonly hairId: FieldRef<"Avatar", 'Int'>
     readonly shirtId: FieldRef<"Avatar", 'Int'>
@@ -7518,6 +7570,7 @@ export namespace Prisma {
     name?: boolean
     type?: boolean
     cost?: boolean
+    skinToneInAvatars?: boolean | AvatarProp$skinToneInAvatarsArgs<ExtArgs>
     hatInAvatars?: boolean | AvatarProp$hatInAvatarsArgs<ExtArgs>
     hairInAvatars?: boolean | AvatarProp$hairInAvatarsArgs<ExtArgs>
     shirtInAvatars?: boolean | AvatarProp$shirtInAvatarsArgs<ExtArgs>
@@ -7550,6 +7603,7 @@ export namespace Prisma {
 
   export type AvatarPropOmit<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetOmit<"id" | "name" | "type" | "cost", ExtArgs["result"]["avatarProp"]>
   export type AvatarPropInclude<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    skinToneInAvatars?: boolean | AvatarProp$skinToneInAvatarsArgs<ExtArgs>
     hatInAvatars?: boolean | AvatarProp$hatInAvatarsArgs<ExtArgs>
     hairInAvatars?: boolean | AvatarProp$hairInAvatarsArgs<ExtArgs>
     shirtInAvatars?: boolean | AvatarProp$shirtInAvatarsArgs<ExtArgs>
@@ -7564,6 +7618,7 @@ export namespace Prisma {
   export type $AvatarPropPayload<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
     name: "AvatarProp"
     objects: {
+      skinToneInAvatars: Prisma.$AvatarPayload<ExtArgs>[]
       hatInAvatars: Prisma.$AvatarPayload<ExtArgs>[]
       hairInAvatars: Prisma.$AvatarPayload<ExtArgs>[]
       shirtInAvatars: Prisma.$AvatarPayload<ExtArgs>[]
@@ -7970,6 +8025,7 @@ export namespace Prisma {
    */
   export interface Prisma__AvatarPropClient<T, Null = never, ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs, GlobalOmitOptions = {}> extends Prisma.PrismaPromise<T> {
     readonly [Symbol.toStringTag]: "PrismaPromise"
+    skinToneInAvatars<T extends AvatarProp$skinToneInAvatarsArgs<ExtArgs> = {}>(args?: Subset<T, AvatarProp$skinToneInAvatarsArgs<ExtArgs>>): Prisma.PrismaPromise<$Result.GetResult<Prisma.$AvatarPayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
     hatInAvatars<T extends AvatarProp$hatInAvatarsArgs<ExtArgs> = {}>(args?: Subset<T, AvatarProp$hatInAvatarsArgs<ExtArgs>>): Prisma.PrismaPromise<$Result.GetResult<Prisma.$AvatarPayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
     hairInAvatars<T extends AvatarProp$hairInAvatarsArgs<ExtArgs> = {}>(args?: Subset<T, AvatarProp$hairInAvatarsArgs<ExtArgs>>): Prisma.PrismaPromise<$Result.GetResult<Prisma.$AvatarPayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
     shirtInAvatars<T extends AvatarProp$shirtInAvatarsArgs<ExtArgs> = {}>(args?: Subset<T, AvatarProp$shirtInAvatarsArgs<ExtArgs>>): Prisma.PrismaPromise<$Result.GetResult<Prisma.$AvatarPayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
@@ -8397,6 +8453,30 @@ export namespace Prisma {
   }
 
   /**
+   * AvatarProp.skinToneInAvatars
+   */
+  export type AvatarProp$skinToneInAvatarsArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the Avatar
+     */
+    select?: AvatarSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the Avatar
+     */
+    omit?: AvatarOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: AvatarInclude<ExtArgs> | null
+    where?: AvatarWhereInput
+    orderBy?: AvatarOrderByWithRelationInput | AvatarOrderByWithRelationInput[]
+    cursor?: AvatarWhereUniqueInput
+    take?: number
+    skip?: number
+    distinct?: AvatarScalarFieldEnum | AvatarScalarFieldEnum[]
+  }
+
+  /**
    * AvatarProp.hatInAvatars
    */
   export type AvatarProp$hatInAvatarsArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
@@ -8584,7 +8664,8 @@ export namespace Prisma {
     role: 'role',
     difficulty: 'difficulty',
     maxChoreTime: 'maxChoreTime',
-    totalPoints: 'totalPoints'
+    totalPoints: 'totalPoints',
+    currentPoints: 'currentPoints'
   };
 
   export type UserScalarFieldEnum = (typeof UserScalarFieldEnum)[keyof typeof UserScalarFieldEnum]
@@ -8617,6 +8698,7 @@ export namespace Prisma {
 
   export const AvatarScalarFieldEnum: {
     ownerId: 'ownerId',
+    skinToneId: 'skinToneId',
     hatId: 'hatId',
     hairId: 'hairId',
     shirtId: 'shirtId',
@@ -8779,10 +8861,11 @@ export namespace Prisma {
     password_hash?: StringFilter<"User"> | string
     salt?: StringNullableFilter<"User"> | string | null
     householdId?: IntNullableFilter<"User"> | number | null
-    role?: EnumRoleNullableFilter<"User"> | $Enums.Role | null
+    role?: EnumRoleFilter<"User"> | $Enums.Role
     difficulty?: IntNullableFilter<"User"> | number | null
     maxChoreTime?: IntNullableFilter<"User"> | number | null
-    totalPoints?: IntNullableFilter<"User"> | number | null
+    totalPoints?: IntFilter<"User"> | number
+    currentPoints?: IntFilter<"User"> | number
     household?: XOR<HouseholdNullableScalarRelationFilter, HouseholdWhereInput> | null
     assignedChores?: ChoreListRelationFilter
     avatar?: XOR<AvatarNullableScalarRelationFilter, AvatarWhereInput> | null
@@ -8797,10 +8880,11 @@ export namespace Prisma {
     password_hash?: SortOrder
     salt?: SortOrderInput | SortOrder
     householdId?: SortOrderInput | SortOrder
-    role?: SortOrderInput | SortOrder
+    role?: SortOrder
     difficulty?: SortOrderInput | SortOrder
     maxChoreTime?: SortOrderInput | SortOrder
-    totalPoints?: SortOrderInput | SortOrder
+    totalPoints?: SortOrder
+    currentPoints?: SortOrder
     household?: HouseholdOrderByWithRelationInput
     assignedChores?: ChoreOrderByRelationAggregateInput
     avatar?: AvatarOrderByWithRelationInput
@@ -8818,10 +8902,11 @@ export namespace Prisma {
     password_hash?: StringFilter<"User"> | string
     salt?: StringNullableFilter<"User"> | string | null
     householdId?: IntNullableFilter<"User"> | number | null
-    role?: EnumRoleNullableFilter<"User"> | $Enums.Role | null
+    role?: EnumRoleFilter<"User"> | $Enums.Role
     difficulty?: IntNullableFilter<"User"> | number | null
     maxChoreTime?: IntNullableFilter<"User"> | number | null
-    totalPoints?: IntNullableFilter<"User"> | number | null
+    totalPoints?: IntFilter<"User"> | number
+    currentPoints?: IntFilter<"User"> | number
     household?: XOR<HouseholdNullableScalarRelationFilter, HouseholdWhereInput> | null
     assignedChores?: ChoreListRelationFilter
     avatar?: XOR<AvatarNullableScalarRelationFilter, AvatarWhereInput> | null
@@ -8836,10 +8921,11 @@ export namespace Prisma {
     password_hash?: SortOrder
     salt?: SortOrderInput | SortOrder
     householdId?: SortOrderInput | SortOrder
-    role?: SortOrderInput | SortOrder
+    role?: SortOrder
     difficulty?: SortOrderInput | SortOrder
     maxChoreTime?: SortOrderInput | SortOrder
-    totalPoints?: SortOrderInput | SortOrder
+    totalPoints?: SortOrder
+    currentPoints?: SortOrder
     _count?: UserCountOrderByAggregateInput
     _avg?: UserAvgOrderByAggregateInput
     _max?: UserMaxOrderByAggregateInput
@@ -8858,10 +8944,11 @@ export namespace Prisma {
     password_hash?: StringWithAggregatesFilter<"User"> | string
     salt?: StringNullableWithAggregatesFilter<"User"> | string | null
     householdId?: IntNullableWithAggregatesFilter<"User"> | number | null
-    role?: EnumRoleNullableWithAggregatesFilter<"User"> | $Enums.Role | null
+    role?: EnumRoleWithAggregatesFilter<"User"> | $Enums.Role
     difficulty?: IntNullableWithAggregatesFilter<"User"> | number | null
     maxChoreTime?: IntNullableWithAggregatesFilter<"User"> | number | null
-    totalPoints?: IntNullableWithAggregatesFilter<"User"> | number | null
+    totalPoints?: IntWithAggregatesFilter<"User"> | number
+    currentPoints?: IntWithAggregatesFilter<"User"> | number
   }
 
   export type HouseholdWhereInput = {
@@ -9004,12 +9091,14 @@ export namespace Prisma {
     OR?: AvatarWhereInput[]
     NOT?: AvatarWhereInput | AvatarWhereInput[]
     ownerId?: IntFilter<"Avatar"> | number
+    skinToneId?: IntFilter<"Avatar"> | number
     hatId?: IntFilter<"Avatar"> | number
     hairId?: IntFilter<"Avatar"> | number
     shirtId?: IntFilter<"Avatar"> | number
     backgroundId?: IntFilter<"Avatar"> | number
     handPropId?: IntFilter<"Avatar"> | number
     owner?: XOR<UserScalarRelationFilter, UserWhereInput>
+    skinTone?: XOR<AvatarPropScalarRelationFilter, AvatarPropWhereInput>
     hat?: XOR<AvatarPropScalarRelationFilter, AvatarPropWhereInput>
     hair?: XOR<AvatarPropScalarRelationFilter, AvatarPropWhereInput>
     shirt?: XOR<AvatarPropScalarRelationFilter, AvatarPropWhereInput>
@@ -9019,12 +9108,14 @@ export namespace Prisma {
 
   export type AvatarOrderByWithRelationInput = {
     ownerId?: SortOrder
+    skinToneId?: SortOrder
     hatId?: SortOrder
     hairId?: SortOrder
     shirtId?: SortOrder
     backgroundId?: SortOrder
     handPropId?: SortOrder
     owner?: UserOrderByWithRelationInput
+    skinTone?: AvatarPropOrderByWithRelationInput
     hat?: AvatarPropOrderByWithRelationInput
     hair?: AvatarPropOrderByWithRelationInput
     shirt?: AvatarPropOrderByWithRelationInput
@@ -9037,12 +9128,14 @@ export namespace Prisma {
     AND?: AvatarWhereInput | AvatarWhereInput[]
     OR?: AvatarWhereInput[]
     NOT?: AvatarWhereInput | AvatarWhereInput[]
+    skinToneId?: IntFilter<"Avatar"> | number
     hatId?: IntFilter<"Avatar"> | number
     hairId?: IntFilter<"Avatar"> | number
     shirtId?: IntFilter<"Avatar"> | number
     backgroundId?: IntFilter<"Avatar"> | number
     handPropId?: IntFilter<"Avatar"> | number
     owner?: XOR<UserScalarRelationFilter, UserWhereInput>
+    skinTone?: XOR<AvatarPropScalarRelationFilter, AvatarPropWhereInput>
     hat?: XOR<AvatarPropScalarRelationFilter, AvatarPropWhereInput>
     hair?: XOR<AvatarPropScalarRelationFilter, AvatarPropWhereInput>
     shirt?: XOR<AvatarPropScalarRelationFilter, AvatarPropWhereInput>
@@ -9052,6 +9145,7 @@ export namespace Prisma {
 
   export type AvatarOrderByWithAggregationInput = {
     ownerId?: SortOrder
+    skinToneId?: SortOrder
     hatId?: SortOrder
     hairId?: SortOrder
     shirtId?: SortOrder
@@ -9069,6 +9163,7 @@ export namespace Prisma {
     OR?: AvatarScalarWhereWithAggregatesInput[]
     NOT?: AvatarScalarWhereWithAggregatesInput | AvatarScalarWhereWithAggregatesInput[]
     ownerId?: IntWithAggregatesFilter<"Avatar"> | number
+    skinToneId?: IntWithAggregatesFilter<"Avatar"> | number
     hatId?: IntWithAggregatesFilter<"Avatar"> | number
     hairId?: IntWithAggregatesFilter<"Avatar"> | number
     shirtId?: IntWithAggregatesFilter<"Avatar"> | number
@@ -9130,6 +9225,7 @@ export namespace Prisma {
     name?: StringFilter<"AvatarProp"> | string
     type?: EnumPropTypeFilter<"AvatarProp"> | $Enums.PropType
     cost?: IntFilter<"AvatarProp"> | number
+    skinToneInAvatars?: AvatarListRelationFilter
     hatInAvatars?: AvatarListRelationFilter
     hairInAvatars?: AvatarListRelationFilter
     shirtInAvatars?: AvatarListRelationFilter
@@ -9143,6 +9239,7 @@ export namespace Prisma {
     name?: SortOrder
     type?: SortOrder
     cost?: SortOrder
+    skinToneInAvatars?: AvatarOrderByRelationAggregateInput
     hatInAvatars?: AvatarOrderByRelationAggregateInput
     hairInAvatars?: AvatarOrderByRelationAggregateInput
     shirtInAvatars?: AvatarOrderByRelationAggregateInput
@@ -9159,6 +9256,7 @@ export namespace Prisma {
     NOT?: AvatarPropWhereInput | AvatarPropWhereInput[]
     type?: EnumPropTypeFilter<"AvatarProp"> | $Enums.PropType
     cost?: IntFilter<"AvatarProp"> | number
+    skinToneInAvatars?: AvatarListRelationFilter
     hatInAvatars?: AvatarListRelationFilter
     hairInAvatars?: AvatarListRelationFilter
     shirtInAvatars?: AvatarListRelationFilter
@@ -9195,10 +9293,11 @@ export namespace Prisma {
     name: string
     password_hash: string
     salt?: string | null
-    role?: $Enums.Role | null
+    role?: $Enums.Role
     difficulty?: number | null
     maxChoreTime?: number | null
-    totalPoints?: number | null
+    totalPoints?: number
+    currentPoints?: number
     household?: HouseholdCreateNestedOneWithoutUsersInput
     assignedChores?: ChoreCreateNestedManyWithoutAssigneeInput
     avatar?: AvatarCreateNestedOneWithoutOwnerInput
@@ -9213,10 +9312,11 @@ export namespace Prisma {
     password_hash: string
     salt?: string | null
     householdId?: number | null
-    role?: $Enums.Role | null
+    role?: $Enums.Role
     difficulty?: number | null
     maxChoreTime?: number | null
-    totalPoints?: number | null
+    totalPoints?: number
+    currentPoints?: number
     assignedChores?: ChoreUncheckedCreateNestedManyWithoutAssigneeInput
     avatar?: AvatarUncheckedCreateNestedOneWithoutOwnerInput
     userAvatarProps?: UserAvatarPropsUncheckedCreateNestedManyWithoutUserInput
@@ -9228,10 +9328,11 @@ export namespace Prisma {
     name?: StringFieldUpdateOperationsInput | string
     password_hash?: StringFieldUpdateOperationsInput | string
     salt?: NullableStringFieldUpdateOperationsInput | string | null
-    role?: NullableEnumRoleFieldUpdateOperationsInput | $Enums.Role | null
+    role?: EnumRoleFieldUpdateOperationsInput | $Enums.Role
     difficulty?: NullableIntFieldUpdateOperationsInput | number | null
     maxChoreTime?: NullableIntFieldUpdateOperationsInput | number | null
-    totalPoints?: NullableIntFieldUpdateOperationsInput | number | null
+    totalPoints?: IntFieldUpdateOperationsInput | number
+    currentPoints?: IntFieldUpdateOperationsInput | number
     household?: HouseholdUpdateOneWithoutUsersNestedInput
     assignedChores?: ChoreUpdateManyWithoutAssigneeNestedInput
     avatar?: AvatarUpdateOneWithoutOwnerNestedInput
@@ -9246,10 +9347,11 @@ export namespace Prisma {
     password_hash?: StringFieldUpdateOperationsInput | string
     salt?: NullableStringFieldUpdateOperationsInput | string | null
     householdId?: NullableIntFieldUpdateOperationsInput | number | null
-    role?: NullableEnumRoleFieldUpdateOperationsInput | $Enums.Role | null
+    role?: EnumRoleFieldUpdateOperationsInput | $Enums.Role
     difficulty?: NullableIntFieldUpdateOperationsInput | number | null
     maxChoreTime?: NullableIntFieldUpdateOperationsInput | number | null
-    totalPoints?: NullableIntFieldUpdateOperationsInput | number | null
+    totalPoints?: IntFieldUpdateOperationsInput | number
+    currentPoints?: IntFieldUpdateOperationsInput | number
     assignedChores?: ChoreUncheckedUpdateManyWithoutAssigneeNestedInput
     avatar?: AvatarUncheckedUpdateOneWithoutOwnerNestedInput
     userAvatarProps?: UserAvatarPropsUncheckedUpdateManyWithoutUserNestedInput
@@ -9263,10 +9365,11 @@ export namespace Prisma {
     password_hash: string
     salt?: string | null
     householdId?: number | null
-    role?: $Enums.Role | null
+    role?: $Enums.Role
     difficulty?: number | null
     maxChoreTime?: number | null
-    totalPoints?: number | null
+    totalPoints?: number
+    currentPoints?: number
   }
 
   export type UserUpdateManyMutationInput = {
@@ -9275,10 +9378,11 @@ export namespace Prisma {
     name?: StringFieldUpdateOperationsInput | string
     password_hash?: StringFieldUpdateOperationsInput | string
     salt?: NullableStringFieldUpdateOperationsInput | string | null
-    role?: NullableEnumRoleFieldUpdateOperationsInput | $Enums.Role | null
+    role?: EnumRoleFieldUpdateOperationsInput | $Enums.Role
     difficulty?: NullableIntFieldUpdateOperationsInput | number | null
     maxChoreTime?: NullableIntFieldUpdateOperationsInput | number | null
-    totalPoints?: NullableIntFieldUpdateOperationsInput | number | null
+    totalPoints?: IntFieldUpdateOperationsInput | number
+    currentPoints?: IntFieldUpdateOperationsInput | number
   }
 
   export type UserUncheckedUpdateManyInput = {
@@ -9289,10 +9393,11 @@ export namespace Prisma {
     password_hash?: StringFieldUpdateOperationsInput | string
     salt?: NullableStringFieldUpdateOperationsInput | string | null
     householdId?: NullableIntFieldUpdateOperationsInput | number | null
-    role?: NullableEnumRoleFieldUpdateOperationsInput | $Enums.Role | null
+    role?: EnumRoleFieldUpdateOperationsInput | $Enums.Role
     difficulty?: NullableIntFieldUpdateOperationsInput | number | null
     maxChoreTime?: NullableIntFieldUpdateOperationsInput | number | null
-    totalPoints?: NullableIntFieldUpdateOperationsInput | number | null
+    totalPoints?: IntFieldUpdateOperationsInput | number
+    currentPoints?: IntFieldUpdateOperationsInput | number
   }
 
   export type HouseholdCreateInput = {
@@ -9430,6 +9535,7 @@ export namespace Prisma {
 
   export type AvatarCreateInput = {
     owner: UserCreateNestedOneWithoutAvatarInput
+    skinTone: AvatarPropCreateNestedOneWithoutSkinToneInAvatarsInput
     hat: AvatarPropCreateNestedOneWithoutHatInAvatarsInput
     hair: AvatarPropCreateNestedOneWithoutHairInAvatarsInput
     shirt: AvatarPropCreateNestedOneWithoutShirtInAvatarsInput
@@ -9439,6 +9545,7 @@ export namespace Prisma {
 
   export type AvatarUncheckedCreateInput = {
     ownerId: number
+    skinToneId: number
     hatId: number
     hairId: number
     shirtId: number
@@ -9448,6 +9555,7 @@ export namespace Prisma {
 
   export type AvatarUpdateInput = {
     owner?: UserUpdateOneRequiredWithoutAvatarNestedInput
+    skinTone?: AvatarPropUpdateOneRequiredWithoutSkinToneInAvatarsNestedInput
     hat?: AvatarPropUpdateOneRequiredWithoutHatInAvatarsNestedInput
     hair?: AvatarPropUpdateOneRequiredWithoutHairInAvatarsNestedInput
     shirt?: AvatarPropUpdateOneRequiredWithoutShirtInAvatarsNestedInput
@@ -9457,6 +9565,7 @@ export namespace Prisma {
 
   export type AvatarUncheckedUpdateInput = {
     ownerId?: IntFieldUpdateOperationsInput | number
+    skinToneId?: IntFieldUpdateOperationsInput | number
     hatId?: IntFieldUpdateOperationsInput | number
     hairId?: IntFieldUpdateOperationsInput | number
     shirtId?: IntFieldUpdateOperationsInput | number
@@ -9466,6 +9575,7 @@ export namespace Prisma {
 
   export type AvatarCreateManyInput = {
     ownerId: number
+    skinToneId: number
     hatId: number
     hairId: number
     shirtId: number
@@ -9479,6 +9589,7 @@ export namespace Prisma {
 
   export type AvatarUncheckedUpdateManyInput = {
     ownerId?: IntFieldUpdateOperationsInput | number
+    skinToneId?: IntFieldUpdateOperationsInput | number
     hatId?: IntFieldUpdateOperationsInput | number
     hairId?: IntFieldUpdateOperationsInput | number
     shirtId?: IntFieldUpdateOperationsInput | number
@@ -9524,6 +9635,7 @@ export namespace Prisma {
     name: string
     type: $Enums.PropType
     cost: number
+    skinToneInAvatars?: AvatarCreateNestedManyWithoutSkinToneInput
     hatInAvatars?: AvatarCreateNestedManyWithoutHatInput
     hairInAvatars?: AvatarCreateNestedManyWithoutHairInput
     shirtInAvatars?: AvatarCreateNestedManyWithoutShirtInput
@@ -9537,6 +9649,7 @@ export namespace Prisma {
     name: string
     type: $Enums.PropType
     cost: number
+    skinToneInAvatars?: AvatarUncheckedCreateNestedManyWithoutSkinToneInput
     hatInAvatars?: AvatarUncheckedCreateNestedManyWithoutHatInput
     hairInAvatars?: AvatarUncheckedCreateNestedManyWithoutHairInput
     shirtInAvatars?: AvatarUncheckedCreateNestedManyWithoutShirtInput
@@ -9549,6 +9662,7 @@ export namespace Prisma {
     name?: StringFieldUpdateOperationsInput | string
     type?: EnumPropTypeFieldUpdateOperationsInput | $Enums.PropType
     cost?: IntFieldUpdateOperationsInput | number
+    skinToneInAvatars?: AvatarUpdateManyWithoutSkinToneNestedInput
     hatInAvatars?: AvatarUpdateManyWithoutHatNestedInput
     hairInAvatars?: AvatarUpdateManyWithoutHairNestedInput
     shirtInAvatars?: AvatarUpdateManyWithoutShirtNestedInput
@@ -9562,6 +9676,7 @@ export namespace Prisma {
     name?: StringFieldUpdateOperationsInput | string
     type?: EnumPropTypeFieldUpdateOperationsInput | $Enums.PropType
     cost?: IntFieldUpdateOperationsInput | number
+    skinToneInAvatars?: AvatarUncheckedUpdateManyWithoutSkinToneNestedInput
     hatInAvatars?: AvatarUncheckedUpdateManyWithoutHatNestedInput
     hairInAvatars?: AvatarUncheckedUpdateManyWithoutHairNestedInput
     shirtInAvatars?: AvatarUncheckedUpdateManyWithoutShirtNestedInput
@@ -9653,11 +9768,11 @@ export namespace Prisma {
     not?: NestedIntNullableFilter<$PrismaModel> | number | null
   }
 
-  export type EnumRoleNullableFilter<$PrismaModel = never> = {
-    equals?: $Enums.Role | EnumRoleFieldRefInput<$PrismaModel> | null
-    in?: $Enums.Role[] | ListEnumRoleFieldRefInput<$PrismaModel> | null
-    notIn?: $Enums.Role[] | ListEnumRoleFieldRefInput<$PrismaModel> | null
-    not?: NestedEnumRoleNullableFilter<$PrismaModel> | $Enums.Role | null
+  export type EnumRoleFilter<$PrismaModel = never> = {
+    equals?: $Enums.Role | EnumRoleFieldRefInput<$PrismaModel>
+    in?: $Enums.Role[] | ListEnumRoleFieldRefInput<$PrismaModel>
+    notIn?: $Enums.Role[] | ListEnumRoleFieldRefInput<$PrismaModel>
+    not?: NestedEnumRoleFilter<$PrismaModel> | $Enums.Role
   }
 
   export type HouseholdNullableScalarRelationFilter = {
@@ -9707,6 +9822,7 @@ export namespace Prisma {
     difficulty?: SortOrder
     maxChoreTime?: SortOrder
     totalPoints?: SortOrder
+    currentPoints?: SortOrder
   }
 
   export type UserAvgOrderByAggregateInput = {
@@ -9715,6 +9831,7 @@ export namespace Prisma {
     difficulty?: SortOrder
     maxChoreTime?: SortOrder
     totalPoints?: SortOrder
+    currentPoints?: SortOrder
   }
 
   export type UserMaxOrderByAggregateInput = {
@@ -9729,6 +9846,7 @@ export namespace Prisma {
     difficulty?: SortOrder
     maxChoreTime?: SortOrder
     totalPoints?: SortOrder
+    currentPoints?: SortOrder
   }
 
   export type UserMinOrderByAggregateInput = {
@@ -9743,6 +9861,7 @@ export namespace Prisma {
     difficulty?: SortOrder
     maxChoreTime?: SortOrder
     totalPoints?: SortOrder
+    currentPoints?: SortOrder
   }
 
   export type UserSumOrderByAggregateInput = {
@@ -9751,6 +9870,7 @@ export namespace Prisma {
     difficulty?: SortOrder
     maxChoreTime?: SortOrder
     totalPoints?: SortOrder
+    currentPoints?: SortOrder
   }
 
   export type IntWithAggregatesFilter<$PrismaModel = never> = {
@@ -9835,14 +9955,14 @@ export namespace Prisma {
     _max?: NestedIntNullableFilter<$PrismaModel>
   }
 
-  export type EnumRoleNullableWithAggregatesFilter<$PrismaModel = never> = {
-    equals?: $Enums.Role | EnumRoleFieldRefInput<$PrismaModel> | null
-    in?: $Enums.Role[] | ListEnumRoleFieldRefInput<$PrismaModel> | null
-    notIn?: $Enums.Role[] | ListEnumRoleFieldRefInput<$PrismaModel> | null
-    not?: NestedEnumRoleNullableWithAggregatesFilter<$PrismaModel> | $Enums.Role | null
-    _count?: NestedIntNullableFilter<$PrismaModel>
-    _min?: NestedEnumRoleNullableFilter<$PrismaModel>
-    _max?: NestedEnumRoleNullableFilter<$PrismaModel>
+  export type EnumRoleWithAggregatesFilter<$PrismaModel = never> = {
+    equals?: $Enums.Role | EnumRoleFieldRefInput<$PrismaModel>
+    in?: $Enums.Role[] | ListEnumRoleFieldRefInput<$PrismaModel>
+    notIn?: $Enums.Role[] | ListEnumRoleFieldRefInput<$PrismaModel>
+    not?: NestedEnumRoleWithAggregatesFilter<$PrismaModel> | $Enums.Role
+    _count?: NestedIntFilter<$PrismaModel>
+    _min?: NestedEnumRoleFilter<$PrismaModel>
+    _max?: NestedEnumRoleFilter<$PrismaModel>
   }
 
   export type UserListRelationFilter = {
@@ -9971,6 +10091,7 @@ export namespace Prisma {
 
   export type AvatarCountOrderByAggregateInput = {
     ownerId?: SortOrder
+    skinToneId?: SortOrder
     hatId?: SortOrder
     hairId?: SortOrder
     shirtId?: SortOrder
@@ -9980,6 +10101,7 @@ export namespace Prisma {
 
   export type AvatarAvgOrderByAggregateInput = {
     ownerId?: SortOrder
+    skinToneId?: SortOrder
     hatId?: SortOrder
     hairId?: SortOrder
     shirtId?: SortOrder
@@ -9989,6 +10111,7 @@ export namespace Prisma {
 
   export type AvatarMaxOrderByAggregateInput = {
     ownerId?: SortOrder
+    skinToneId?: SortOrder
     hatId?: SortOrder
     hairId?: SortOrder
     shirtId?: SortOrder
@@ -9998,6 +10121,7 @@ export namespace Prisma {
 
   export type AvatarMinOrderByAggregateInput = {
     ownerId?: SortOrder
+    skinToneId?: SortOrder
     hatId?: SortOrder
     hairId?: SortOrder
     shirtId?: SortOrder
@@ -10007,6 +10131,7 @@ export namespace Prisma {
 
   export type AvatarSumOrderByAggregateInput = {
     ownerId?: SortOrder
+    skinToneId?: SortOrder
     hatId?: SortOrder
     hairId?: SortOrder
     shirtId?: SortOrder
@@ -10160,12 +10285,20 @@ export namespace Prisma {
     set?: string | null
   }
 
-  export type NullableEnumRoleFieldUpdateOperationsInput = {
-    set?: $Enums.Role | null
+  export type EnumRoleFieldUpdateOperationsInput = {
+    set?: $Enums.Role
   }
 
   export type NullableIntFieldUpdateOperationsInput = {
     set?: number | null
+    increment?: number
+    decrement?: number
+    multiply?: number
+    divide?: number
+  }
+
+  export type IntFieldUpdateOperationsInput = {
+    set?: number
     increment?: number
     decrement?: number
     multiply?: number
@@ -10218,14 +10351,6 @@ export namespace Prisma {
     update?: UserAvatarPropsUpdateWithWhereUniqueWithoutUserInput | UserAvatarPropsUpdateWithWhereUniqueWithoutUserInput[]
     updateMany?: UserAvatarPropsUpdateManyWithWhereWithoutUserInput | UserAvatarPropsUpdateManyWithWhereWithoutUserInput[]
     deleteMany?: UserAvatarPropsScalarWhereInput | UserAvatarPropsScalarWhereInput[]
-  }
-
-  export type IntFieldUpdateOperationsInput = {
-    set?: number
-    increment?: number
-    decrement?: number
-    multiply?: number
-    divide?: number
   }
 
   export type ChoreUncheckedUpdateManyWithoutAssigneeNestedInput = {
@@ -10390,6 +10515,12 @@ export namespace Prisma {
     connect?: UserWhereUniqueInput
   }
 
+  export type AvatarPropCreateNestedOneWithoutSkinToneInAvatarsInput = {
+    create?: XOR<AvatarPropCreateWithoutSkinToneInAvatarsInput, AvatarPropUncheckedCreateWithoutSkinToneInAvatarsInput>
+    connectOrCreate?: AvatarPropCreateOrConnectWithoutSkinToneInAvatarsInput
+    connect?: AvatarPropWhereUniqueInput
+  }
+
   export type AvatarPropCreateNestedOneWithoutHatInAvatarsInput = {
     create?: XOR<AvatarPropCreateWithoutHatInAvatarsInput, AvatarPropUncheckedCreateWithoutHatInAvatarsInput>
     connectOrCreate?: AvatarPropCreateOrConnectWithoutHatInAvatarsInput
@@ -10426,6 +10557,14 @@ export namespace Prisma {
     upsert?: UserUpsertWithoutAvatarInput
     connect?: UserWhereUniqueInput
     update?: XOR<XOR<UserUpdateToOneWithWhereWithoutAvatarInput, UserUpdateWithoutAvatarInput>, UserUncheckedUpdateWithoutAvatarInput>
+  }
+
+  export type AvatarPropUpdateOneRequiredWithoutSkinToneInAvatarsNestedInput = {
+    create?: XOR<AvatarPropCreateWithoutSkinToneInAvatarsInput, AvatarPropUncheckedCreateWithoutSkinToneInAvatarsInput>
+    connectOrCreate?: AvatarPropCreateOrConnectWithoutSkinToneInAvatarsInput
+    upsert?: AvatarPropUpsertWithoutSkinToneInAvatarsInput
+    connect?: AvatarPropWhereUniqueInput
+    update?: XOR<XOR<AvatarPropUpdateToOneWithWhereWithoutSkinToneInAvatarsInput, AvatarPropUpdateWithoutSkinToneInAvatarsInput>, AvatarPropUncheckedUpdateWithoutSkinToneInAvatarsInput>
   }
 
   export type AvatarPropUpdateOneRequiredWithoutHatInAvatarsNestedInput = {
@@ -10496,6 +10635,13 @@ export namespace Prisma {
     update?: XOR<XOR<AvatarPropUpdateToOneWithWhereWithoutUserAvatarPropsInput, AvatarPropUpdateWithoutUserAvatarPropsInput>, AvatarPropUncheckedUpdateWithoutUserAvatarPropsInput>
   }
 
+  export type AvatarCreateNestedManyWithoutSkinToneInput = {
+    create?: XOR<AvatarCreateWithoutSkinToneInput, AvatarUncheckedCreateWithoutSkinToneInput> | AvatarCreateWithoutSkinToneInput[] | AvatarUncheckedCreateWithoutSkinToneInput[]
+    connectOrCreate?: AvatarCreateOrConnectWithoutSkinToneInput | AvatarCreateOrConnectWithoutSkinToneInput[]
+    createMany?: AvatarCreateManySkinToneInputEnvelope
+    connect?: AvatarWhereUniqueInput | AvatarWhereUniqueInput[]
+  }
+
   export type AvatarCreateNestedManyWithoutHatInput = {
     create?: XOR<AvatarCreateWithoutHatInput, AvatarUncheckedCreateWithoutHatInput> | AvatarCreateWithoutHatInput[] | AvatarUncheckedCreateWithoutHatInput[]
     connectOrCreate?: AvatarCreateOrConnectWithoutHatInput | AvatarCreateOrConnectWithoutHatInput[]
@@ -10536,6 +10682,13 @@ export namespace Prisma {
     connectOrCreate?: UserAvatarPropsCreateOrConnectWithoutPropInput | UserAvatarPropsCreateOrConnectWithoutPropInput[]
     createMany?: UserAvatarPropsCreateManyPropInputEnvelope
     connect?: UserAvatarPropsWhereUniqueInput | UserAvatarPropsWhereUniqueInput[]
+  }
+
+  export type AvatarUncheckedCreateNestedManyWithoutSkinToneInput = {
+    create?: XOR<AvatarCreateWithoutSkinToneInput, AvatarUncheckedCreateWithoutSkinToneInput> | AvatarCreateWithoutSkinToneInput[] | AvatarUncheckedCreateWithoutSkinToneInput[]
+    connectOrCreate?: AvatarCreateOrConnectWithoutSkinToneInput | AvatarCreateOrConnectWithoutSkinToneInput[]
+    createMany?: AvatarCreateManySkinToneInputEnvelope
+    connect?: AvatarWhereUniqueInput | AvatarWhereUniqueInput[]
   }
 
   export type AvatarUncheckedCreateNestedManyWithoutHatInput = {
@@ -10582,6 +10735,20 @@ export namespace Prisma {
 
   export type EnumPropTypeFieldUpdateOperationsInput = {
     set?: $Enums.PropType
+  }
+
+  export type AvatarUpdateManyWithoutSkinToneNestedInput = {
+    create?: XOR<AvatarCreateWithoutSkinToneInput, AvatarUncheckedCreateWithoutSkinToneInput> | AvatarCreateWithoutSkinToneInput[] | AvatarUncheckedCreateWithoutSkinToneInput[]
+    connectOrCreate?: AvatarCreateOrConnectWithoutSkinToneInput | AvatarCreateOrConnectWithoutSkinToneInput[]
+    upsert?: AvatarUpsertWithWhereUniqueWithoutSkinToneInput | AvatarUpsertWithWhereUniqueWithoutSkinToneInput[]
+    createMany?: AvatarCreateManySkinToneInputEnvelope
+    set?: AvatarWhereUniqueInput | AvatarWhereUniqueInput[]
+    disconnect?: AvatarWhereUniqueInput | AvatarWhereUniqueInput[]
+    delete?: AvatarWhereUniqueInput | AvatarWhereUniqueInput[]
+    connect?: AvatarWhereUniqueInput | AvatarWhereUniqueInput[]
+    update?: AvatarUpdateWithWhereUniqueWithoutSkinToneInput | AvatarUpdateWithWhereUniqueWithoutSkinToneInput[]
+    updateMany?: AvatarUpdateManyWithWhereWithoutSkinToneInput | AvatarUpdateManyWithWhereWithoutSkinToneInput[]
+    deleteMany?: AvatarScalarWhereInput | AvatarScalarWhereInput[]
   }
 
   export type AvatarUpdateManyWithoutHatNestedInput = {
@@ -10666,6 +10833,20 @@ export namespace Prisma {
     update?: UserAvatarPropsUpdateWithWhereUniqueWithoutPropInput | UserAvatarPropsUpdateWithWhereUniqueWithoutPropInput[]
     updateMany?: UserAvatarPropsUpdateManyWithWhereWithoutPropInput | UserAvatarPropsUpdateManyWithWhereWithoutPropInput[]
     deleteMany?: UserAvatarPropsScalarWhereInput | UserAvatarPropsScalarWhereInput[]
+  }
+
+  export type AvatarUncheckedUpdateManyWithoutSkinToneNestedInput = {
+    create?: XOR<AvatarCreateWithoutSkinToneInput, AvatarUncheckedCreateWithoutSkinToneInput> | AvatarCreateWithoutSkinToneInput[] | AvatarUncheckedCreateWithoutSkinToneInput[]
+    connectOrCreate?: AvatarCreateOrConnectWithoutSkinToneInput | AvatarCreateOrConnectWithoutSkinToneInput[]
+    upsert?: AvatarUpsertWithWhereUniqueWithoutSkinToneInput | AvatarUpsertWithWhereUniqueWithoutSkinToneInput[]
+    createMany?: AvatarCreateManySkinToneInputEnvelope
+    set?: AvatarWhereUniqueInput | AvatarWhereUniqueInput[]
+    disconnect?: AvatarWhereUniqueInput | AvatarWhereUniqueInput[]
+    delete?: AvatarWhereUniqueInput | AvatarWhereUniqueInput[]
+    connect?: AvatarWhereUniqueInput | AvatarWhereUniqueInput[]
+    update?: AvatarUpdateWithWhereUniqueWithoutSkinToneInput | AvatarUpdateWithWhereUniqueWithoutSkinToneInput[]
+    updateMany?: AvatarUpdateManyWithWhereWithoutSkinToneInput | AvatarUpdateManyWithWhereWithoutSkinToneInput[]
+    deleteMany?: AvatarScalarWhereInput | AvatarScalarWhereInput[]
   }
 
   export type AvatarUncheckedUpdateManyWithoutHatNestedInput = {
@@ -10813,11 +10994,11 @@ export namespace Prisma {
     not?: NestedIntNullableFilter<$PrismaModel> | number | null
   }
 
-  export type NestedEnumRoleNullableFilter<$PrismaModel = never> = {
-    equals?: $Enums.Role | EnumRoleFieldRefInput<$PrismaModel> | null
-    in?: $Enums.Role[] | ListEnumRoleFieldRefInput<$PrismaModel> | null
-    notIn?: $Enums.Role[] | ListEnumRoleFieldRefInput<$PrismaModel> | null
-    not?: NestedEnumRoleNullableFilter<$PrismaModel> | $Enums.Role | null
+  export type NestedEnumRoleFilter<$PrismaModel = never> = {
+    equals?: $Enums.Role | EnumRoleFieldRefInput<$PrismaModel>
+    in?: $Enums.Role[] | ListEnumRoleFieldRefInput<$PrismaModel>
+    notIn?: $Enums.Role[] | ListEnumRoleFieldRefInput<$PrismaModel>
+    not?: NestedEnumRoleFilter<$PrismaModel> | $Enums.Role
   }
 
   export type NestedIntWithAggregatesFilter<$PrismaModel = never> = {
@@ -10922,14 +11103,14 @@ export namespace Prisma {
     not?: NestedFloatNullableFilter<$PrismaModel> | number | null
   }
 
-  export type NestedEnumRoleNullableWithAggregatesFilter<$PrismaModel = never> = {
-    equals?: $Enums.Role | EnumRoleFieldRefInput<$PrismaModel> | null
-    in?: $Enums.Role[] | ListEnumRoleFieldRefInput<$PrismaModel> | null
-    notIn?: $Enums.Role[] | ListEnumRoleFieldRefInput<$PrismaModel> | null
-    not?: NestedEnumRoleNullableWithAggregatesFilter<$PrismaModel> | $Enums.Role | null
-    _count?: NestedIntNullableFilter<$PrismaModel>
-    _min?: NestedEnumRoleNullableFilter<$PrismaModel>
-    _max?: NestedEnumRoleNullableFilter<$PrismaModel>
+  export type NestedEnumRoleWithAggregatesFilter<$PrismaModel = never> = {
+    equals?: $Enums.Role | EnumRoleFieldRefInput<$PrismaModel>
+    in?: $Enums.Role[] | ListEnumRoleFieldRefInput<$PrismaModel>
+    notIn?: $Enums.Role[] | ListEnumRoleFieldRefInput<$PrismaModel>
+    not?: NestedEnumRoleWithAggregatesFilter<$PrismaModel> | $Enums.Role
+    _count?: NestedIntFilter<$PrismaModel>
+    _min?: NestedEnumRoleFilter<$PrismaModel>
+    _max?: NestedEnumRoleFilter<$PrismaModel>
   }
 
   export type NestedBoolFilter<$PrismaModel = never> = {
@@ -11014,6 +11195,7 @@ export namespace Prisma {
   }
 
   export type AvatarCreateWithoutOwnerInput = {
+    skinTone: AvatarPropCreateNestedOneWithoutSkinToneInAvatarsInput
     hat: AvatarPropCreateNestedOneWithoutHatInAvatarsInput
     hair: AvatarPropCreateNestedOneWithoutHairInAvatarsInput
     shirt: AvatarPropCreateNestedOneWithoutShirtInAvatarsInput
@@ -11022,6 +11204,7 @@ export namespace Prisma {
   }
 
   export type AvatarUncheckedCreateWithoutOwnerInput = {
+    skinToneId: number
     hatId: number
     hairId: number
     shirtId: number
@@ -11120,6 +11303,7 @@ export namespace Prisma {
   }
 
   export type AvatarUpdateWithoutOwnerInput = {
+    skinTone?: AvatarPropUpdateOneRequiredWithoutSkinToneInAvatarsNestedInput
     hat?: AvatarPropUpdateOneRequiredWithoutHatInAvatarsNestedInput
     hair?: AvatarPropUpdateOneRequiredWithoutHairInAvatarsNestedInput
     shirt?: AvatarPropUpdateOneRequiredWithoutShirtInAvatarsNestedInput
@@ -11128,6 +11312,7 @@ export namespace Prisma {
   }
 
   export type AvatarUncheckedUpdateWithoutOwnerInput = {
+    skinToneId?: IntFieldUpdateOperationsInput | number
     hatId?: IntFieldUpdateOperationsInput | number
     hairId?: IntFieldUpdateOperationsInput | number
     shirtId?: IntFieldUpdateOperationsInput | number
@@ -11165,10 +11350,11 @@ export namespace Prisma {
     name: string
     password_hash: string
     salt?: string | null
-    role?: $Enums.Role | null
+    role?: $Enums.Role
     difficulty?: number | null
     maxChoreTime?: number | null
-    totalPoints?: number | null
+    totalPoints?: number
+    currentPoints?: number
     assignedChores?: ChoreCreateNestedManyWithoutAssigneeInput
     avatar?: AvatarCreateNestedOneWithoutOwnerInput
     userAvatarProps?: UserAvatarPropsCreateNestedManyWithoutUserInput
@@ -11181,10 +11367,11 @@ export namespace Prisma {
     name: string
     password_hash: string
     salt?: string | null
-    role?: $Enums.Role | null
+    role?: $Enums.Role
     difficulty?: number | null
     maxChoreTime?: number | null
-    totalPoints?: number | null
+    totalPoints?: number
+    currentPoints?: number
     assignedChores?: ChoreUncheckedCreateNestedManyWithoutAssigneeInput
     avatar?: AvatarUncheckedCreateNestedOneWithoutOwnerInput
     userAvatarProps?: UserAvatarPropsUncheckedCreateNestedManyWithoutUserInput
@@ -11260,10 +11447,11 @@ export namespace Prisma {
     password_hash?: StringFilter<"User"> | string
     salt?: StringNullableFilter<"User"> | string | null
     householdId?: IntNullableFilter<"User"> | number | null
-    role?: EnumRoleNullableFilter<"User"> | $Enums.Role | null
+    role?: EnumRoleFilter<"User"> | $Enums.Role
     difficulty?: IntNullableFilter<"User"> | number | null
     maxChoreTime?: IntNullableFilter<"User"> | number | null
-    totalPoints?: IntNullableFilter<"User"> | number | null
+    totalPoints?: IntFilter<"User"> | number
+    currentPoints?: IntFilter<"User"> | number
   }
 
   export type ChoreUpsertWithWhereUniqueWithoutHouseholdInput = {
@@ -11306,10 +11494,11 @@ export namespace Prisma {
     name: string
     password_hash: string
     salt?: string | null
-    role?: $Enums.Role | null
+    role?: $Enums.Role
     difficulty?: number | null
     maxChoreTime?: number | null
-    totalPoints?: number | null
+    totalPoints?: number
+    currentPoints?: number
     household?: HouseholdCreateNestedOneWithoutUsersInput
     avatar?: AvatarCreateNestedOneWithoutOwnerInput
     userAvatarProps?: UserAvatarPropsCreateNestedManyWithoutUserInput
@@ -11323,10 +11512,11 @@ export namespace Prisma {
     password_hash: string
     salt?: string | null
     householdId?: number | null
-    role?: $Enums.Role | null
+    role?: $Enums.Role
     difficulty?: number | null
     maxChoreTime?: number | null
-    totalPoints?: number | null
+    totalPoints?: number
+    currentPoints?: number
     avatar?: AvatarUncheckedCreateNestedOneWithoutOwnerInput
     userAvatarProps?: UserAvatarPropsUncheckedCreateNestedManyWithoutUserInput
   }
@@ -11377,10 +11567,11 @@ export namespace Prisma {
     name?: StringFieldUpdateOperationsInput | string
     password_hash?: StringFieldUpdateOperationsInput | string
     salt?: NullableStringFieldUpdateOperationsInput | string | null
-    role?: NullableEnumRoleFieldUpdateOperationsInput | $Enums.Role | null
+    role?: EnumRoleFieldUpdateOperationsInput | $Enums.Role
     difficulty?: NullableIntFieldUpdateOperationsInput | number | null
     maxChoreTime?: NullableIntFieldUpdateOperationsInput | number | null
-    totalPoints?: NullableIntFieldUpdateOperationsInput | number | null
+    totalPoints?: IntFieldUpdateOperationsInput | number
+    currentPoints?: IntFieldUpdateOperationsInput | number
     household?: HouseholdUpdateOneWithoutUsersNestedInput
     avatar?: AvatarUpdateOneWithoutOwnerNestedInput
     userAvatarProps?: UserAvatarPropsUpdateManyWithoutUserNestedInput
@@ -11394,10 +11585,11 @@ export namespace Prisma {
     password_hash?: StringFieldUpdateOperationsInput | string
     salt?: NullableStringFieldUpdateOperationsInput | string | null
     householdId?: NullableIntFieldUpdateOperationsInput | number | null
-    role?: NullableEnumRoleFieldUpdateOperationsInput | $Enums.Role | null
+    role?: EnumRoleFieldUpdateOperationsInput | $Enums.Role
     difficulty?: NullableIntFieldUpdateOperationsInput | number | null
     maxChoreTime?: NullableIntFieldUpdateOperationsInput | number | null
-    totalPoints?: NullableIntFieldUpdateOperationsInput | number | null
+    totalPoints?: IntFieldUpdateOperationsInput | number
+    currentPoints?: IntFieldUpdateOperationsInput | number
     avatar?: AvatarUncheckedUpdateOneWithoutOwnerNestedInput
     userAvatarProps?: UserAvatarPropsUncheckedUpdateManyWithoutUserNestedInput
   }
@@ -11408,10 +11600,11 @@ export namespace Prisma {
     name: string
     password_hash: string
     salt?: string | null
-    role?: $Enums.Role | null
+    role?: $Enums.Role
     difficulty?: number | null
     maxChoreTime?: number | null
-    totalPoints?: number | null
+    totalPoints?: number
+    currentPoints?: number
     household?: HouseholdCreateNestedOneWithoutUsersInput
     assignedChores?: ChoreCreateNestedManyWithoutAssigneeInput
     userAvatarProps?: UserAvatarPropsCreateNestedManyWithoutUserInput
@@ -11425,10 +11618,11 @@ export namespace Prisma {
     password_hash: string
     salt?: string | null
     householdId?: number | null
-    role?: $Enums.Role | null
+    role?: $Enums.Role
     difficulty?: number | null
     maxChoreTime?: number | null
-    totalPoints?: number | null
+    totalPoints?: number
+    currentPoints?: number
     assignedChores?: ChoreUncheckedCreateNestedManyWithoutAssigneeInput
     userAvatarProps?: UserAvatarPropsUncheckedCreateNestedManyWithoutUserInput
   }
@@ -11438,10 +11632,41 @@ export namespace Prisma {
     create: XOR<UserCreateWithoutAvatarInput, UserUncheckedCreateWithoutAvatarInput>
   }
 
+  export type AvatarPropCreateWithoutSkinToneInAvatarsInput = {
+    name: string
+    type: $Enums.PropType
+    cost: number
+    hatInAvatars?: AvatarCreateNestedManyWithoutHatInput
+    hairInAvatars?: AvatarCreateNestedManyWithoutHairInput
+    shirtInAvatars?: AvatarCreateNestedManyWithoutShirtInput
+    backgroundInAvatars?: AvatarCreateNestedManyWithoutBackgroundInput
+    handPropInAvatars?: AvatarCreateNestedManyWithoutHandPropInput
+    userAvatarProps?: UserAvatarPropsCreateNestedManyWithoutPropInput
+  }
+
+  export type AvatarPropUncheckedCreateWithoutSkinToneInAvatarsInput = {
+    id?: number
+    name: string
+    type: $Enums.PropType
+    cost: number
+    hatInAvatars?: AvatarUncheckedCreateNestedManyWithoutHatInput
+    hairInAvatars?: AvatarUncheckedCreateNestedManyWithoutHairInput
+    shirtInAvatars?: AvatarUncheckedCreateNestedManyWithoutShirtInput
+    backgroundInAvatars?: AvatarUncheckedCreateNestedManyWithoutBackgroundInput
+    handPropInAvatars?: AvatarUncheckedCreateNestedManyWithoutHandPropInput
+    userAvatarProps?: UserAvatarPropsUncheckedCreateNestedManyWithoutPropInput
+  }
+
+  export type AvatarPropCreateOrConnectWithoutSkinToneInAvatarsInput = {
+    where: AvatarPropWhereUniqueInput
+    create: XOR<AvatarPropCreateWithoutSkinToneInAvatarsInput, AvatarPropUncheckedCreateWithoutSkinToneInAvatarsInput>
+  }
+
   export type AvatarPropCreateWithoutHatInAvatarsInput = {
     name: string
     type: $Enums.PropType
     cost: number
+    skinToneInAvatars?: AvatarCreateNestedManyWithoutSkinToneInput
     hairInAvatars?: AvatarCreateNestedManyWithoutHairInput
     shirtInAvatars?: AvatarCreateNestedManyWithoutShirtInput
     backgroundInAvatars?: AvatarCreateNestedManyWithoutBackgroundInput
@@ -11454,6 +11679,7 @@ export namespace Prisma {
     name: string
     type: $Enums.PropType
     cost: number
+    skinToneInAvatars?: AvatarUncheckedCreateNestedManyWithoutSkinToneInput
     hairInAvatars?: AvatarUncheckedCreateNestedManyWithoutHairInput
     shirtInAvatars?: AvatarUncheckedCreateNestedManyWithoutShirtInput
     backgroundInAvatars?: AvatarUncheckedCreateNestedManyWithoutBackgroundInput
@@ -11470,6 +11696,7 @@ export namespace Prisma {
     name: string
     type: $Enums.PropType
     cost: number
+    skinToneInAvatars?: AvatarCreateNestedManyWithoutSkinToneInput
     hatInAvatars?: AvatarCreateNestedManyWithoutHatInput
     shirtInAvatars?: AvatarCreateNestedManyWithoutShirtInput
     backgroundInAvatars?: AvatarCreateNestedManyWithoutBackgroundInput
@@ -11482,6 +11709,7 @@ export namespace Prisma {
     name: string
     type: $Enums.PropType
     cost: number
+    skinToneInAvatars?: AvatarUncheckedCreateNestedManyWithoutSkinToneInput
     hatInAvatars?: AvatarUncheckedCreateNestedManyWithoutHatInput
     shirtInAvatars?: AvatarUncheckedCreateNestedManyWithoutShirtInput
     backgroundInAvatars?: AvatarUncheckedCreateNestedManyWithoutBackgroundInput
@@ -11498,6 +11726,7 @@ export namespace Prisma {
     name: string
     type: $Enums.PropType
     cost: number
+    skinToneInAvatars?: AvatarCreateNestedManyWithoutSkinToneInput
     hatInAvatars?: AvatarCreateNestedManyWithoutHatInput
     hairInAvatars?: AvatarCreateNestedManyWithoutHairInput
     backgroundInAvatars?: AvatarCreateNestedManyWithoutBackgroundInput
@@ -11510,6 +11739,7 @@ export namespace Prisma {
     name: string
     type: $Enums.PropType
     cost: number
+    skinToneInAvatars?: AvatarUncheckedCreateNestedManyWithoutSkinToneInput
     hatInAvatars?: AvatarUncheckedCreateNestedManyWithoutHatInput
     hairInAvatars?: AvatarUncheckedCreateNestedManyWithoutHairInput
     backgroundInAvatars?: AvatarUncheckedCreateNestedManyWithoutBackgroundInput
@@ -11526,6 +11756,7 @@ export namespace Prisma {
     name: string
     type: $Enums.PropType
     cost: number
+    skinToneInAvatars?: AvatarCreateNestedManyWithoutSkinToneInput
     hatInAvatars?: AvatarCreateNestedManyWithoutHatInput
     hairInAvatars?: AvatarCreateNestedManyWithoutHairInput
     shirtInAvatars?: AvatarCreateNestedManyWithoutShirtInput
@@ -11538,6 +11769,7 @@ export namespace Prisma {
     name: string
     type: $Enums.PropType
     cost: number
+    skinToneInAvatars?: AvatarUncheckedCreateNestedManyWithoutSkinToneInput
     hatInAvatars?: AvatarUncheckedCreateNestedManyWithoutHatInput
     hairInAvatars?: AvatarUncheckedCreateNestedManyWithoutHairInput
     shirtInAvatars?: AvatarUncheckedCreateNestedManyWithoutShirtInput
@@ -11554,6 +11786,7 @@ export namespace Prisma {
     name: string
     type: $Enums.PropType
     cost: number
+    skinToneInAvatars?: AvatarCreateNestedManyWithoutSkinToneInput
     hatInAvatars?: AvatarCreateNestedManyWithoutHatInput
     hairInAvatars?: AvatarCreateNestedManyWithoutHairInput
     shirtInAvatars?: AvatarCreateNestedManyWithoutShirtInput
@@ -11566,6 +11799,7 @@ export namespace Prisma {
     name: string
     type: $Enums.PropType
     cost: number
+    skinToneInAvatars?: AvatarUncheckedCreateNestedManyWithoutSkinToneInput
     hatInAvatars?: AvatarUncheckedCreateNestedManyWithoutHatInput
     hairInAvatars?: AvatarUncheckedCreateNestedManyWithoutHairInput
     shirtInAvatars?: AvatarUncheckedCreateNestedManyWithoutShirtInput
@@ -11595,10 +11829,11 @@ export namespace Prisma {
     name?: StringFieldUpdateOperationsInput | string
     password_hash?: StringFieldUpdateOperationsInput | string
     salt?: NullableStringFieldUpdateOperationsInput | string | null
-    role?: NullableEnumRoleFieldUpdateOperationsInput | $Enums.Role | null
+    role?: EnumRoleFieldUpdateOperationsInput | $Enums.Role
     difficulty?: NullableIntFieldUpdateOperationsInput | number | null
     maxChoreTime?: NullableIntFieldUpdateOperationsInput | number | null
-    totalPoints?: NullableIntFieldUpdateOperationsInput | number | null
+    totalPoints?: IntFieldUpdateOperationsInput | number
+    currentPoints?: IntFieldUpdateOperationsInput | number
     household?: HouseholdUpdateOneWithoutUsersNestedInput
     assignedChores?: ChoreUpdateManyWithoutAssigneeNestedInput
     userAvatarProps?: UserAvatarPropsUpdateManyWithoutUserNestedInput
@@ -11612,12 +11847,49 @@ export namespace Prisma {
     password_hash?: StringFieldUpdateOperationsInput | string
     salt?: NullableStringFieldUpdateOperationsInput | string | null
     householdId?: NullableIntFieldUpdateOperationsInput | number | null
-    role?: NullableEnumRoleFieldUpdateOperationsInput | $Enums.Role | null
+    role?: EnumRoleFieldUpdateOperationsInput | $Enums.Role
     difficulty?: NullableIntFieldUpdateOperationsInput | number | null
     maxChoreTime?: NullableIntFieldUpdateOperationsInput | number | null
-    totalPoints?: NullableIntFieldUpdateOperationsInput | number | null
+    totalPoints?: IntFieldUpdateOperationsInput | number
+    currentPoints?: IntFieldUpdateOperationsInput | number
     assignedChores?: ChoreUncheckedUpdateManyWithoutAssigneeNestedInput
     userAvatarProps?: UserAvatarPropsUncheckedUpdateManyWithoutUserNestedInput
+  }
+
+  export type AvatarPropUpsertWithoutSkinToneInAvatarsInput = {
+    update: XOR<AvatarPropUpdateWithoutSkinToneInAvatarsInput, AvatarPropUncheckedUpdateWithoutSkinToneInAvatarsInput>
+    create: XOR<AvatarPropCreateWithoutSkinToneInAvatarsInput, AvatarPropUncheckedCreateWithoutSkinToneInAvatarsInput>
+    where?: AvatarPropWhereInput
+  }
+
+  export type AvatarPropUpdateToOneWithWhereWithoutSkinToneInAvatarsInput = {
+    where?: AvatarPropWhereInput
+    data: XOR<AvatarPropUpdateWithoutSkinToneInAvatarsInput, AvatarPropUncheckedUpdateWithoutSkinToneInAvatarsInput>
+  }
+
+  export type AvatarPropUpdateWithoutSkinToneInAvatarsInput = {
+    name?: StringFieldUpdateOperationsInput | string
+    type?: EnumPropTypeFieldUpdateOperationsInput | $Enums.PropType
+    cost?: IntFieldUpdateOperationsInput | number
+    hatInAvatars?: AvatarUpdateManyWithoutHatNestedInput
+    hairInAvatars?: AvatarUpdateManyWithoutHairNestedInput
+    shirtInAvatars?: AvatarUpdateManyWithoutShirtNestedInput
+    backgroundInAvatars?: AvatarUpdateManyWithoutBackgroundNestedInput
+    handPropInAvatars?: AvatarUpdateManyWithoutHandPropNestedInput
+    userAvatarProps?: UserAvatarPropsUpdateManyWithoutPropNestedInput
+  }
+
+  export type AvatarPropUncheckedUpdateWithoutSkinToneInAvatarsInput = {
+    id?: IntFieldUpdateOperationsInput | number
+    name?: StringFieldUpdateOperationsInput | string
+    type?: EnumPropTypeFieldUpdateOperationsInput | $Enums.PropType
+    cost?: IntFieldUpdateOperationsInput | number
+    hatInAvatars?: AvatarUncheckedUpdateManyWithoutHatNestedInput
+    hairInAvatars?: AvatarUncheckedUpdateManyWithoutHairNestedInput
+    shirtInAvatars?: AvatarUncheckedUpdateManyWithoutShirtNestedInput
+    backgroundInAvatars?: AvatarUncheckedUpdateManyWithoutBackgroundNestedInput
+    handPropInAvatars?: AvatarUncheckedUpdateManyWithoutHandPropNestedInput
+    userAvatarProps?: UserAvatarPropsUncheckedUpdateManyWithoutPropNestedInput
   }
 
   export type AvatarPropUpsertWithoutHatInAvatarsInput = {
@@ -11635,6 +11907,7 @@ export namespace Prisma {
     name?: StringFieldUpdateOperationsInput | string
     type?: EnumPropTypeFieldUpdateOperationsInput | $Enums.PropType
     cost?: IntFieldUpdateOperationsInput | number
+    skinToneInAvatars?: AvatarUpdateManyWithoutSkinToneNestedInput
     hairInAvatars?: AvatarUpdateManyWithoutHairNestedInput
     shirtInAvatars?: AvatarUpdateManyWithoutShirtNestedInput
     backgroundInAvatars?: AvatarUpdateManyWithoutBackgroundNestedInput
@@ -11647,6 +11920,7 @@ export namespace Prisma {
     name?: StringFieldUpdateOperationsInput | string
     type?: EnumPropTypeFieldUpdateOperationsInput | $Enums.PropType
     cost?: IntFieldUpdateOperationsInput | number
+    skinToneInAvatars?: AvatarUncheckedUpdateManyWithoutSkinToneNestedInput
     hairInAvatars?: AvatarUncheckedUpdateManyWithoutHairNestedInput
     shirtInAvatars?: AvatarUncheckedUpdateManyWithoutShirtNestedInput
     backgroundInAvatars?: AvatarUncheckedUpdateManyWithoutBackgroundNestedInput
@@ -11669,6 +11943,7 @@ export namespace Prisma {
     name?: StringFieldUpdateOperationsInput | string
     type?: EnumPropTypeFieldUpdateOperationsInput | $Enums.PropType
     cost?: IntFieldUpdateOperationsInput | number
+    skinToneInAvatars?: AvatarUpdateManyWithoutSkinToneNestedInput
     hatInAvatars?: AvatarUpdateManyWithoutHatNestedInput
     shirtInAvatars?: AvatarUpdateManyWithoutShirtNestedInput
     backgroundInAvatars?: AvatarUpdateManyWithoutBackgroundNestedInput
@@ -11681,6 +11956,7 @@ export namespace Prisma {
     name?: StringFieldUpdateOperationsInput | string
     type?: EnumPropTypeFieldUpdateOperationsInput | $Enums.PropType
     cost?: IntFieldUpdateOperationsInput | number
+    skinToneInAvatars?: AvatarUncheckedUpdateManyWithoutSkinToneNestedInput
     hatInAvatars?: AvatarUncheckedUpdateManyWithoutHatNestedInput
     shirtInAvatars?: AvatarUncheckedUpdateManyWithoutShirtNestedInput
     backgroundInAvatars?: AvatarUncheckedUpdateManyWithoutBackgroundNestedInput
@@ -11703,6 +11979,7 @@ export namespace Prisma {
     name?: StringFieldUpdateOperationsInput | string
     type?: EnumPropTypeFieldUpdateOperationsInput | $Enums.PropType
     cost?: IntFieldUpdateOperationsInput | number
+    skinToneInAvatars?: AvatarUpdateManyWithoutSkinToneNestedInput
     hatInAvatars?: AvatarUpdateManyWithoutHatNestedInput
     hairInAvatars?: AvatarUpdateManyWithoutHairNestedInput
     backgroundInAvatars?: AvatarUpdateManyWithoutBackgroundNestedInput
@@ -11715,6 +11992,7 @@ export namespace Prisma {
     name?: StringFieldUpdateOperationsInput | string
     type?: EnumPropTypeFieldUpdateOperationsInput | $Enums.PropType
     cost?: IntFieldUpdateOperationsInput | number
+    skinToneInAvatars?: AvatarUncheckedUpdateManyWithoutSkinToneNestedInput
     hatInAvatars?: AvatarUncheckedUpdateManyWithoutHatNestedInput
     hairInAvatars?: AvatarUncheckedUpdateManyWithoutHairNestedInput
     backgroundInAvatars?: AvatarUncheckedUpdateManyWithoutBackgroundNestedInput
@@ -11737,6 +12015,7 @@ export namespace Prisma {
     name?: StringFieldUpdateOperationsInput | string
     type?: EnumPropTypeFieldUpdateOperationsInput | $Enums.PropType
     cost?: IntFieldUpdateOperationsInput | number
+    skinToneInAvatars?: AvatarUpdateManyWithoutSkinToneNestedInput
     hatInAvatars?: AvatarUpdateManyWithoutHatNestedInput
     hairInAvatars?: AvatarUpdateManyWithoutHairNestedInput
     shirtInAvatars?: AvatarUpdateManyWithoutShirtNestedInput
@@ -11749,6 +12028,7 @@ export namespace Prisma {
     name?: StringFieldUpdateOperationsInput | string
     type?: EnumPropTypeFieldUpdateOperationsInput | $Enums.PropType
     cost?: IntFieldUpdateOperationsInput | number
+    skinToneInAvatars?: AvatarUncheckedUpdateManyWithoutSkinToneNestedInput
     hatInAvatars?: AvatarUncheckedUpdateManyWithoutHatNestedInput
     hairInAvatars?: AvatarUncheckedUpdateManyWithoutHairNestedInput
     shirtInAvatars?: AvatarUncheckedUpdateManyWithoutShirtNestedInput
@@ -11771,6 +12051,7 @@ export namespace Prisma {
     name?: StringFieldUpdateOperationsInput | string
     type?: EnumPropTypeFieldUpdateOperationsInput | $Enums.PropType
     cost?: IntFieldUpdateOperationsInput | number
+    skinToneInAvatars?: AvatarUpdateManyWithoutSkinToneNestedInput
     hatInAvatars?: AvatarUpdateManyWithoutHatNestedInput
     hairInAvatars?: AvatarUpdateManyWithoutHairNestedInput
     shirtInAvatars?: AvatarUpdateManyWithoutShirtNestedInput
@@ -11783,6 +12064,7 @@ export namespace Prisma {
     name?: StringFieldUpdateOperationsInput | string
     type?: EnumPropTypeFieldUpdateOperationsInput | $Enums.PropType
     cost?: IntFieldUpdateOperationsInput | number
+    skinToneInAvatars?: AvatarUncheckedUpdateManyWithoutSkinToneNestedInput
     hatInAvatars?: AvatarUncheckedUpdateManyWithoutHatNestedInput
     hairInAvatars?: AvatarUncheckedUpdateManyWithoutHairNestedInput
     shirtInAvatars?: AvatarUncheckedUpdateManyWithoutShirtNestedInput
@@ -11796,10 +12078,11 @@ export namespace Prisma {
     name: string
     password_hash: string
     salt?: string | null
-    role?: $Enums.Role | null
+    role?: $Enums.Role
     difficulty?: number | null
     maxChoreTime?: number | null
-    totalPoints?: number | null
+    totalPoints?: number
+    currentPoints?: number
     household?: HouseholdCreateNestedOneWithoutUsersInput
     assignedChores?: ChoreCreateNestedManyWithoutAssigneeInput
     avatar?: AvatarCreateNestedOneWithoutOwnerInput
@@ -11813,10 +12096,11 @@ export namespace Prisma {
     password_hash: string
     salt?: string | null
     householdId?: number | null
-    role?: $Enums.Role | null
+    role?: $Enums.Role
     difficulty?: number | null
     maxChoreTime?: number | null
-    totalPoints?: number | null
+    totalPoints?: number
+    currentPoints?: number
     assignedChores?: ChoreUncheckedCreateNestedManyWithoutAssigneeInput
     avatar?: AvatarUncheckedCreateNestedOneWithoutOwnerInput
   }
@@ -11830,6 +12114,7 @@ export namespace Prisma {
     name: string
     type: $Enums.PropType
     cost: number
+    skinToneInAvatars?: AvatarCreateNestedManyWithoutSkinToneInput
     hatInAvatars?: AvatarCreateNestedManyWithoutHatInput
     hairInAvatars?: AvatarCreateNestedManyWithoutHairInput
     shirtInAvatars?: AvatarCreateNestedManyWithoutShirtInput
@@ -11842,6 +12127,7 @@ export namespace Prisma {
     name: string
     type: $Enums.PropType
     cost: number
+    skinToneInAvatars?: AvatarUncheckedCreateNestedManyWithoutSkinToneInput
     hatInAvatars?: AvatarUncheckedCreateNestedManyWithoutHatInput
     hairInAvatars?: AvatarUncheckedCreateNestedManyWithoutHairInput
     shirtInAvatars?: AvatarUncheckedCreateNestedManyWithoutShirtInput
@@ -11871,10 +12157,11 @@ export namespace Prisma {
     name?: StringFieldUpdateOperationsInput | string
     password_hash?: StringFieldUpdateOperationsInput | string
     salt?: NullableStringFieldUpdateOperationsInput | string | null
-    role?: NullableEnumRoleFieldUpdateOperationsInput | $Enums.Role | null
+    role?: EnumRoleFieldUpdateOperationsInput | $Enums.Role
     difficulty?: NullableIntFieldUpdateOperationsInput | number | null
     maxChoreTime?: NullableIntFieldUpdateOperationsInput | number | null
-    totalPoints?: NullableIntFieldUpdateOperationsInput | number | null
+    totalPoints?: IntFieldUpdateOperationsInput | number
+    currentPoints?: IntFieldUpdateOperationsInput | number
     household?: HouseholdUpdateOneWithoutUsersNestedInput
     assignedChores?: ChoreUpdateManyWithoutAssigneeNestedInput
     avatar?: AvatarUpdateOneWithoutOwnerNestedInput
@@ -11888,10 +12175,11 @@ export namespace Prisma {
     password_hash?: StringFieldUpdateOperationsInput | string
     salt?: NullableStringFieldUpdateOperationsInput | string | null
     householdId?: NullableIntFieldUpdateOperationsInput | number | null
-    role?: NullableEnumRoleFieldUpdateOperationsInput | $Enums.Role | null
+    role?: EnumRoleFieldUpdateOperationsInput | $Enums.Role
     difficulty?: NullableIntFieldUpdateOperationsInput | number | null
     maxChoreTime?: NullableIntFieldUpdateOperationsInput | number | null
-    totalPoints?: NullableIntFieldUpdateOperationsInput | number | null
+    totalPoints?: IntFieldUpdateOperationsInput | number
+    currentPoints?: IntFieldUpdateOperationsInput | number
     assignedChores?: ChoreUncheckedUpdateManyWithoutAssigneeNestedInput
     avatar?: AvatarUncheckedUpdateOneWithoutOwnerNestedInput
   }
@@ -11911,6 +12199,7 @@ export namespace Prisma {
     name?: StringFieldUpdateOperationsInput | string
     type?: EnumPropTypeFieldUpdateOperationsInput | $Enums.PropType
     cost?: IntFieldUpdateOperationsInput | number
+    skinToneInAvatars?: AvatarUpdateManyWithoutSkinToneNestedInput
     hatInAvatars?: AvatarUpdateManyWithoutHatNestedInput
     hairInAvatars?: AvatarUpdateManyWithoutHairNestedInput
     shirtInAvatars?: AvatarUpdateManyWithoutShirtNestedInput
@@ -11923,6 +12212,7 @@ export namespace Prisma {
     name?: StringFieldUpdateOperationsInput | string
     type?: EnumPropTypeFieldUpdateOperationsInput | $Enums.PropType
     cost?: IntFieldUpdateOperationsInput | number
+    skinToneInAvatars?: AvatarUncheckedUpdateManyWithoutSkinToneNestedInput
     hatInAvatars?: AvatarUncheckedUpdateManyWithoutHatNestedInput
     hairInAvatars?: AvatarUncheckedUpdateManyWithoutHairNestedInput
     shirtInAvatars?: AvatarUncheckedUpdateManyWithoutShirtNestedInput
@@ -11930,8 +12220,37 @@ export namespace Prisma {
     handPropInAvatars?: AvatarUncheckedUpdateManyWithoutHandPropNestedInput
   }
 
+  export type AvatarCreateWithoutSkinToneInput = {
+    owner: UserCreateNestedOneWithoutAvatarInput
+    hat: AvatarPropCreateNestedOneWithoutHatInAvatarsInput
+    hair: AvatarPropCreateNestedOneWithoutHairInAvatarsInput
+    shirt: AvatarPropCreateNestedOneWithoutShirtInAvatarsInput
+    background: AvatarPropCreateNestedOneWithoutBackgroundInAvatarsInput
+    handProp: AvatarPropCreateNestedOneWithoutHandPropInAvatarsInput
+  }
+
+  export type AvatarUncheckedCreateWithoutSkinToneInput = {
+    ownerId: number
+    hatId: number
+    hairId: number
+    shirtId: number
+    backgroundId: number
+    handPropId: number
+  }
+
+  export type AvatarCreateOrConnectWithoutSkinToneInput = {
+    where: AvatarWhereUniqueInput
+    create: XOR<AvatarCreateWithoutSkinToneInput, AvatarUncheckedCreateWithoutSkinToneInput>
+  }
+
+  export type AvatarCreateManySkinToneInputEnvelope = {
+    data: AvatarCreateManySkinToneInput | AvatarCreateManySkinToneInput[]
+    skipDuplicates?: boolean
+  }
+
   export type AvatarCreateWithoutHatInput = {
     owner: UserCreateNestedOneWithoutAvatarInput
+    skinTone: AvatarPropCreateNestedOneWithoutSkinToneInAvatarsInput
     hair: AvatarPropCreateNestedOneWithoutHairInAvatarsInput
     shirt: AvatarPropCreateNestedOneWithoutShirtInAvatarsInput
     background: AvatarPropCreateNestedOneWithoutBackgroundInAvatarsInput
@@ -11940,6 +12259,7 @@ export namespace Prisma {
 
   export type AvatarUncheckedCreateWithoutHatInput = {
     ownerId: number
+    skinToneId: number
     hairId: number
     shirtId: number
     backgroundId: number
@@ -11958,6 +12278,7 @@ export namespace Prisma {
 
   export type AvatarCreateWithoutHairInput = {
     owner: UserCreateNestedOneWithoutAvatarInput
+    skinTone: AvatarPropCreateNestedOneWithoutSkinToneInAvatarsInput
     hat: AvatarPropCreateNestedOneWithoutHatInAvatarsInput
     shirt: AvatarPropCreateNestedOneWithoutShirtInAvatarsInput
     background: AvatarPropCreateNestedOneWithoutBackgroundInAvatarsInput
@@ -11966,6 +12287,7 @@ export namespace Prisma {
 
   export type AvatarUncheckedCreateWithoutHairInput = {
     ownerId: number
+    skinToneId: number
     hatId: number
     shirtId: number
     backgroundId: number
@@ -11984,6 +12306,7 @@ export namespace Prisma {
 
   export type AvatarCreateWithoutShirtInput = {
     owner: UserCreateNestedOneWithoutAvatarInput
+    skinTone: AvatarPropCreateNestedOneWithoutSkinToneInAvatarsInput
     hat: AvatarPropCreateNestedOneWithoutHatInAvatarsInput
     hair: AvatarPropCreateNestedOneWithoutHairInAvatarsInput
     background: AvatarPropCreateNestedOneWithoutBackgroundInAvatarsInput
@@ -11992,6 +12315,7 @@ export namespace Prisma {
 
   export type AvatarUncheckedCreateWithoutShirtInput = {
     ownerId: number
+    skinToneId: number
     hatId: number
     hairId: number
     backgroundId: number
@@ -12010,6 +12334,7 @@ export namespace Prisma {
 
   export type AvatarCreateWithoutBackgroundInput = {
     owner: UserCreateNestedOneWithoutAvatarInput
+    skinTone: AvatarPropCreateNestedOneWithoutSkinToneInAvatarsInput
     hat: AvatarPropCreateNestedOneWithoutHatInAvatarsInput
     hair: AvatarPropCreateNestedOneWithoutHairInAvatarsInput
     shirt: AvatarPropCreateNestedOneWithoutShirtInAvatarsInput
@@ -12018,6 +12343,7 @@ export namespace Prisma {
 
   export type AvatarUncheckedCreateWithoutBackgroundInput = {
     ownerId: number
+    skinToneId: number
     hatId: number
     hairId: number
     shirtId: number
@@ -12036,6 +12362,7 @@ export namespace Prisma {
 
   export type AvatarCreateWithoutHandPropInput = {
     owner: UserCreateNestedOneWithoutAvatarInput
+    skinTone: AvatarPropCreateNestedOneWithoutSkinToneInAvatarsInput
     hat: AvatarPropCreateNestedOneWithoutHatInAvatarsInput
     hair: AvatarPropCreateNestedOneWithoutHairInAvatarsInput
     shirt: AvatarPropCreateNestedOneWithoutShirtInAvatarsInput
@@ -12044,6 +12371,7 @@ export namespace Prisma {
 
   export type AvatarUncheckedCreateWithoutHandPropInput = {
     ownerId: number
+    skinToneId: number
     hatId: number
     hairId: number
     shirtId: number
@@ -12078,6 +12406,35 @@ export namespace Prisma {
     skipDuplicates?: boolean
   }
 
+  export type AvatarUpsertWithWhereUniqueWithoutSkinToneInput = {
+    where: AvatarWhereUniqueInput
+    update: XOR<AvatarUpdateWithoutSkinToneInput, AvatarUncheckedUpdateWithoutSkinToneInput>
+    create: XOR<AvatarCreateWithoutSkinToneInput, AvatarUncheckedCreateWithoutSkinToneInput>
+  }
+
+  export type AvatarUpdateWithWhereUniqueWithoutSkinToneInput = {
+    where: AvatarWhereUniqueInput
+    data: XOR<AvatarUpdateWithoutSkinToneInput, AvatarUncheckedUpdateWithoutSkinToneInput>
+  }
+
+  export type AvatarUpdateManyWithWhereWithoutSkinToneInput = {
+    where: AvatarScalarWhereInput
+    data: XOR<AvatarUpdateManyMutationInput, AvatarUncheckedUpdateManyWithoutSkinToneInput>
+  }
+
+  export type AvatarScalarWhereInput = {
+    AND?: AvatarScalarWhereInput | AvatarScalarWhereInput[]
+    OR?: AvatarScalarWhereInput[]
+    NOT?: AvatarScalarWhereInput | AvatarScalarWhereInput[]
+    ownerId?: IntFilter<"Avatar"> | number
+    skinToneId?: IntFilter<"Avatar"> | number
+    hatId?: IntFilter<"Avatar"> | number
+    hairId?: IntFilter<"Avatar"> | number
+    shirtId?: IntFilter<"Avatar"> | number
+    backgroundId?: IntFilter<"Avatar"> | number
+    handPropId?: IntFilter<"Avatar"> | number
+  }
+
   export type AvatarUpsertWithWhereUniqueWithoutHatInput = {
     where: AvatarWhereUniqueInput
     update: XOR<AvatarUpdateWithoutHatInput, AvatarUncheckedUpdateWithoutHatInput>
@@ -12092,18 +12449,6 @@ export namespace Prisma {
   export type AvatarUpdateManyWithWhereWithoutHatInput = {
     where: AvatarScalarWhereInput
     data: XOR<AvatarUpdateManyMutationInput, AvatarUncheckedUpdateManyWithoutHatInput>
-  }
-
-  export type AvatarScalarWhereInput = {
-    AND?: AvatarScalarWhereInput | AvatarScalarWhereInput[]
-    OR?: AvatarScalarWhereInput[]
-    NOT?: AvatarScalarWhereInput | AvatarScalarWhereInput[]
-    ownerId?: IntFilter<"Avatar"> | number
-    hatId?: IntFilter<"Avatar"> | number
-    hairId?: IntFilter<"Avatar"> | number
-    shirtId?: IntFilter<"Avatar"> | number
-    backgroundId?: IntFilter<"Avatar"> | number
-    handPropId?: IntFilter<"Avatar"> | number
   }
 
   export type AvatarUpsertWithWhereUniqueWithoutHairInput = {
@@ -12256,10 +12601,11 @@ export namespace Prisma {
     name: string
     password_hash: string
     salt?: string | null
-    role?: $Enums.Role | null
+    role?: $Enums.Role
     difficulty?: number | null
     maxChoreTime?: number | null
-    totalPoints?: number | null
+    totalPoints?: number
+    currentPoints?: number
   }
 
   export type ChoreCreateManyHouseholdInput = {
@@ -12280,10 +12626,11 @@ export namespace Prisma {
     name?: StringFieldUpdateOperationsInput | string
     password_hash?: StringFieldUpdateOperationsInput | string
     salt?: NullableStringFieldUpdateOperationsInput | string | null
-    role?: NullableEnumRoleFieldUpdateOperationsInput | $Enums.Role | null
+    role?: EnumRoleFieldUpdateOperationsInput | $Enums.Role
     difficulty?: NullableIntFieldUpdateOperationsInput | number | null
     maxChoreTime?: NullableIntFieldUpdateOperationsInput | number | null
-    totalPoints?: NullableIntFieldUpdateOperationsInput | number | null
+    totalPoints?: IntFieldUpdateOperationsInput | number
+    currentPoints?: IntFieldUpdateOperationsInput | number
     assignedChores?: ChoreUpdateManyWithoutAssigneeNestedInput
     avatar?: AvatarUpdateOneWithoutOwnerNestedInput
     userAvatarProps?: UserAvatarPropsUpdateManyWithoutUserNestedInput
@@ -12296,10 +12643,11 @@ export namespace Prisma {
     name?: StringFieldUpdateOperationsInput | string
     password_hash?: StringFieldUpdateOperationsInput | string
     salt?: NullableStringFieldUpdateOperationsInput | string | null
-    role?: NullableEnumRoleFieldUpdateOperationsInput | $Enums.Role | null
+    role?: EnumRoleFieldUpdateOperationsInput | $Enums.Role
     difficulty?: NullableIntFieldUpdateOperationsInput | number | null
     maxChoreTime?: NullableIntFieldUpdateOperationsInput | number | null
-    totalPoints?: NullableIntFieldUpdateOperationsInput | number | null
+    totalPoints?: IntFieldUpdateOperationsInput | number
+    currentPoints?: IntFieldUpdateOperationsInput | number
     assignedChores?: ChoreUncheckedUpdateManyWithoutAssigneeNestedInput
     avatar?: AvatarUncheckedUpdateOneWithoutOwnerNestedInput
     userAvatarProps?: UserAvatarPropsUncheckedUpdateManyWithoutUserNestedInput
@@ -12312,10 +12660,11 @@ export namespace Prisma {
     name?: StringFieldUpdateOperationsInput | string
     password_hash?: StringFieldUpdateOperationsInput | string
     salt?: NullableStringFieldUpdateOperationsInput | string | null
-    role?: NullableEnumRoleFieldUpdateOperationsInput | $Enums.Role | null
+    role?: EnumRoleFieldUpdateOperationsInput | $Enums.Role
     difficulty?: NullableIntFieldUpdateOperationsInput | number | null
     maxChoreTime?: NullableIntFieldUpdateOperationsInput | number | null
-    totalPoints?: NullableIntFieldUpdateOperationsInput | number | null
+    totalPoints?: IntFieldUpdateOperationsInput | number
+    currentPoints?: IntFieldUpdateOperationsInput | number
   }
 
   export type ChoreUpdateWithoutHouseholdInput = {
@@ -12353,8 +12702,18 @@ export namespace Prisma {
     assigneeId?: NullableIntFieldUpdateOperationsInput | number | null
   }
 
+  export type AvatarCreateManySkinToneInput = {
+    ownerId: number
+    hatId: number
+    hairId: number
+    shirtId: number
+    backgroundId: number
+    handPropId: number
+  }
+
   export type AvatarCreateManyHatInput = {
     ownerId: number
+    skinToneId: number
     hairId: number
     shirtId: number
     backgroundId: number
@@ -12363,6 +12722,7 @@ export namespace Prisma {
 
   export type AvatarCreateManyHairInput = {
     ownerId: number
+    skinToneId: number
     hatId: number
     shirtId: number
     backgroundId: number
@@ -12371,6 +12731,7 @@ export namespace Prisma {
 
   export type AvatarCreateManyShirtInput = {
     ownerId: number
+    skinToneId: number
     hatId: number
     hairId: number
     backgroundId: number
@@ -12379,6 +12740,7 @@ export namespace Prisma {
 
   export type AvatarCreateManyBackgroundInput = {
     ownerId: number
+    skinToneId: number
     hatId: number
     hairId: number
     shirtId: number
@@ -12387,6 +12749,7 @@ export namespace Prisma {
 
   export type AvatarCreateManyHandPropInput = {
     ownerId: number
+    skinToneId: number
     hatId: number
     hairId: number
     shirtId: number
@@ -12397,8 +12760,36 @@ export namespace Prisma {
     userId: number
   }
 
+  export type AvatarUpdateWithoutSkinToneInput = {
+    owner?: UserUpdateOneRequiredWithoutAvatarNestedInput
+    hat?: AvatarPropUpdateOneRequiredWithoutHatInAvatarsNestedInput
+    hair?: AvatarPropUpdateOneRequiredWithoutHairInAvatarsNestedInput
+    shirt?: AvatarPropUpdateOneRequiredWithoutShirtInAvatarsNestedInput
+    background?: AvatarPropUpdateOneRequiredWithoutBackgroundInAvatarsNestedInput
+    handProp?: AvatarPropUpdateOneRequiredWithoutHandPropInAvatarsNestedInput
+  }
+
+  export type AvatarUncheckedUpdateWithoutSkinToneInput = {
+    ownerId?: IntFieldUpdateOperationsInput | number
+    hatId?: IntFieldUpdateOperationsInput | number
+    hairId?: IntFieldUpdateOperationsInput | number
+    shirtId?: IntFieldUpdateOperationsInput | number
+    backgroundId?: IntFieldUpdateOperationsInput | number
+    handPropId?: IntFieldUpdateOperationsInput | number
+  }
+
+  export type AvatarUncheckedUpdateManyWithoutSkinToneInput = {
+    ownerId?: IntFieldUpdateOperationsInput | number
+    hatId?: IntFieldUpdateOperationsInput | number
+    hairId?: IntFieldUpdateOperationsInput | number
+    shirtId?: IntFieldUpdateOperationsInput | number
+    backgroundId?: IntFieldUpdateOperationsInput | number
+    handPropId?: IntFieldUpdateOperationsInput | number
+  }
+
   export type AvatarUpdateWithoutHatInput = {
     owner?: UserUpdateOneRequiredWithoutAvatarNestedInput
+    skinTone?: AvatarPropUpdateOneRequiredWithoutSkinToneInAvatarsNestedInput
     hair?: AvatarPropUpdateOneRequiredWithoutHairInAvatarsNestedInput
     shirt?: AvatarPropUpdateOneRequiredWithoutShirtInAvatarsNestedInput
     background?: AvatarPropUpdateOneRequiredWithoutBackgroundInAvatarsNestedInput
@@ -12407,6 +12798,7 @@ export namespace Prisma {
 
   export type AvatarUncheckedUpdateWithoutHatInput = {
     ownerId?: IntFieldUpdateOperationsInput | number
+    skinToneId?: IntFieldUpdateOperationsInput | number
     hairId?: IntFieldUpdateOperationsInput | number
     shirtId?: IntFieldUpdateOperationsInput | number
     backgroundId?: IntFieldUpdateOperationsInput | number
@@ -12415,6 +12807,7 @@ export namespace Prisma {
 
   export type AvatarUncheckedUpdateManyWithoutHatInput = {
     ownerId?: IntFieldUpdateOperationsInput | number
+    skinToneId?: IntFieldUpdateOperationsInput | number
     hairId?: IntFieldUpdateOperationsInput | number
     shirtId?: IntFieldUpdateOperationsInput | number
     backgroundId?: IntFieldUpdateOperationsInput | number
@@ -12423,6 +12816,7 @@ export namespace Prisma {
 
   export type AvatarUpdateWithoutHairInput = {
     owner?: UserUpdateOneRequiredWithoutAvatarNestedInput
+    skinTone?: AvatarPropUpdateOneRequiredWithoutSkinToneInAvatarsNestedInput
     hat?: AvatarPropUpdateOneRequiredWithoutHatInAvatarsNestedInput
     shirt?: AvatarPropUpdateOneRequiredWithoutShirtInAvatarsNestedInput
     background?: AvatarPropUpdateOneRequiredWithoutBackgroundInAvatarsNestedInput
@@ -12431,6 +12825,7 @@ export namespace Prisma {
 
   export type AvatarUncheckedUpdateWithoutHairInput = {
     ownerId?: IntFieldUpdateOperationsInput | number
+    skinToneId?: IntFieldUpdateOperationsInput | number
     hatId?: IntFieldUpdateOperationsInput | number
     shirtId?: IntFieldUpdateOperationsInput | number
     backgroundId?: IntFieldUpdateOperationsInput | number
@@ -12439,6 +12834,7 @@ export namespace Prisma {
 
   export type AvatarUncheckedUpdateManyWithoutHairInput = {
     ownerId?: IntFieldUpdateOperationsInput | number
+    skinToneId?: IntFieldUpdateOperationsInput | number
     hatId?: IntFieldUpdateOperationsInput | number
     shirtId?: IntFieldUpdateOperationsInput | number
     backgroundId?: IntFieldUpdateOperationsInput | number
@@ -12447,6 +12843,7 @@ export namespace Prisma {
 
   export type AvatarUpdateWithoutShirtInput = {
     owner?: UserUpdateOneRequiredWithoutAvatarNestedInput
+    skinTone?: AvatarPropUpdateOneRequiredWithoutSkinToneInAvatarsNestedInput
     hat?: AvatarPropUpdateOneRequiredWithoutHatInAvatarsNestedInput
     hair?: AvatarPropUpdateOneRequiredWithoutHairInAvatarsNestedInput
     background?: AvatarPropUpdateOneRequiredWithoutBackgroundInAvatarsNestedInput
@@ -12455,6 +12852,7 @@ export namespace Prisma {
 
   export type AvatarUncheckedUpdateWithoutShirtInput = {
     ownerId?: IntFieldUpdateOperationsInput | number
+    skinToneId?: IntFieldUpdateOperationsInput | number
     hatId?: IntFieldUpdateOperationsInput | number
     hairId?: IntFieldUpdateOperationsInput | number
     backgroundId?: IntFieldUpdateOperationsInput | number
@@ -12463,6 +12861,7 @@ export namespace Prisma {
 
   export type AvatarUncheckedUpdateManyWithoutShirtInput = {
     ownerId?: IntFieldUpdateOperationsInput | number
+    skinToneId?: IntFieldUpdateOperationsInput | number
     hatId?: IntFieldUpdateOperationsInput | number
     hairId?: IntFieldUpdateOperationsInput | number
     backgroundId?: IntFieldUpdateOperationsInput | number
@@ -12471,6 +12870,7 @@ export namespace Prisma {
 
   export type AvatarUpdateWithoutBackgroundInput = {
     owner?: UserUpdateOneRequiredWithoutAvatarNestedInput
+    skinTone?: AvatarPropUpdateOneRequiredWithoutSkinToneInAvatarsNestedInput
     hat?: AvatarPropUpdateOneRequiredWithoutHatInAvatarsNestedInput
     hair?: AvatarPropUpdateOneRequiredWithoutHairInAvatarsNestedInput
     shirt?: AvatarPropUpdateOneRequiredWithoutShirtInAvatarsNestedInput
@@ -12479,6 +12879,7 @@ export namespace Prisma {
 
   export type AvatarUncheckedUpdateWithoutBackgroundInput = {
     ownerId?: IntFieldUpdateOperationsInput | number
+    skinToneId?: IntFieldUpdateOperationsInput | number
     hatId?: IntFieldUpdateOperationsInput | number
     hairId?: IntFieldUpdateOperationsInput | number
     shirtId?: IntFieldUpdateOperationsInput | number
@@ -12487,6 +12888,7 @@ export namespace Prisma {
 
   export type AvatarUncheckedUpdateManyWithoutBackgroundInput = {
     ownerId?: IntFieldUpdateOperationsInput | number
+    skinToneId?: IntFieldUpdateOperationsInput | number
     hatId?: IntFieldUpdateOperationsInput | number
     hairId?: IntFieldUpdateOperationsInput | number
     shirtId?: IntFieldUpdateOperationsInput | number
@@ -12495,6 +12897,7 @@ export namespace Prisma {
 
   export type AvatarUpdateWithoutHandPropInput = {
     owner?: UserUpdateOneRequiredWithoutAvatarNestedInput
+    skinTone?: AvatarPropUpdateOneRequiredWithoutSkinToneInAvatarsNestedInput
     hat?: AvatarPropUpdateOneRequiredWithoutHatInAvatarsNestedInput
     hair?: AvatarPropUpdateOneRequiredWithoutHairInAvatarsNestedInput
     shirt?: AvatarPropUpdateOneRequiredWithoutShirtInAvatarsNestedInput
@@ -12503,6 +12906,7 @@ export namespace Prisma {
 
   export type AvatarUncheckedUpdateWithoutHandPropInput = {
     ownerId?: IntFieldUpdateOperationsInput | number
+    skinToneId?: IntFieldUpdateOperationsInput | number
     hatId?: IntFieldUpdateOperationsInput | number
     hairId?: IntFieldUpdateOperationsInput | number
     shirtId?: IntFieldUpdateOperationsInput | number
@@ -12511,6 +12915,7 @@ export namespace Prisma {
 
   export type AvatarUncheckedUpdateManyWithoutHandPropInput = {
     ownerId?: IntFieldUpdateOperationsInput | number
+    skinToneId?: IntFieldUpdateOperationsInput | number
     hatId?: IntFieldUpdateOperationsInput | number
     hairId?: IntFieldUpdateOperationsInput | number
     shirtId?: IntFieldUpdateOperationsInput | number

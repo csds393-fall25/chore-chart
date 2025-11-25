@@ -140,7 +140,7 @@
           <v-col cols="3">
             <v-btn 
               color="secondary" 
-              @click="createChore()"
+              @click="checkChore()"
               id="createButton"
               block 
               v-if="props.viewMode == 'create'">
@@ -148,7 +148,7 @@
             </v-btn>
             <v-btn 
               color="secondary" 
-              @click="updateChore()"
+              @click="checkChore()"
               id="updateButton"
               block 
               v-else>
@@ -176,6 +176,52 @@
           </v-col>
         </v-row>
       </v-form>
+      <!-- Difficulty Warning Dialog -->
+      <v-dialog 
+        v-model="difficultyDialogOpen" 
+        max-width="750"
+        data-testid="difficultyDialog"
+      >
+        <v-card>
+          <v-card-text>This chore is above the maximum difficulty level for the person you are assigning it to.</v-card-text>
+          <v-card-actions>
+            <v-row>
+              <v-col cols="4" class="pb-0 pt-0" v-if="store.user.role=='member'"></v-col>
+              <v-col cols="4" class="pb-0 pt-0">
+                <v-btn
+                  block
+                  @click="cancelDifficulty()"
+                  id="cancelDifficultyButton"
+                >
+                  Edit Chore
+                </v-btn>
+              </v-col>
+              <v-col cols="4" class="pb-0 pt-0">
+                <v-btn
+                  color="secondary"
+                  variant="elevated"
+                  id="leaveUnassignedButton"
+                  block
+                  @click="leaveUnassigned(completeDialogChore)"
+                >
+                  Leave Unassigned
+                </v-btn>
+              </v-col>
+              <v-col cols="4" class="pb-0 pt-0" v-if="store.user.role == 'leader'">
+                <v-btn
+                  color="secondary"
+                  variant="elevated"
+                  id="assignAnywayButton"
+                  block
+                  @click="assignChoreAnyway(completeDialogChore)"
+                >
+                  Assign Anyway
+                </v-btn>
+              </v-col>
+            </v-row>
+          </v-card-actions>
+        </v-card>
+      </v-dialog>
     </v-sheet>
 </template>
 <script setup>
@@ -191,6 +237,7 @@
   });
   const router = useRouter();
   const route = useRoute();
+  const difficultyDialogOpen = ref(false);
 
   if(props.viewMode == "edit" && store.user.role != 'leader') {
     router.push({
@@ -425,5 +472,47 @@
 
   function enterEdit() {
     router.push({ name: 'editChore', params: {id: props.choreId}})
+  }
+
+  async function leaveUnassigned() {
+    chore.value.assigneeId = null
+    difficultyDialogOpen.value = false;
+    if(props.viewMode == 'edit') {
+      await updateChore()
+    } else {
+      await createChore()
+    }
+  }
+
+  async function assignChoreAnyway() {
+    difficultyDialogOpen.value = false;
+    if(props.viewMode == 'edit') {
+      return await updateChore()
+    } else {
+      return await createChore()
+    }
+  }
+
+  function cancelDifficulty() {
+    difficultyDialogOpen.value = false;
+  }
+
+  async function checkChore() {
+    if(validateChore()) {
+      if(chore.value.assigneeId && store.household.users.find((user) => user.id == chore.value.assigneeId) && store.household.users.find((user) => user.id == chore.value.assigneeId).difficulty < chore.value.difficulty) {
+        difficultyDialogOpen.value = true;
+        return 'too difficult'
+      } else {
+        if(props.viewMode == 'edit') {
+          await updateChore()
+          return 'edit'
+        } else {
+          await createChore()
+          return 'create'
+        }
+      }
+    } else {
+      return 'invalid';
+    }
   }
 </script>
