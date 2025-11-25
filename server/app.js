@@ -209,13 +209,17 @@ app.post('/api/login', async (req, res) => {
 app.put('/api/user/leave', async (req, res) => {
   const { userId, newHouseholdId } = req.body;
   try {
-    // delete all user's chores and change householdId to new one
+    // unassign all user's chores and change householdId to new one
     const result = await prisma.user.update({
       where: { id: Number(userId) },
       data: {
-        householdId: Number(newHouseholdId),
+        household: {
+          connect: {
+            id: Number(newHouseholdId)
+          }
+        },
         assignedChores: {
-          deleteMany: {},
+          set: [],
         },
       },
       include: {

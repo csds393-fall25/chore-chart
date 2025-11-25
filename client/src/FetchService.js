@@ -212,8 +212,6 @@ class FetchService {
 
         // Get household by join code
     static async fetchHouseholdByJoin(joinCode) {
-        console.log("HI")
-        console.log(joinCode)
         try {
             const response = await fetch(`${baseURL}/household/joinCode/${joinCode}`);
             if(!response.ok) {
@@ -223,14 +221,12 @@ class FetchService {
             return result;
         } catch (error) {
             console.error(error.message);
-            console.log("In here")
             return false;
         }
     }
 
     // Edit household
     static async editHousehold(household) {
-        console.log(household)
         try {
             const response = await fetch(`${baseURL}/household/${household.id}`, {
                 method: "PUT",

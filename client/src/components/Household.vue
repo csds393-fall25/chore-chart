@@ -332,7 +332,7 @@
   const changeRole = ref(false)
   const roleChangingID = ref()
   const roleChanging = ref()
-
+  const methodComplete = ref(false)
 
   const showDialog = ref(false);
   const isJoin = ref(true)
@@ -348,33 +348,24 @@
     if (members.value.length + leaders.value.length == 1){
        showLastToLeaveDialog.value = true;
        lastFlag.value = true
-       console.log("BYE1")
     
     }
     else if(leaders.value.length == 1 && store.user.role == 'leader'){
-      console.log("BYE")
         showLastLeaderDialog.value = true;
     }
     else{
-      console.log("BYE3")
       showDialog.value = true
     }
   
     
    }
    async function joinNewHousehold(){
-    console.log("Join new")
-    console.log(householdName.value)
     let house =  await FetchService.fetchHouseholdByJoin(householdName.value) 
-    console.log("house")
-    console.log(house)
     let lastHouseId = store.household.id
     if(!house){
-      console.log("JH")
       errorMessages.value.household = "Join code does not exist" 
     }
     else{
-      console.log("efgq")
       store.household.id = house.id
       store.household.name = house.name
       store.household.joinCode = house.joinCode
@@ -385,15 +376,13 @@
     leaders.value = store.household.users.filter(user => user.role == 'leader')
       showDialog.value = false
       errorMessages.value.household= ""
-      console.log(lastFlag.value)
       if (lastFlag.value){
-        console.log("bad")
-        console.log(lastHouseId)
         await FetchService.deleteHousehold(lastHouseId)
         lastFlag.value = false
 
       }
     }
+    methodComplete.value = true;
    }
 
    function cancel(){
@@ -410,8 +399,6 @@
     let lastHouseId = store.household.id
     if (!householdName.value || householdName.value.length > 50 || ((!householdName.value.match(/\.*[A-Z]\.*/)  && !householdName.value.match(/\.*[a-z]\.*/)))){
       errorMessages.value.household = "Household name must be below 50 characters and have at least 1 letter"
-      console.log(householdName.value)
-    console.log("createNewHousehold")
       return false
     }
     const household = {
@@ -432,12 +419,11 @@
     showDialog.value = false
     errorMessages.value.household = ""
        if (lastFlag.value){
-         console.log("badCreate")
-        console.log(lastHouseId)
         await FetchService.deleteHousehold(lastHouseId)
         lastFlag.value = false
 
       }
+    methodComplete.value = true;
     }
 
     function switchDialogs(){
@@ -446,7 +432,6 @@
     }
 
     function changeToLeader(id){
-      console.log("HI")
       FetchService.updateUser(id, {role: 'leader' })
       store.household.users.find((user)=> user.id == id ).role ='leader'
       members.value = store.household.users.filter((user) => user.role == 'member')
@@ -454,32 +439,24 @@
     }
 
       function changeToMember(id){
-      console.log("HI")
       FetchService.updateUser(id, {role: 'member' })
       if(store.household.users.find((user)=> user.id == id )){
       store.household.users.find((user)=> user.id == id ).role ='member'
       }
       members.value = store.household.users.filter((user) => user.role == 'member')
       leaders.value = store.household.users.filter((user) => user.role == 'leader')
-            console.log(members.value)
-            console.log(leaders.value)
     }
 
     function editHousehold(){
-      console.log("HI")
       showEditDialog.value = true;
     }
     
     function editHouseholdData(hid){
-      console.log("LOOK HERE")
-      console.log(hid)
        if (!householdName.value || householdName.value.length > 50 || ((!householdName.value.match(/\.*[A-Z]\.*/)  && !householdName.value.match(/\.*[a-z]\.*/)))){
-        console.log("IN editHouseholdData")
       errorMessages.value.household = "Household name must be below 50 characters and have at least 1 letter"
       return false
     }
     let house = {id: hid, name: householdName.value}
-    console.log("HIHI")
       FetchService.editHousehold(house)
       showEditDialog.value = false
       store.household.name = householdName
@@ -498,9 +475,7 @@
 
     function changeRoles(){
       showConfirmation.value = false
-      console.log("IN ChangeRoles")
       if (roleChanging.value == "leader"){
-        console.log("IN LEADER")
         changeToLeader(roleChangingID.value)
       }
       else{

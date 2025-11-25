@@ -194,7 +194,8 @@ expect(wrapper.text()).toContain(wrapper.vm.leaders[0].name)
 
 })
 
-test("LH-1 Leave as not last member and provide valid input (create new household)", async () => {
+describe("join", async () => {
+    test("LH-1 Leave as not last member and provide valid input (create new household)", async () => {
     const wrapper = mount(Household, {
         global: {
             plugins: [
@@ -252,8 +253,10 @@ test("LH-1 Leave as not last member and provide valid input (create new househol
     FetchService.deleteHousehold(houseResult.id)
 
 })
+})
 
-test("LH-1 Leave as not last member and provide valid input (join an existing household)", async () => {
+describe("join 2", async () => {
+    test("LH-1 Leave as not last member and provide valid input (join an existing household)", async () => {
     const wrapper = mount(Household, {
         global: {
             plugins: [
@@ -303,12 +306,18 @@ test("LH-1 Leave as not last member and provide valid input (join an existing ho
 
     const store = useAppStore()
     wrapper.vm.showDialog = true
-    wrapper.vm.householdName = "Codorado1234"
+    wrapper.vm.householdName = "household"
     await wrapper.vm.joinNewHousehold()
     await nextTick()
+    while (!wrapper.vm.methodComplete) {
+        await new Promise(resolve => setTimeout(resolve, 50));
+    }
     const houseResult = await FetchService.fetchHouseholdByJoin(store.household.joinCode)
     expect(store.household.id).toBe(houseResult.id)
-
+    wrapper.vm.showDialog = true
+    wrapper.vm.householdName = "doNotEditExceptWithUnitTests"
+    await wrapper.vm.joinNewHousehold()    
+})
 })
 
 test("createNewHousehold is run when button is pressed ", async () => {
@@ -337,6 +346,7 @@ test("createNewHousehold is run when button is pressed ", async () => {
                                 name: "test2",
                                 householdId: 1,
                                 role: "leader",
+
                             },
                                 ],
                             },
@@ -362,16 +372,17 @@ test("createNewHousehold is run when button is pressed ", async () => {
     const store = useAppStore()
     wrapper.vm.showDialog = true
     wrapper.vm.householdName = "THouse2"
-     const household = {
+    const household = {
       name: wrapper.vm.householdName
     }
  const spy = vi.spyOn(wrapper.vm, "createNewHousehold");
     await wrapper.find("#newHouse").trigger("click")
     await nextTick()
     expect(spy).toHaveBeenCalled();
-
-
-     const spyOn = vi.spyOn(wrapper.vm.FetchService, "createHousehold").mockImplementation((household) => household)
+    // const spyOn = vi.spyOn(wrapper.vm.FetchService, "createHousehold").mockImplementation((household) => household)
+    while (!wrapper.vm.methodComplete) {
+        await new Promise(resolve => setTimeout(resolve, 50));
+    }
     const houseResult = await FetchService.fetchHouseholdByJoin(store.household.joinCode)
     FetchService.deleteHousehold(houseResult.id)
 })
@@ -426,7 +437,8 @@ test("joinNewHousehold is run when button is pressed ", async () => {
 
     const store = useAppStore()
     wrapper.vm.showDialog = true
- const spy = vi.spyOn(wrapper.vm, "joinNewHousehold");
+    wrapper.vm.householdName = "A very long household name"
+    const spy = vi.spyOn(wrapper.vm, "joinNewHousehold");
     await wrapper.find("#existingHouse").trigger("click")
     await nextTick()
     expect(spy).toHaveBeenCalled();
