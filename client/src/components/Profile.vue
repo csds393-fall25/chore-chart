@@ -1,11 +1,12 @@
 <template>
   <v-sheet class="fill-height w-100 " color="primary-darken-1">
-    <v-row>
+    <v-btn id="logout" class="float-right ma-3" color="secondary" @click="store.loggedIn=false">Logout</v-btn>
+    <v-row class="mt-0">
       <v-col cols="4" class="ma-4">
           <Avatar :userId="store.user.id"/>
       </v-col>
     </v-row>
-    <v-btn id="logout" class="float-right ma-3" color="secondary" @click="store.loggedIn=false">Logout</v-btn>
+
     <v-form class="ma-4">
       <v-text-field data-testid="name"  v-if="isUpdate" :error-messages="errorMessages.name" style="width: 75%; " label="Name" v-model="name"></v-text-field>
       <p v-if="!isUpdate">Name: {{name}}</p>
