@@ -355,6 +355,122 @@ class FetchService {
             console.error(error.message);
         }
     }
+    // Get avatar props to display in the store
+    static async getAvatarProps() {
+        try {
+            const response = await fetch(`${baseURL}/avatar-props`);
+            if (!response.ok) {
+                throw new Error(`Response status: ${response.status}`);
+            }
+            const result = await response.json();
+            return result;
+        } catch (error) {
+            console.error(error.message);
+        }
+    }
+    // Get avatar of a user
+    // Returns a list of props that make up the avatar
+    static async getAvatar(userId) {
+        try {
+            const response = await fetch(`${baseURL}/avatar/${userId}`);
+            if (!response.ok) {
+                throw new Error(`Response status: ${response.status}`);
+            }
+            const result = await response.json();
+            return result;
+        } catch (error) {
+            console.error(error.message);
+        }
+    }
+
+    // Get ids of props owned by user
+    static async getOwnedProps(userId) {
+        try {
+            const response = await fetch(`${baseURL}/avatar-props/${userId}`);
+            if(!response.ok) {
+                throw new Error(`Response status: ${response.status}`);
+            }
+            const ownedPropIds = await response.json();
+            return ownedPropIds;
+        } catch (error) {
+            console.error(error.message);
+        }
+    }
+
+    // Buy prop
+    static async buyProp(userId, propId) {
+        try {
+            const response = await fetch(`${baseURL}/prop/buy`, {
+                method: "PUT",
+                headers: {
+                    "Content-Type": "application/json",
+                },
+                body: JSON.stringify({ 
+                    userId: userId, 
+                    propId: propId,
+                })
+            }); 
+            if (!response.ok) {
+                throw new Error(`Response status: ${response.status}`);
+            }
+            const result = await response.json();
+            return result;
+        } catch (error) {
+            console.error(error.message);
+        }
+    }
+
+    // Unbuy prop
+    static async unbuyProp(userId, propId) {
+        try {
+            const response = await fetch(`${baseURL}/prop/unbuy`, {
+                method: "PUT",
+                headers: {
+                    "Content-Type": "application/json",
+                },
+                body: JSON.stringify({ 
+                    userId: userId, 
+                    propId: propId,
+                })
+            }); 
+            if (!response.ok) {
+                throw new Error(`Response status: ${response.status}`);
+            }
+            const result = await response.json();
+            return result;
+        } catch (error) {
+            console.error(error.message);
+        }
+    }
+
+    // Modify a user's avatar by equipping a prop
+    // Takes the user id and a prop object with id (int) and type (string)
+    // Returns the new avatar (list of props)
+    static async equipProp(ownerId, prop) {
+        try {
+            const response = await fetch(`${baseURL}/prop/equip`, {
+                method: "PUT",
+                headers: {
+                    "Content-Type": "application/json",
+                },
+                body: JSON.stringify({ 
+                    ownerId: ownerId, 
+                    prop: {
+                        id: prop.id,
+                        type: prop.type,
+                    },
+                })
+            }); 
+            if (!response.ok) {
+                throw new Error(`Response status: ${response.status}`);
+            }
+            const result = await response.json();
+            return result;
+        } catch (error) {
+            console.error(error.message);
+        }
+    }
+
 }
 
 export default FetchService

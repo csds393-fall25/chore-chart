@@ -3,18 +3,19 @@
     <v-card to="/profile" color="primary-lighten-1" >
       <v-container class="text-center" width="100%">
         <v-row width="100%" class="mb-0 mr-0 ml-0">
-          <v-col cols="12" class="pa-0">
-            <v-avatar size = "large" color="primary"></v-avatar>
+          <v-col cols="6" offset="3" class="pa-0 position-static">
+            <!-- <v-avatar size = "large" color="primary"></v-avatar> -->
+            <Avatar :userId="store.user.id"/>
           </v-col>
         </v-row>
-        <v-row width="100%" class="mr-0 ml-0">
+        <v-row width="100%" class="mr-0 ml-0 mt-0 position-relative">
           <v-col cols="12" class="pa-0">
             <p class = "text-h4">{{ store.user.name }}</p>
           </v-col>
         </v-row>
-        <v-row width="100%" class="mr-0 ml-0">
+        <v-row width="100%" class="mr-0 ml-0 position-relative">
           <v-col cols="12" class="pt-0">
-            <p class = "text-subtitle-2">{{ store.user.totalPoints }} pts</p>
+            <p class = "text-subtitle-2">{{ store.user.currentPoints }} pts</p>
           </v-col>
         </v-row>
       </v-container>
@@ -42,6 +43,7 @@
 
 <script setup>
   import { useAppStore } from "../stores/app.js";
+  import Avatar from "./Avatar.vue";
   const store = useAppStore();
 
 

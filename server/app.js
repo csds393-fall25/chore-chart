@@ -6,6 +6,22 @@ import { fileURLToPath } from 'url';
 import cors from 'cors';
 import prisma from './prisma.js';
 import bodyParser from 'body-parser';
+import { S3Client, GetObjectCommand } from "@aws-sdk/client-s3";
+import { getSignedUrl } from "@aws-sdk/s3-request-presigner";
+
+const databaseUrl = process.env.DATABASE_URL
+const bucketName = process.env.BUCKET_NAME
+const bucketRegion = process.env.BUCKET_REGION
+const accessKey = process.env.ACCESS_KEY
+const secretAccessKey = process.env.SECRET_ACCESS_KEY
+
+const s3 = new S3Client({
+  credentials: {
+    accessKeyId: accessKey,
+    secretAccessKey: secretAccessKey,
+  },
+  region: bucketRegion
+})
 
 const __filename = fileURLToPath(import.meta.url);
 const __dirname = path.dirname(__filename);
@@ -98,11 +114,59 @@ app.delete('/api/household/:id', async (req, res) => {
 
 // signup
 app.post('/api/signup', async (req, res) => {
-  
+  let defaultAvatar = [
+    {name: "YellowSmileyFace", type: "skinTone", id: 0},
+    {name: "PurpleBeanie", type: "hat", id: 0},
+    {name: "LongMediumBrownHair", type: "hair", id: 0},
+    {name: "BlueWolfShirt", type: "shirt", id: 0},
+    {name: "LightBlueBackground", type: "background", id: 0},
+    {name: "BlueBook", type: "handProp", id: 0}
+  ]
   try {
     const {name, role, email, password_hash, difficulty, totalPoints, maxChoreTime, householdId } = req.body;
+    for (let i=0; i < defaultAvatar.length; i++) {
+      const avatarProp = await prisma.avatarProp.findUnique({ where: { name: defaultAvatar[i].name, type: defaultAvatar[i].type}});
+      if (avatarProp && avatarProp.id) {
+        defaultAvatar[i].id = avatarProp.id;
+      } else {
+        return res.status(514).json({ error: `Can't fetch default avatar prop ${ defaultAvatar[i].name }` });
+      }
+    }
     const result = await prisma.user.create({
-      data: { name, email, password_hash, role, difficulty, totalPoints, maxChoreTime, householdId },
+      data: {
+        name,
+        email,
+        password_hash, 
+        role,
+        difficulty,
+        totalPoints,
+        maxChoreTime,
+        householdId,
+        avatar: {
+          create: {
+            skinToneId: defaultAvatar[0].id,
+            hatId: defaultAvatar[1].id,
+            hairId: defaultAvatar[2].id,
+            shirtId: defaultAvatar[3].id,
+            backgroundId: defaultAvatar[4].id,
+            handPropId: defaultAvatar[5].id
+          }
+        },
+        userAvatarProps: {
+          create: [
+            { propId: defaultAvatar[0].id },
+            { propId: defaultAvatar[1].id },
+            { propId: defaultAvatar[2].id },
+            { propId: defaultAvatar[3].id },
+            { propId: defaultAvatar[4].id },
+            { propId: defaultAvatar[5].id },
+          ]
+        }
+      },
+      include: {
+        avatar: true,
+        userAvatarProps: true
+      }
     });
     res.json(result);
   } catch (err) {
@@ -154,7 +218,7 @@ app.put('/api/user/:id', async (req, res) => {
   }
 });
 
-//update a user's points
+//update a user's total points
 app.put('/api/user/:id/points', async (req, res) => {
   const { id } = req.params;
   if(Number.isNaN(id)) {
@@ -166,7 +230,10 @@ app.put('/api/user/:id/points', async (req, res) => {
     return res.status(400).json({ error: "Invalid points"});
   }
   try {
-    const updated = await prisma.user.update({ where: { id: Number(id) }, data: { totalPoints: { increment: Number(points)}}})
+    const updated = await prisma.user.update({ where: { id: Number(id) }, data: { 
+      totalPoints: { increment: Number(points)},
+      currentPoints: { increment: Number(points)},
+    }})
     res.json(updated);
   } catch (err) {
     res.status(500).json({ error: err.message });
@@ -264,7 +331,8 @@ app.put('/api/chores/:id', async (req, res) => {
     chore = await prisma.chore.update({where: {id: Number(id)}, data: {name, description, difficulty, location, estimatedTime, dueDate, repeat, 
       assignee: {
         disconnect: true,
-      }}});
+      }}
+    });
   }
   res.json(chore);
 });
@@ -277,6 +345,190 @@ app.delete('/api/chore/:id', async (req, res) => {
     res.json({deleted: true, id: deleted.id});
   } catch (err) {
     res.status(500).json({error: err.message});
+  }
+});
+
+// Get avatar of the user
+// Response: Array of AvatarProp objects with url of images
+app.get('/api/avatar/:userId', async (req, res) => {
+  try {
+    const { userId } = req.params;
+    const avatar = await prisma.avatar.findUnique({
+      where: { ownerId: Number(userId) },
+      include: {
+        skinTone: true,
+        hat: true,
+        hair: true,
+        shirt: true,
+        background: true,
+        handProp: true,
+      },
+    });
+
+    if (!avatar) {
+      return res.status(404).json({ error: 'Avatar not found' });
+    }
+
+    const avatarParts = [
+      avatar.skinTone,
+      avatar.hat,
+      avatar.hair,
+      avatar.shirt,
+      avatar.background,
+      avatar.handProp,
+    ].filter(Boolean); // skip null/undefined
+
+    for (const part of avatarParts) {
+      // check that part has a name before trying to generate a signed URL
+      if (!part || !part.name) continue;
+
+      const getPartParams = {
+        Bucket: bucketName,
+        Key: `avatar-props/${part.name}.png`,
+      };
+      const command = new GetObjectCommand(getPartParams);
+      try {
+        const url = await getSignedUrl(s3, command, { expiresIn: 3600 });
+        part.url = url;
+      } catch (err) {
+        console.error('Failed to generate signed URL for', part.name, err?.message || err);
+      }
+    }
+
+    res.json(avatarParts);
+  } catch (err) {
+    res.status(500).json({ error: err.message });
+  }
+});
+
+// get all avatar props to display in the store
+app.get('/api/avatar-props', async (req, res) => {
+  try {
+    const props = await prisma.avatarProp.findMany();
+    for (const prop of props) {
+      const getPropsParams = {
+        Bucket: bucketName,
+        Key: `avatar-props/${prop.name}.png`
+      }
+      const command = new GetObjectCommand(getPropsParams);
+      try {
+          const url = await getSignedUrl(s3, command, { expiresIn: 3600 });
+          prop.url = url;
+      } catch (err) {
+        console.error('Failed to generate signed URL for', part.name, err?.message || err);
+      }
+    };
+    res.json(props);
+  } catch (err) {
+    res.status(500).json({error: err.message});
+  }
+});
+
+// get ids of avatar props belonging to the user
+app.get('/api/avatar-props/:userId', async (req, res) => {
+  try {
+    const userId = Number(req.params.userId);
+    const userProps = await prisma.userAvatarProps.findMany({ where: { userId } });
+    const propIds = userProps.map((userProp) => userProp.propId)
+    res.json(propIds);
+  } catch (err) {
+    res.status(500).json({error: err.message});
+  }
+});
+
+// buy props
+app.put('/api/prop/buy', async (req, res) => {
+  const { userId, propId } = req.body;
+  try {
+    const user = await prisma.user.findUnique({ where: { id: Number(userId) } });
+    const prop = await prisma.avatarProp.findUnique({ where: { id: Number(propId) }});
+    const userProps = await prisma.userAvatarProps.findMany({ where: { userId: Number(userId) }});
+    const ownedPropIds = userProps.map((userProp) => userProp.propId);
+    // Error if user try to buy props more expensive than their available balance
+    if (user.currentPoints < prop.cost) {
+      res.status(403).json({ error: "Insufficient point balance."});
+    }
+    // Error if user try to buy props they already own
+    else if(ownedPropIds.includes(prop.id)) {
+      res.status(403).json({ error: "Prop already purchased."});
+    }
+    else {
+      // deduct points
+      const newPoints = user.currentPoints - prop.cost;
+      await prisma.user.update({ 
+        where: { id: user.id }, 
+        data: {
+          currentPoints: newPoints,
+        },
+      })
+      // link prop to user
+      const result = await prisma.userAvatarProps.create({
+        data: {
+          userId: user.id,
+          propId: prop.id,
+        },
+      });
+
+      result.currentPoints = newPoints
+      res.json(result);
+    }
+  } catch (err) {
+    res.status(500).json({ error: err.message });
+  }
+});
+
+// unbuy prop (for testing purpose)
+app.put('/api/prop/unbuy', async (req, res) => {
+  const { userId, propId } = req.body;
+  try {
+    const user = await prisma.user.findUnique({ where: { id: Number(userId) } });
+    const prop = await prisma.avatarProp.findUnique({ where: { id: Number(propId) }});
+    // refund points
+    const newPoints = user.currentPoints + prop.cost;
+    await prisma.user.update({ 
+      where: { id: user.id }, 
+      data: {
+        currentPoints: newPoints,
+      },
+    })
+    // unlink prop from user
+    const result = await prisma.userAvatarProps.delete({
+      where: {
+        userId_propId: {
+          userId: user.id,
+          propId: prop.id,
+        }
+      },
+    });
+    res.json(result);
+  } catch (err) {
+    res.status(500).json({ error: err.message });
+  }
+});
+
+// equip avatar with a prop
+// Takes an ownerId and a prop object that contains attributes id and type
+app.put('/api/prop/equip', async (req, res) => {
+  const { ownerId, prop } = req.body;
+  try {
+    // check if user owns the prop
+    const userProps = await prisma.userAvatarProps.findMany({ where: { userId: Number(ownerId) }});
+    const ownedPropIds = userProps.map((userProp) => userProp.propId);
+    if (!ownedPropIds.includes(prop.id)) {
+      res.status(403).json({ error: "Can not equip prop that is not owned by user."})
+    }
+    else {
+      // equip
+      const result = await prisma.avatar.update({
+        where: { ownerId: Number(ownerId) },
+        data: {
+          [`${prop.type}Id`]: prop.id,
+        },
+      });
+      res.json(result);
+    }
+  } catch (err) {
+    res.status(500).json({ error: err.message });
   }
 });
 

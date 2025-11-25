@@ -131,7 +131,8 @@ exports.Prisma.UserScalarFieldEnum = {
   role: 'role',
   difficulty: 'difficulty',
   maxChoreTime: 'maxChoreTime',
-  totalPoints: 'totalPoints'
+  totalPoints: 'totalPoints',
+  currentPoints: 'currentPoints'
 };
 
 exports.Prisma.HouseholdScalarFieldEnum = {
@@ -155,6 +156,7 @@ exports.Prisma.ChoreScalarFieldEnum = {
 
 exports.Prisma.AvatarScalarFieldEnum = {
   ownerId: 'ownerId',
+  skinToneId: 'skinToneId',
   hatId: 'hatId',
   hairId: 'hairId',
   shirtId: 'shirtId',
@@ -198,7 +200,8 @@ exports.PropType = exports.$Enums.PropType = {
   hair: 'hair',
   shirt: 'shirt',
   background: 'background',
-  handProp: 'handProp'
+  handProp: 'handProp',
+  skinTone: 'skinTone'
 };
 
 exports.Prisma.ModelName = {
