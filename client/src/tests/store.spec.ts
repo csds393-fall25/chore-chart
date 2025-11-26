@@ -85,6 +85,8 @@ test("ST-3 and ST-4 - Store renders correctly", async () => {
     while(!wrapper.vm.mounted) {
         await new Promise(resolve => setTimeout(resolve, 50))
     }
+    
+    await nextTick()
 
     expect(wrapper.text()).toContain('Store')
 
