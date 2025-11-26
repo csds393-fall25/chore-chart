@@ -5,7 +5,7 @@ import { createTestingPinia } from '@pinia/testing'
 import { createVuetify } from 'vuetify'
 import * as components from 'vuetify/components'
 import * as directives from 'vuetify/directives'
-import Household from "@/components/Household.vue";
+import Household from "@/pages/Household.vue";
 import FetchService from "@/FetchService";
 import ValidateLogin from "@/components/Login.vue"
 import { useAppStore } from "@/stores/app.js";

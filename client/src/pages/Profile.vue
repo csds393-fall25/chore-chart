@@ -55,7 +55,7 @@
 import { ref } from 'vue';
 import { useAppStore } from "../stores/app.js";
 import FetchService from '@/FetchService';
-import Avatar from './Avatar.vue'
+import Avatar from '../components/Avatar.vue'
 const store = useAppStore();
 const username = ref(store.user.email);
 const isUpdate = ref(false)
@@ -76,11 +76,8 @@ function updateButton(){
 }
 
 async function updateProfile() {
-  
-
   if(!validateProfile() && !confirmed.value){
     return
-
   }
   
   if (password.value && !confirmed.value ){
@@ -88,46 +85,44 @@ async function updateProfile() {
     return
   }
 
-  if(password.value && confirmed.value){
+  if(password.value && confirmed.value) {
     const user = {
         email: store.user.email,
         password_hash: previousPassword.value
-      }
+    }
     let pastPass = await FetchService.login(user)
     if(pastPass){
+      const result = await FetchService.updateUser(store.user.id, {
+        name: name.value,
+        email: username.value,
+        password_hash: password.value,
+        difficulty: maxDifficulty.value,
+        maxChoreTime: estimatedTime.value
+        
+      })
+      showPasswordDialog.value = false
+      confirmed.value = false
+      password.value = ""
+      repeatedPassword.value = ""
+      store.user.name = name.value
+      store.user.email = username.value
+      store.user.difficulty = maxDifficulty.value
+      store.user.maxChoreTime = estimatedTime.value
+      isUpdate.value = false;
+      errorMessages.value.previousPassword = ""
+      return true;
+    } else{
+      errorMessages.value.previousPassword = "Please enter correct password"
+      test.value = false
+      return
+    }
+  } else {
     const result = await FetchService.updateUser(store.user.id, {
-    name: name.value,
-    email: username.value,
-    password_hash: password.value,
-    difficulty: maxDifficulty.value,
-    maxChoreTime: estimatedTime.value
-    
-  })
-  showPasswordDialog.value = false
-  confirmed.value = false
-  password.value = ""
-  repeatedPassword.value = ""
-  store.user.name = name.value
-  store.user.email = username.value
-  store.user.difficulty = maxDifficulty.value
-  store.user.maxChoreTime = estimatedTime.value
-  isUpdate.value = false;
-  errorMessages.value.previousPassword = ""
-  return true;
-  }
-  else{
-    errorMessages.value.previousPassword = "Please enter correct password"
-    test.value = false
-    return
-  }
-  }
-  else{
-  const result = await FetchService.updateUser(store.user.id, {
-    name: name.value,
-    email: username.value,
-    difficulty: maxDifficulty.value,
-    maxChoreTime: estimatedTime.value
-  })
+      name: name.value,
+      email: username.value,
+      difficulty: maxDifficulty.value,
+      maxChoreTime: estimatedTime.value
+    })
   }
 
   store.user.name = name.value
@@ -137,7 +132,6 @@ async function updateProfile() {
   isUpdate.value = false;
   errorMessages.value.previousPassword = ""
   return true;
-
 }
 
 function deleteProfile(id) {
@@ -148,26 +142,19 @@ function deleteProfile(id) {
 }
 
 function validateProfile(){
-    let flag = true;
-  
-
-
-
+  let flag = true;
   if(!name.value){
     errorMessages.value.name = "name must exist"
     flag = false;
-  }
-  else{
+  } else{
     errorMessages.value.name = ""
   }
 
   if(!estimatedTime.value || estimatedTime.value <= 0){
     errorMessages.value.estTime = "Estimated time must be greater than 0"
     flag = false
-  }
-  else{
+  } else{
     errorMessages.value.estTime = ""
-
   }
 
   if(!maxDifficulty.value || maxDifficulty.value < 1 || maxDifficulty.value > 10){
@@ -178,10 +165,8 @@ function validateProfile(){
     errorMessages.value.maxDiff = ""
   }
   if (flag){
-
-
-  errorMessages.value.houseName = ""
-  errorMessages.value.jc = ""
+    errorMessages.value.houseName = ""
+    errorMessages.value.jc = ""
   }
 
   if (password.value){
@@ -191,25 +176,17 @@ function validateProfile(){
     }
     else{
       errorMessages.value.password = ""
-      
-     
-
     }
 
     if(password.value != repeatedPassword.value){
       errorMessages.value.repeatedPassword = "Passswords do not match"
       flag = false
-
     }
     else{
       errorMessages.value.repeatedPassword = ""
-
     }
-    
   }
-
   return flag
-
 }
 
 function cancel(){

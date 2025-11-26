@@ -5,7 +5,7 @@ import { createVuetify } from 'vuetify'
 import * as components from 'vuetify/components'
 import * as directives from 'vuetify/directives'
 import { useAppStore } from "@/stores/app.js";
-import Leaderboard from "@/components/leaderboard.vue";
+import Leaderboard from "@/pages/Leaderboard.vue";
 import { nextTick } from 'vue'
 const vuetify = createVuetify({
   components,
