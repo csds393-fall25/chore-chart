@@ -1,13 +1,34 @@
 <template class="mb-0 pb-0">
   <div class="w-100 mb-0 pb-0 position-relative">
-    <img v-if="avatar.background" :src="avatar.background" class="top-0 left-0 w-100 pb-0 mb-0"/>
-    <img v-if="avatar.skinTone" :src="avatar.skinTone" class="position-absolute top-0 left-0 w-100"/>
-    <img v-if="avatar.hair" :src="avatar.hair" class="position-absolute top-0 left-0 w-100"/>
-    <img v-if="avatar.hat" :src="avatar.hat" class="position-absolute top-0 left-0 w-100"/>
-    <img v-if="avatar.shirt" :src="avatar.shirt" class="position-absolute top-0 left-0 w-100"/>
-    <img v-if="avatar.handProp" :src="avatar.handProp" class="position-absolute top-0 left-0 w-100"/>
-    <img src="../assets/BorderCircle.png" class="position-absolute top-0 left-0 w-100"/>
+    <img @click.prevent="profile" v-if="avatar.background" :src="avatar.background" class="top-0 left-0 w-100 pb-0 mb-0"/>
+    <img @click.prevent="profile" v-if="avatar.skinTone" :src="avatar.skinTone" class="position-absolute top-0 left-0 w-100"/>
+    <img @click.prevent="profile" v-if="avatar.hair" :src="avatar.hair" class="position-absolute top-0 left-0 w-100"/>
+    <img @click.prevent="profile" v-if="avatar.hat" :src="avatar.hat" class="position-absolute top-0 left-0 w-100"/>
+    <img @click.prevent="profile" v-if="avatar.shirt" :src="avatar.shirt" class="position-absolute top-0 left-0 w-100"/>
+    <img @click.prevent="profile" v-if="avatar.handProp" :src="avatar.handProp" class="position-absolute top-0 left-0 w-100"/>
+    <img @click.prevent="profile" src="../assets/BorderCircle.png" class="position-absolute top-0 left-0 w-100"/>
   </div>
+
+     <v-dialog data-testid="profileDialog" v-model="profileDialog" width="500">
+        <v-card class="text-center" :title="name + '\'s profile'" max-width="400">
+          <v-row>
+          <v-col class="ml-1 ">
+          <p> Role: {{ role }}   </p>
+          <p>Total points: {{totalPoints}} pts</p>
+          </v-col>
+          <v-col class="mr-1">
+          <p>Difficulty: {{maxDifficulty}} </p>
+          <p>Time: {{maxChoreTime}} mins</p>
+          </v-col>
+          </v-row>
+           <v-card-actions>
+             <v-btn id = "lastLeaderCancel" @click="cancel()" data-testid="cancelButton" > cancel
+            </v-btn>
+          </v-card-actions>
+        </v-card>
+      </v-dialog>
+
+
 </template>
   
 <script setup>
@@ -19,6 +40,12 @@ const props = defineProps({
     userId: Number,
   });
 
+const name = ref()
+const maxChoreTime = ref()
+const maxDifficulty = ref()
+const totalPoints = ref()
+const role = ref()
+const profileDialog = ref(false)
 const store = useAppStore();
 const avatar = ref({
   userId: props.userId,
@@ -70,6 +97,23 @@ onMounted(async () => {
     }
   }
 })
+
+function profile(){
+  store.household.users.forEach((user)=>{
+    profileDialog.value = true
+    if(user.id==props.userId){
+      name.value = user.name
+      role.value = user.role
+      maxChoreTime.value = user.maxChoreTime
+      maxDifficulty.value = user.difficulty
+      totalPoints.value = user.totalPoints
+    }
+  })
+}
+
+function cancel(){
+  profileDialog.value= false
+}
  
 
 </script>
