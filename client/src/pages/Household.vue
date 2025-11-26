@@ -260,7 +260,7 @@
             v-slot:prepend
           >
             <div style="width: 40px" class="mr-3">
-              <Avatar :userId="member.id"/>
+              <Avatar dis=false :userId="member.id"/>
             </div>
           </template>
 
