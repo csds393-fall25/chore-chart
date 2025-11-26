@@ -344,28 +344,23 @@
   }
 
  
-   function leaveHousehold(){
+  function leaveHousehold(){
     if (members.value.length + leaders.value.length == 1){
-       showLastToLeaveDialog.value = true;
-       lastFlag.value = true
+      showLastToLeaveDialog.value = true;
+      lastFlag.value = true
     
-    }
-    else if(leaders.value.length == 1 && store.user.role == 'leader'){
+    } else if(leaders.value.length == 1 && store.user.role == 'leader'){
         showLastLeaderDialog.value = true;
-    }
-    else{
+    } else{
       showDialog.value = true
     }
-  
-    
-   }
-   async function joinNewHousehold(){
+  }
+  async function joinNewHousehold(){
     let house =  await FetchService.fetchHouseholdByJoin(householdName.value) 
     let lastHouseId = store.household.id
     if(!house){
       errorMessages.value.household = "Join code does not exist" 
-    }
-    else{
+    } else {
       store.household.id = house.id
       store.household.name = house.name
       store.household.joinCode = house.joinCode
@@ -373,19 +368,18 @@
       householdName.value = ""
       store.household = await FetchService.fetchHousehold(house.id);
       members.value = store.household.users.filter(user => user.role == 'member')
-    leaders.value = store.household.users.filter(user => user.role == 'leader')
+      leaders.value = store.household.users.filter(user => user.role == 'leader')
       showDialog.value = false
       errorMessages.value.household= ""
       if (lastFlag.value){
         await FetchService.deleteHousehold(lastHouseId)
         lastFlag.value = false
-
       }
     }
     methodComplete.value = true;
-   }
+  }
 
-   function cancel(){
+  function cancel(){
     showDialog.value = false
     showLastToLeaveDialog.value = false
     errorMessages.value.household = ""
@@ -393,7 +387,7 @@
     showEditDialog.value = false
     showLastLeaderDialog.value = false
     showConfirmation.value = false
-   }
+  }
 
   async function createNewHousehold(){
     let lastHouseId = store.household.id
@@ -418,75 +412,65 @@
     leaders.value = store.household.users.filter((user) => user.role == 'leader')
     showDialog.value = false
     errorMessages.value.household = ""
-       if (lastFlag.value){
-        await FetchService.deleteHousehold(lastHouseId)
-        lastFlag.value = false
-
-      }
+    if (lastFlag.value){
+      await FetchService.deleteHousehold(lastHouseId)
+      lastFlag.value = false
+    }
     methodComplete.value = true;
-    }
+  }
 
-    function switchDialogs(){
-      showLastToLeaveDialog.value = false
-      showDialog.value = true
-    }
+  function switchDialogs(){
+    showLastToLeaveDialog.value = false
+    showDialog.value = true
+  }
 
-    function changeToLeader(id){
-      FetchService.updateUser(id, {role: 'leader' })
-      store.household.users.find((user)=> user.id == id ).role ='leader'
-      members.value = store.household.users.filter((user) => user.role == 'member')
-      leaders.value = store.household.users.filter((user) => user.role == 'leader')
-    }
+  function changeToLeader(id){
+    FetchService.updateUser(id, {role: 'leader' })
+    store.household.users.find((user)=> user.id == id ).role ='leader'
+    members.value = store.household.users.filter((user) => user.role == 'member')
+    leaders.value = store.household.users.filter((user) => user.role == 'leader')
+  }
 
-      function changeToMember(id){
-      FetchService.updateUser(id, {role: 'member' })
-      if(store.household.users.find((user)=> user.id == id )){
-      store.household.users.find((user)=> user.id == id ).role ='member'
-      }
-      members.value = store.household.users.filter((user) => user.role == 'member')
-      leaders.value = store.household.users.filter((user) => user.role == 'leader')
+  function changeToMember(id){
+    FetchService.updateUser(id, {role: 'member' })
+    if(store.household.users.find((user)=> user.id == id )){
+    store.household.users.find((user)=> user.id == id ).role ='member'
     }
+    members.value = store.household.users.filter((user) => user.role == 'member')
+    leaders.value = store.household.users.filter((user) => user.role == 'leader')
+  }
 
-    function editHousehold(){
-      showEditDialog.value = true;
-    }
+  function editHousehold(){
+    showEditDialog.value = true;
+  }
     
-    function editHouseholdData(hid){
-       if (!householdName.value || householdName.value.length > 50 || ((!householdName.value.match(/\.*[A-Z]\.*/)  && !householdName.value.match(/\.*[a-z]\.*/)))){
+  function editHouseholdData(hid){
+    if (!householdName.value || householdName.value.length > 50 || ((!householdName.value.match(/\.*[A-Z]\.*/)  && !householdName.value.match(/\.*[a-z]\.*/)))){
       errorMessages.value.household = "Household name must be below 50 characters and have at least 1 letter"
       return false
     }
     let house = {id: hid, name: householdName.value}
-      FetchService.editHousehold(house)
-      showEditDialog.value = false
-      store.household.name = householdName
-      errorMessages.value.household = ""
+    FetchService.editHousehold(house)
+    showEditDialog.value = false
+    store.household.name = householdName
+    errorMessages.value.household = ""
+  }
 
+  function confirmation(role, id){
+    roleChangingID.value = id
+    roleChanging.value = role
+    showConfirmation.value = true
+  }
 
+  function changeRoles(){
+    showConfirmation.value = false
+    if (roleChanging.value == "leader"){
+      changeToLeader(roleChangingID.value)
     }
-
-    function confirmation(role, id){
-      roleChangingID.value = id
-      roleChanging.value = role
-      showConfirmation.value = true
-
-
+    else{
+      changeToMember(roleChangingID.value)
     }
-
-    function changeRoles(){
-      showConfirmation.value = false
-      if (roleChanging.value == "leader"){
-        changeToLeader(roleChangingID.value)
-      }
-      else{
-        changeToMember(roleChangingID.value)
-      }
-
-    }
-
-
-
-   
+  }
 </script>
 
 <style scoped>

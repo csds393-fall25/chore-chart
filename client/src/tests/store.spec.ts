@@ -384,6 +384,8 @@ test("ACT-1 and ACT-2 - equipProp equips correctly", async () => {
 
     expect(wrapper.vm.usersAvatar.hat).toEqual(store.allProps.find((prop) => prop.id == 8).url)
     expect(store.avatars.find((avatar) => avatar.userId == 6).hat).toBe(store.allProps.find((prop) => prop.id == 8).url)
+
+    await wrapper.vm.equipProp(store.allProps.find((prop) => prop.id == 2))
 })
 
 //isEquipped
