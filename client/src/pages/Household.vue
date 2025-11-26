@@ -147,32 +147,32 @@
           </template>
         </v-list-item>
         <v-list-item
-          v-for="(chore) in leaders"
-          :key="chore.id"
+          v-for="(leader) in leaders"
+          :key="leader.id"
           class="border-b-thin "
            variant="outlined"
         >
           <template
             v-slot:prepend
           >
-            <v-avatar color="primary">
-              <span class="text-h5">{{ userInitials(chore.name) }}</span>
-            </v-avatar>
+             <div style="width: 40px" class="mr-3">
+              <Avatar :userId="leader.id"/>
+            </div>
           </template>
 
           <template v-slot:default>
             <v-row>
               <v-col cols="3">
-                {{ chore.name }}
+                {{ leader.name }}
               </v-col>
               <v-col cols="2">
-                {{ chore.difficulty }}
+                {{ leader.difficulty }}
               </v-col>
               <v-col cols="3">
-                {{ chore.maxChoreTime }} {{chore.maxChoreTime == 1 ? 'min' : 'mins'}}
+                {{ leader.maxChoreTime }} {{leader.maxChoreTime == 1 ? 'min' : 'mins'}}
               </v-col>
               <v-col cols="4">
-                {{ chore.totalPoints}} pts
+                {{ leader.totalPoints}} pts
               </v-col>
             </v-row>
           </template>
@@ -185,13 +185,13 @@
             >
             
               <v-btn
-               v-if="store.user.role == 'leader' && chore.id != store.user.id"
+               v-if="store.user.role == 'leader' && leader.id != store.user.id"
                 block
                 color="secondary"
                 id="makeMember"
                 density="compact"
                 class="mt-1 mb-1"
-                @click ="confirmation('member', chore.id)"
+                @click ="confirmation('member', leader.id)"
                 min-width="8em"
                  
               >
@@ -251,32 +251,32 @@
         </v-list-item>
         
         <v-list-item
-          v-for="(chore) in members"
-          :key="chore.id"
+          v-for="(member) in members"
+          :key="member.id"
           class="border-b-thin"
            variant="outlined"
         >
           <template
             v-slot:prepend
           >
-            <v-avatar color="primary">
-              <span class="text-h5">{{ userInitials(chore.name) }}</span>
-            </v-avatar>
+            <div style="width: 40px" class="mr-3">
+              <Avatar :userId="member.id"/>
+            </div>
           </template>
 
           <template v-slot:default>
             <v-row>
               <v-col cols="3">
-                {{ chore.name }}
+                {{ member.name }}
               </v-col>
               <v-col cols="2">
-                {{ chore.difficulty }}
+                {{ member.difficulty }}
               </v-col>
               <v-col cols="3">
-                {{ chore.maxChoreTime }} {{chore.maxChoreTime == 1 ? 'min' : 'mins'}}
+                {{ member.maxChoreTime }} {{member.maxChoreTime == 1 ? 'min' : 'mins'}}
               </v-col>
               <v-col cols="4">
-                {{ chore.totalPoints}} pts
+                {{ member.totalPoints}} pts
               </v-col>
             </v-row>
           </template>
@@ -290,13 +290,13 @@
 
             
               <v-btn
-               v-if="store.user.role == 'leader' && chore.id != store.user.id"
+               v-if="store.user.role == 'leader' && member.id != store.user.id"
                 block
                 id="makeLeader"
                 color="secondary"
                 density="compact"
                 class="mt-1 mb-1"
-                @click = "confirmation('leader', chore.id)"
+                @click = "confirmation('leader', member.id)"
                 min-width="8em"
                  
               >
@@ -316,6 +316,7 @@
   import { useAppStore } from '@/stores/app';
   import { useRouter } from 'vue-router'
   import FetchService from '../FetchService.js'
+  import Avatar from '@/components/Avatar.vue';
 
   const store = useAppStore()
 
