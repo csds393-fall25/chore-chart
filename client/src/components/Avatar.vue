@@ -63,6 +63,7 @@ onMounted(async () => {
     // Fetch avatar once
     if (!store.avatars.some((avatar) => avatar.userId == props.userId)) {
       const avatarProps = await FetchService.getAvatar(props.userId);
+      if (avatarProps){
       avatarProps.forEach((prop) => {
         switch(prop.type) {
           case "skinTone":
@@ -87,6 +88,7 @@ onMounted(async () => {
             console.log(`Unexpected prop type ${prop.type}`);
         }
       });
+    }
       store.avatars.push(avatar.value);
       if(props.userId == store.user.id) {
         store.user.avatar = avatar.value

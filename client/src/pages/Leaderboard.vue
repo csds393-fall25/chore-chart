@@ -42,7 +42,7 @@
           >
             <div style="width: 40px" class="mr-3">
             <Avatar :userId="member.id"/>
-            </div>>
+            </div>
           </template>
 
           <template v-slot:default>
