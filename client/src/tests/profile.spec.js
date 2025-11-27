@@ -6,7 +6,7 @@ import { createVuetify } from 'vuetify'
 import * as components from 'vuetify/components'
 import * as directives from 'vuetify/directives'
 import { useAppStore } from "@/stores/app.js";
-import Profile from "@/components/Profile.vue";
+import Profile from "@/pages/Profile.vue";
 import Login from '@/components/Login.vue';
 import FetchService from '@/FetchService';
 import { nextTick } from "vue";
