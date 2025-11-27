@@ -1,6 +1,6 @@
 <template>
   <div class="fill-height">
-    <div class="d-none d-md-block fill-height">
+    <div class="fill-height" v-if="!smAndDown">
       <v-sheet class="fill-height text-center d-flex flex-column" color="primary-lighten-1 pa-0 ma-0" width="100%">
         <v-card to="/profile" color="primary-lighten-1" >
           <v-container class="text-center" width="100%">
@@ -42,31 +42,58 @@
         </v-container>
       </v-sheet>
     </div>
-    <div class="d-md-none">
+    <div v-else>
       <v-app-bar
-        color="primary"
+        color="primary-lighten-1"
       >
         <template v-slot:prepend>
-          <v-app-bar-nav-icon></v-app-bar-nav-icon>
+          <v-app-bar-nav-icon
+            @click.stop="drawer = !drawer"
+          ></v-app-bar-nav-icon>
         </template>
 
+        <div class="ml-2 mr-0" style="width: 40px;">
+            <Avatar :userId="store.user.id"/>
+        </div>
         <v-app-bar-title>
           {{ store.user.name }}
         </v-app-bar-title>
 
         <template v-slot:append>
-          <div>{{ store.user.currentPoints }} pts</div>
+          <div class="mr-3">{{ store.user.currentPoints }} pts</div>
         </template>
       </v-app-bar>
+      <v-navigation-drawer
+        v-model="drawer"
+        temporary
+        color="primary"
+      >
+        <v-list bg-color="primary" width="100%">
+          <v-list-item title = "Profile" value = "profile" to="/profile"></v-list-item>
+          <v-list-item title = "Chores" value = "chores" to="/chores"></v-list-item>
+          <v-list-item title = "House" value = "house" to="/house"></v-list-item>
+          <v-list-item title = "Create" value = "create" to="/chore/create"></v-list-item>
+          <v-list-item v-if="store.user.role == 'leader'" title = "Random" value = "random" to="/random">
+          </v-list-item>
+          <v-list-item title = "Print" value = "print" to="/print"></v-list-item>
+          <v-list-item title = "Help" value = "help" to="/help"></v-list-item>
+          <v-list-item title = "Leaderboard" value = "leaderboard" to="/leaderboard"></v-list-item>
+          <v-list-item title = "Store" value = "store" to="/store"></v-list-item>
+        </v-list>
+      </v-navigation-drawer>
     </div>
   </div>
 </template>
 
 <script setup>
   import { useAppStore } from "../stores/app.js";
+  import { ref } from 'vue'
   import Avatar from "./Avatar.vue";
+  import { useDisplay } from 'vuetify';
   const store = useAppStore();
+  const drawer = ref(false);
 
+  const { smAndDown } = useDisplay();
 
 </script>
 <style scoped>

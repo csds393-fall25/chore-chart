@@ -1,19 +1,17 @@
 <template>
   <v-app>
-    <v-container fluid class="h-100 pa-0" v-if="store.loggedIn">
-      <v-row class="pa-0 height-screen ma-0 w-100">
-        <v-col cols="12" md="3" lg="2" class="pa-0 ma-0 d-print-none fill-height">
+    <v-container fluid class="fill-height pa-0" v-if="store.loggedIn">
+      <v-row class="pa-0 fill-height ma-0 w-100">
+        <v-col cols="12" md="3" lg="2" class="pa-0 ma-0 d-print-none ">
           <NavigationBar/>
         </v-col>
-        <v-col class="pa-0 ma-0 h-100" cols="12" md="9" lg="10">
-          <div class="fill-height">
-            <v-sheet color="navy" class="fill-height overflow-auto">
-              <Suspense>
-                <router-view></router-view>
-                <template #fallback><Loading /></template>
-              </Suspense>
-            </v-sheet>
-          </div>
+        <v-col class="pa-0 ma-0 fill-height" cols="12" md="9" lg="10">
+          <v-main class="fill-height">
+            <Suspense>
+              <router-view></router-view>
+              <template #fallback><Loading /></template>
+            </Suspense>
+          </v-main>
         </v-col>
       </v-row>
 
@@ -30,11 +28,11 @@
   import {useAppStore} from "./stores/app.js";
   import Login from "./components/Login.vue";
   import Loading from './components/Loading.vue'
+  import { useDisplay } from 'vuetify';
 
   const store = useAppStore();
+  const { xsAndDown } = useDisplay();
+  
 </script>
 <style>
-.height-screen {
-  height: 100dvh;
-}
 </style>
