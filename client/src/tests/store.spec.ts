@@ -85,6 +85,8 @@ test("ST-3 and ST-4 - Store renders correctly", async () => {
     while(!wrapper.vm.mounted) {
         await new Promise(resolve => setTimeout(resolve, 50))
     }
+    
+    await nextTick()
 
     expect(wrapper.text()).toContain('Store')
 
@@ -384,6 +386,8 @@ test("ACT-1 and ACT-2 - equipProp equips correctly", async () => {
 
     expect(wrapper.vm.usersAvatar.hat.id).toEqual(8)
     expect(store.avatars.find((avatar) => avatar.userId == 6).hat.id).toBe(8)
+
+    await wrapper.vm.equipProp(store.allProps.find((prop) => prop.id == 2))
 })
 
 //isEquipped
