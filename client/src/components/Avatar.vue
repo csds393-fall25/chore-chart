@@ -1,11 +1,11 @@
 <template class="mb-0 pb-0">
   <div class="w-100 mb-0 pb-0 position-relative">
-    <img v-if="avatar.background" :src="avatar.background" class="top-0 left-0 w-100 pb-0 mb-0"/>
-    <img v-if="avatar.skinTone" :src="avatar.skinTone" class="position-absolute top-0 left-0 w-100"/>
-    <img v-if="avatar.hair" :src="avatar.hair" class="position-absolute top-0 left-0 w-100"/>
-    <img v-if="avatar.hat" :src="avatar.hat" class="position-absolute top-0 left-0 w-100"/>
-    <img v-if="avatar.shirt" :src="avatar.shirt" class="position-absolute top-0 left-0 w-100"/>
-    <img v-if="avatar.handProp" :src="avatar.handProp" class="position-absolute top-0 left-0 w-100"/>
+    <img v-if="avatar.background" :src="avatar.background.url" class="top-0 left-0 w-100 pb-0 mb-0"/>
+    <img v-if="avatar.skinTone" :src="avatar.skinTone.url" class="position-absolute top-0 left-0 w-100"/>
+    <img v-if="avatar.hair" :src="avatar.hair.url" class="position-absolute top-0 left-0 w-100"/>
+    <img v-if="avatar.hat" :src="avatar.hat.url" class="position-absolute top-0 left-0 w-100"/>
+    <img v-if="avatar.shirt" :src="avatar.shirt.url" class="position-absolute top-0 left-0 w-100"/>
+    <img v-if="avatar.handProp" :src="avatar.handProp.url" class="position-absolute top-0 left-0 w-100"/>
     <img src="../assets/BorderCircle.png" class="position-absolute top-0 left-0 w-100"/>
   </div>
 </template>
@@ -22,12 +22,12 @@ const props = defineProps({
 const store = useAppStore();
 const avatar = ref({
   userId: props.userId,
-  skinTone: "",
-  hat: "",
-  hair: "",
-  shirt: "",
-  background: "",
-  handProp: ""
+  skinTone: {},
+  hat: {},
+  hair: {},
+  shirt: {},
+  background: {},
+  handProp: {}
 });
 
 onMounted(async () => {
@@ -39,22 +39,40 @@ onMounted(async () => {
       avatarProps.forEach((prop) => {
         switch(prop.type) {
           case "skinTone":
-            avatar.value.skinTone = prop.url;
+            avatar.value.skinTone = {
+              url: prop.url,
+              id: prop.id
+            };
             break;
           case "hat":
-            avatar.value.hat = prop.url;
+            avatar.value.hat = {
+              url: prop.url,
+              id: prop.id
+            };
             break;
           case "hair":
-            avatar.value.hair = prop.url;
+            avatar.value.hair = {
+              url: prop.url,
+              id: prop.id
+            };
             break;
           case "shirt":
-            avatar.value.shirt = prop.url;
+            avatar.value.shirt = {
+              url: prop.url,
+              id: prop.id
+            };
             break;
           case "background":
-            avatar.value.background = prop.url;
+            avatar.value.background = {
+              url: prop.url,
+              id: prop.id
+            };
             break;
           case "handProp":
-            avatar.value.handProp = prop.url;
+            avatar.value.handProp = {
+              url: prop.url,
+              id: prop.id
+            };
             break;
           default:
             console.log(`Unexpected prop type ${prop.type}`);

@@ -105,22 +105,40 @@
       avatarFetch.forEach((prop) => {
         switch(prop.type) {
           case "skinTone":
-            avatar.value.skinTone = prop.url;
+            avatar.value.skinTone = {
+              url: prop.url,
+              id: prop.id
+            };
             break;
           case "hat":
-            avatar.value.hat = prop.url;
+            avatar.value.hat = {
+              url: prop.url,
+              id: prop.id
+            };
             break;
           case "hair":
-            avatar.value.hair = prop.url;
+            avatar.value.hair = {
+              url: prop.url,
+              id: prop.id
+            };
             break;
           case "shirt":
-            avatar.value.shirt = prop.url;
+            avatar.value.shirt = {
+              url: prop.url,
+              id: prop.id
+            };
             break;
           case "background":
-            avatar.value.background = prop.url;
+            avatar.value.background = {
+              url: prop.url,
+              id: prop.id
+            };
             break;
           case "handProp":
-            avatar.value.handProp = prop.url;
+            avatar.value.handProp = {
+              url: prop.url,
+              id: prop.id
+            };
             break;
           default:
             console.log(`Unexpected prop type ${prop.type}`);
@@ -164,14 +182,20 @@
   async function equipProp(prop) {
     let result = await FetchService.equipProp(store.user.id, prop)
 
-    usersAvatar.value[prop.type] = prop.url;
-    store.avatars.find((avatar) => avatar.userId == store.user.id)[prop.type] = prop.url
+    usersAvatar.value[prop.type] = {
+      url: prop.url,
+      id: prop.id
+    };
+    store.avatars.find((avatar) => avatar.userId == store.user.id)[prop.type] = {
+      url: prop.url,
+      id: prop.id,
+    }
 
     return true;
   }
 
   function isEquipped(prop) {
-    return Object.entries(usersAvatar.value).some((entry) => entry[1] == prop.url)
+    return Object.entries(usersAvatar.value).some((entry) => entry[1].id == prop.id)
   }
 </script>
 
