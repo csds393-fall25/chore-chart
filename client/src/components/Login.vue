@@ -3,66 +3,70 @@
     <h2 class="text-h5 font-weight-bold">
       ChoreChart
     </h2>
-    <v-card
-      class="py-2 mx-auto my-auto w-75"
-      color="navy"
-      rounded="lg"
-    >
-      <template #title>
-        <h2 class="text-h6 font-weight-bold">
-          {{isCreate ?  'Create Profile' : 'Login'}}
-        </h2>
-        <v-form>
-          <v-text-field data-testid="name"  v-if="isCreate" :error-messages="errorMessages.name" v-model = "displayedName"  label = "Name"></v-text-field>
-          <v-text-field data-testid="email" :error-messages="errorMessages.email" v-model = "username"  label = "Email"></v-text-field>
-          <v-text-field  data-testid="password"   :error-messages="errorMessages.password" v-model = "password"  label = "Password" type = "password"  ></v-text-field>
-          <v-text-field data-testid="repeated" v-if="isCreate" :error-messages="errorMessages.repeatedPassword" v-model = "repeatedPassword"  label = "Password Again" type = "password"   ></v-text-field>   
-          <v-row v-if="isCreate" class="mx-auto my-auto">
-            <v-col  v-if="isCreate" style = "font-size: x-small;" cols = "6">
-              Estimated Time To Complete Chores (minutes)
-              <v-number-input data-testid="estTime" v-if="isCreate" :error-messages="errorMessages.estTime" v-model = "estimatedTime" :min = '1' control-variant="split" ></v-number-input>
-            </v-col>
-            <v-col v-if="isCreate"  style = "font-size: x-small;" cols = "6">
-              Maximum Difficulty
-              <v-number-input data-testid="maxDiff" v-if="isCreate" :error-messages="errorMessages.maxDiff" v-model = "maxDifficulty" :min = '1' :max = '10' control-variant="split"  ></v-number-input>
-            </v-col>
+    <v-row>
+      <v-col cols="12" md="8" offset-md="2">
+        <v-card
+          class="py-2"
+          color="navy"
+          rounded="lg"
+        >
+          <template #title>
+            <h2 class="text-h6 font-weight-bold">
+              {{isCreate ?  'Create Profile' : 'Login'}}
+            </h2>
+            <v-form>
+              <v-text-field data-testid="name"  v-if="isCreate" :error-messages="errorMessages.name" v-model = "displayedName"  label = "Name"></v-text-field>
+              <v-text-field data-testid="email" :error-messages="errorMessages.email" v-model = "username"  label = "Email"></v-text-field>
+              <v-text-field  data-testid="password"   :error-messages="errorMessages.password" v-model = "password"  label = "Password" type = "password"  ></v-text-field>
+              <v-text-field data-testid="repeated" v-if="isCreate" :error-messages="errorMessages.repeatedPassword" v-model = "repeatedPassword"  label = "Password Again" type = "password"   ></v-text-field>   
+              <v-row v-if="isCreate" class="mx-auto my-auto">
+                <v-col  v-if="isCreate" style = "font-size: x-small;" cols = "12" sm="6">
+                  Estimated Time To Complete Chores (minutes)
+                  <v-number-input data-testid="estTime" v-if="isCreate" :error-messages="errorMessages.estTime" v-model = "estimatedTime" :min = '1' control-variant="split" ></v-number-input>
+                </v-col>
+                <v-col v-if="isCreate"  style = "font-size: x-small;" cols = "12" sm="6">
+                  Maximum Difficulty
+                  <v-number-input data-testid="maxDiff" v-if="isCreate" :error-messages="errorMessages.maxDiff" v-model = "maxDifficulty" :min = '1' :max = '10' control-variant="split"  ></v-number-input>
+                </v-col>
 
-            <v-dialog data-testid="dialog" v-model="showDialog" width="500">
-        <v-card :title="!isJoin ? 'Create a Household' : 'Join a Household'" max-width="400">
-          <v-text-field data-testid="houseName"  :error-messages=" isJoin ? errorMessages.jc : errorMessages.houseName" v-model = "householdName"  :label = " !isJoin ? 'Enter Household Name' : 'Enter Household Join Code'"></v-text-field>
-          <v-card-actions>
-             <v-btn id = "test" @click="showDialog = false" data-testid="cancelButton" > cancel
-            </v-btn>
-            <v-btn id = "createDialog" @click="createProfile()" > {{isJoin ? "Join" : "Create"}}
-            </v-btn>
-          </v-card-actions>
-        </v-card>
-      </v-dialog>
+                <v-dialog data-testid="dialog" v-model="showDialog" width="500">
+            <v-card :title="!isJoin ? 'Create a Household' : 'Join a Household'" max-width="400">
+              <v-text-field data-testid="houseName"  :error-messages=" isJoin ? errorMessages.jc : errorMessages.houseName" v-model = "householdName"  :label = " !isJoin ? 'Enter Household Name' : 'Enter Household Join Code'"></v-text-field>
+              <v-card-actions>
+                <v-btn id = "test" @click="showDialog = false" data-testid="cancelButton" > cancel
+                </v-btn>
+                <v-btn id = "createDialog" @click="createProfile()" > {{isJoin ? "Join" : "Create"}}
+                </v-btn>
+              </v-card-actions>
+            </v-card>
+          </v-dialog>
 
 
-          </v-row>
-          <div>
-            <v-row v-if="isCreate"  style="align-items: center;">
-              <v-col v-if="isCreate"  style = "font-size: x-small; align-items: center; justify-content: center;" cols = "3">
-             <v-btn data-testid="cancelLogin"  color="error" @click="switchLogin" block>Cancel</v-btn>
-            </v-col>
-            <v-col  v-if="isCreate"  style = "font-size: x-small; align-items: center; justify-content: center" cols = "3" offset="3">
-  
-             <v-btn id="createH" data-testid="createHouse" color="teal" @click ="CreateButtonSwitches()" block>Create household</v-btn>
-            </v-col>
-            <v-col  v-if="isCreate"   style = "font-size: x-small; align-items: right; justify-content: right" cols = "3">
-             <v-btn id="joinH" color="teal" @click="joinButtonSwitches()" block>Join household</v-btn>
-            </v-col>
-             </v-row>
-            <v-btn id="loginButton" v-if = "!isCreate" class = "elevation-0" color="teal" @click ="  validateLogin()">{{ 'Login'}}</v-btn>
+              </v-row>
+              <div>
+                <v-row v-if="isCreate"  style="align-items: center;">
+                  <v-col v-if="isCreate"  style = "font-size: x-small; align-items: center; justify-content: center;" cols = "12" lg="3">
+                <v-btn data-testid="cancelLogin"  color="error" @click="switchLogin" block>Cancel</v-btn>
+                </v-col>
+                <v-col  v-if="isCreate"  style = "font-size: x-small; align-items: center; justify-content: center" cols = "12" sm="6" lg="3" offset-lg="3">
+      
+                <v-btn id="createH" data-testid="createHouse" color="teal" @click ="CreateButtonSwitches()" block>Create household</v-btn>
+                </v-col>
+                <v-col  v-if="isCreate"   style = "font-size: x-small; align-items: right; justify-content: right" cols = "12" sm="6" lg="3">
+                <v-btn id="joinH" color="teal" @click="joinButtonSwitches()" block>Join household</v-btn>
+                </v-col>
+                </v-row>
+                <v-btn id="loginButton" v-if = "!isCreate" class = "elevation-0" color="teal" @click ="  validateLogin()">{{ 'Login'}}</v-btn>
 
-          </div>
-          <div>
-            <v-btn id="switchC" v-if="!isCreate" class="mx-auto my-auto elevation-0" color="navy" @click = "switchCreate()" style = "font-size: x-small; " > Don't have an account? create one here</v-btn>
-          </div>
-        </v-form>
-      </template>
-    </v-card>   
+              </div>
+              <div>
+                <v-btn id="switchC" v-if="!isCreate" class="mx-auto my-auto elevation-0" color="navy" @click = "switchCreate()" style = "font-size: x-small; " > Don't have an account? create one here</v-btn>
+              </div>
+            </v-form>
+          </template>
+        </v-card> 
+      </v-col>
+    </v-row>  
   </v-sheet>
 </template>
 
