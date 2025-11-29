@@ -13,6 +13,8 @@
         v-model="tab"
         align-tabs="center"
         bg-color="primary"
+        id="tabMenu"
+        data-testid="tabMenu"
         show-arrows
       >
         <v-tab :value="'background'">Background</v-tab>
@@ -22,7 +24,11 @@
         <v-tab :value="'shirt'">Shirt</v-tab>
         <v-tab :value="'handProp'">Extra</v-tab>
       </v-tabs>
-      <v-tabs-window v-model="tab">
+      <v-tabs-window 
+        v-model="tab"
+        id="tabWindow"
+        data-testid="tabWindow"
+      >
         <v-tabs-window-item
           v-for="type in types"
           :key="type"
