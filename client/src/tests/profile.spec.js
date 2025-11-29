@@ -286,7 +286,7 @@ test("PDT-2 Profile deletion is canceled", async () => {
     const result = await FetchService.signup(user)
     FetchService.deleteUser(result.id)
     await nextTick()
-    await wrapper.find("#cancel").trigger("click")
+    await wrapper.find("#deleteCancel").trigger("click")
     expect(wrapper.vm.showDialog).toBe(false);
 })
 

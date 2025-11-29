@@ -32,7 +32,7 @@
           <v-card-actions>
             <v-btn id="delete" @click="deleteProfile(store.user.id)" text="delete">
             </v-btn>
-             <v-btn id="cancel" @click="showDialog = false" text="cancel">
+             <v-btn id="deleteCancel" @click="showDialog = false" text="cancel">
             </v-btn>
           </v-card-actions>
         </v-card>

@@ -1,6 +1,6 @@
 <template class="mb-0 pb-0">
   <div class="w-100 mb-0 pb-0 position-relative">
-    <img @click.prevent="profile" :to="route"  v-if="avatar.background" :src="avatar.background" class="top-0 left-0 w-100 pb-0 mb-0"/>
+    <img id = "background" @click.prevent="profile" :to="route"  v-if="avatar.background" :src="avatar.background" class="top-0 left-0 w-100 pb-0 mb-0"/>
     <img @click.prevent="profile" :to="route"  v-if="avatar.skinTone" :src="avatar.skinTone" class="position-absolute top-0 left-0 w-100"/>
     <img @click.prevent="profile" :to="route"  v-if="avatar.hair" :src="avatar.hair" class="position-absolute top-0 left-0 w-100"/>
     <img @click.prevent="profile" :to="route"  v-if="avatar.hat" :src="avatar.hat" class="position-absolute top-0 left-0 w-100"/>
@@ -24,12 +24,12 @@
           </v-col>
           </v-row>
            <v-card-actions>
-             <v-btn id = "lastLeaderCancel" @click="cancel()" data-testid="cancelButton" > cancel
+             <v-btn id = "cancel" @click="cancel()" data-testid="cancelButton" > cancel
             </v-btn>
           </v-card-actions>
         </v-card>
       </v-dialog>
-      {{route}}
+    
 
 </template>
   
@@ -65,8 +65,6 @@ onMounted(async () => {
 
   if (props.dis){
     route.value = "/profile" 
-    console.log("HI")
-
   }
   else{
     route.value = ""
@@ -115,27 +113,23 @@ onMounted(async () => {
 
 function profile(){
   if (!props.dis){
-  store.household.users.forEach((user)=>{
-    console.log("HI")
-    profileDialog.value = true
-    if(user.id==props.userId){
-      name.value = user.name
-      role.value = user.role
-      maxChoreTime.value = user.maxChoreTime
-      maxDifficulty.value = user.difficulty
-      totalPoints.value = user.totalPoints
-    }
-  })
-}
+    store.household.users.forEach((user)=>{
+      profileDialog.value = true
+      if(user.id==props.userId){
+        name.value = user.name
+        role.value = user.role
+        maxChoreTime.value = user.maxChoreTime
+        maxDifficulty.value = user.difficulty
+        totalPoints.value = user.totalPoints
+      }
+    })
+  }
 }
 
 function cancel(){
   profileDialog.value= false
 }
 
-function nothing(){
-
-}
 
 
  
