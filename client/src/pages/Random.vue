@@ -2,7 +2,23 @@
   <v-sheet class="w-100 fill-height" color="navy">
     <div class="text-h4 text-md-h2 ml-3 pt-2 mb-3">Random Assignment</div>
     <v-row class="mr-2 ml-2 mb-3 mt-3">
-      <v-col offset-md="5" cols="12" md="3" class="pt-1 pb-1">
+      <v-col cols="12" md="5">
+        <v-tooltip 
+          text="This allows the random assignment to go beyond a users maximum available time so that more chores can be assigned."
+          location="bottom"
+        >
+          <template v-slot:activator="{ props }">
+            <v-checkbox
+              v-model="overrideMaxTime"
+              label="Override the users' maximum time?"
+              v-bind="props"
+              density="compact"
+              id="overrideMaxTimeCheckbox"
+            ></v-checkbox>
+          </template>
+        </v-tooltip>
+      </v-col>
+      <v-col cols="12" md="3" class="pt-1 pb-1">
         <v-btn
             color="secondary"
             block
@@ -125,6 +141,7 @@
   const assignedChores = ref([])
   const unassignedChores = ref([])
   const mounted = ref(false)
+  const overrideMaxTime = ref(false)
 
   if(store.user.role != 'leader') {
     router.push({
@@ -183,7 +200,7 @@
     }
 
     //identify last index of a user that has the corresponding max difficulty or above
-    let userDifficultyIndex = [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0]
+    let userDifficultyIndex = [-1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1]
     for(let userIndex = 0; userIndex < userTime.length; userIndex++) {
       for(let difficultyIndex = userTime[userIndex].difficulty; difficultyIndex > 0; difficultyIndex--) {
         userDifficultyIndex[difficultyIndex] = userIndex;
@@ -212,6 +229,47 @@
         assignedChores.value.push(originalChores[choreIndex])
       } else {
         unassignedChores.value.push(originalChores[choreIndex])
+      }
+    }
+
+    if(overrideMaxTime.value) {
+      //Only want to sort the chores that would have been unassigned before
+      let randomUnassignedChores = unassignedChores.value
+      unassignedChores.value = []
+
+      for(let choreIndex = 0; choreIndex < randomUnassignedChores.length; choreIndex++) {
+        let choreDifficulty = randomUnassignedChores[choreIndex].difficulty;
+
+        //find users that have time to complete this chore
+        let availableUsers = [];
+        for(let userIndex = 0; userIndex < userDifficultyIndex[choreDifficulty] + 1; userIndex++) {
+          availableUsers.push(userTime[userIndex])
+        }
+
+        //Sort the users by the time they have available
+        availableUsers = availableUsers.sort((user1, user2) => user2.maxChoreTime - user1.maxChoreTime)
+
+        if(availableUsers.length > 0) {
+          //Select a random available user
+          //Weight it so that users with more time available have a higher weight
+          let userWieght = Math.floor(Math.random() * (availableUsers.length * (availableUsers.length + 1) / 2))
+
+          //Find the users index by doing the reverse of how it was weighted
+          let userIndex = Math.floor(Math.sqrt(2 * userWieght + 0.25) - 0.5)
+
+          if(userIndex < 0) {
+            userIndex = 0
+          } else if(userIndex >= availableUsers.length) {
+            userIndex = availableUsers.length - 1
+          }
+          
+          //Update the chore information and the user information for the chore to be assigned
+          randomUnassignedChores[choreIndex].assigneeId = availableUsers[userIndex].id
+          userTime.find((user) => user.id == availableUsers[userIndex].id).maxChoreTime -= randomUnassignedChores[choreIndex].estimatedTime;
+          assignedChores.value.push(randomUnassignedChores[choreIndex])
+        } else {
+          unassignedChores.value.push(randomUnassignedChores[choreIndex])
+        }
       }
     }
   }
