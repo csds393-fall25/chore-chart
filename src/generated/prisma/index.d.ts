@@ -43,6 +43,21 @@ export type UserAvatarProps = $Result.DefaultSelection<Prisma.$UserAvatarPropsPa
  * 
  */
 export type AvatarProp = $Result.DefaultSelection<Prisma.$AvatarPropPayload>
+/**
+ * Model BulletinItem
+ * 
+ */
+export type BulletinItem = $Result.DefaultSelection<Prisma.$BulletinItemPayload>
+/**
+ * Model Comment
+ * 
+ */
+export type Comment = $Result.DefaultSelection<Prisma.$CommentPayload>
+/**
+ * Model PollOption
+ * 
+ */
+export type PollOption = $Result.DefaultSelection<Prisma.$PollOptionPayload>
 
 /**
  * Enums
@@ -67,6 +82,14 @@ export const PropType: {
 
 export type PropType = (typeof PropType)[keyof typeof PropType]
 
+
+export const BulletinType: {
+  post: 'post',
+  poll: 'poll'
+};
+
+export type BulletinType = (typeof BulletinType)[keyof typeof BulletinType]
+
 }
 
 export type Role = $Enums.Role
@@ -76,6 +99,10 @@ export const Role: typeof $Enums.Role
 export type PropType = $Enums.PropType
 
 export const PropType: typeof $Enums.PropType
+
+export type BulletinType = $Enums.BulletinType
+
+export const BulletinType: typeof $Enums.BulletinType
 
 /**
  * ##  Prisma Client ʲˢ
@@ -254,6 +281,36 @@ export class PrismaClient<
     * ```
     */
   get avatarProp(): Prisma.AvatarPropDelegate<ExtArgs, ClientOptions>;
+
+  /**
+   * `prisma.bulletinItem`: Exposes CRUD operations for the **BulletinItem** model.
+    * Example usage:
+    * ```ts
+    * // Fetch zero or more BulletinItems
+    * const bulletinItems = await prisma.bulletinItem.findMany()
+    * ```
+    */
+  get bulletinItem(): Prisma.BulletinItemDelegate<ExtArgs, ClientOptions>;
+
+  /**
+   * `prisma.comment`: Exposes CRUD operations for the **Comment** model.
+    * Example usage:
+    * ```ts
+    * // Fetch zero or more Comments
+    * const comments = await prisma.comment.findMany()
+    * ```
+    */
+  get comment(): Prisma.CommentDelegate<ExtArgs, ClientOptions>;
+
+  /**
+   * `prisma.pollOption`: Exposes CRUD operations for the **PollOption** model.
+    * Example usage:
+    * ```ts
+    * // Fetch zero or more PollOptions
+    * const pollOptions = await prisma.pollOption.findMany()
+    * ```
+    */
+  get pollOption(): Prisma.PollOptionDelegate<ExtArgs, ClientOptions>;
 }
 
 export namespace Prisma {
@@ -699,7 +756,10 @@ export namespace Prisma {
     Chore: 'Chore',
     Avatar: 'Avatar',
     UserAvatarProps: 'UserAvatarProps',
-    AvatarProp: 'AvatarProp'
+    AvatarProp: 'AvatarProp',
+    BulletinItem: 'BulletinItem',
+    Comment: 'Comment',
+    PollOption: 'PollOption'
   };
 
   export type ModelName = (typeof ModelName)[keyof typeof ModelName]
@@ -718,7 +778,7 @@ export namespace Prisma {
       omit: GlobalOmitOptions
     }
     meta: {
-      modelProps: "user" | "household" | "chore" | "avatar" | "userAvatarProps" | "avatarProp"
+      modelProps: "user" | "household" | "chore" | "avatar" | "userAvatarProps" | "avatarProp" | "bulletinItem" | "comment" | "pollOption"
       txIsolationLevel: Prisma.TransactionIsolationLevel
     }
     model: {
@@ -1166,6 +1226,228 @@ export namespace Prisma {
           }
         }
       }
+      BulletinItem: {
+        payload: Prisma.$BulletinItemPayload<ExtArgs>
+        fields: Prisma.BulletinItemFieldRefs
+        operations: {
+          findUnique: {
+            args: Prisma.BulletinItemFindUniqueArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$BulletinItemPayload> | null
+          }
+          findUniqueOrThrow: {
+            args: Prisma.BulletinItemFindUniqueOrThrowArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$BulletinItemPayload>
+          }
+          findFirst: {
+            args: Prisma.BulletinItemFindFirstArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$BulletinItemPayload> | null
+          }
+          findFirstOrThrow: {
+            args: Prisma.BulletinItemFindFirstOrThrowArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$BulletinItemPayload>
+          }
+          findMany: {
+            args: Prisma.BulletinItemFindManyArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$BulletinItemPayload>[]
+          }
+          create: {
+            args: Prisma.BulletinItemCreateArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$BulletinItemPayload>
+          }
+          createMany: {
+            args: Prisma.BulletinItemCreateManyArgs<ExtArgs>
+            result: BatchPayload
+          }
+          createManyAndReturn: {
+            args: Prisma.BulletinItemCreateManyAndReturnArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$BulletinItemPayload>[]
+          }
+          delete: {
+            args: Prisma.BulletinItemDeleteArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$BulletinItemPayload>
+          }
+          update: {
+            args: Prisma.BulletinItemUpdateArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$BulletinItemPayload>
+          }
+          deleteMany: {
+            args: Prisma.BulletinItemDeleteManyArgs<ExtArgs>
+            result: BatchPayload
+          }
+          updateMany: {
+            args: Prisma.BulletinItemUpdateManyArgs<ExtArgs>
+            result: BatchPayload
+          }
+          updateManyAndReturn: {
+            args: Prisma.BulletinItemUpdateManyAndReturnArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$BulletinItemPayload>[]
+          }
+          upsert: {
+            args: Prisma.BulletinItemUpsertArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$BulletinItemPayload>
+          }
+          aggregate: {
+            args: Prisma.BulletinItemAggregateArgs<ExtArgs>
+            result: $Utils.Optional<AggregateBulletinItem>
+          }
+          groupBy: {
+            args: Prisma.BulletinItemGroupByArgs<ExtArgs>
+            result: $Utils.Optional<BulletinItemGroupByOutputType>[]
+          }
+          count: {
+            args: Prisma.BulletinItemCountArgs<ExtArgs>
+            result: $Utils.Optional<BulletinItemCountAggregateOutputType> | number
+          }
+        }
+      }
+      Comment: {
+        payload: Prisma.$CommentPayload<ExtArgs>
+        fields: Prisma.CommentFieldRefs
+        operations: {
+          findUnique: {
+            args: Prisma.CommentFindUniqueArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$CommentPayload> | null
+          }
+          findUniqueOrThrow: {
+            args: Prisma.CommentFindUniqueOrThrowArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$CommentPayload>
+          }
+          findFirst: {
+            args: Prisma.CommentFindFirstArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$CommentPayload> | null
+          }
+          findFirstOrThrow: {
+            args: Prisma.CommentFindFirstOrThrowArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$CommentPayload>
+          }
+          findMany: {
+            args: Prisma.CommentFindManyArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$CommentPayload>[]
+          }
+          create: {
+            args: Prisma.CommentCreateArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$CommentPayload>
+          }
+          createMany: {
+            args: Prisma.CommentCreateManyArgs<ExtArgs>
+            result: BatchPayload
+          }
+          createManyAndReturn: {
+            args: Prisma.CommentCreateManyAndReturnArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$CommentPayload>[]
+          }
+          delete: {
+            args: Prisma.CommentDeleteArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$CommentPayload>
+          }
+          update: {
+            args: Prisma.CommentUpdateArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$CommentPayload>
+          }
+          deleteMany: {
+            args: Prisma.CommentDeleteManyArgs<ExtArgs>
+            result: BatchPayload
+          }
+          updateMany: {
+            args: Prisma.CommentUpdateManyArgs<ExtArgs>
+            result: BatchPayload
+          }
+          updateManyAndReturn: {
+            args: Prisma.CommentUpdateManyAndReturnArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$CommentPayload>[]
+          }
+          upsert: {
+            args: Prisma.CommentUpsertArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$CommentPayload>
+          }
+          aggregate: {
+            args: Prisma.CommentAggregateArgs<ExtArgs>
+            result: $Utils.Optional<AggregateComment>
+          }
+          groupBy: {
+            args: Prisma.CommentGroupByArgs<ExtArgs>
+            result: $Utils.Optional<CommentGroupByOutputType>[]
+          }
+          count: {
+            args: Prisma.CommentCountArgs<ExtArgs>
+            result: $Utils.Optional<CommentCountAggregateOutputType> | number
+          }
+        }
+      }
+      PollOption: {
+        payload: Prisma.$PollOptionPayload<ExtArgs>
+        fields: Prisma.PollOptionFieldRefs
+        operations: {
+          findUnique: {
+            args: Prisma.PollOptionFindUniqueArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$PollOptionPayload> | null
+          }
+          findUniqueOrThrow: {
+            args: Prisma.PollOptionFindUniqueOrThrowArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$PollOptionPayload>
+          }
+          findFirst: {
+            args: Prisma.PollOptionFindFirstArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$PollOptionPayload> | null
+          }
+          findFirstOrThrow: {
+            args: Prisma.PollOptionFindFirstOrThrowArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$PollOptionPayload>
+          }
+          findMany: {
+            args: Prisma.PollOptionFindManyArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$PollOptionPayload>[]
+          }
+          create: {
+            args: Prisma.PollOptionCreateArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$PollOptionPayload>
+          }
+          createMany: {
+            args: Prisma.PollOptionCreateManyArgs<ExtArgs>
+            result: BatchPayload
+          }
+          createManyAndReturn: {
+            args: Prisma.PollOptionCreateManyAndReturnArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$PollOptionPayload>[]
+          }
+          delete: {
+            args: Prisma.PollOptionDeleteArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$PollOptionPayload>
+          }
+          update: {
+            args: Prisma.PollOptionUpdateArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$PollOptionPayload>
+          }
+          deleteMany: {
+            args: Prisma.PollOptionDeleteManyArgs<ExtArgs>
+            result: BatchPayload
+          }
+          updateMany: {
+            args: Prisma.PollOptionUpdateManyArgs<ExtArgs>
+            result: BatchPayload
+          }
+          updateManyAndReturn: {
+            args: Prisma.PollOptionUpdateManyAndReturnArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$PollOptionPayload>[]
+          }
+          upsert: {
+            args: Prisma.PollOptionUpsertArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$PollOptionPayload>
+          }
+          aggregate: {
+            args: Prisma.PollOptionAggregateArgs<ExtArgs>
+            result: $Utils.Optional<AggregatePollOption>
+          }
+          groupBy: {
+            args: Prisma.PollOptionGroupByArgs<ExtArgs>
+            result: $Utils.Optional<PollOptionGroupByOutputType>[]
+          }
+          count: {
+            args: Prisma.PollOptionCountArgs<ExtArgs>
+            result: $Utils.Optional<PollOptionCountAggregateOutputType> | number
+          }
+        }
+      }
     }
   } & {
     other: {
@@ -1268,6 +1550,9 @@ export namespace Prisma {
     avatar?: AvatarOmit
     userAvatarProps?: UserAvatarPropsOmit
     avatarProp?: AvatarPropOmit
+    bulletinItem?: BulletinItemOmit
+    comment?: CommentOmit
+    pollOption?: PollOptionOmit
   }
 
   /* Types for Logging */
@@ -1350,11 +1635,15 @@ export namespace Prisma {
   export type UserCountOutputType = {
     assignedChores: number
     userAvatarProps: number
+    BulletinItem: number
+    Comment: number
   }
 
   export type UserCountOutputTypeSelect<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
     assignedChores?: boolean | UserCountOutputTypeCountAssignedChoresArgs
     userAvatarProps?: boolean | UserCountOutputTypeCountUserAvatarPropsArgs
+    BulletinItem?: boolean | UserCountOutputTypeCountBulletinItemArgs
+    Comment?: boolean | UserCountOutputTypeCountCommentArgs
   }
 
   // Custom InputTypes
@@ -1380,6 +1669,20 @@ export namespace Prisma {
    */
   export type UserCountOutputTypeCountUserAvatarPropsArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
     where?: UserAvatarPropsWhereInput
+  }
+
+  /**
+   * UserCountOutputType without action
+   */
+  export type UserCountOutputTypeCountBulletinItemArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    where?: BulletinItemWhereInput
+  }
+
+  /**
+   * UserCountOutputType without action
+   */
+  export type UserCountOutputTypeCountCommentArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    where?: CommentWhereInput
   }
 
 
@@ -1505,6 +1808,46 @@ export namespace Prisma {
    */
   export type AvatarPropCountOutputTypeCountUserAvatarPropsArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
     where?: UserAvatarPropsWhereInput
+  }
+
+
+  /**
+   * Count Type BulletinItemCountOutputType
+   */
+
+  export type BulletinItemCountOutputType = {
+    comments: number
+    options: number
+  }
+
+  export type BulletinItemCountOutputTypeSelect<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    comments?: boolean | BulletinItemCountOutputTypeCountCommentsArgs
+    options?: boolean | BulletinItemCountOutputTypeCountOptionsArgs
+  }
+
+  // Custom InputTypes
+  /**
+   * BulletinItemCountOutputType without action
+   */
+  export type BulletinItemCountOutputTypeDefaultArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the BulletinItemCountOutputType
+     */
+    select?: BulletinItemCountOutputTypeSelect<ExtArgs> | null
+  }
+
+  /**
+   * BulletinItemCountOutputType without action
+   */
+  export type BulletinItemCountOutputTypeCountCommentsArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    where?: CommentWhereInput
+  }
+
+  /**
+   * BulletinItemCountOutputType without action
+   */
+  export type BulletinItemCountOutputTypeCountOptionsArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    where?: PollOptionWhereInput
   }
 
 
@@ -1790,6 +2133,8 @@ export namespace Prisma {
     assignedChores?: boolean | User$assignedChoresArgs<ExtArgs>
     avatar?: boolean | User$avatarArgs<ExtArgs>
     userAvatarProps?: boolean | User$userAvatarPropsArgs<ExtArgs>
+    BulletinItem?: boolean | User$BulletinItemArgs<ExtArgs>
+    Comment?: boolean | User$CommentArgs<ExtArgs>
     _count?: boolean | UserCountOutputTypeDefaultArgs<ExtArgs>
   }, ExtArgs["result"]["user"]>
 
@@ -1846,6 +2191,8 @@ export namespace Prisma {
     assignedChores?: boolean | User$assignedChoresArgs<ExtArgs>
     avatar?: boolean | User$avatarArgs<ExtArgs>
     userAvatarProps?: boolean | User$userAvatarPropsArgs<ExtArgs>
+    BulletinItem?: boolean | User$BulletinItemArgs<ExtArgs>
+    Comment?: boolean | User$CommentArgs<ExtArgs>
     _count?: boolean | UserCountOutputTypeDefaultArgs<ExtArgs>
   }
   export type UserIncludeCreateManyAndReturn<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
@@ -1862,6 +2209,8 @@ export namespace Prisma {
       assignedChores: Prisma.$ChorePayload<ExtArgs>[]
       avatar: Prisma.$AvatarPayload<ExtArgs> | null
       userAvatarProps: Prisma.$UserAvatarPropsPayload<ExtArgs>[]
+      BulletinItem: Prisma.$BulletinItemPayload<ExtArgs>[]
+      Comment: Prisma.$CommentPayload<ExtArgs>[]
     }
     scalars: $Extensions.GetPayloadResult<{
       id: number
@@ -2274,6 +2623,8 @@ export namespace Prisma {
     assignedChores<T extends User$assignedChoresArgs<ExtArgs> = {}>(args?: Subset<T, User$assignedChoresArgs<ExtArgs>>): Prisma.PrismaPromise<$Result.GetResult<Prisma.$ChorePayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
     avatar<T extends User$avatarArgs<ExtArgs> = {}>(args?: Subset<T, User$avatarArgs<ExtArgs>>): Prisma__AvatarClient<$Result.GetResult<Prisma.$AvatarPayload<ExtArgs>, T, "findUniqueOrThrow", GlobalOmitOptions> | null, null, ExtArgs, GlobalOmitOptions>
     userAvatarProps<T extends User$userAvatarPropsArgs<ExtArgs> = {}>(args?: Subset<T, User$userAvatarPropsArgs<ExtArgs>>): Prisma.PrismaPromise<$Result.GetResult<Prisma.$UserAvatarPropsPayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
+    BulletinItem<T extends User$BulletinItemArgs<ExtArgs> = {}>(args?: Subset<T, User$BulletinItemArgs<ExtArgs>>): Prisma.PrismaPromise<$Result.GetResult<Prisma.$BulletinItemPayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
+    Comment<T extends User$CommentArgs<ExtArgs> = {}>(args?: Subset<T, User$CommentArgs<ExtArgs>>): Prisma.PrismaPromise<$Result.GetResult<Prisma.$CommentPayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
     /**
      * Attaches callbacks for the resolution and/or rejection of the Promise.
      * @param onfulfilled The callback to execute when the Promise is resolved.
@@ -2794,6 +3145,54 @@ export namespace Prisma {
     take?: number
     skip?: number
     distinct?: UserAvatarPropsScalarFieldEnum | UserAvatarPropsScalarFieldEnum[]
+  }
+
+  /**
+   * User.BulletinItem
+   */
+  export type User$BulletinItemArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the BulletinItem
+     */
+    select?: BulletinItemSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the BulletinItem
+     */
+    omit?: BulletinItemOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: BulletinItemInclude<ExtArgs> | null
+    where?: BulletinItemWhereInput
+    orderBy?: BulletinItemOrderByWithRelationInput | BulletinItemOrderByWithRelationInput[]
+    cursor?: BulletinItemWhereUniqueInput
+    take?: number
+    skip?: number
+    distinct?: BulletinItemScalarFieldEnum | BulletinItemScalarFieldEnum[]
+  }
+
+  /**
+   * User.Comment
+   */
+  export type User$CommentArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the Comment
+     */
+    select?: CommentSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the Comment
+     */
+    omit?: CommentOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: CommentInclude<ExtArgs> | null
+    where?: CommentWhereInput
+    orderBy?: CommentOrderByWithRelationInput | CommentOrderByWithRelationInput[]
+    cursor?: CommentWhereUniqueInput
+    take?: number
+    skip?: number
+    distinct?: CommentScalarFieldEnum | CommentScalarFieldEnum[]
   }
 
   /**
@@ -8640,6 +9039,3398 @@ export namespace Prisma {
 
 
   /**
+   * Model BulletinItem
+   */
+
+  export type AggregateBulletinItem = {
+    _count: BulletinItemCountAggregateOutputType | null
+    _avg: BulletinItemAvgAggregateOutputType | null
+    _sum: BulletinItemSumAggregateOutputType | null
+    _min: BulletinItemMinAggregateOutputType | null
+    _max: BulletinItemMaxAggregateOutputType | null
+  }
+
+  export type BulletinItemAvgAggregateOutputType = {
+    id: number | null
+    authorId: number | null
+    likeCount: number | null
+  }
+
+  export type BulletinItemSumAggregateOutputType = {
+    id: number | null
+    authorId: number | null
+    likeCount: number | null
+  }
+
+  export type BulletinItemMinAggregateOutputType = {
+    id: number | null
+    type: $Enums.BulletinType | null
+    authorId: number | null
+    content: string | null
+    dateCreated: Date | null
+    dateModified: Date | null
+    likeCount: number | null
+  }
+
+  export type BulletinItemMaxAggregateOutputType = {
+    id: number | null
+    type: $Enums.BulletinType | null
+    authorId: number | null
+    content: string | null
+    dateCreated: Date | null
+    dateModified: Date | null
+    likeCount: number | null
+  }
+
+  export type BulletinItemCountAggregateOutputType = {
+    id: number
+    type: number
+    authorId: number
+    content: number
+    dateCreated: number
+    dateModified: number
+    likeCount: number
+    _all: number
+  }
+
+
+  export type BulletinItemAvgAggregateInputType = {
+    id?: true
+    authorId?: true
+    likeCount?: true
+  }
+
+  export type BulletinItemSumAggregateInputType = {
+    id?: true
+    authorId?: true
+    likeCount?: true
+  }
+
+  export type BulletinItemMinAggregateInputType = {
+    id?: true
+    type?: true
+    authorId?: true
+    content?: true
+    dateCreated?: true
+    dateModified?: true
+    likeCount?: true
+  }
+
+  export type BulletinItemMaxAggregateInputType = {
+    id?: true
+    type?: true
+    authorId?: true
+    content?: true
+    dateCreated?: true
+    dateModified?: true
+    likeCount?: true
+  }
+
+  export type BulletinItemCountAggregateInputType = {
+    id?: true
+    type?: true
+    authorId?: true
+    content?: true
+    dateCreated?: true
+    dateModified?: true
+    likeCount?: true
+    _all?: true
+  }
+
+  export type BulletinItemAggregateArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Filter which BulletinItem to aggregate.
+     */
+    where?: BulletinItemWhereInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/sorting Sorting Docs}
+     * 
+     * Determine the order of BulletinItems to fetch.
+     */
+    orderBy?: BulletinItemOrderByWithRelationInput | BulletinItemOrderByWithRelationInput[]
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination#cursor-based-pagination Cursor Docs}
+     * 
+     * Sets the start position
+     */
+    cursor?: BulletinItemWhereUniqueInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Take `±n` BulletinItems from the position of the cursor.
+     */
+    take?: number
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Skip the first `n` BulletinItems.
+     */
+    skip?: number
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/aggregations Aggregation Docs}
+     * 
+     * Count returned BulletinItems
+    **/
+    _count?: true | BulletinItemCountAggregateInputType
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/aggregations Aggregation Docs}
+     * 
+     * Select which fields to average
+    **/
+    _avg?: BulletinItemAvgAggregateInputType
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/aggregations Aggregation Docs}
+     * 
+     * Select which fields to sum
+    **/
+    _sum?: BulletinItemSumAggregateInputType
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/aggregations Aggregation Docs}
+     * 
+     * Select which fields to find the minimum value
+    **/
+    _min?: BulletinItemMinAggregateInputType
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/aggregations Aggregation Docs}
+     * 
+     * Select which fields to find the maximum value
+    **/
+    _max?: BulletinItemMaxAggregateInputType
+  }
+
+  export type GetBulletinItemAggregateType<T extends BulletinItemAggregateArgs> = {
+        [P in keyof T & keyof AggregateBulletinItem]: P extends '_count' | 'count'
+      ? T[P] extends true
+        ? number
+        : GetScalarType<T[P], AggregateBulletinItem[P]>
+      : GetScalarType<T[P], AggregateBulletinItem[P]>
+  }
+
+
+
+
+  export type BulletinItemGroupByArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    where?: BulletinItemWhereInput
+    orderBy?: BulletinItemOrderByWithAggregationInput | BulletinItemOrderByWithAggregationInput[]
+    by: BulletinItemScalarFieldEnum[] | BulletinItemScalarFieldEnum
+    having?: BulletinItemScalarWhereWithAggregatesInput
+    take?: number
+    skip?: number
+    _count?: BulletinItemCountAggregateInputType | true
+    _avg?: BulletinItemAvgAggregateInputType
+    _sum?: BulletinItemSumAggregateInputType
+    _min?: BulletinItemMinAggregateInputType
+    _max?: BulletinItemMaxAggregateInputType
+  }
+
+  export type BulletinItemGroupByOutputType = {
+    id: number
+    type: $Enums.BulletinType
+    authorId: number
+    content: string
+    dateCreated: Date
+    dateModified: Date
+    likeCount: number
+    _count: BulletinItemCountAggregateOutputType | null
+    _avg: BulletinItemAvgAggregateOutputType | null
+    _sum: BulletinItemSumAggregateOutputType | null
+    _min: BulletinItemMinAggregateOutputType | null
+    _max: BulletinItemMaxAggregateOutputType | null
+  }
+
+  type GetBulletinItemGroupByPayload<T extends BulletinItemGroupByArgs> = Prisma.PrismaPromise<
+    Array<
+      PickEnumerable<BulletinItemGroupByOutputType, T['by']> &
+        {
+          [P in ((keyof T) & (keyof BulletinItemGroupByOutputType))]: P extends '_count'
+            ? T[P] extends boolean
+              ? number
+              : GetScalarType<T[P], BulletinItemGroupByOutputType[P]>
+            : GetScalarType<T[P], BulletinItemGroupByOutputType[P]>
+        }
+      >
+    >
+
+
+  export type BulletinItemSelect<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetSelect<{
+    id?: boolean
+    type?: boolean
+    authorId?: boolean
+    content?: boolean
+    dateCreated?: boolean
+    dateModified?: boolean
+    likeCount?: boolean
+    author?: boolean | UserDefaultArgs<ExtArgs>
+    comments?: boolean | BulletinItem$commentsArgs<ExtArgs>
+    options?: boolean | BulletinItem$optionsArgs<ExtArgs>
+    _count?: boolean | BulletinItemCountOutputTypeDefaultArgs<ExtArgs>
+  }, ExtArgs["result"]["bulletinItem"]>
+
+  export type BulletinItemSelectCreateManyAndReturn<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetSelect<{
+    id?: boolean
+    type?: boolean
+    authorId?: boolean
+    content?: boolean
+    dateCreated?: boolean
+    dateModified?: boolean
+    likeCount?: boolean
+    author?: boolean | UserDefaultArgs<ExtArgs>
+  }, ExtArgs["result"]["bulletinItem"]>
+
+  export type BulletinItemSelectUpdateManyAndReturn<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetSelect<{
+    id?: boolean
+    type?: boolean
+    authorId?: boolean
+    content?: boolean
+    dateCreated?: boolean
+    dateModified?: boolean
+    likeCount?: boolean
+    author?: boolean | UserDefaultArgs<ExtArgs>
+  }, ExtArgs["result"]["bulletinItem"]>
+
+  export type BulletinItemSelectScalar = {
+    id?: boolean
+    type?: boolean
+    authorId?: boolean
+    content?: boolean
+    dateCreated?: boolean
+    dateModified?: boolean
+    likeCount?: boolean
+  }
+
+  export type BulletinItemOmit<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetOmit<"id" | "type" | "authorId" | "content" | "dateCreated" | "dateModified" | "likeCount", ExtArgs["result"]["bulletinItem"]>
+  export type BulletinItemInclude<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    author?: boolean | UserDefaultArgs<ExtArgs>
+    comments?: boolean | BulletinItem$commentsArgs<ExtArgs>
+    options?: boolean | BulletinItem$optionsArgs<ExtArgs>
+    _count?: boolean | BulletinItemCountOutputTypeDefaultArgs<ExtArgs>
+  }
+  export type BulletinItemIncludeCreateManyAndReturn<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    author?: boolean | UserDefaultArgs<ExtArgs>
+  }
+  export type BulletinItemIncludeUpdateManyAndReturn<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    author?: boolean | UserDefaultArgs<ExtArgs>
+  }
+
+  export type $BulletinItemPayload<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    name: "BulletinItem"
+    objects: {
+      author: Prisma.$UserPayload<ExtArgs>
+      comments: Prisma.$CommentPayload<ExtArgs>[]
+      options: Prisma.$PollOptionPayload<ExtArgs>[]
+    }
+    scalars: $Extensions.GetPayloadResult<{
+      id: number
+      type: $Enums.BulletinType
+      authorId: number
+      content: string
+      dateCreated: Date
+      dateModified: Date
+      likeCount: number
+    }, ExtArgs["result"]["bulletinItem"]>
+    composites: {}
+  }
+
+  type BulletinItemGetPayload<S extends boolean | null | undefined | BulletinItemDefaultArgs> = $Result.GetResult<Prisma.$BulletinItemPayload, S>
+
+  type BulletinItemCountArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> =
+    Omit<BulletinItemFindManyArgs, 'select' | 'include' | 'distinct' | 'omit'> & {
+      select?: BulletinItemCountAggregateInputType | true
+    }
+
+  export interface BulletinItemDelegate<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs, GlobalOmitOptions = {}> {
+    [K: symbol]: { types: Prisma.TypeMap<ExtArgs>['model']['BulletinItem'], meta: { name: 'BulletinItem' } }
+    /**
+     * Find zero or one BulletinItem that matches the filter.
+     * @param {BulletinItemFindUniqueArgs} args - Arguments to find a BulletinItem
+     * @example
+     * // Get one BulletinItem
+     * const bulletinItem = await prisma.bulletinItem.findUnique({
+     *   where: {
+     *     // ... provide filter here
+     *   }
+     * })
+     */
+    findUnique<T extends BulletinItemFindUniqueArgs>(args: SelectSubset<T, BulletinItemFindUniqueArgs<ExtArgs>>): Prisma__BulletinItemClient<$Result.GetResult<Prisma.$BulletinItemPayload<ExtArgs>, T, "findUnique", GlobalOmitOptions> | null, null, ExtArgs, GlobalOmitOptions>
+
+    /**
+     * Find one BulletinItem that matches the filter or throw an error with `error.code='P2025'`
+     * if no matches were found.
+     * @param {BulletinItemFindUniqueOrThrowArgs} args - Arguments to find a BulletinItem
+     * @example
+     * // Get one BulletinItem
+     * const bulletinItem = await prisma.bulletinItem.findUniqueOrThrow({
+     *   where: {
+     *     // ... provide filter here
+     *   }
+     * })
+     */
+    findUniqueOrThrow<T extends BulletinItemFindUniqueOrThrowArgs>(args: SelectSubset<T, BulletinItemFindUniqueOrThrowArgs<ExtArgs>>): Prisma__BulletinItemClient<$Result.GetResult<Prisma.$BulletinItemPayload<ExtArgs>, T, "findUniqueOrThrow", GlobalOmitOptions>, never, ExtArgs, GlobalOmitOptions>
+
+    /**
+     * Find the first BulletinItem that matches the filter.
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * @param {BulletinItemFindFirstArgs} args - Arguments to find a BulletinItem
+     * @example
+     * // Get one BulletinItem
+     * const bulletinItem = await prisma.bulletinItem.findFirst({
+     *   where: {
+     *     // ... provide filter here
+     *   }
+     * })
+     */
+    findFirst<T extends BulletinItemFindFirstArgs>(args?: SelectSubset<T, BulletinItemFindFirstArgs<ExtArgs>>): Prisma__BulletinItemClient<$Result.GetResult<Prisma.$BulletinItemPayload<ExtArgs>, T, "findFirst", GlobalOmitOptions> | null, null, ExtArgs, GlobalOmitOptions>
+
+    /**
+     * Find the first BulletinItem that matches the filter or
+     * throw `PrismaKnownClientError` with `P2025` code if no matches were found.
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * @param {BulletinItemFindFirstOrThrowArgs} args - Arguments to find a BulletinItem
+     * @example
+     * // Get one BulletinItem
+     * const bulletinItem = await prisma.bulletinItem.findFirstOrThrow({
+     *   where: {
+     *     // ... provide filter here
+     *   }
+     * })
+     */
+    findFirstOrThrow<T extends BulletinItemFindFirstOrThrowArgs>(args?: SelectSubset<T, BulletinItemFindFirstOrThrowArgs<ExtArgs>>): Prisma__BulletinItemClient<$Result.GetResult<Prisma.$BulletinItemPayload<ExtArgs>, T, "findFirstOrThrow", GlobalOmitOptions>, never, ExtArgs, GlobalOmitOptions>
+
+    /**
+     * Find zero or more BulletinItems that matches the filter.
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * @param {BulletinItemFindManyArgs} args - Arguments to filter and select certain fields only.
+     * @example
+     * // Get all BulletinItems
+     * const bulletinItems = await prisma.bulletinItem.findMany()
+     * 
+     * // Get first 10 BulletinItems
+     * const bulletinItems = await prisma.bulletinItem.findMany({ take: 10 })
+     * 
+     * // Only select the `id`
+     * const bulletinItemWithIdOnly = await prisma.bulletinItem.findMany({ select: { id: true } })
+     * 
+     */
+    findMany<T extends BulletinItemFindManyArgs>(args?: SelectSubset<T, BulletinItemFindManyArgs<ExtArgs>>): Prisma.PrismaPromise<$Result.GetResult<Prisma.$BulletinItemPayload<ExtArgs>, T, "findMany", GlobalOmitOptions>>
+
+    /**
+     * Create a BulletinItem.
+     * @param {BulletinItemCreateArgs} args - Arguments to create a BulletinItem.
+     * @example
+     * // Create one BulletinItem
+     * const BulletinItem = await prisma.bulletinItem.create({
+     *   data: {
+     *     // ... data to create a BulletinItem
+     *   }
+     * })
+     * 
+     */
+    create<T extends BulletinItemCreateArgs>(args: SelectSubset<T, BulletinItemCreateArgs<ExtArgs>>): Prisma__BulletinItemClient<$Result.GetResult<Prisma.$BulletinItemPayload<ExtArgs>, T, "create", GlobalOmitOptions>, never, ExtArgs, GlobalOmitOptions>
+
+    /**
+     * Create many BulletinItems.
+     * @param {BulletinItemCreateManyArgs} args - Arguments to create many BulletinItems.
+     * @example
+     * // Create many BulletinItems
+     * const bulletinItem = await prisma.bulletinItem.createMany({
+     *   data: [
+     *     // ... provide data here
+     *   ]
+     * })
+     *     
+     */
+    createMany<T extends BulletinItemCreateManyArgs>(args?: SelectSubset<T, BulletinItemCreateManyArgs<ExtArgs>>): Prisma.PrismaPromise<BatchPayload>
+
+    /**
+     * Create many BulletinItems and returns the data saved in the database.
+     * @param {BulletinItemCreateManyAndReturnArgs} args - Arguments to create many BulletinItems.
+     * @example
+     * // Create many BulletinItems
+     * const bulletinItem = await prisma.bulletinItem.createManyAndReturn({
+     *   data: [
+     *     // ... provide data here
+     *   ]
+     * })
+     * 
+     * // Create many BulletinItems and only return the `id`
+     * const bulletinItemWithIdOnly = await prisma.bulletinItem.createManyAndReturn({
+     *   select: { id: true },
+     *   data: [
+     *     // ... provide data here
+     *   ]
+     * })
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * 
+     */
+    createManyAndReturn<T extends BulletinItemCreateManyAndReturnArgs>(args?: SelectSubset<T, BulletinItemCreateManyAndReturnArgs<ExtArgs>>): Prisma.PrismaPromise<$Result.GetResult<Prisma.$BulletinItemPayload<ExtArgs>, T, "createManyAndReturn", GlobalOmitOptions>>
+
+    /**
+     * Delete a BulletinItem.
+     * @param {BulletinItemDeleteArgs} args - Arguments to delete one BulletinItem.
+     * @example
+     * // Delete one BulletinItem
+     * const BulletinItem = await prisma.bulletinItem.delete({
+     *   where: {
+     *     // ... filter to delete one BulletinItem
+     *   }
+     * })
+     * 
+     */
+    delete<T extends BulletinItemDeleteArgs>(args: SelectSubset<T, BulletinItemDeleteArgs<ExtArgs>>): Prisma__BulletinItemClient<$Result.GetResult<Prisma.$BulletinItemPayload<ExtArgs>, T, "delete", GlobalOmitOptions>, never, ExtArgs, GlobalOmitOptions>
+
+    /**
+     * Update one BulletinItem.
+     * @param {BulletinItemUpdateArgs} args - Arguments to update one BulletinItem.
+     * @example
+     * // Update one BulletinItem
+     * const bulletinItem = await prisma.bulletinItem.update({
+     *   where: {
+     *     // ... provide filter here
+     *   },
+     *   data: {
+     *     // ... provide data here
+     *   }
+     * })
+     * 
+     */
+    update<T extends BulletinItemUpdateArgs>(args: SelectSubset<T, BulletinItemUpdateArgs<ExtArgs>>): Prisma__BulletinItemClient<$Result.GetResult<Prisma.$BulletinItemPayload<ExtArgs>, T, "update", GlobalOmitOptions>, never, ExtArgs, GlobalOmitOptions>
+
+    /**
+     * Delete zero or more BulletinItems.
+     * @param {BulletinItemDeleteManyArgs} args - Arguments to filter BulletinItems to delete.
+     * @example
+     * // Delete a few BulletinItems
+     * const { count } = await prisma.bulletinItem.deleteMany({
+     *   where: {
+     *     // ... provide filter here
+     *   }
+     * })
+     * 
+     */
+    deleteMany<T extends BulletinItemDeleteManyArgs>(args?: SelectSubset<T, BulletinItemDeleteManyArgs<ExtArgs>>): Prisma.PrismaPromise<BatchPayload>
+
+    /**
+     * Update zero or more BulletinItems.
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * @param {BulletinItemUpdateManyArgs} args - Arguments to update one or more rows.
+     * @example
+     * // Update many BulletinItems
+     * const bulletinItem = await prisma.bulletinItem.updateMany({
+     *   where: {
+     *     // ... provide filter here
+     *   },
+     *   data: {
+     *     // ... provide data here
+     *   }
+     * })
+     * 
+     */
+    updateMany<T extends BulletinItemUpdateManyArgs>(args: SelectSubset<T, BulletinItemUpdateManyArgs<ExtArgs>>): Prisma.PrismaPromise<BatchPayload>
+
+    /**
+     * Update zero or more BulletinItems and returns the data updated in the database.
+     * @param {BulletinItemUpdateManyAndReturnArgs} args - Arguments to update many BulletinItems.
+     * @example
+     * // Update many BulletinItems
+     * const bulletinItem = await prisma.bulletinItem.updateManyAndReturn({
+     *   where: {
+     *     // ... provide filter here
+     *   },
+     *   data: [
+     *     // ... provide data here
+     *   ]
+     * })
+     * 
+     * // Update zero or more BulletinItems and only return the `id`
+     * const bulletinItemWithIdOnly = await prisma.bulletinItem.updateManyAndReturn({
+     *   select: { id: true },
+     *   where: {
+     *     // ... provide filter here
+     *   },
+     *   data: [
+     *     // ... provide data here
+     *   ]
+     * })
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * 
+     */
+    updateManyAndReturn<T extends BulletinItemUpdateManyAndReturnArgs>(args: SelectSubset<T, BulletinItemUpdateManyAndReturnArgs<ExtArgs>>): Prisma.PrismaPromise<$Result.GetResult<Prisma.$BulletinItemPayload<ExtArgs>, T, "updateManyAndReturn", GlobalOmitOptions>>
+
+    /**
+     * Create or update one BulletinItem.
+     * @param {BulletinItemUpsertArgs} args - Arguments to update or create a BulletinItem.
+     * @example
+     * // Update or create a BulletinItem
+     * const bulletinItem = await prisma.bulletinItem.upsert({
+     *   create: {
+     *     // ... data to create a BulletinItem
+     *   },
+     *   update: {
+     *     // ... in case it already exists, update
+     *   },
+     *   where: {
+     *     // ... the filter for the BulletinItem we want to update
+     *   }
+     * })
+     */
+    upsert<T extends BulletinItemUpsertArgs>(args: SelectSubset<T, BulletinItemUpsertArgs<ExtArgs>>): Prisma__BulletinItemClient<$Result.GetResult<Prisma.$BulletinItemPayload<ExtArgs>, T, "upsert", GlobalOmitOptions>, never, ExtArgs, GlobalOmitOptions>
+
+
+    /**
+     * Count the number of BulletinItems.
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * @param {BulletinItemCountArgs} args - Arguments to filter BulletinItems to count.
+     * @example
+     * // Count the number of BulletinItems
+     * const count = await prisma.bulletinItem.count({
+     *   where: {
+     *     // ... the filter for the BulletinItems we want to count
+     *   }
+     * })
+    **/
+    count<T extends BulletinItemCountArgs>(
+      args?: Subset<T, BulletinItemCountArgs>,
+    ): Prisma.PrismaPromise<
+      T extends $Utils.Record<'select', any>
+        ? T['select'] extends true
+          ? number
+          : GetScalarType<T['select'], BulletinItemCountAggregateOutputType>
+        : number
+    >
+
+    /**
+     * Allows you to perform aggregations operations on a BulletinItem.
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * @param {BulletinItemAggregateArgs} args - Select which aggregations you would like to apply and on what fields.
+     * @example
+     * // Ordered by age ascending
+     * // Where email contains prisma.io
+     * // Limited to the 10 users
+     * const aggregations = await prisma.user.aggregate({
+     *   _avg: {
+     *     age: true,
+     *   },
+     *   where: {
+     *     email: {
+     *       contains: "prisma.io",
+     *     },
+     *   },
+     *   orderBy: {
+     *     age: "asc",
+     *   },
+     *   take: 10,
+     * })
+    **/
+    aggregate<T extends BulletinItemAggregateArgs>(args: Subset<T, BulletinItemAggregateArgs>): Prisma.PrismaPromise<GetBulletinItemAggregateType<T>>
+
+    /**
+     * Group by BulletinItem.
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * @param {BulletinItemGroupByArgs} args - Group by arguments.
+     * @example
+     * // Group by city, order by createdAt, get count
+     * const result = await prisma.user.groupBy({
+     *   by: ['city', 'createdAt'],
+     *   orderBy: {
+     *     createdAt: true
+     *   },
+     *   _count: {
+     *     _all: true
+     *   },
+     * })
+     * 
+    **/
+    groupBy<
+      T extends BulletinItemGroupByArgs,
+      HasSelectOrTake extends Or<
+        Extends<'skip', Keys<T>>,
+        Extends<'take', Keys<T>>
+      >,
+      OrderByArg extends True extends HasSelectOrTake
+        ? { orderBy: BulletinItemGroupByArgs['orderBy'] }
+        : { orderBy?: BulletinItemGroupByArgs['orderBy'] },
+      OrderFields extends ExcludeUnderscoreKeys<Keys<MaybeTupleToUnion<T['orderBy']>>>,
+      ByFields extends MaybeTupleToUnion<T['by']>,
+      ByValid extends Has<ByFields, OrderFields>,
+      HavingFields extends GetHavingFields<T['having']>,
+      HavingValid extends Has<ByFields, HavingFields>,
+      ByEmpty extends T['by'] extends never[] ? True : False,
+      InputErrors extends ByEmpty extends True
+      ? `Error: "by" must not be empty.`
+      : HavingValid extends False
+      ? {
+          [P in HavingFields]: P extends ByFields
+            ? never
+            : P extends string
+            ? `Error: Field "${P}" used in "having" needs to be provided in "by".`
+            : [
+                Error,
+                'Field ',
+                P,
+                ` in "having" needs to be provided in "by"`,
+              ]
+        }[HavingFields]
+      : 'take' extends Keys<T>
+      ? 'orderBy' extends Keys<T>
+        ? ByValid extends True
+          ? {}
+          : {
+              [P in OrderFields]: P extends ByFields
+                ? never
+                : `Error: Field "${P}" in "orderBy" needs to be provided in "by"`
+            }[OrderFields]
+        : 'Error: If you provide "take", you also need to provide "orderBy"'
+      : 'skip' extends Keys<T>
+      ? 'orderBy' extends Keys<T>
+        ? ByValid extends True
+          ? {}
+          : {
+              [P in OrderFields]: P extends ByFields
+                ? never
+                : `Error: Field "${P}" in "orderBy" needs to be provided in "by"`
+            }[OrderFields]
+        : 'Error: If you provide "skip", you also need to provide "orderBy"'
+      : ByValid extends True
+      ? {}
+      : {
+          [P in OrderFields]: P extends ByFields
+            ? never
+            : `Error: Field "${P}" in "orderBy" needs to be provided in "by"`
+        }[OrderFields]
+    >(args: SubsetIntersection<T, BulletinItemGroupByArgs, OrderByArg> & InputErrors): {} extends InputErrors ? GetBulletinItemGroupByPayload<T> : Prisma.PrismaPromise<InputErrors>
+  /**
+   * Fields of the BulletinItem model
+   */
+  readonly fields: BulletinItemFieldRefs;
+  }
+
+  /**
+   * The delegate class that acts as a "Promise-like" for BulletinItem.
+   * Why is this prefixed with `Prisma__`?
+   * Because we want to prevent naming conflicts as mentioned in
+   * https://github.com/prisma/prisma-client-js/issues/707
+   */
+  export interface Prisma__BulletinItemClient<T, Null = never, ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs, GlobalOmitOptions = {}> extends Prisma.PrismaPromise<T> {
+    readonly [Symbol.toStringTag]: "PrismaPromise"
+    author<T extends UserDefaultArgs<ExtArgs> = {}>(args?: Subset<T, UserDefaultArgs<ExtArgs>>): Prisma__UserClient<$Result.GetResult<Prisma.$UserPayload<ExtArgs>, T, "findUniqueOrThrow", GlobalOmitOptions> | Null, Null, ExtArgs, GlobalOmitOptions>
+    comments<T extends BulletinItem$commentsArgs<ExtArgs> = {}>(args?: Subset<T, BulletinItem$commentsArgs<ExtArgs>>): Prisma.PrismaPromise<$Result.GetResult<Prisma.$CommentPayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
+    options<T extends BulletinItem$optionsArgs<ExtArgs> = {}>(args?: Subset<T, BulletinItem$optionsArgs<ExtArgs>>): Prisma.PrismaPromise<$Result.GetResult<Prisma.$PollOptionPayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
+    /**
+     * Attaches callbacks for the resolution and/or rejection of the Promise.
+     * @param onfulfilled The callback to execute when the Promise is resolved.
+     * @param onrejected The callback to execute when the Promise is rejected.
+     * @returns A Promise for the completion of which ever callback is executed.
+     */
+    then<TResult1 = T, TResult2 = never>(onfulfilled?: ((value: T) => TResult1 | PromiseLike<TResult1>) | undefined | null, onrejected?: ((reason: any) => TResult2 | PromiseLike<TResult2>) | undefined | null): $Utils.JsPromise<TResult1 | TResult2>
+    /**
+     * Attaches a callback for only the rejection of the Promise.
+     * @param onrejected The callback to execute when the Promise is rejected.
+     * @returns A Promise for the completion of the callback.
+     */
+    catch<TResult = never>(onrejected?: ((reason: any) => TResult | PromiseLike<TResult>) | undefined | null): $Utils.JsPromise<T | TResult>
+    /**
+     * Attaches a callback that is invoked when the Promise is settled (fulfilled or rejected). The
+     * resolved value cannot be modified from the callback.
+     * @param onfinally The callback to execute when the Promise is settled (fulfilled or rejected).
+     * @returns A Promise for the completion of the callback.
+     */
+    finally(onfinally?: (() => void) | undefined | null): $Utils.JsPromise<T>
+  }
+
+
+
+
+  /**
+   * Fields of the BulletinItem model
+   */
+  interface BulletinItemFieldRefs {
+    readonly id: FieldRef<"BulletinItem", 'Int'>
+    readonly type: FieldRef<"BulletinItem", 'BulletinType'>
+    readonly authorId: FieldRef<"BulletinItem", 'Int'>
+    readonly content: FieldRef<"BulletinItem", 'String'>
+    readonly dateCreated: FieldRef<"BulletinItem", 'DateTime'>
+    readonly dateModified: FieldRef<"BulletinItem", 'DateTime'>
+    readonly likeCount: FieldRef<"BulletinItem", 'Int'>
+  }
+    
+
+  // Custom InputTypes
+  /**
+   * BulletinItem findUnique
+   */
+  export type BulletinItemFindUniqueArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the BulletinItem
+     */
+    select?: BulletinItemSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the BulletinItem
+     */
+    omit?: BulletinItemOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: BulletinItemInclude<ExtArgs> | null
+    /**
+     * Filter, which BulletinItem to fetch.
+     */
+    where: BulletinItemWhereUniqueInput
+  }
+
+  /**
+   * BulletinItem findUniqueOrThrow
+   */
+  export type BulletinItemFindUniqueOrThrowArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the BulletinItem
+     */
+    select?: BulletinItemSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the BulletinItem
+     */
+    omit?: BulletinItemOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: BulletinItemInclude<ExtArgs> | null
+    /**
+     * Filter, which BulletinItem to fetch.
+     */
+    where: BulletinItemWhereUniqueInput
+  }
+
+  /**
+   * BulletinItem findFirst
+   */
+  export type BulletinItemFindFirstArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the BulletinItem
+     */
+    select?: BulletinItemSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the BulletinItem
+     */
+    omit?: BulletinItemOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: BulletinItemInclude<ExtArgs> | null
+    /**
+     * Filter, which BulletinItem to fetch.
+     */
+    where?: BulletinItemWhereInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/sorting Sorting Docs}
+     * 
+     * Determine the order of BulletinItems to fetch.
+     */
+    orderBy?: BulletinItemOrderByWithRelationInput | BulletinItemOrderByWithRelationInput[]
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination#cursor-based-pagination Cursor Docs}
+     * 
+     * Sets the position for searching for BulletinItems.
+     */
+    cursor?: BulletinItemWhereUniqueInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Take `±n` BulletinItems from the position of the cursor.
+     */
+    take?: number
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Skip the first `n` BulletinItems.
+     */
+    skip?: number
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/distinct Distinct Docs}
+     * 
+     * Filter by unique combinations of BulletinItems.
+     */
+    distinct?: BulletinItemScalarFieldEnum | BulletinItemScalarFieldEnum[]
+  }
+
+  /**
+   * BulletinItem findFirstOrThrow
+   */
+  export type BulletinItemFindFirstOrThrowArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the BulletinItem
+     */
+    select?: BulletinItemSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the BulletinItem
+     */
+    omit?: BulletinItemOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: BulletinItemInclude<ExtArgs> | null
+    /**
+     * Filter, which BulletinItem to fetch.
+     */
+    where?: BulletinItemWhereInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/sorting Sorting Docs}
+     * 
+     * Determine the order of BulletinItems to fetch.
+     */
+    orderBy?: BulletinItemOrderByWithRelationInput | BulletinItemOrderByWithRelationInput[]
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination#cursor-based-pagination Cursor Docs}
+     * 
+     * Sets the position for searching for BulletinItems.
+     */
+    cursor?: BulletinItemWhereUniqueInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Take `±n` BulletinItems from the position of the cursor.
+     */
+    take?: number
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Skip the first `n` BulletinItems.
+     */
+    skip?: number
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/distinct Distinct Docs}
+     * 
+     * Filter by unique combinations of BulletinItems.
+     */
+    distinct?: BulletinItemScalarFieldEnum | BulletinItemScalarFieldEnum[]
+  }
+
+  /**
+   * BulletinItem findMany
+   */
+  export type BulletinItemFindManyArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the BulletinItem
+     */
+    select?: BulletinItemSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the BulletinItem
+     */
+    omit?: BulletinItemOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: BulletinItemInclude<ExtArgs> | null
+    /**
+     * Filter, which BulletinItems to fetch.
+     */
+    where?: BulletinItemWhereInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/sorting Sorting Docs}
+     * 
+     * Determine the order of BulletinItems to fetch.
+     */
+    orderBy?: BulletinItemOrderByWithRelationInput | BulletinItemOrderByWithRelationInput[]
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination#cursor-based-pagination Cursor Docs}
+     * 
+     * Sets the position for listing BulletinItems.
+     */
+    cursor?: BulletinItemWhereUniqueInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Take `±n` BulletinItems from the position of the cursor.
+     */
+    take?: number
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Skip the first `n` BulletinItems.
+     */
+    skip?: number
+    distinct?: BulletinItemScalarFieldEnum | BulletinItemScalarFieldEnum[]
+  }
+
+  /**
+   * BulletinItem create
+   */
+  export type BulletinItemCreateArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the BulletinItem
+     */
+    select?: BulletinItemSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the BulletinItem
+     */
+    omit?: BulletinItemOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: BulletinItemInclude<ExtArgs> | null
+    /**
+     * The data needed to create a BulletinItem.
+     */
+    data: XOR<BulletinItemCreateInput, BulletinItemUncheckedCreateInput>
+  }
+
+  /**
+   * BulletinItem createMany
+   */
+  export type BulletinItemCreateManyArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * The data used to create many BulletinItems.
+     */
+    data: BulletinItemCreateManyInput | BulletinItemCreateManyInput[]
+    skipDuplicates?: boolean
+  }
+
+  /**
+   * BulletinItem createManyAndReturn
+   */
+  export type BulletinItemCreateManyAndReturnArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the BulletinItem
+     */
+    select?: BulletinItemSelectCreateManyAndReturn<ExtArgs> | null
+    /**
+     * Omit specific fields from the BulletinItem
+     */
+    omit?: BulletinItemOmit<ExtArgs> | null
+    /**
+     * The data used to create many BulletinItems.
+     */
+    data: BulletinItemCreateManyInput | BulletinItemCreateManyInput[]
+    skipDuplicates?: boolean
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: BulletinItemIncludeCreateManyAndReturn<ExtArgs> | null
+  }
+
+  /**
+   * BulletinItem update
+   */
+  export type BulletinItemUpdateArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the BulletinItem
+     */
+    select?: BulletinItemSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the BulletinItem
+     */
+    omit?: BulletinItemOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: BulletinItemInclude<ExtArgs> | null
+    /**
+     * The data needed to update a BulletinItem.
+     */
+    data: XOR<BulletinItemUpdateInput, BulletinItemUncheckedUpdateInput>
+    /**
+     * Choose, which BulletinItem to update.
+     */
+    where: BulletinItemWhereUniqueInput
+  }
+
+  /**
+   * BulletinItem updateMany
+   */
+  export type BulletinItemUpdateManyArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * The data used to update BulletinItems.
+     */
+    data: XOR<BulletinItemUpdateManyMutationInput, BulletinItemUncheckedUpdateManyInput>
+    /**
+     * Filter which BulletinItems to update
+     */
+    where?: BulletinItemWhereInput
+    /**
+     * Limit how many BulletinItems to update.
+     */
+    limit?: number
+  }
+
+  /**
+   * BulletinItem updateManyAndReturn
+   */
+  export type BulletinItemUpdateManyAndReturnArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the BulletinItem
+     */
+    select?: BulletinItemSelectUpdateManyAndReturn<ExtArgs> | null
+    /**
+     * Omit specific fields from the BulletinItem
+     */
+    omit?: BulletinItemOmit<ExtArgs> | null
+    /**
+     * The data used to update BulletinItems.
+     */
+    data: XOR<BulletinItemUpdateManyMutationInput, BulletinItemUncheckedUpdateManyInput>
+    /**
+     * Filter which BulletinItems to update
+     */
+    where?: BulletinItemWhereInput
+    /**
+     * Limit how many BulletinItems to update.
+     */
+    limit?: number
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: BulletinItemIncludeUpdateManyAndReturn<ExtArgs> | null
+  }
+
+  /**
+   * BulletinItem upsert
+   */
+  export type BulletinItemUpsertArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the BulletinItem
+     */
+    select?: BulletinItemSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the BulletinItem
+     */
+    omit?: BulletinItemOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: BulletinItemInclude<ExtArgs> | null
+    /**
+     * The filter to search for the BulletinItem to update in case it exists.
+     */
+    where: BulletinItemWhereUniqueInput
+    /**
+     * In case the BulletinItem found by the `where` argument doesn't exist, create a new BulletinItem with this data.
+     */
+    create: XOR<BulletinItemCreateInput, BulletinItemUncheckedCreateInput>
+    /**
+     * In case the BulletinItem was found with the provided `where` argument, update it with this data.
+     */
+    update: XOR<BulletinItemUpdateInput, BulletinItemUncheckedUpdateInput>
+  }
+
+  /**
+   * BulletinItem delete
+   */
+  export type BulletinItemDeleteArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the BulletinItem
+     */
+    select?: BulletinItemSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the BulletinItem
+     */
+    omit?: BulletinItemOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: BulletinItemInclude<ExtArgs> | null
+    /**
+     * Filter which BulletinItem to delete.
+     */
+    where: BulletinItemWhereUniqueInput
+  }
+
+  /**
+   * BulletinItem deleteMany
+   */
+  export type BulletinItemDeleteManyArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Filter which BulletinItems to delete
+     */
+    where?: BulletinItemWhereInput
+    /**
+     * Limit how many BulletinItems to delete.
+     */
+    limit?: number
+  }
+
+  /**
+   * BulletinItem.comments
+   */
+  export type BulletinItem$commentsArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the Comment
+     */
+    select?: CommentSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the Comment
+     */
+    omit?: CommentOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: CommentInclude<ExtArgs> | null
+    where?: CommentWhereInput
+    orderBy?: CommentOrderByWithRelationInput | CommentOrderByWithRelationInput[]
+    cursor?: CommentWhereUniqueInput
+    take?: number
+    skip?: number
+    distinct?: CommentScalarFieldEnum | CommentScalarFieldEnum[]
+  }
+
+  /**
+   * BulletinItem.options
+   */
+  export type BulletinItem$optionsArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the PollOption
+     */
+    select?: PollOptionSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the PollOption
+     */
+    omit?: PollOptionOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: PollOptionInclude<ExtArgs> | null
+    where?: PollOptionWhereInput
+    orderBy?: PollOptionOrderByWithRelationInput | PollOptionOrderByWithRelationInput[]
+    cursor?: PollOptionWhereUniqueInput
+    take?: number
+    skip?: number
+    distinct?: PollOptionScalarFieldEnum | PollOptionScalarFieldEnum[]
+  }
+
+  /**
+   * BulletinItem without action
+   */
+  export type BulletinItemDefaultArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the BulletinItem
+     */
+    select?: BulletinItemSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the BulletinItem
+     */
+    omit?: BulletinItemOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: BulletinItemInclude<ExtArgs> | null
+  }
+
+
+  /**
+   * Model Comment
+   */
+
+  export type AggregateComment = {
+    _count: CommentCountAggregateOutputType | null
+    _avg: CommentAvgAggregateOutputType | null
+    _sum: CommentSumAggregateOutputType | null
+    _min: CommentMinAggregateOutputType | null
+    _max: CommentMaxAggregateOutputType | null
+  }
+
+  export type CommentAvgAggregateOutputType = {
+    id: number | null
+    targetId: number | null
+    authorId: number | null
+  }
+
+  export type CommentSumAggregateOutputType = {
+    id: number | null
+    targetId: number | null
+    authorId: number | null
+  }
+
+  export type CommentMinAggregateOutputType = {
+    id: number | null
+    targetId: number | null
+    authorId: number | null
+    content: string | null
+    dateCreated: Date | null
+    dateModified: Date | null
+  }
+
+  export type CommentMaxAggregateOutputType = {
+    id: number | null
+    targetId: number | null
+    authorId: number | null
+    content: string | null
+    dateCreated: Date | null
+    dateModified: Date | null
+  }
+
+  export type CommentCountAggregateOutputType = {
+    id: number
+    targetId: number
+    authorId: number
+    content: number
+    dateCreated: number
+    dateModified: number
+    _all: number
+  }
+
+
+  export type CommentAvgAggregateInputType = {
+    id?: true
+    targetId?: true
+    authorId?: true
+  }
+
+  export type CommentSumAggregateInputType = {
+    id?: true
+    targetId?: true
+    authorId?: true
+  }
+
+  export type CommentMinAggregateInputType = {
+    id?: true
+    targetId?: true
+    authorId?: true
+    content?: true
+    dateCreated?: true
+    dateModified?: true
+  }
+
+  export type CommentMaxAggregateInputType = {
+    id?: true
+    targetId?: true
+    authorId?: true
+    content?: true
+    dateCreated?: true
+    dateModified?: true
+  }
+
+  export type CommentCountAggregateInputType = {
+    id?: true
+    targetId?: true
+    authorId?: true
+    content?: true
+    dateCreated?: true
+    dateModified?: true
+    _all?: true
+  }
+
+  export type CommentAggregateArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Filter which Comment to aggregate.
+     */
+    where?: CommentWhereInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/sorting Sorting Docs}
+     * 
+     * Determine the order of Comments to fetch.
+     */
+    orderBy?: CommentOrderByWithRelationInput | CommentOrderByWithRelationInput[]
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination#cursor-based-pagination Cursor Docs}
+     * 
+     * Sets the start position
+     */
+    cursor?: CommentWhereUniqueInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Take `±n` Comments from the position of the cursor.
+     */
+    take?: number
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Skip the first `n` Comments.
+     */
+    skip?: number
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/aggregations Aggregation Docs}
+     * 
+     * Count returned Comments
+    **/
+    _count?: true | CommentCountAggregateInputType
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/aggregations Aggregation Docs}
+     * 
+     * Select which fields to average
+    **/
+    _avg?: CommentAvgAggregateInputType
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/aggregations Aggregation Docs}
+     * 
+     * Select which fields to sum
+    **/
+    _sum?: CommentSumAggregateInputType
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/aggregations Aggregation Docs}
+     * 
+     * Select which fields to find the minimum value
+    **/
+    _min?: CommentMinAggregateInputType
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/aggregations Aggregation Docs}
+     * 
+     * Select which fields to find the maximum value
+    **/
+    _max?: CommentMaxAggregateInputType
+  }
+
+  export type GetCommentAggregateType<T extends CommentAggregateArgs> = {
+        [P in keyof T & keyof AggregateComment]: P extends '_count' | 'count'
+      ? T[P] extends true
+        ? number
+        : GetScalarType<T[P], AggregateComment[P]>
+      : GetScalarType<T[P], AggregateComment[P]>
+  }
+
+
+
+
+  export type CommentGroupByArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    where?: CommentWhereInput
+    orderBy?: CommentOrderByWithAggregationInput | CommentOrderByWithAggregationInput[]
+    by: CommentScalarFieldEnum[] | CommentScalarFieldEnum
+    having?: CommentScalarWhereWithAggregatesInput
+    take?: number
+    skip?: number
+    _count?: CommentCountAggregateInputType | true
+    _avg?: CommentAvgAggregateInputType
+    _sum?: CommentSumAggregateInputType
+    _min?: CommentMinAggregateInputType
+    _max?: CommentMaxAggregateInputType
+  }
+
+  export type CommentGroupByOutputType = {
+    id: number
+    targetId: number
+    authorId: number
+    content: string
+    dateCreated: Date
+    dateModified: Date
+    _count: CommentCountAggregateOutputType | null
+    _avg: CommentAvgAggregateOutputType | null
+    _sum: CommentSumAggregateOutputType | null
+    _min: CommentMinAggregateOutputType | null
+    _max: CommentMaxAggregateOutputType | null
+  }
+
+  type GetCommentGroupByPayload<T extends CommentGroupByArgs> = Prisma.PrismaPromise<
+    Array<
+      PickEnumerable<CommentGroupByOutputType, T['by']> &
+        {
+          [P in ((keyof T) & (keyof CommentGroupByOutputType))]: P extends '_count'
+            ? T[P] extends boolean
+              ? number
+              : GetScalarType<T[P], CommentGroupByOutputType[P]>
+            : GetScalarType<T[P], CommentGroupByOutputType[P]>
+        }
+      >
+    >
+
+
+  export type CommentSelect<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetSelect<{
+    id?: boolean
+    targetId?: boolean
+    authorId?: boolean
+    content?: boolean
+    dateCreated?: boolean
+    dateModified?: boolean
+    target?: boolean | BulletinItemDefaultArgs<ExtArgs>
+    author?: boolean | UserDefaultArgs<ExtArgs>
+  }, ExtArgs["result"]["comment"]>
+
+  export type CommentSelectCreateManyAndReturn<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetSelect<{
+    id?: boolean
+    targetId?: boolean
+    authorId?: boolean
+    content?: boolean
+    dateCreated?: boolean
+    dateModified?: boolean
+    target?: boolean | BulletinItemDefaultArgs<ExtArgs>
+    author?: boolean | UserDefaultArgs<ExtArgs>
+  }, ExtArgs["result"]["comment"]>
+
+  export type CommentSelectUpdateManyAndReturn<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetSelect<{
+    id?: boolean
+    targetId?: boolean
+    authorId?: boolean
+    content?: boolean
+    dateCreated?: boolean
+    dateModified?: boolean
+    target?: boolean | BulletinItemDefaultArgs<ExtArgs>
+    author?: boolean | UserDefaultArgs<ExtArgs>
+  }, ExtArgs["result"]["comment"]>
+
+  export type CommentSelectScalar = {
+    id?: boolean
+    targetId?: boolean
+    authorId?: boolean
+    content?: boolean
+    dateCreated?: boolean
+    dateModified?: boolean
+  }
+
+  export type CommentOmit<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetOmit<"id" | "targetId" | "authorId" | "content" | "dateCreated" | "dateModified", ExtArgs["result"]["comment"]>
+  export type CommentInclude<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    target?: boolean | BulletinItemDefaultArgs<ExtArgs>
+    author?: boolean | UserDefaultArgs<ExtArgs>
+  }
+  export type CommentIncludeCreateManyAndReturn<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    target?: boolean | BulletinItemDefaultArgs<ExtArgs>
+    author?: boolean | UserDefaultArgs<ExtArgs>
+  }
+  export type CommentIncludeUpdateManyAndReturn<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    target?: boolean | BulletinItemDefaultArgs<ExtArgs>
+    author?: boolean | UserDefaultArgs<ExtArgs>
+  }
+
+  export type $CommentPayload<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    name: "Comment"
+    objects: {
+      target: Prisma.$BulletinItemPayload<ExtArgs>
+      author: Prisma.$UserPayload<ExtArgs>
+    }
+    scalars: $Extensions.GetPayloadResult<{
+      id: number
+      targetId: number
+      authorId: number
+      content: string
+      dateCreated: Date
+      dateModified: Date
+    }, ExtArgs["result"]["comment"]>
+    composites: {}
+  }
+
+  type CommentGetPayload<S extends boolean | null | undefined | CommentDefaultArgs> = $Result.GetResult<Prisma.$CommentPayload, S>
+
+  type CommentCountArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> =
+    Omit<CommentFindManyArgs, 'select' | 'include' | 'distinct' | 'omit'> & {
+      select?: CommentCountAggregateInputType | true
+    }
+
+  export interface CommentDelegate<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs, GlobalOmitOptions = {}> {
+    [K: symbol]: { types: Prisma.TypeMap<ExtArgs>['model']['Comment'], meta: { name: 'Comment' } }
+    /**
+     * Find zero or one Comment that matches the filter.
+     * @param {CommentFindUniqueArgs} args - Arguments to find a Comment
+     * @example
+     * // Get one Comment
+     * const comment = await prisma.comment.findUnique({
+     *   where: {
+     *     // ... provide filter here
+     *   }
+     * })
+     */
+    findUnique<T extends CommentFindUniqueArgs>(args: SelectSubset<T, CommentFindUniqueArgs<ExtArgs>>): Prisma__CommentClient<$Result.GetResult<Prisma.$CommentPayload<ExtArgs>, T, "findUnique", GlobalOmitOptions> | null, null, ExtArgs, GlobalOmitOptions>
+
+    /**
+     * Find one Comment that matches the filter or throw an error with `error.code='P2025'`
+     * if no matches were found.
+     * @param {CommentFindUniqueOrThrowArgs} args - Arguments to find a Comment
+     * @example
+     * // Get one Comment
+     * const comment = await prisma.comment.findUniqueOrThrow({
+     *   where: {
+     *     // ... provide filter here
+     *   }
+     * })
+     */
+    findUniqueOrThrow<T extends CommentFindUniqueOrThrowArgs>(args: SelectSubset<T, CommentFindUniqueOrThrowArgs<ExtArgs>>): Prisma__CommentClient<$Result.GetResult<Prisma.$CommentPayload<ExtArgs>, T, "findUniqueOrThrow", GlobalOmitOptions>, never, ExtArgs, GlobalOmitOptions>
+
+    /**
+     * Find the first Comment that matches the filter.
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * @param {CommentFindFirstArgs} args - Arguments to find a Comment
+     * @example
+     * // Get one Comment
+     * const comment = await prisma.comment.findFirst({
+     *   where: {
+     *     // ... provide filter here
+     *   }
+     * })
+     */
+    findFirst<T extends CommentFindFirstArgs>(args?: SelectSubset<T, CommentFindFirstArgs<ExtArgs>>): Prisma__CommentClient<$Result.GetResult<Prisma.$CommentPayload<ExtArgs>, T, "findFirst", GlobalOmitOptions> | null, null, ExtArgs, GlobalOmitOptions>
+
+    /**
+     * Find the first Comment that matches the filter or
+     * throw `PrismaKnownClientError` with `P2025` code if no matches were found.
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * @param {CommentFindFirstOrThrowArgs} args - Arguments to find a Comment
+     * @example
+     * // Get one Comment
+     * const comment = await prisma.comment.findFirstOrThrow({
+     *   where: {
+     *     // ... provide filter here
+     *   }
+     * })
+     */
+    findFirstOrThrow<T extends CommentFindFirstOrThrowArgs>(args?: SelectSubset<T, CommentFindFirstOrThrowArgs<ExtArgs>>): Prisma__CommentClient<$Result.GetResult<Prisma.$CommentPayload<ExtArgs>, T, "findFirstOrThrow", GlobalOmitOptions>, never, ExtArgs, GlobalOmitOptions>
+
+    /**
+     * Find zero or more Comments that matches the filter.
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * @param {CommentFindManyArgs} args - Arguments to filter and select certain fields only.
+     * @example
+     * // Get all Comments
+     * const comments = await prisma.comment.findMany()
+     * 
+     * // Get first 10 Comments
+     * const comments = await prisma.comment.findMany({ take: 10 })
+     * 
+     * // Only select the `id`
+     * const commentWithIdOnly = await prisma.comment.findMany({ select: { id: true } })
+     * 
+     */
+    findMany<T extends CommentFindManyArgs>(args?: SelectSubset<T, CommentFindManyArgs<ExtArgs>>): Prisma.PrismaPromise<$Result.GetResult<Prisma.$CommentPayload<ExtArgs>, T, "findMany", GlobalOmitOptions>>
+
+    /**
+     * Create a Comment.
+     * @param {CommentCreateArgs} args - Arguments to create a Comment.
+     * @example
+     * // Create one Comment
+     * const Comment = await prisma.comment.create({
+     *   data: {
+     *     // ... data to create a Comment
+     *   }
+     * })
+     * 
+     */
+    create<T extends CommentCreateArgs>(args: SelectSubset<T, CommentCreateArgs<ExtArgs>>): Prisma__CommentClient<$Result.GetResult<Prisma.$CommentPayload<ExtArgs>, T, "create", GlobalOmitOptions>, never, ExtArgs, GlobalOmitOptions>
+
+    /**
+     * Create many Comments.
+     * @param {CommentCreateManyArgs} args - Arguments to create many Comments.
+     * @example
+     * // Create many Comments
+     * const comment = await prisma.comment.createMany({
+     *   data: [
+     *     // ... provide data here
+     *   ]
+     * })
+     *     
+     */
+    createMany<T extends CommentCreateManyArgs>(args?: SelectSubset<T, CommentCreateManyArgs<ExtArgs>>): Prisma.PrismaPromise<BatchPayload>
+
+    /**
+     * Create many Comments and returns the data saved in the database.
+     * @param {CommentCreateManyAndReturnArgs} args - Arguments to create many Comments.
+     * @example
+     * // Create many Comments
+     * const comment = await prisma.comment.createManyAndReturn({
+     *   data: [
+     *     // ... provide data here
+     *   ]
+     * })
+     * 
+     * // Create many Comments and only return the `id`
+     * const commentWithIdOnly = await prisma.comment.createManyAndReturn({
+     *   select: { id: true },
+     *   data: [
+     *     // ... provide data here
+     *   ]
+     * })
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * 
+     */
+    createManyAndReturn<T extends CommentCreateManyAndReturnArgs>(args?: SelectSubset<T, CommentCreateManyAndReturnArgs<ExtArgs>>): Prisma.PrismaPromise<$Result.GetResult<Prisma.$CommentPayload<ExtArgs>, T, "createManyAndReturn", GlobalOmitOptions>>
+
+    /**
+     * Delete a Comment.
+     * @param {CommentDeleteArgs} args - Arguments to delete one Comment.
+     * @example
+     * // Delete one Comment
+     * const Comment = await prisma.comment.delete({
+     *   where: {
+     *     // ... filter to delete one Comment
+     *   }
+     * })
+     * 
+     */
+    delete<T extends CommentDeleteArgs>(args: SelectSubset<T, CommentDeleteArgs<ExtArgs>>): Prisma__CommentClient<$Result.GetResult<Prisma.$CommentPayload<ExtArgs>, T, "delete", GlobalOmitOptions>, never, ExtArgs, GlobalOmitOptions>
+
+    /**
+     * Update one Comment.
+     * @param {CommentUpdateArgs} args - Arguments to update one Comment.
+     * @example
+     * // Update one Comment
+     * const comment = await prisma.comment.update({
+     *   where: {
+     *     // ... provide filter here
+     *   },
+     *   data: {
+     *     // ... provide data here
+     *   }
+     * })
+     * 
+     */
+    update<T extends CommentUpdateArgs>(args: SelectSubset<T, CommentUpdateArgs<ExtArgs>>): Prisma__CommentClient<$Result.GetResult<Prisma.$CommentPayload<ExtArgs>, T, "update", GlobalOmitOptions>, never, ExtArgs, GlobalOmitOptions>
+
+    /**
+     * Delete zero or more Comments.
+     * @param {CommentDeleteManyArgs} args - Arguments to filter Comments to delete.
+     * @example
+     * // Delete a few Comments
+     * const { count } = await prisma.comment.deleteMany({
+     *   where: {
+     *     // ... provide filter here
+     *   }
+     * })
+     * 
+     */
+    deleteMany<T extends CommentDeleteManyArgs>(args?: SelectSubset<T, CommentDeleteManyArgs<ExtArgs>>): Prisma.PrismaPromise<BatchPayload>
+
+    /**
+     * Update zero or more Comments.
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * @param {CommentUpdateManyArgs} args - Arguments to update one or more rows.
+     * @example
+     * // Update many Comments
+     * const comment = await prisma.comment.updateMany({
+     *   where: {
+     *     // ... provide filter here
+     *   },
+     *   data: {
+     *     // ... provide data here
+     *   }
+     * })
+     * 
+     */
+    updateMany<T extends CommentUpdateManyArgs>(args: SelectSubset<T, CommentUpdateManyArgs<ExtArgs>>): Prisma.PrismaPromise<BatchPayload>
+
+    /**
+     * Update zero or more Comments and returns the data updated in the database.
+     * @param {CommentUpdateManyAndReturnArgs} args - Arguments to update many Comments.
+     * @example
+     * // Update many Comments
+     * const comment = await prisma.comment.updateManyAndReturn({
+     *   where: {
+     *     // ... provide filter here
+     *   },
+     *   data: [
+     *     // ... provide data here
+     *   ]
+     * })
+     * 
+     * // Update zero or more Comments and only return the `id`
+     * const commentWithIdOnly = await prisma.comment.updateManyAndReturn({
+     *   select: { id: true },
+     *   where: {
+     *     // ... provide filter here
+     *   },
+     *   data: [
+     *     // ... provide data here
+     *   ]
+     * })
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * 
+     */
+    updateManyAndReturn<T extends CommentUpdateManyAndReturnArgs>(args: SelectSubset<T, CommentUpdateManyAndReturnArgs<ExtArgs>>): Prisma.PrismaPromise<$Result.GetResult<Prisma.$CommentPayload<ExtArgs>, T, "updateManyAndReturn", GlobalOmitOptions>>
+
+    /**
+     * Create or update one Comment.
+     * @param {CommentUpsertArgs} args - Arguments to update or create a Comment.
+     * @example
+     * // Update or create a Comment
+     * const comment = await prisma.comment.upsert({
+     *   create: {
+     *     // ... data to create a Comment
+     *   },
+     *   update: {
+     *     // ... in case it already exists, update
+     *   },
+     *   where: {
+     *     // ... the filter for the Comment we want to update
+     *   }
+     * })
+     */
+    upsert<T extends CommentUpsertArgs>(args: SelectSubset<T, CommentUpsertArgs<ExtArgs>>): Prisma__CommentClient<$Result.GetResult<Prisma.$CommentPayload<ExtArgs>, T, "upsert", GlobalOmitOptions>, never, ExtArgs, GlobalOmitOptions>
+
+
+    /**
+     * Count the number of Comments.
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * @param {CommentCountArgs} args - Arguments to filter Comments to count.
+     * @example
+     * // Count the number of Comments
+     * const count = await prisma.comment.count({
+     *   where: {
+     *     // ... the filter for the Comments we want to count
+     *   }
+     * })
+    **/
+    count<T extends CommentCountArgs>(
+      args?: Subset<T, CommentCountArgs>,
+    ): Prisma.PrismaPromise<
+      T extends $Utils.Record<'select', any>
+        ? T['select'] extends true
+          ? number
+          : GetScalarType<T['select'], CommentCountAggregateOutputType>
+        : number
+    >
+
+    /**
+     * Allows you to perform aggregations operations on a Comment.
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * @param {CommentAggregateArgs} args - Select which aggregations you would like to apply and on what fields.
+     * @example
+     * // Ordered by age ascending
+     * // Where email contains prisma.io
+     * // Limited to the 10 users
+     * const aggregations = await prisma.user.aggregate({
+     *   _avg: {
+     *     age: true,
+     *   },
+     *   where: {
+     *     email: {
+     *       contains: "prisma.io",
+     *     },
+     *   },
+     *   orderBy: {
+     *     age: "asc",
+     *   },
+     *   take: 10,
+     * })
+    **/
+    aggregate<T extends CommentAggregateArgs>(args: Subset<T, CommentAggregateArgs>): Prisma.PrismaPromise<GetCommentAggregateType<T>>
+
+    /**
+     * Group by Comment.
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * @param {CommentGroupByArgs} args - Group by arguments.
+     * @example
+     * // Group by city, order by createdAt, get count
+     * const result = await prisma.user.groupBy({
+     *   by: ['city', 'createdAt'],
+     *   orderBy: {
+     *     createdAt: true
+     *   },
+     *   _count: {
+     *     _all: true
+     *   },
+     * })
+     * 
+    **/
+    groupBy<
+      T extends CommentGroupByArgs,
+      HasSelectOrTake extends Or<
+        Extends<'skip', Keys<T>>,
+        Extends<'take', Keys<T>>
+      >,
+      OrderByArg extends True extends HasSelectOrTake
+        ? { orderBy: CommentGroupByArgs['orderBy'] }
+        : { orderBy?: CommentGroupByArgs['orderBy'] },
+      OrderFields extends ExcludeUnderscoreKeys<Keys<MaybeTupleToUnion<T['orderBy']>>>,
+      ByFields extends MaybeTupleToUnion<T['by']>,
+      ByValid extends Has<ByFields, OrderFields>,
+      HavingFields extends GetHavingFields<T['having']>,
+      HavingValid extends Has<ByFields, HavingFields>,
+      ByEmpty extends T['by'] extends never[] ? True : False,
+      InputErrors extends ByEmpty extends True
+      ? `Error: "by" must not be empty.`
+      : HavingValid extends False
+      ? {
+          [P in HavingFields]: P extends ByFields
+            ? never
+            : P extends string
+            ? `Error: Field "${P}" used in "having" needs to be provided in "by".`
+            : [
+                Error,
+                'Field ',
+                P,
+                ` in "having" needs to be provided in "by"`,
+              ]
+        }[HavingFields]
+      : 'take' extends Keys<T>
+      ? 'orderBy' extends Keys<T>
+        ? ByValid extends True
+          ? {}
+          : {
+              [P in OrderFields]: P extends ByFields
+                ? never
+                : `Error: Field "${P}" in "orderBy" needs to be provided in "by"`
+            }[OrderFields]
+        : 'Error: If you provide "take", you also need to provide "orderBy"'
+      : 'skip' extends Keys<T>
+      ? 'orderBy' extends Keys<T>
+        ? ByValid extends True
+          ? {}
+          : {
+              [P in OrderFields]: P extends ByFields
+                ? never
+                : `Error: Field "${P}" in "orderBy" needs to be provided in "by"`
+            }[OrderFields]
+        : 'Error: If you provide "skip", you also need to provide "orderBy"'
+      : ByValid extends True
+      ? {}
+      : {
+          [P in OrderFields]: P extends ByFields
+            ? never
+            : `Error: Field "${P}" in "orderBy" needs to be provided in "by"`
+        }[OrderFields]
+    >(args: SubsetIntersection<T, CommentGroupByArgs, OrderByArg> & InputErrors): {} extends InputErrors ? GetCommentGroupByPayload<T> : Prisma.PrismaPromise<InputErrors>
+  /**
+   * Fields of the Comment model
+   */
+  readonly fields: CommentFieldRefs;
+  }
+
+  /**
+   * The delegate class that acts as a "Promise-like" for Comment.
+   * Why is this prefixed with `Prisma__`?
+   * Because we want to prevent naming conflicts as mentioned in
+   * https://github.com/prisma/prisma-client-js/issues/707
+   */
+  export interface Prisma__CommentClient<T, Null = never, ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs, GlobalOmitOptions = {}> extends Prisma.PrismaPromise<T> {
+    readonly [Symbol.toStringTag]: "PrismaPromise"
+    target<T extends BulletinItemDefaultArgs<ExtArgs> = {}>(args?: Subset<T, BulletinItemDefaultArgs<ExtArgs>>): Prisma__BulletinItemClient<$Result.GetResult<Prisma.$BulletinItemPayload<ExtArgs>, T, "findUniqueOrThrow", GlobalOmitOptions> | Null, Null, ExtArgs, GlobalOmitOptions>
+    author<T extends UserDefaultArgs<ExtArgs> = {}>(args?: Subset<T, UserDefaultArgs<ExtArgs>>): Prisma__UserClient<$Result.GetResult<Prisma.$UserPayload<ExtArgs>, T, "findUniqueOrThrow", GlobalOmitOptions> | Null, Null, ExtArgs, GlobalOmitOptions>
+    /**
+     * Attaches callbacks for the resolution and/or rejection of the Promise.
+     * @param onfulfilled The callback to execute when the Promise is resolved.
+     * @param onrejected The callback to execute when the Promise is rejected.
+     * @returns A Promise for the completion of which ever callback is executed.
+     */
+    then<TResult1 = T, TResult2 = never>(onfulfilled?: ((value: T) => TResult1 | PromiseLike<TResult1>) | undefined | null, onrejected?: ((reason: any) => TResult2 | PromiseLike<TResult2>) | undefined | null): $Utils.JsPromise<TResult1 | TResult2>
+    /**
+     * Attaches a callback for only the rejection of the Promise.
+     * @param onrejected The callback to execute when the Promise is rejected.
+     * @returns A Promise for the completion of the callback.
+     */
+    catch<TResult = never>(onrejected?: ((reason: any) => TResult | PromiseLike<TResult>) | undefined | null): $Utils.JsPromise<T | TResult>
+    /**
+     * Attaches a callback that is invoked when the Promise is settled (fulfilled or rejected). The
+     * resolved value cannot be modified from the callback.
+     * @param onfinally The callback to execute when the Promise is settled (fulfilled or rejected).
+     * @returns A Promise for the completion of the callback.
+     */
+    finally(onfinally?: (() => void) | undefined | null): $Utils.JsPromise<T>
+  }
+
+
+
+
+  /**
+   * Fields of the Comment model
+   */
+  interface CommentFieldRefs {
+    readonly id: FieldRef<"Comment", 'Int'>
+    readonly targetId: FieldRef<"Comment", 'Int'>
+    readonly authorId: FieldRef<"Comment", 'Int'>
+    readonly content: FieldRef<"Comment", 'String'>
+    readonly dateCreated: FieldRef<"Comment", 'DateTime'>
+    readonly dateModified: FieldRef<"Comment", 'DateTime'>
+  }
+    
+
+  // Custom InputTypes
+  /**
+   * Comment findUnique
+   */
+  export type CommentFindUniqueArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the Comment
+     */
+    select?: CommentSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the Comment
+     */
+    omit?: CommentOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: CommentInclude<ExtArgs> | null
+    /**
+     * Filter, which Comment to fetch.
+     */
+    where: CommentWhereUniqueInput
+  }
+
+  /**
+   * Comment findUniqueOrThrow
+   */
+  export type CommentFindUniqueOrThrowArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the Comment
+     */
+    select?: CommentSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the Comment
+     */
+    omit?: CommentOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: CommentInclude<ExtArgs> | null
+    /**
+     * Filter, which Comment to fetch.
+     */
+    where: CommentWhereUniqueInput
+  }
+
+  /**
+   * Comment findFirst
+   */
+  export type CommentFindFirstArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the Comment
+     */
+    select?: CommentSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the Comment
+     */
+    omit?: CommentOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: CommentInclude<ExtArgs> | null
+    /**
+     * Filter, which Comment to fetch.
+     */
+    where?: CommentWhereInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/sorting Sorting Docs}
+     * 
+     * Determine the order of Comments to fetch.
+     */
+    orderBy?: CommentOrderByWithRelationInput | CommentOrderByWithRelationInput[]
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination#cursor-based-pagination Cursor Docs}
+     * 
+     * Sets the position for searching for Comments.
+     */
+    cursor?: CommentWhereUniqueInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Take `±n` Comments from the position of the cursor.
+     */
+    take?: number
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Skip the first `n` Comments.
+     */
+    skip?: number
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/distinct Distinct Docs}
+     * 
+     * Filter by unique combinations of Comments.
+     */
+    distinct?: CommentScalarFieldEnum | CommentScalarFieldEnum[]
+  }
+
+  /**
+   * Comment findFirstOrThrow
+   */
+  export type CommentFindFirstOrThrowArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the Comment
+     */
+    select?: CommentSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the Comment
+     */
+    omit?: CommentOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: CommentInclude<ExtArgs> | null
+    /**
+     * Filter, which Comment to fetch.
+     */
+    where?: CommentWhereInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/sorting Sorting Docs}
+     * 
+     * Determine the order of Comments to fetch.
+     */
+    orderBy?: CommentOrderByWithRelationInput | CommentOrderByWithRelationInput[]
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination#cursor-based-pagination Cursor Docs}
+     * 
+     * Sets the position for searching for Comments.
+     */
+    cursor?: CommentWhereUniqueInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Take `±n` Comments from the position of the cursor.
+     */
+    take?: number
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Skip the first `n` Comments.
+     */
+    skip?: number
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/distinct Distinct Docs}
+     * 
+     * Filter by unique combinations of Comments.
+     */
+    distinct?: CommentScalarFieldEnum | CommentScalarFieldEnum[]
+  }
+
+  /**
+   * Comment findMany
+   */
+  export type CommentFindManyArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the Comment
+     */
+    select?: CommentSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the Comment
+     */
+    omit?: CommentOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: CommentInclude<ExtArgs> | null
+    /**
+     * Filter, which Comments to fetch.
+     */
+    where?: CommentWhereInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/sorting Sorting Docs}
+     * 
+     * Determine the order of Comments to fetch.
+     */
+    orderBy?: CommentOrderByWithRelationInput | CommentOrderByWithRelationInput[]
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination#cursor-based-pagination Cursor Docs}
+     * 
+     * Sets the position for listing Comments.
+     */
+    cursor?: CommentWhereUniqueInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Take `±n` Comments from the position of the cursor.
+     */
+    take?: number
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Skip the first `n` Comments.
+     */
+    skip?: number
+    distinct?: CommentScalarFieldEnum | CommentScalarFieldEnum[]
+  }
+
+  /**
+   * Comment create
+   */
+  export type CommentCreateArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the Comment
+     */
+    select?: CommentSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the Comment
+     */
+    omit?: CommentOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: CommentInclude<ExtArgs> | null
+    /**
+     * The data needed to create a Comment.
+     */
+    data: XOR<CommentCreateInput, CommentUncheckedCreateInput>
+  }
+
+  /**
+   * Comment createMany
+   */
+  export type CommentCreateManyArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * The data used to create many Comments.
+     */
+    data: CommentCreateManyInput | CommentCreateManyInput[]
+    skipDuplicates?: boolean
+  }
+
+  /**
+   * Comment createManyAndReturn
+   */
+  export type CommentCreateManyAndReturnArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the Comment
+     */
+    select?: CommentSelectCreateManyAndReturn<ExtArgs> | null
+    /**
+     * Omit specific fields from the Comment
+     */
+    omit?: CommentOmit<ExtArgs> | null
+    /**
+     * The data used to create many Comments.
+     */
+    data: CommentCreateManyInput | CommentCreateManyInput[]
+    skipDuplicates?: boolean
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: CommentIncludeCreateManyAndReturn<ExtArgs> | null
+  }
+
+  /**
+   * Comment update
+   */
+  export type CommentUpdateArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the Comment
+     */
+    select?: CommentSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the Comment
+     */
+    omit?: CommentOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: CommentInclude<ExtArgs> | null
+    /**
+     * The data needed to update a Comment.
+     */
+    data: XOR<CommentUpdateInput, CommentUncheckedUpdateInput>
+    /**
+     * Choose, which Comment to update.
+     */
+    where: CommentWhereUniqueInput
+  }
+
+  /**
+   * Comment updateMany
+   */
+  export type CommentUpdateManyArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * The data used to update Comments.
+     */
+    data: XOR<CommentUpdateManyMutationInput, CommentUncheckedUpdateManyInput>
+    /**
+     * Filter which Comments to update
+     */
+    where?: CommentWhereInput
+    /**
+     * Limit how many Comments to update.
+     */
+    limit?: number
+  }
+
+  /**
+   * Comment updateManyAndReturn
+   */
+  export type CommentUpdateManyAndReturnArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the Comment
+     */
+    select?: CommentSelectUpdateManyAndReturn<ExtArgs> | null
+    /**
+     * Omit specific fields from the Comment
+     */
+    omit?: CommentOmit<ExtArgs> | null
+    /**
+     * The data used to update Comments.
+     */
+    data: XOR<CommentUpdateManyMutationInput, CommentUncheckedUpdateManyInput>
+    /**
+     * Filter which Comments to update
+     */
+    where?: CommentWhereInput
+    /**
+     * Limit how many Comments to update.
+     */
+    limit?: number
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: CommentIncludeUpdateManyAndReturn<ExtArgs> | null
+  }
+
+  /**
+   * Comment upsert
+   */
+  export type CommentUpsertArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the Comment
+     */
+    select?: CommentSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the Comment
+     */
+    omit?: CommentOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: CommentInclude<ExtArgs> | null
+    /**
+     * The filter to search for the Comment to update in case it exists.
+     */
+    where: CommentWhereUniqueInput
+    /**
+     * In case the Comment found by the `where` argument doesn't exist, create a new Comment with this data.
+     */
+    create: XOR<CommentCreateInput, CommentUncheckedCreateInput>
+    /**
+     * In case the Comment was found with the provided `where` argument, update it with this data.
+     */
+    update: XOR<CommentUpdateInput, CommentUncheckedUpdateInput>
+  }
+
+  /**
+   * Comment delete
+   */
+  export type CommentDeleteArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the Comment
+     */
+    select?: CommentSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the Comment
+     */
+    omit?: CommentOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: CommentInclude<ExtArgs> | null
+    /**
+     * Filter which Comment to delete.
+     */
+    where: CommentWhereUniqueInput
+  }
+
+  /**
+   * Comment deleteMany
+   */
+  export type CommentDeleteManyArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Filter which Comments to delete
+     */
+    where?: CommentWhereInput
+    /**
+     * Limit how many Comments to delete.
+     */
+    limit?: number
+  }
+
+  /**
+   * Comment without action
+   */
+  export type CommentDefaultArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the Comment
+     */
+    select?: CommentSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the Comment
+     */
+    omit?: CommentOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: CommentInclude<ExtArgs> | null
+  }
+
+
+  /**
+   * Model PollOption
+   */
+
+  export type AggregatePollOption = {
+    _count: PollOptionCountAggregateOutputType | null
+    _avg: PollOptionAvgAggregateOutputType | null
+    _sum: PollOptionSumAggregateOutputType | null
+    _min: PollOptionMinAggregateOutputType | null
+    _max: PollOptionMaxAggregateOutputType | null
+  }
+
+  export type PollOptionAvgAggregateOutputType = {
+    id: number | null
+    pollId: number | null
+    voteCount: number | null
+  }
+
+  export type PollOptionSumAggregateOutputType = {
+    id: number | null
+    pollId: number | null
+    voteCount: number | null
+  }
+
+  export type PollOptionMinAggregateOutputType = {
+    id: number | null
+    pollId: number | null
+    content: string | null
+    voteCount: number | null
+  }
+
+  export type PollOptionMaxAggregateOutputType = {
+    id: number | null
+    pollId: number | null
+    content: string | null
+    voteCount: number | null
+  }
+
+  export type PollOptionCountAggregateOutputType = {
+    id: number
+    pollId: number
+    content: number
+    voteCount: number
+    _all: number
+  }
+
+
+  export type PollOptionAvgAggregateInputType = {
+    id?: true
+    pollId?: true
+    voteCount?: true
+  }
+
+  export type PollOptionSumAggregateInputType = {
+    id?: true
+    pollId?: true
+    voteCount?: true
+  }
+
+  export type PollOptionMinAggregateInputType = {
+    id?: true
+    pollId?: true
+    content?: true
+    voteCount?: true
+  }
+
+  export type PollOptionMaxAggregateInputType = {
+    id?: true
+    pollId?: true
+    content?: true
+    voteCount?: true
+  }
+
+  export type PollOptionCountAggregateInputType = {
+    id?: true
+    pollId?: true
+    content?: true
+    voteCount?: true
+    _all?: true
+  }
+
+  export type PollOptionAggregateArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Filter which PollOption to aggregate.
+     */
+    where?: PollOptionWhereInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/sorting Sorting Docs}
+     * 
+     * Determine the order of PollOptions to fetch.
+     */
+    orderBy?: PollOptionOrderByWithRelationInput | PollOptionOrderByWithRelationInput[]
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination#cursor-based-pagination Cursor Docs}
+     * 
+     * Sets the start position
+     */
+    cursor?: PollOptionWhereUniqueInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Take `±n` PollOptions from the position of the cursor.
+     */
+    take?: number
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Skip the first `n` PollOptions.
+     */
+    skip?: number
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/aggregations Aggregation Docs}
+     * 
+     * Count returned PollOptions
+    **/
+    _count?: true | PollOptionCountAggregateInputType
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/aggregations Aggregation Docs}
+     * 
+     * Select which fields to average
+    **/
+    _avg?: PollOptionAvgAggregateInputType
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/aggregations Aggregation Docs}
+     * 
+     * Select which fields to sum
+    **/
+    _sum?: PollOptionSumAggregateInputType
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/aggregations Aggregation Docs}
+     * 
+     * Select which fields to find the minimum value
+    **/
+    _min?: PollOptionMinAggregateInputType
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/aggregations Aggregation Docs}
+     * 
+     * Select which fields to find the maximum value
+    **/
+    _max?: PollOptionMaxAggregateInputType
+  }
+
+  export type GetPollOptionAggregateType<T extends PollOptionAggregateArgs> = {
+        [P in keyof T & keyof AggregatePollOption]: P extends '_count' | 'count'
+      ? T[P] extends true
+        ? number
+        : GetScalarType<T[P], AggregatePollOption[P]>
+      : GetScalarType<T[P], AggregatePollOption[P]>
+  }
+
+
+
+
+  export type PollOptionGroupByArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    where?: PollOptionWhereInput
+    orderBy?: PollOptionOrderByWithAggregationInput | PollOptionOrderByWithAggregationInput[]
+    by: PollOptionScalarFieldEnum[] | PollOptionScalarFieldEnum
+    having?: PollOptionScalarWhereWithAggregatesInput
+    take?: number
+    skip?: number
+    _count?: PollOptionCountAggregateInputType | true
+    _avg?: PollOptionAvgAggregateInputType
+    _sum?: PollOptionSumAggregateInputType
+    _min?: PollOptionMinAggregateInputType
+    _max?: PollOptionMaxAggregateInputType
+  }
+
+  export type PollOptionGroupByOutputType = {
+    id: number
+    pollId: number
+    content: string
+    voteCount: number
+    _count: PollOptionCountAggregateOutputType | null
+    _avg: PollOptionAvgAggregateOutputType | null
+    _sum: PollOptionSumAggregateOutputType | null
+    _min: PollOptionMinAggregateOutputType | null
+    _max: PollOptionMaxAggregateOutputType | null
+  }
+
+  type GetPollOptionGroupByPayload<T extends PollOptionGroupByArgs> = Prisma.PrismaPromise<
+    Array<
+      PickEnumerable<PollOptionGroupByOutputType, T['by']> &
+        {
+          [P in ((keyof T) & (keyof PollOptionGroupByOutputType))]: P extends '_count'
+            ? T[P] extends boolean
+              ? number
+              : GetScalarType<T[P], PollOptionGroupByOutputType[P]>
+            : GetScalarType<T[P], PollOptionGroupByOutputType[P]>
+        }
+      >
+    >
+
+
+  export type PollOptionSelect<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetSelect<{
+    id?: boolean
+    pollId?: boolean
+    content?: boolean
+    voteCount?: boolean
+    poll?: boolean | BulletinItemDefaultArgs<ExtArgs>
+  }, ExtArgs["result"]["pollOption"]>
+
+  export type PollOptionSelectCreateManyAndReturn<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetSelect<{
+    id?: boolean
+    pollId?: boolean
+    content?: boolean
+    voteCount?: boolean
+    poll?: boolean | BulletinItemDefaultArgs<ExtArgs>
+  }, ExtArgs["result"]["pollOption"]>
+
+  export type PollOptionSelectUpdateManyAndReturn<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetSelect<{
+    id?: boolean
+    pollId?: boolean
+    content?: boolean
+    voteCount?: boolean
+    poll?: boolean | BulletinItemDefaultArgs<ExtArgs>
+  }, ExtArgs["result"]["pollOption"]>
+
+  export type PollOptionSelectScalar = {
+    id?: boolean
+    pollId?: boolean
+    content?: boolean
+    voteCount?: boolean
+  }
+
+  export type PollOptionOmit<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetOmit<"id" | "pollId" | "content" | "voteCount", ExtArgs["result"]["pollOption"]>
+  export type PollOptionInclude<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    poll?: boolean | BulletinItemDefaultArgs<ExtArgs>
+  }
+  export type PollOptionIncludeCreateManyAndReturn<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    poll?: boolean | BulletinItemDefaultArgs<ExtArgs>
+  }
+  export type PollOptionIncludeUpdateManyAndReturn<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    poll?: boolean | BulletinItemDefaultArgs<ExtArgs>
+  }
+
+  export type $PollOptionPayload<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    name: "PollOption"
+    objects: {
+      poll: Prisma.$BulletinItemPayload<ExtArgs>
+    }
+    scalars: $Extensions.GetPayloadResult<{
+      id: number
+      pollId: number
+      content: string
+      voteCount: number
+    }, ExtArgs["result"]["pollOption"]>
+    composites: {}
+  }
+
+  type PollOptionGetPayload<S extends boolean | null | undefined | PollOptionDefaultArgs> = $Result.GetResult<Prisma.$PollOptionPayload, S>
+
+  type PollOptionCountArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> =
+    Omit<PollOptionFindManyArgs, 'select' | 'include' | 'distinct' | 'omit'> & {
+      select?: PollOptionCountAggregateInputType | true
+    }
+
+  export interface PollOptionDelegate<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs, GlobalOmitOptions = {}> {
+    [K: symbol]: { types: Prisma.TypeMap<ExtArgs>['model']['PollOption'], meta: { name: 'PollOption' } }
+    /**
+     * Find zero or one PollOption that matches the filter.
+     * @param {PollOptionFindUniqueArgs} args - Arguments to find a PollOption
+     * @example
+     * // Get one PollOption
+     * const pollOption = await prisma.pollOption.findUnique({
+     *   where: {
+     *     // ... provide filter here
+     *   }
+     * })
+     */
+    findUnique<T extends PollOptionFindUniqueArgs>(args: SelectSubset<T, PollOptionFindUniqueArgs<ExtArgs>>): Prisma__PollOptionClient<$Result.GetResult<Prisma.$PollOptionPayload<ExtArgs>, T, "findUnique", GlobalOmitOptions> | null, null, ExtArgs, GlobalOmitOptions>
+
+    /**
+     * Find one PollOption that matches the filter or throw an error with `error.code='P2025'`
+     * if no matches were found.
+     * @param {PollOptionFindUniqueOrThrowArgs} args - Arguments to find a PollOption
+     * @example
+     * // Get one PollOption
+     * const pollOption = await prisma.pollOption.findUniqueOrThrow({
+     *   where: {
+     *     // ... provide filter here
+     *   }
+     * })
+     */
+    findUniqueOrThrow<T extends PollOptionFindUniqueOrThrowArgs>(args: SelectSubset<T, PollOptionFindUniqueOrThrowArgs<ExtArgs>>): Prisma__PollOptionClient<$Result.GetResult<Prisma.$PollOptionPayload<ExtArgs>, T, "findUniqueOrThrow", GlobalOmitOptions>, never, ExtArgs, GlobalOmitOptions>
+
+    /**
+     * Find the first PollOption that matches the filter.
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * @param {PollOptionFindFirstArgs} args - Arguments to find a PollOption
+     * @example
+     * // Get one PollOption
+     * const pollOption = await prisma.pollOption.findFirst({
+     *   where: {
+     *     // ... provide filter here
+     *   }
+     * })
+     */
+    findFirst<T extends PollOptionFindFirstArgs>(args?: SelectSubset<T, PollOptionFindFirstArgs<ExtArgs>>): Prisma__PollOptionClient<$Result.GetResult<Prisma.$PollOptionPayload<ExtArgs>, T, "findFirst", GlobalOmitOptions> | null, null, ExtArgs, GlobalOmitOptions>
+
+    /**
+     * Find the first PollOption that matches the filter or
+     * throw `PrismaKnownClientError` with `P2025` code if no matches were found.
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * @param {PollOptionFindFirstOrThrowArgs} args - Arguments to find a PollOption
+     * @example
+     * // Get one PollOption
+     * const pollOption = await prisma.pollOption.findFirstOrThrow({
+     *   where: {
+     *     // ... provide filter here
+     *   }
+     * })
+     */
+    findFirstOrThrow<T extends PollOptionFindFirstOrThrowArgs>(args?: SelectSubset<T, PollOptionFindFirstOrThrowArgs<ExtArgs>>): Prisma__PollOptionClient<$Result.GetResult<Prisma.$PollOptionPayload<ExtArgs>, T, "findFirstOrThrow", GlobalOmitOptions>, never, ExtArgs, GlobalOmitOptions>
+
+    /**
+     * Find zero or more PollOptions that matches the filter.
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * @param {PollOptionFindManyArgs} args - Arguments to filter and select certain fields only.
+     * @example
+     * // Get all PollOptions
+     * const pollOptions = await prisma.pollOption.findMany()
+     * 
+     * // Get first 10 PollOptions
+     * const pollOptions = await prisma.pollOption.findMany({ take: 10 })
+     * 
+     * // Only select the `id`
+     * const pollOptionWithIdOnly = await prisma.pollOption.findMany({ select: { id: true } })
+     * 
+     */
+    findMany<T extends PollOptionFindManyArgs>(args?: SelectSubset<T, PollOptionFindManyArgs<ExtArgs>>): Prisma.PrismaPromise<$Result.GetResult<Prisma.$PollOptionPayload<ExtArgs>, T, "findMany", GlobalOmitOptions>>
+
+    /**
+     * Create a PollOption.
+     * @param {PollOptionCreateArgs} args - Arguments to create a PollOption.
+     * @example
+     * // Create one PollOption
+     * const PollOption = await prisma.pollOption.create({
+     *   data: {
+     *     // ... data to create a PollOption
+     *   }
+     * })
+     * 
+     */
+    create<T extends PollOptionCreateArgs>(args: SelectSubset<T, PollOptionCreateArgs<ExtArgs>>): Prisma__PollOptionClient<$Result.GetResult<Prisma.$PollOptionPayload<ExtArgs>, T, "create", GlobalOmitOptions>, never, ExtArgs, GlobalOmitOptions>
+
+    /**
+     * Create many PollOptions.
+     * @param {PollOptionCreateManyArgs} args - Arguments to create many PollOptions.
+     * @example
+     * // Create many PollOptions
+     * const pollOption = await prisma.pollOption.createMany({
+     *   data: [
+     *     // ... provide data here
+     *   ]
+     * })
+     *     
+     */
+    createMany<T extends PollOptionCreateManyArgs>(args?: SelectSubset<T, PollOptionCreateManyArgs<ExtArgs>>): Prisma.PrismaPromise<BatchPayload>
+
+    /**
+     * Create many PollOptions and returns the data saved in the database.
+     * @param {PollOptionCreateManyAndReturnArgs} args - Arguments to create many PollOptions.
+     * @example
+     * // Create many PollOptions
+     * const pollOption = await prisma.pollOption.createManyAndReturn({
+     *   data: [
+     *     // ... provide data here
+     *   ]
+     * })
+     * 
+     * // Create many PollOptions and only return the `id`
+     * const pollOptionWithIdOnly = await prisma.pollOption.createManyAndReturn({
+     *   select: { id: true },
+     *   data: [
+     *     // ... provide data here
+     *   ]
+     * })
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * 
+     */
+    createManyAndReturn<T extends PollOptionCreateManyAndReturnArgs>(args?: SelectSubset<T, PollOptionCreateManyAndReturnArgs<ExtArgs>>): Prisma.PrismaPromise<$Result.GetResult<Prisma.$PollOptionPayload<ExtArgs>, T, "createManyAndReturn", GlobalOmitOptions>>
+
+    /**
+     * Delete a PollOption.
+     * @param {PollOptionDeleteArgs} args - Arguments to delete one PollOption.
+     * @example
+     * // Delete one PollOption
+     * const PollOption = await prisma.pollOption.delete({
+     *   where: {
+     *     // ... filter to delete one PollOption
+     *   }
+     * })
+     * 
+     */
+    delete<T extends PollOptionDeleteArgs>(args: SelectSubset<T, PollOptionDeleteArgs<ExtArgs>>): Prisma__PollOptionClient<$Result.GetResult<Prisma.$PollOptionPayload<ExtArgs>, T, "delete", GlobalOmitOptions>, never, ExtArgs, GlobalOmitOptions>
+
+    /**
+     * Update one PollOption.
+     * @param {PollOptionUpdateArgs} args - Arguments to update one PollOption.
+     * @example
+     * // Update one PollOption
+     * const pollOption = await prisma.pollOption.update({
+     *   where: {
+     *     // ... provide filter here
+     *   },
+     *   data: {
+     *     // ... provide data here
+     *   }
+     * })
+     * 
+     */
+    update<T extends PollOptionUpdateArgs>(args: SelectSubset<T, PollOptionUpdateArgs<ExtArgs>>): Prisma__PollOptionClient<$Result.GetResult<Prisma.$PollOptionPayload<ExtArgs>, T, "update", GlobalOmitOptions>, never, ExtArgs, GlobalOmitOptions>
+
+    /**
+     * Delete zero or more PollOptions.
+     * @param {PollOptionDeleteManyArgs} args - Arguments to filter PollOptions to delete.
+     * @example
+     * // Delete a few PollOptions
+     * const { count } = await prisma.pollOption.deleteMany({
+     *   where: {
+     *     // ... provide filter here
+     *   }
+     * })
+     * 
+     */
+    deleteMany<T extends PollOptionDeleteManyArgs>(args?: SelectSubset<T, PollOptionDeleteManyArgs<ExtArgs>>): Prisma.PrismaPromise<BatchPayload>
+
+    /**
+     * Update zero or more PollOptions.
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * @param {PollOptionUpdateManyArgs} args - Arguments to update one or more rows.
+     * @example
+     * // Update many PollOptions
+     * const pollOption = await prisma.pollOption.updateMany({
+     *   where: {
+     *     // ... provide filter here
+     *   },
+     *   data: {
+     *     // ... provide data here
+     *   }
+     * })
+     * 
+     */
+    updateMany<T extends PollOptionUpdateManyArgs>(args: SelectSubset<T, PollOptionUpdateManyArgs<ExtArgs>>): Prisma.PrismaPromise<BatchPayload>
+
+    /**
+     * Update zero or more PollOptions and returns the data updated in the database.
+     * @param {PollOptionUpdateManyAndReturnArgs} args - Arguments to update many PollOptions.
+     * @example
+     * // Update many PollOptions
+     * const pollOption = await prisma.pollOption.updateManyAndReturn({
+     *   where: {
+     *     // ... provide filter here
+     *   },
+     *   data: [
+     *     // ... provide data here
+     *   ]
+     * })
+     * 
+     * // Update zero or more PollOptions and only return the `id`
+     * const pollOptionWithIdOnly = await prisma.pollOption.updateManyAndReturn({
+     *   select: { id: true },
+     *   where: {
+     *     // ... provide filter here
+     *   },
+     *   data: [
+     *     // ... provide data here
+     *   ]
+     * })
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * 
+     */
+    updateManyAndReturn<T extends PollOptionUpdateManyAndReturnArgs>(args: SelectSubset<T, PollOptionUpdateManyAndReturnArgs<ExtArgs>>): Prisma.PrismaPromise<$Result.GetResult<Prisma.$PollOptionPayload<ExtArgs>, T, "updateManyAndReturn", GlobalOmitOptions>>
+
+    /**
+     * Create or update one PollOption.
+     * @param {PollOptionUpsertArgs} args - Arguments to update or create a PollOption.
+     * @example
+     * // Update or create a PollOption
+     * const pollOption = await prisma.pollOption.upsert({
+     *   create: {
+     *     // ... data to create a PollOption
+     *   },
+     *   update: {
+     *     // ... in case it already exists, update
+     *   },
+     *   where: {
+     *     // ... the filter for the PollOption we want to update
+     *   }
+     * })
+     */
+    upsert<T extends PollOptionUpsertArgs>(args: SelectSubset<T, PollOptionUpsertArgs<ExtArgs>>): Prisma__PollOptionClient<$Result.GetResult<Prisma.$PollOptionPayload<ExtArgs>, T, "upsert", GlobalOmitOptions>, never, ExtArgs, GlobalOmitOptions>
+
+
+    /**
+     * Count the number of PollOptions.
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * @param {PollOptionCountArgs} args - Arguments to filter PollOptions to count.
+     * @example
+     * // Count the number of PollOptions
+     * const count = await prisma.pollOption.count({
+     *   where: {
+     *     // ... the filter for the PollOptions we want to count
+     *   }
+     * })
+    **/
+    count<T extends PollOptionCountArgs>(
+      args?: Subset<T, PollOptionCountArgs>,
+    ): Prisma.PrismaPromise<
+      T extends $Utils.Record<'select', any>
+        ? T['select'] extends true
+          ? number
+          : GetScalarType<T['select'], PollOptionCountAggregateOutputType>
+        : number
+    >
+
+    /**
+     * Allows you to perform aggregations operations on a PollOption.
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * @param {PollOptionAggregateArgs} args - Select which aggregations you would like to apply and on what fields.
+     * @example
+     * // Ordered by age ascending
+     * // Where email contains prisma.io
+     * // Limited to the 10 users
+     * const aggregations = await prisma.user.aggregate({
+     *   _avg: {
+     *     age: true,
+     *   },
+     *   where: {
+     *     email: {
+     *       contains: "prisma.io",
+     *     },
+     *   },
+     *   orderBy: {
+     *     age: "asc",
+     *   },
+     *   take: 10,
+     * })
+    **/
+    aggregate<T extends PollOptionAggregateArgs>(args: Subset<T, PollOptionAggregateArgs>): Prisma.PrismaPromise<GetPollOptionAggregateType<T>>
+
+    /**
+     * Group by PollOption.
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * @param {PollOptionGroupByArgs} args - Group by arguments.
+     * @example
+     * // Group by city, order by createdAt, get count
+     * const result = await prisma.user.groupBy({
+     *   by: ['city', 'createdAt'],
+     *   orderBy: {
+     *     createdAt: true
+     *   },
+     *   _count: {
+     *     _all: true
+     *   },
+     * })
+     * 
+    **/
+    groupBy<
+      T extends PollOptionGroupByArgs,
+      HasSelectOrTake extends Or<
+        Extends<'skip', Keys<T>>,
+        Extends<'take', Keys<T>>
+      >,
+      OrderByArg extends True extends HasSelectOrTake
+        ? { orderBy: PollOptionGroupByArgs['orderBy'] }
+        : { orderBy?: PollOptionGroupByArgs['orderBy'] },
+      OrderFields extends ExcludeUnderscoreKeys<Keys<MaybeTupleToUnion<T['orderBy']>>>,
+      ByFields extends MaybeTupleToUnion<T['by']>,
+      ByValid extends Has<ByFields, OrderFields>,
+      HavingFields extends GetHavingFields<T['having']>,
+      HavingValid extends Has<ByFields, HavingFields>,
+      ByEmpty extends T['by'] extends never[] ? True : False,
+      InputErrors extends ByEmpty extends True
+      ? `Error: "by" must not be empty.`
+      : HavingValid extends False
+      ? {
+          [P in HavingFields]: P extends ByFields
+            ? never
+            : P extends string
+            ? `Error: Field "${P}" used in "having" needs to be provided in "by".`
+            : [
+                Error,
+                'Field ',
+                P,
+                ` in "having" needs to be provided in "by"`,
+              ]
+        }[HavingFields]
+      : 'take' extends Keys<T>
+      ? 'orderBy' extends Keys<T>
+        ? ByValid extends True
+          ? {}
+          : {
+              [P in OrderFields]: P extends ByFields
+                ? never
+                : `Error: Field "${P}" in "orderBy" needs to be provided in "by"`
+            }[OrderFields]
+        : 'Error: If you provide "take", you also need to provide "orderBy"'
+      : 'skip' extends Keys<T>
+      ? 'orderBy' extends Keys<T>
+        ? ByValid extends True
+          ? {}
+          : {
+              [P in OrderFields]: P extends ByFields
+                ? never
+                : `Error: Field "${P}" in "orderBy" needs to be provided in "by"`
+            }[OrderFields]
+        : 'Error: If you provide "skip", you also need to provide "orderBy"'
+      : ByValid extends True
+      ? {}
+      : {
+          [P in OrderFields]: P extends ByFields
+            ? never
+            : `Error: Field "${P}" in "orderBy" needs to be provided in "by"`
+        }[OrderFields]
+    >(args: SubsetIntersection<T, PollOptionGroupByArgs, OrderByArg> & InputErrors): {} extends InputErrors ? GetPollOptionGroupByPayload<T> : Prisma.PrismaPromise<InputErrors>
+  /**
+   * Fields of the PollOption model
+   */
+  readonly fields: PollOptionFieldRefs;
+  }
+
+  /**
+   * The delegate class that acts as a "Promise-like" for PollOption.
+   * Why is this prefixed with `Prisma__`?
+   * Because we want to prevent naming conflicts as mentioned in
+   * https://github.com/prisma/prisma-client-js/issues/707
+   */
+  export interface Prisma__PollOptionClient<T, Null = never, ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs, GlobalOmitOptions = {}> extends Prisma.PrismaPromise<T> {
+    readonly [Symbol.toStringTag]: "PrismaPromise"
+    poll<T extends BulletinItemDefaultArgs<ExtArgs> = {}>(args?: Subset<T, BulletinItemDefaultArgs<ExtArgs>>): Prisma__BulletinItemClient<$Result.GetResult<Prisma.$BulletinItemPayload<ExtArgs>, T, "findUniqueOrThrow", GlobalOmitOptions> | Null, Null, ExtArgs, GlobalOmitOptions>
+    /**
+     * Attaches callbacks for the resolution and/or rejection of the Promise.
+     * @param onfulfilled The callback to execute when the Promise is resolved.
+     * @param onrejected The callback to execute when the Promise is rejected.
+     * @returns A Promise for the completion of which ever callback is executed.
+     */
+    then<TResult1 = T, TResult2 = never>(onfulfilled?: ((value: T) => TResult1 | PromiseLike<TResult1>) | undefined | null, onrejected?: ((reason: any) => TResult2 | PromiseLike<TResult2>) | undefined | null): $Utils.JsPromise<TResult1 | TResult2>
+    /**
+     * Attaches a callback for only the rejection of the Promise.
+     * @param onrejected The callback to execute when the Promise is rejected.
+     * @returns A Promise for the completion of the callback.
+     */
+    catch<TResult = never>(onrejected?: ((reason: any) => TResult | PromiseLike<TResult>) | undefined | null): $Utils.JsPromise<T | TResult>
+    /**
+     * Attaches a callback that is invoked when the Promise is settled (fulfilled or rejected). The
+     * resolved value cannot be modified from the callback.
+     * @param onfinally The callback to execute when the Promise is settled (fulfilled or rejected).
+     * @returns A Promise for the completion of the callback.
+     */
+    finally(onfinally?: (() => void) | undefined | null): $Utils.JsPromise<T>
+  }
+
+
+
+
+  /**
+   * Fields of the PollOption model
+   */
+  interface PollOptionFieldRefs {
+    readonly id: FieldRef<"PollOption", 'Int'>
+    readonly pollId: FieldRef<"PollOption", 'Int'>
+    readonly content: FieldRef<"PollOption", 'String'>
+    readonly voteCount: FieldRef<"PollOption", 'Int'>
+  }
+    
+
+  // Custom InputTypes
+  /**
+   * PollOption findUnique
+   */
+  export type PollOptionFindUniqueArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the PollOption
+     */
+    select?: PollOptionSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the PollOption
+     */
+    omit?: PollOptionOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: PollOptionInclude<ExtArgs> | null
+    /**
+     * Filter, which PollOption to fetch.
+     */
+    where: PollOptionWhereUniqueInput
+  }
+
+  /**
+   * PollOption findUniqueOrThrow
+   */
+  export type PollOptionFindUniqueOrThrowArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the PollOption
+     */
+    select?: PollOptionSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the PollOption
+     */
+    omit?: PollOptionOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: PollOptionInclude<ExtArgs> | null
+    /**
+     * Filter, which PollOption to fetch.
+     */
+    where: PollOptionWhereUniqueInput
+  }
+
+  /**
+   * PollOption findFirst
+   */
+  export type PollOptionFindFirstArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the PollOption
+     */
+    select?: PollOptionSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the PollOption
+     */
+    omit?: PollOptionOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: PollOptionInclude<ExtArgs> | null
+    /**
+     * Filter, which PollOption to fetch.
+     */
+    where?: PollOptionWhereInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/sorting Sorting Docs}
+     * 
+     * Determine the order of PollOptions to fetch.
+     */
+    orderBy?: PollOptionOrderByWithRelationInput | PollOptionOrderByWithRelationInput[]
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination#cursor-based-pagination Cursor Docs}
+     * 
+     * Sets the position for searching for PollOptions.
+     */
+    cursor?: PollOptionWhereUniqueInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Take `±n` PollOptions from the position of the cursor.
+     */
+    take?: number
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Skip the first `n` PollOptions.
+     */
+    skip?: number
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/distinct Distinct Docs}
+     * 
+     * Filter by unique combinations of PollOptions.
+     */
+    distinct?: PollOptionScalarFieldEnum | PollOptionScalarFieldEnum[]
+  }
+
+  /**
+   * PollOption findFirstOrThrow
+   */
+  export type PollOptionFindFirstOrThrowArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the PollOption
+     */
+    select?: PollOptionSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the PollOption
+     */
+    omit?: PollOptionOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: PollOptionInclude<ExtArgs> | null
+    /**
+     * Filter, which PollOption to fetch.
+     */
+    where?: PollOptionWhereInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/sorting Sorting Docs}
+     * 
+     * Determine the order of PollOptions to fetch.
+     */
+    orderBy?: PollOptionOrderByWithRelationInput | PollOptionOrderByWithRelationInput[]
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination#cursor-based-pagination Cursor Docs}
+     * 
+     * Sets the position for searching for PollOptions.
+     */
+    cursor?: PollOptionWhereUniqueInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Take `±n` PollOptions from the position of the cursor.
+     */
+    take?: number
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Skip the first `n` PollOptions.
+     */
+    skip?: number
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/distinct Distinct Docs}
+     * 
+     * Filter by unique combinations of PollOptions.
+     */
+    distinct?: PollOptionScalarFieldEnum | PollOptionScalarFieldEnum[]
+  }
+
+  /**
+   * PollOption findMany
+   */
+  export type PollOptionFindManyArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the PollOption
+     */
+    select?: PollOptionSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the PollOption
+     */
+    omit?: PollOptionOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: PollOptionInclude<ExtArgs> | null
+    /**
+     * Filter, which PollOptions to fetch.
+     */
+    where?: PollOptionWhereInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/sorting Sorting Docs}
+     * 
+     * Determine the order of PollOptions to fetch.
+     */
+    orderBy?: PollOptionOrderByWithRelationInput | PollOptionOrderByWithRelationInput[]
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination#cursor-based-pagination Cursor Docs}
+     * 
+     * Sets the position for listing PollOptions.
+     */
+    cursor?: PollOptionWhereUniqueInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Take `±n` PollOptions from the position of the cursor.
+     */
+    take?: number
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Skip the first `n` PollOptions.
+     */
+    skip?: number
+    distinct?: PollOptionScalarFieldEnum | PollOptionScalarFieldEnum[]
+  }
+
+  /**
+   * PollOption create
+   */
+  export type PollOptionCreateArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the PollOption
+     */
+    select?: PollOptionSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the PollOption
+     */
+    omit?: PollOptionOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: PollOptionInclude<ExtArgs> | null
+    /**
+     * The data needed to create a PollOption.
+     */
+    data: XOR<PollOptionCreateInput, PollOptionUncheckedCreateInput>
+  }
+
+  /**
+   * PollOption createMany
+   */
+  export type PollOptionCreateManyArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * The data used to create many PollOptions.
+     */
+    data: PollOptionCreateManyInput | PollOptionCreateManyInput[]
+    skipDuplicates?: boolean
+  }
+
+  /**
+   * PollOption createManyAndReturn
+   */
+  export type PollOptionCreateManyAndReturnArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the PollOption
+     */
+    select?: PollOptionSelectCreateManyAndReturn<ExtArgs> | null
+    /**
+     * Omit specific fields from the PollOption
+     */
+    omit?: PollOptionOmit<ExtArgs> | null
+    /**
+     * The data used to create many PollOptions.
+     */
+    data: PollOptionCreateManyInput | PollOptionCreateManyInput[]
+    skipDuplicates?: boolean
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: PollOptionIncludeCreateManyAndReturn<ExtArgs> | null
+  }
+
+  /**
+   * PollOption update
+   */
+  export type PollOptionUpdateArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the PollOption
+     */
+    select?: PollOptionSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the PollOption
+     */
+    omit?: PollOptionOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: PollOptionInclude<ExtArgs> | null
+    /**
+     * The data needed to update a PollOption.
+     */
+    data: XOR<PollOptionUpdateInput, PollOptionUncheckedUpdateInput>
+    /**
+     * Choose, which PollOption to update.
+     */
+    where: PollOptionWhereUniqueInput
+  }
+
+  /**
+   * PollOption updateMany
+   */
+  export type PollOptionUpdateManyArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * The data used to update PollOptions.
+     */
+    data: XOR<PollOptionUpdateManyMutationInput, PollOptionUncheckedUpdateManyInput>
+    /**
+     * Filter which PollOptions to update
+     */
+    where?: PollOptionWhereInput
+    /**
+     * Limit how many PollOptions to update.
+     */
+    limit?: number
+  }
+
+  /**
+   * PollOption updateManyAndReturn
+   */
+  export type PollOptionUpdateManyAndReturnArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the PollOption
+     */
+    select?: PollOptionSelectUpdateManyAndReturn<ExtArgs> | null
+    /**
+     * Omit specific fields from the PollOption
+     */
+    omit?: PollOptionOmit<ExtArgs> | null
+    /**
+     * The data used to update PollOptions.
+     */
+    data: XOR<PollOptionUpdateManyMutationInput, PollOptionUncheckedUpdateManyInput>
+    /**
+     * Filter which PollOptions to update
+     */
+    where?: PollOptionWhereInput
+    /**
+     * Limit how many PollOptions to update.
+     */
+    limit?: number
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: PollOptionIncludeUpdateManyAndReturn<ExtArgs> | null
+  }
+
+  /**
+   * PollOption upsert
+   */
+  export type PollOptionUpsertArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the PollOption
+     */
+    select?: PollOptionSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the PollOption
+     */
+    omit?: PollOptionOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: PollOptionInclude<ExtArgs> | null
+    /**
+     * The filter to search for the PollOption to update in case it exists.
+     */
+    where: PollOptionWhereUniqueInput
+    /**
+     * In case the PollOption found by the `where` argument doesn't exist, create a new PollOption with this data.
+     */
+    create: XOR<PollOptionCreateInput, PollOptionUncheckedCreateInput>
+    /**
+     * In case the PollOption was found with the provided `where` argument, update it with this data.
+     */
+    update: XOR<PollOptionUpdateInput, PollOptionUncheckedUpdateInput>
+  }
+
+  /**
+   * PollOption delete
+   */
+  export type PollOptionDeleteArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the PollOption
+     */
+    select?: PollOptionSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the PollOption
+     */
+    omit?: PollOptionOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: PollOptionInclude<ExtArgs> | null
+    /**
+     * Filter which PollOption to delete.
+     */
+    where: PollOptionWhereUniqueInput
+  }
+
+  /**
+   * PollOption deleteMany
+   */
+  export type PollOptionDeleteManyArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Filter which PollOptions to delete
+     */
+    where?: PollOptionWhereInput
+    /**
+     * Limit how many PollOptions to delete.
+     */
+    limit?: number
+  }
+
+  /**
+   * PollOption without action
+   */
+  export type PollOptionDefaultArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the PollOption
+     */
+    select?: PollOptionSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the PollOption
+     */
+    omit?: PollOptionOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: PollOptionInclude<ExtArgs> | null
+  }
+
+
+  /**
    * Enums
    */
 
@@ -8725,6 +12516,41 @@ export namespace Prisma {
   };
 
   export type AvatarPropScalarFieldEnum = (typeof AvatarPropScalarFieldEnum)[keyof typeof AvatarPropScalarFieldEnum]
+
+
+  export const BulletinItemScalarFieldEnum: {
+    id: 'id',
+    type: 'type',
+    authorId: 'authorId',
+    content: 'content',
+    dateCreated: 'dateCreated',
+    dateModified: 'dateModified',
+    likeCount: 'likeCount'
+  };
+
+  export type BulletinItemScalarFieldEnum = (typeof BulletinItemScalarFieldEnum)[keyof typeof BulletinItemScalarFieldEnum]
+
+
+  export const CommentScalarFieldEnum: {
+    id: 'id',
+    targetId: 'targetId',
+    authorId: 'authorId',
+    content: 'content',
+    dateCreated: 'dateCreated',
+    dateModified: 'dateModified'
+  };
+
+  export type CommentScalarFieldEnum = (typeof CommentScalarFieldEnum)[keyof typeof CommentScalarFieldEnum]
+
+
+  export const PollOptionScalarFieldEnum: {
+    id: 'id',
+    pollId: 'pollId',
+    content: 'content',
+    voteCount: 'voteCount'
+  };
+
+  export type PollOptionScalarFieldEnum = (typeof PollOptionScalarFieldEnum)[keyof typeof PollOptionScalarFieldEnum]
 
 
   export const SortOrder: {
@@ -8834,6 +12660,20 @@ export namespace Prisma {
 
 
   /**
+   * Reference to a field of type 'BulletinType'
+   */
+  export type EnumBulletinTypeFieldRefInput<$PrismaModel> = FieldRefInputType<$PrismaModel, 'BulletinType'>
+    
+
+
+  /**
+   * Reference to a field of type 'BulletinType[]'
+   */
+  export type ListEnumBulletinTypeFieldRefInput<$PrismaModel> = FieldRefInputType<$PrismaModel, 'BulletinType[]'>
+    
+
+
+  /**
    * Reference to a field of type 'Float'
    */
   export type FloatFieldRefInput<$PrismaModel> = FieldRefInputType<$PrismaModel, 'Float'>
@@ -8870,6 +12710,8 @@ export namespace Prisma {
     assignedChores?: ChoreListRelationFilter
     avatar?: XOR<AvatarNullableScalarRelationFilter, AvatarWhereInput> | null
     userAvatarProps?: UserAvatarPropsListRelationFilter
+    BulletinItem?: BulletinItemListRelationFilter
+    Comment?: CommentListRelationFilter
   }
 
   export type UserOrderByWithRelationInput = {
@@ -8889,6 +12731,8 @@ export namespace Prisma {
     assignedChores?: ChoreOrderByRelationAggregateInput
     avatar?: AvatarOrderByWithRelationInput
     userAvatarProps?: UserAvatarPropsOrderByRelationAggregateInput
+    BulletinItem?: BulletinItemOrderByRelationAggregateInput
+    Comment?: CommentOrderByRelationAggregateInput
   }
 
   export type UserWhereUniqueInput = Prisma.AtLeast<{
@@ -8911,6 +12755,8 @@ export namespace Prisma {
     assignedChores?: ChoreListRelationFilter
     avatar?: XOR<AvatarNullableScalarRelationFilter, AvatarWhereInput> | null
     userAvatarProps?: UserAvatarPropsListRelationFilter
+    BulletinItem?: BulletinItemListRelationFilter
+    Comment?: CommentListRelationFilter
   }, "id" | "email">
 
   export type UserOrderByWithAggregationInput = {
@@ -9287,6 +13133,196 @@ export namespace Prisma {
     cost?: IntWithAggregatesFilter<"AvatarProp"> | number
   }
 
+  export type BulletinItemWhereInput = {
+    AND?: BulletinItemWhereInput | BulletinItemWhereInput[]
+    OR?: BulletinItemWhereInput[]
+    NOT?: BulletinItemWhereInput | BulletinItemWhereInput[]
+    id?: IntFilter<"BulletinItem"> | number
+    type?: EnumBulletinTypeFilter<"BulletinItem"> | $Enums.BulletinType
+    authorId?: IntFilter<"BulletinItem"> | number
+    content?: StringFilter<"BulletinItem"> | string
+    dateCreated?: DateTimeFilter<"BulletinItem"> | Date | string
+    dateModified?: DateTimeFilter<"BulletinItem"> | Date | string
+    likeCount?: IntFilter<"BulletinItem"> | number
+    author?: XOR<UserScalarRelationFilter, UserWhereInput>
+    comments?: CommentListRelationFilter
+    options?: PollOptionListRelationFilter
+  }
+
+  export type BulletinItemOrderByWithRelationInput = {
+    id?: SortOrder
+    type?: SortOrder
+    authorId?: SortOrder
+    content?: SortOrder
+    dateCreated?: SortOrder
+    dateModified?: SortOrder
+    likeCount?: SortOrder
+    author?: UserOrderByWithRelationInput
+    comments?: CommentOrderByRelationAggregateInput
+    options?: PollOptionOrderByRelationAggregateInput
+  }
+
+  export type BulletinItemWhereUniqueInput = Prisma.AtLeast<{
+    id?: number
+    AND?: BulletinItemWhereInput | BulletinItemWhereInput[]
+    OR?: BulletinItemWhereInput[]
+    NOT?: BulletinItemWhereInput | BulletinItemWhereInput[]
+    type?: EnumBulletinTypeFilter<"BulletinItem"> | $Enums.BulletinType
+    authorId?: IntFilter<"BulletinItem"> | number
+    content?: StringFilter<"BulletinItem"> | string
+    dateCreated?: DateTimeFilter<"BulletinItem"> | Date | string
+    dateModified?: DateTimeFilter<"BulletinItem"> | Date | string
+    likeCount?: IntFilter<"BulletinItem"> | number
+    author?: XOR<UserScalarRelationFilter, UserWhereInput>
+    comments?: CommentListRelationFilter
+    options?: PollOptionListRelationFilter
+  }, "id">
+
+  export type BulletinItemOrderByWithAggregationInput = {
+    id?: SortOrder
+    type?: SortOrder
+    authorId?: SortOrder
+    content?: SortOrder
+    dateCreated?: SortOrder
+    dateModified?: SortOrder
+    likeCount?: SortOrder
+    _count?: BulletinItemCountOrderByAggregateInput
+    _avg?: BulletinItemAvgOrderByAggregateInput
+    _max?: BulletinItemMaxOrderByAggregateInput
+    _min?: BulletinItemMinOrderByAggregateInput
+    _sum?: BulletinItemSumOrderByAggregateInput
+  }
+
+  export type BulletinItemScalarWhereWithAggregatesInput = {
+    AND?: BulletinItemScalarWhereWithAggregatesInput | BulletinItemScalarWhereWithAggregatesInput[]
+    OR?: BulletinItemScalarWhereWithAggregatesInput[]
+    NOT?: BulletinItemScalarWhereWithAggregatesInput | BulletinItemScalarWhereWithAggregatesInput[]
+    id?: IntWithAggregatesFilter<"BulletinItem"> | number
+    type?: EnumBulletinTypeWithAggregatesFilter<"BulletinItem"> | $Enums.BulletinType
+    authorId?: IntWithAggregatesFilter<"BulletinItem"> | number
+    content?: StringWithAggregatesFilter<"BulletinItem"> | string
+    dateCreated?: DateTimeWithAggregatesFilter<"BulletinItem"> | Date | string
+    dateModified?: DateTimeWithAggregatesFilter<"BulletinItem"> | Date | string
+    likeCount?: IntWithAggregatesFilter<"BulletinItem"> | number
+  }
+
+  export type CommentWhereInput = {
+    AND?: CommentWhereInput | CommentWhereInput[]
+    OR?: CommentWhereInput[]
+    NOT?: CommentWhereInput | CommentWhereInput[]
+    id?: IntFilter<"Comment"> | number
+    targetId?: IntFilter<"Comment"> | number
+    authorId?: IntFilter<"Comment"> | number
+    content?: StringFilter<"Comment"> | string
+    dateCreated?: DateTimeFilter<"Comment"> | Date | string
+    dateModified?: DateTimeFilter<"Comment"> | Date | string
+    target?: XOR<BulletinItemScalarRelationFilter, BulletinItemWhereInput>
+    author?: XOR<UserScalarRelationFilter, UserWhereInput>
+  }
+
+  export type CommentOrderByWithRelationInput = {
+    id?: SortOrder
+    targetId?: SortOrder
+    authorId?: SortOrder
+    content?: SortOrder
+    dateCreated?: SortOrder
+    dateModified?: SortOrder
+    target?: BulletinItemOrderByWithRelationInput
+    author?: UserOrderByWithRelationInput
+  }
+
+  export type CommentWhereUniqueInput = Prisma.AtLeast<{
+    id?: number
+    AND?: CommentWhereInput | CommentWhereInput[]
+    OR?: CommentWhereInput[]
+    NOT?: CommentWhereInput | CommentWhereInput[]
+    targetId?: IntFilter<"Comment"> | number
+    authorId?: IntFilter<"Comment"> | number
+    content?: StringFilter<"Comment"> | string
+    dateCreated?: DateTimeFilter<"Comment"> | Date | string
+    dateModified?: DateTimeFilter<"Comment"> | Date | string
+    target?: XOR<BulletinItemScalarRelationFilter, BulletinItemWhereInput>
+    author?: XOR<UserScalarRelationFilter, UserWhereInput>
+  }, "id">
+
+  export type CommentOrderByWithAggregationInput = {
+    id?: SortOrder
+    targetId?: SortOrder
+    authorId?: SortOrder
+    content?: SortOrder
+    dateCreated?: SortOrder
+    dateModified?: SortOrder
+    _count?: CommentCountOrderByAggregateInput
+    _avg?: CommentAvgOrderByAggregateInput
+    _max?: CommentMaxOrderByAggregateInput
+    _min?: CommentMinOrderByAggregateInput
+    _sum?: CommentSumOrderByAggregateInput
+  }
+
+  export type CommentScalarWhereWithAggregatesInput = {
+    AND?: CommentScalarWhereWithAggregatesInput | CommentScalarWhereWithAggregatesInput[]
+    OR?: CommentScalarWhereWithAggregatesInput[]
+    NOT?: CommentScalarWhereWithAggregatesInput | CommentScalarWhereWithAggregatesInput[]
+    id?: IntWithAggregatesFilter<"Comment"> | number
+    targetId?: IntWithAggregatesFilter<"Comment"> | number
+    authorId?: IntWithAggregatesFilter<"Comment"> | number
+    content?: StringWithAggregatesFilter<"Comment"> | string
+    dateCreated?: DateTimeWithAggregatesFilter<"Comment"> | Date | string
+    dateModified?: DateTimeWithAggregatesFilter<"Comment"> | Date | string
+  }
+
+  export type PollOptionWhereInput = {
+    AND?: PollOptionWhereInput | PollOptionWhereInput[]
+    OR?: PollOptionWhereInput[]
+    NOT?: PollOptionWhereInput | PollOptionWhereInput[]
+    id?: IntFilter<"PollOption"> | number
+    pollId?: IntFilter<"PollOption"> | number
+    content?: StringFilter<"PollOption"> | string
+    voteCount?: IntFilter<"PollOption"> | number
+    poll?: XOR<BulletinItemScalarRelationFilter, BulletinItemWhereInput>
+  }
+
+  export type PollOptionOrderByWithRelationInput = {
+    id?: SortOrder
+    pollId?: SortOrder
+    content?: SortOrder
+    voteCount?: SortOrder
+    poll?: BulletinItemOrderByWithRelationInput
+  }
+
+  export type PollOptionWhereUniqueInput = Prisma.AtLeast<{
+    id?: number
+    AND?: PollOptionWhereInput | PollOptionWhereInput[]
+    OR?: PollOptionWhereInput[]
+    NOT?: PollOptionWhereInput | PollOptionWhereInput[]
+    pollId?: IntFilter<"PollOption"> | number
+    content?: StringFilter<"PollOption"> | string
+    voteCount?: IntFilter<"PollOption"> | number
+    poll?: XOR<BulletinItemScalarRelationFilter, BulletinItemWhereInput>
+  }, "id">
+
+  export type PollOptionOrderByWithAggregationInput = {
+    id?: SortOrder
+    pollId?: SortOrder
+    content?: SortOrder
+    voteCount?: SortOrder
+    _count?: PollOptionCountOrderByAggregateInput
+    _avg?: PollOptionAvgOrderByAggregateInput
+    _max?: PollOptionMaxOrderByAggregateInput
+    _min?: PollOptionMinOrderByAggregateInput
+    _sum?: PollOptionSumOrderByAggregateInput
+  }
+
+  export type PollOptionScalarWhereWithAggregatesInput = {
+    AND?: PollOptionScalarWhereWithAggregatesInput | PollOptionScalarWhereWithAggregatesInput[]
+    OR?: PollOptionScalarWhereWithAggregatesInput[]
+    NOT?: PollOptionScalarWhereWithAggregatesInput | PollOptionScalarWhereWithAggregatesInput[]
+    id?: IntWithAggregatesFilter<"PollOption"> | number
+    pollId?: IntWithAggregatesFilter<"PollOption"> | number
+    content?: StringWithAggregatesFilter<"PollOption"> | string
+    voteCount?: IntWithAggregatesFilter<"PollOption"> | number
+  }
+
   export type UserCreateInput = {
     createdAt?: Date | string
     email: string
@@ -9302,6 +13338,8 @@ export namespace Prisma {
     assignedChores?: ChoreCreateNestedManyWithoutAssigneeInput
     avatar?: AvatarCreateNestedOneWithoutOwnerInput
     userAvatarProps?: UserAvatarPropsCreateNestedManyWithoutUserInput
+    BulletinItem?: BulletinItemCreateNestedManyWithoutAuthorInput
+    Comment?: CommentCreateNestedManyWithoutAuthorInput
   }
 
   export type UserUncheckedCreateInput = {
@@ -9320,6 +13358,8 @@ export namespace Prisma {
     assignedChores?: ChoreUncheckedCreateNestedManyWithoutAssigneeInput
     avatar?: AvatarUncheckedCreateNestedOneWithoutOwnerInput
     userAvatarProps?: UserAvatarPropsUncheckedCreateNestedManyWithoutUserInput
+    BulletinItem?: BulletinItemUncheckedCreateNestedManyWithoutAuthorInput
+    Comment?: CommentUncheckedCreateNestedManyWithoutAuthorInput
   }
 
   export type UserUpdateInput = {
@@ -9337,6 +13377,8 @@ export namespace Prisma {
     assignedChores?: ChoreUpdateManyWithoutAssigneeNestedInput
     avatar?: AvatarUpdateOneWithoutOwnerNestedInput
     userAvatarProps?: UserAvatarPropsUpdateManyWithoutUserNestedInput
+    BulletinItem?: BulletinItemUpdateManyWithoutAuthorNestedInput
+    Comment?: CommentUpdateManyWithoutAuthorNestedInput
   }
 
   export type UserUncheckedUpdateInput = {
@@ -9355,6 +13397,8 @@ export namespace Prisma {
     assignedChores?: ChoreUncheckedUpdateManyWithoutAssigneeNestedInput
     avatar?: AvatarUncheckedUpdateOneWithoutOwnerNestedInput
     userAvatarProps?: UserAvatarPropsUncheckedUpdateManyWithoutUserNestedInput
+    BulletinItem?: BulletinItemUncheckedUpdateManyWithoutAuthorNestedInput
+    Comment?: CommentUncheckedUpdateManyWithoutAuthorNestedInput
   }
 
   export type UserCreateManyInput = {
@@ -9705,6 +13749,183 @@ export namespace Prisma {
     cost?: IntFieldUpdateOperationsInput | number
   }
 
+  export type BulletinItemCreateInput = {
+    type: $Enums.BulletinType
+    content: string
+    dateCreated?: Date | string
+    dateModified?: Date | string
+    likeCount?: number
+    author: UserCreateNestedOneWithoutBulletinItemInput
+    comments?: CommentCreateNestedManyWithoutTargetInput
+    options?: PollOptionCreateNestedManyWithoutPollInput
+  }
+
+  export type BulletinItemUncheckedCreateInput = {
+    id?: number
+    type: $Enums.BulletinType
+    authorId: number
+    content: string
+    dateCreated?: Date | string
+    dateModified?: Date | string
+    likeCount?: number
+    comments?: CommentUncheckedCreateNestedManyWithoutTargetInput
+    options?: PollOptionUncheckedCreateNestedManyWithoutPollInput
+  }
+
+  export type BulletinItemUpdateInput = {
+    type?: EnumBulletinTypeFieldUpdateOperationsInput | $Enums.BulletinType
+    content?: StringFieldUpdateOperationsInput | string
+    dateCreated?: DateTimeFieldUpdateOperationsInput | Date | string
+    dateModified?: DateTimeFieldUpdateOperationsInput | Date | string
+    likeCount?: IntFieldUpdateOperationsInput | number
+    author?: UserUpdateOneRequiredWithoutBulletinItemNestedInput
+    comments?: CommentUpdateManyWithoutTargetNestedInput
+    options?: PollOptionUpdateManyWithoutPollNestedInput
+  }
+
+  export type BulletinItemUncheckedUpdateInput = {
+    id?: IntFieldUpdateOperationsInput | number
+    type?: EnumBulletinTypeFieldUpdateOperationsInput | $Enums.BulletinType
+    authorId?: IntFieldUpdateOperationsInput | number
+    content?: StringFieldUpdateOperationsInput | string
+    dateCreated?: DateTimeFieldUpdateOperationsInput | Date | string
+    dateModified?: DateTimeFieldUpdateOperationsInput | Date | string
+    likeCount?: IntFieldUpdateOperationsInput | number
+    comments?: CommentUncheckedUpdateManyWithoutTargetNestedInput
+    options?: PollOptionUncheckedUpdateManyWithoutPollNestedInput
+  }
+
+  export type BulletinItemCreateManyInput = {
+    id?: number
+    type: $Enums.BulletinType
+    authorId: number
+    content: string
+    dateCreated?: Date | string
+    dateModified?: Date | string
+    likeCount?: number
+  }
+
+  export type BulletinItemUpdateManyMutationInput = {
+    type?: EnumBulletinTypeFieldUpdateOperationsInput | $Enums.BulletinType
+    content?: StringFieldUpdateOperationsInput | string
+    dateCreated?: DateTimeFieldUpdateOperationsInput | Date | string
+    dateModified?: DateTimeFieldUpdateOperationsInput | Date | string
+    likeCount?: IntFieldUpdateOperationsInput | number
+  }
+
+  export type BulletinItemUncheckedUpdateManyInput = {
+    id?: IntFieldUpdateOperationsInput | number
+    type?: EnumBulletinTypeFieldUpdateOperationsInput | $Enums.BulletinType
+    authorId?: IntFieldUpdateOperationsInput | number
+    content?: StringFieldUpdateOperationsInput | string
+    dateCreated?: DateTimeFieldUpdateOperationsInput | Date | string
+    dateModified?: DateTimeFieldUpdateOperationsInput | Date | string
+    likeCount?: IntFieldUpdateOperationsInput | number
+  }
+
+  export type CommentCreateInput = {
+    content: string
+    dateCreated?: Date | string
+    dateModified?: Date | string
+    target: BulletinItemCreateNestedOneWithoutCommentsInput
+    author: UserCreateNestedOneWithoutCommentInput
+  }
+
+  export type CommentUncheckedCreateInput = {
+    id?: number
+    targetId: number
+    authorId: number
+    content: string
+    dateCreated?: Date | string
+    dateModified?: Date | string
+  }
+
+  export type CommentUpdateInput = {
+    content?: StringFieldUpdateOperationsInput | string
+    dateCreated?: DateTimeFieldUpdateOperationsInput | Date | string
+    dateModified?: DateTimeFieldUpdateOperationsInput | Date | string
+    target?: BulletinItemUpdateOneRequiredWithoutCommentsNestedInput
+    author?: UserUpdateOneRequiredWithoutCommentNestedInput
+  }
+
+  export type CommentUncheckedUpdateInput = {
+    id?: IntFieldUpdateOperationsInput | number
+    targetId?: IntFieldUpdateOperationsInput | number
+    authorId?: IntFieldUpdateOperationsInput | number
+    content?: StringFieldUpdateOperationsInput | string
+    dateCreated?: DateTimeFieldUpdateOperationsInput | Date | string
+    dateModified?: DateTimeFieldUpdateOperationsInput | Date | string
+  }
+
+  export type CommentCreateManyInput = {
+    id?: number
+    targetId: number
+    authorId: number
+    content: string
+    dateCreated?: Date | string
+    dateModified?: Date | string
+  }
+
+  export type CommentUpdateManyMutationInput = {
+    content?: StringFieldUpdateOperationsInput | string
+    dateCreated?: DateTimeFieldUpdateOperationsInput | Date | string
+    dateModified?: DateTimeFieldUpdateOperationsInput | Date | string
+  }
+
+  export type CommentUncheckedUpdateManyInput = {
+    id?: IntFieldUpdateOperationsInput | number
+    targetId?: IntFieldUpdateOperationsInput | number
+    authorId?: IntFieldUpdateOperationsInput | number
+    content?: StringFieldUpdateOperationsInput | string
+    dateCreated?: DateTimeFieldUpdateOperationsInput | Date | string
+    dateModified?: DateTimeFieldUpdateOperationsInput | Date | string
+  }
+
+  export type PollOptionCreateInput = {
+    content: string
+    voteCount?: number
+    poll: BulletinItemCreateNestedOneWithoutOptionsInput
+  }
+
+  export type PollOptionUncheckedCreateInput = {
+    id?: number
+    pollId: number
+    content: string
+    voteCount?: number
+  }
+
+  export type PollOptionUpdateInput = {
+    content?: StringFieldUpdateOperationsInput | string
+    voteCount?: IntFieldUpdateOperationsInput | number
+    poll?: BulletinItemUpdateOneRequiredWithoutOptionsNestedInput
+  }
+
+  export type PollOptionUncheckedUpdateInput = {
+    id?: IntFieldUpdateOperationsInput | number
+    pollId?: IntFieldUpdateOperationsInput | number
+    content?: StringFieldUpdateOperationsInput | string
+    voteCount?: IntFieldUpdateOperationsInput | number
+  }
+
+  export type PollOptionCreateManyInput = {
+    id?: number
+    pollId: number
+    content: string
+    voteCount?: number
+  }
+
+  export type PollOptionUpdateManyMutationInput = {
+    content?: StringFieldUpdateOperationsInput | string
+    voteCount?: IntFieldUpdateOperationsInput | number
+  }
+
+  export type PollOptionUncheckedUpdateManyInput = {
+    id?: IntFieldUpdateOperationsInput | number
+    pollId?: IntFieldUpdateOperationsInput | number
+    content?: StringFieldUpdateOperationsInput | string
+    voteCount?: IntFieldUpdateOperationsInput | number
+  }
+
   export type IntFilter<$PrismaModel = never> = {
     equals?: number | IntFieldRefInput<$PrismaModel>
     in?: number[] | ListIntFieldRefInput<$PrismaModel>
@@ -9797,6 +14018,18 @@ export namespace Prisma {
     none?: UserAvatarPropsWhereInput
   }
 
+  export type BulletinItemListRelationFilter = {
+    every?: BulletinItemWhereInput
+    some?: BulletinItemWhereInput
+    none?: BulletinItemWhereInput
+  }
+
+  export type CommentListRelationFilter = {
+    every?: CommentWhereInput
+    some?: CommentWhereInput
+    none?: CommentWhereInput
+  }
+
   export type SortOrderInput = {
     sort: SortOrder
     nulls?: NullsOrder
@@ -9807,6 +14040,14 @@ export namespace Prisma {
   }
 
   export type UserAvatarPropsOrderByRelationAggregateInput = {
+    _count?: SortOrder
+  }
+
+  export type BulletinItemOrderByRelationAggregateInput = {
+    _count?: SortOrder
+  }
+
+  export type CommentOrderByRelationAggregateInput = {
     _count?: SortOrder
   }
 
@@ -10227,6 +14468,152 @@ export namespace Prisma {
     _max?: NestedEnumPropTypeFilter<$PrismaModel>
   }
 
+  export type EnumBulletinTypeFilter<$PrismaModel = never> = {
+    equals?: $Enums.BulletinType | EnumBulletinTypeFieldRefInput<$PrismaModel>
+    in?: $Enums.BulletinType[] | ListEnumBulletinTypeFieldRefInput<$PrismaModel>
+    notIn?: $Enums.BulletinType[] | ListEnumBulletinTypeFieldRefInput<$PrismaModel>
+    not?: NestedEnumBulletinTypeFilter<$PrismaModel> | $Enums.BulletinType
+  }
+
+  export type PollOptionListRelationFilter = {
+    every?: PollOptionWhereInput
+    some?: PollOptionWhereInput
+    none?: PollOptionWhereInput
+  }
+
+  export type PollOptionOrderByRelationAggregateInput = {
+    _count?: SortOrder
+  }
+
+  export type BulletinItemCountOrderByAggregateInput = {
+    id?: SortOrder
+    type?: SortOrder
+    authorId?: SortOrder
+    content?: SortOrder
+    dateCreated?: SortOrder
+    dateModified?: SortOrder
+    likeCount?: SortOrder
+  }
+
+  export type BulletinItemAvgOrderByAggregateInput = {
+    id?: SortOrder
+    authorId?: SortOrder
+    likeCount?: SortOrder
+  }
+
+  export type BulletinItemMaxOrderByAggregateInput = {
+    id?: SortOrder
+    type?: SortOrder
+    authorId?: SortOrder
+    content?: SortOrder
+    dateCreated?: SortOrder
+    dateModified?: SortOrder
+    likeCount?: SortOrder
+  }
+
+  export type BulletinItemMinOrderByAggregateInput = {
+    id?: SortOrder
+    type?: SortOrder
+    authorId?: SortOrder
+    content?: SortOrder
+    dateCreated?: SortOrder
+    dateModified?: SortOrder
+    likeCount?: SortOrder
+  }
+
+  export type BulletinItemSumOrderByAggregateInput = {
+    id?: SortOrder
+    authorId?: SortOrder
+    likeCount?: SortOrder
+  }
+
+  export type EnumBulletinTypeWithAggregatesFilter<$PrismaModel = never> = {
+    equals?: $Enums.BulletinType | EnumBulletinTypeFieldRefInput<$PrismaModel>
+    in?: $Enums.BulletinType[] | ListEnumBulletinTypeFieldRefInput<$PrismaModel>
+    notIn?: $Enums.BulletinType[] | ListEnumBulletinTypeFieldRefInput<$PrismaModel>
+    not?: NestedEnumBulletinTypeWithAggregatesFilter<$PrismaModel> | $Enums.BulletinType
+    _count?: NestedIntFilter<$PrismaModel>
+    _min?: NestedEnumBulletinTypeFilter<$PrismaModel>
+    _max?: NestedEnumBulletinTypeFilter<$PrismaModel>
+  }
+
+  export type BulletinItemScalarRelationFilter = {
+    is?: BulletinItemWhereInput
+    isNot?: BulletinItemWhereInput
+  }
+
+  export type CommentCountOrderByAggregateInput = {
+    id?: SortOrder
+    targetId?: SortOrder
+    authorId?: SortOrder
+    content?: SortOrder
+    dateCreated?: SortOrder
+    dateModified?: SortOrder
+  }
+
+  export type CommentAvgOrderByAggregateInput = {
+    id?: SortOrder
+    targetId?: SortOrder
+    authorId?: SortOrder
+  }
+
+  export type CommentMaxOrderByAggregateInput = {
+    id?: SortOrder
+    targetId?: SortOrder
+    authorId?: SortOrder
+    content?: SortOrder
+    dateCreated?: SortOrder
+    dateModified?: SortOrder
+  }
+
+  export type CommentMinOrderByAggregateInput = {
+    id?: SortOrder
+    targetId?: SortOrder
+    authorId?: SortOrder
+    content?: SortOrder
+    dateCreated?: SortOrder
+    dateModified?: SortOrder
+  }
+
+  export type CommentSumOrderByAggregateInput = {
+    id?: SortOrder
+    targetId?: SortOrder
+    authorId?: SortOrder
+  }
+
+  export type PollOptionCountOrderByAggregateInput = {
+    id?: SortOrder
+    pollId?: SortOrder
+    content?: SortOrder
+    voteCount?: SortOrder
+  }
+
+  export type PollOptionAvgOrderByAggregateInput = {
+    id?: SortOrder
+    pollId?: SortOrder
+    voteCount?: SortOrder
+  }
+
+  export type PollOptionMaxOrderByAggregateInput = {
+    id?: SortOrder
+    pollId?: SortOrder
+    content?: SortOrder
+    voteCount?: SortOrder
+  }
+
+  export type PollOptionMinOrderByAggregateInput = {
+    id?: SortOrder
+    pollId?: SortOrder
+    content?: SortOrder
+    voteCount?: SortOrder
+  }
+
+  export type PollOptionSumOrderByAggregateInput = {
+    id?: SortOrder
+    pollId?: SortOrder
+    voteCount?: SortOrder
+  }
+
   export type HouseholdCreateNestedOneWithoutUsersInput = {
     create?: XOR<HouseholdCreateWithoutUsersInput, HouseholdUncheckedCreateWithoutUsersInput>
     connectOrCreate?: HouseholdCreateOrConnectWithoutUsersInput
@@ -10253,6 +14640,20 @@ export namespace Prisma {
     connect?: UserAvatarPropsWhereUniqueInput | UserAvatarPropsWhereUniqueInput[]
   }
 
+  export type BulletinItemCreateNestedManyWithoutAuthorInput = {
+    create?: XOR<BulletinItemCreateWithoutAuthorInput, BulletinItemUncheckedCreateWithoutAuthorInput> | BulletinItemCreateWithoutAuthorInput[] | BulletinItemUncheckedCreateWithoutAuthorInput[]
+    connectOrCreate?: BulletinItemCreateOrConnectWithoutAuthorInput | BulletinItemCreateOrConnectWithoutAuthorInput[]
+    createMany?: BulletinItemCreateManyAuthorInputEnvelope
+    connect?: BulletinItemWhereUniqueInput | BulletinItemWhereUniqueInput[]
+  }
+
+  export type CommentCreateNestedManyWithoutAuthorInput = {
+    create?: XOR<CommentCreateWithoutAuthorInput, CommentUncheckedCreateWithoutAuthorInput> | CommentCreateWithoutAuthorInput[] | CommentUncheckedCreateWithoutAuthorInput[]
+    connectOrCreate?: CommentCreateOrConnectWithoutAuthorInput | CommentCreateOrConnectWithoutAuthorInput[]
+    createMany?: CommentCreateManyAuthorInputEnvelope
+    connect?: CommentWhereUniqueInput | CommentWhereUniqueInput[]
+  }
+
   export type ChoreUncheckedCreateNestedManyWithoutAssigneeInput = {
     create?: XOR<ChoreCreateWithoutAssigneeInput, ChoreUncheckedCreateWithoutAssigneeInput> | ChoreCreateWithoutAssigneeInput[] | ChoreUncheckedCreateWithoutAssigneeInput[]
     connectOrCreate?: ChoreCreateOrConnectWithoutAssigneeInput | ChoreCreateOrConnectWithoutAssigneeInput[]
@@ -10271,6 +14672,20 @@ export namespace Prisma {
     connectOrCreate?: UserAvatarPropsCreateOrConnectWithoutUserInput | UserAvatarPropsCreateOrConnectWithoutUserInput[]
     createMany?: UserAvatarPropsCreateManyUserInputEnvelope
     connect?: UserAvatarPropsWhereUniqueInput | UserAvatarPropsWhereUniqueInput[]
+  }
+
+  export type BulletinItemUncheckedCreateNestedManyWithoutAuthorInput = {
+    create?: XOR<BulletinItemCreateWithoutAuthorInput, BulletinItemUncheckedCreateWithoutAuthorInput> | BulletinItemCreateWithoutAuthorInput[] | BulletinItemUncheckedCreateWithoutAuthorInput[]
+    connectOrCreate?: BulletinItemCreateOrConnectWithoutAuthorInput | BulletinItemCreateOrConnectWithoutAuthorInput[]
+    createMany?: BulletinItemCreateManyAuthorInputEnvelope
+    connect?: BulletinItemWhereUniqueInput | BulletinItemWhereUniqueInput[]
+  }
+
+  export type CommentUncheckedCreateNestedManyWithoutAuthorInput = {
+    create?: XOR<CommentCreateWithoutAuthorInput, CommentUncheckedCreateWithoutAuthorInput> | CommentCreateWithoutAuthorInput[] | CommentUncheckedCreateWithoutAuthorInput[]
+    connectOrCreate?: CommentCreateOrConnectWithoutAuthorInput | CommentCreateOrConnectWithoutAuthorInput[]
+    createMany?: CommentCreateManyAuthorInputEnvelope
+    connect?: CommentWhereUniqueInput | CommentWhereUniqueInput[]
   }
 
   export type DateTimeFieldUpdateOperationsInput = {
@@ -10353,6 +14768,34 @@ export namespace Prisma {
     deleteMany?: UserAvatarPropsScalarWhereInput | UserAvatarPropsScalarWhereInput[]
   }
 
+  export type BulletinItemUpdateManyWithoutAuthorNestedInput = {
+    create?: XOR<BulletinItemCreateWithoutAuthorInput, BulletinItemUncheckedCreateWithoutAuthorInput> | BulletinItemCreateWithoutAuthorInput[] | BulletinItemUncheckedCreateWithoutAuthorInput[]
+    connectOrCreate?: BulletinItemCreateOrConnectWithoutAuthorInput | BulletinItemCreateOrConnectWithoutAuthorInput[]
+    upsert?: BulletinItemUpsertWithWhereUniqueWithoutAuthorInput | BulletinItemUpsertWithWhereUniqueWithoutAuthorInput[]
+    createMany?: BulletinItemCreateManyAuthorInputEnvelope
+    set?: BulletinItemWhereUniqueInput | BulletinItemWhereUniqueInput[]
+    disconnect?: BulletinItemWhereUniqueInput | BulletinItemWhereUniqueInput[]
+    delete?: BulletinItemWhereUniqueInput | BulletinItemWhereUniqueInput[]
+    connect?: BulletinItemWhereUniqueInput | BulletinItemWhereUniqueInput[]
+    update?: BulletinItemUpdateWithWhereUniqueWithoutAuthorInput | BulletinItemUpdateWithWhereUniqueWithoutAuthorInput[]
+    updateMany?: BulletinItemUpdateManyWithWhereWithoutAuthorInput | BulletinItemUpdateManyWithWhereWithoutAuthorInput[]
+    deleteMany?: BulletinItemScalarWhereInput | BulletinItemScalarWhereInput[]
+  }
+
+  export type CommentUpdateManyWithoutAuthorNestedInput = {
+    create?: XOR<CommentCreateWithoutAuthorInput, CommentUncheckedCreateWithoutAuthorInput> | CommentCreateWithoutAuthorInput[] | CommentUncheckedCreateWithoutAuthorInput[]
+    connectOrCreate?: CommentCreateOrConnectWithoutAuthorInput | CommentCreateOrConnectWithoutAuthorInput[]
+    upsert?: CommentUpsertWithWhereUniqueWithoutAuthorInput | CommentUpsertWithWhereUniqueWithoutAuthorInput[]
+    createMany?: CommentCreateManyAuthorInputEnvelope
+    set?: CommentWhereUniqueInput | CommentWhereUniqueInput[]
+    disconnect?: CommentWhereUniqueInput | CommentWhereUniqueInput[]
+    delete?: CommentWhereUniqueInput | CommentWhereUniqueInput[]
+    connect?: CommentWhereUniqueInput | CommentWhereUniqueInput[]
+    update?: CommentUpdateWithWhereUniqueWithoutAuthorInput | CommentUpdateWithWhereUniqueWithoutAuthorInput[]
+    updateMany?: CommentUpdateManyWithWhereWithoutAuthorInput | CommentUpdateManyWithWhereWithoutAuthorInput[]
+    deleteMany?: CommentScalarWhereInput | CommentScalarWhereInput[]
+  }
+
   export type ChoreUncheckedUpdateManyWithoutAssigneeNestedInput = {
     create?: XOR<ChoreCreateWithoutAssigneeInput, ChoreUncheckedCreateWithoutAssigneeInput> | ChoreCreateWithoutAssigneeInput[] | ChoreUncheckedCreateWithoutAssigneeInput[]
     connectOrCreate?: ChoreCreateOrConnectWithoutAssigneeInput | ChoreCreateOrConnectWithoutAssigneeInput[]
@@ -10389,6 +14832,34 @@ export namespace Prisma {
     update?: UserAvatarPropsUpdateWithWhereUniqueWithoutUserInput | UserAvatarPropsUpdateWithWhereUniqueWithoutUserInput[]
     updateMany?: UserAvatarPropsUpdateManyWithWhereWithoutUserInput | UserAvatarPropsUpdateManyWithWhereWithoutUserInput[]
     deleteMany?: UserAvatarPropsScalarWhereInput | UserAvatarPropsScalarWhereInput[]
+  }
+
+  export type BulletinItemUncheckedUpdateManyWithoutAuthorNestedInput = {
+    create?: XOR<BulletinItemCreateWithoutAuthorInput, BulletinItemUncheckedCreateWithoutAuthorInput> | BulletinItemCreateWithoutAuthorInput[] | BulletinItemUncheckedCreateWithoutAuthorInput[]
+    connectOrCreate?: BulletinItemCreateOrConnectWithoutAuthorInput | BulletinItemCreateOrConnectWithoutAuthorInput[]
+    upsert?: BulletinItemUpsertWithWhereUniqueWithoutAuthorInput | BulletinItemUpsertWithWhereUniqueWithoutAuthorInput[]
+    createMany?: BulletinItemCreateManyAuthorInputEnvelope
+    set?: BulletinItemWhereUniqueInput | BulletinItemWhereUniqueInput[]
+    disconnect?: BulletinItemWhereUniqueInput | BulletinItemWhereUniqueInput[]
+    delete?: BulletinItemWhereUniqueInput | BulletinItemWhereUniqueInput[]
+    connect?: BulletinItemWhereUniqueInput | BulletinItemWhereUniqueInput[]
+    update?: BulletinItemUpdateWithWhereUniqueWithoutAuthorInput | BulletinItemUpdateWithWhereUniqueWithoutAuthorInput[]
+    updateMany?: BulletinItemUpdateManyWithWhereWithoutAuthorInput | BulletinItemUpdateManyWithWhereWithoutAuthorInput[]
+    deleteMany?: BulletinItemScalarWhereInput | BulletinItemScalarWhereInput[]
+  }
+
+  export type CommentUncheckedUpdateManyWithoutAuthorNestedInput = {
+    create?: XOR<CommentCreateWithoutAuthorInput, CommentUncheckedCreateWithoutAuthorInput> | CommentCreateWithoutAuthorInput[] | CommentUncheckedCreateWithoutAuthorInput[]
+    connectOrCreate?: CommentCreateOrConnectWithoutAuthorInput | CommentCreateOrConnectWithoutAuthorInput[]
+    upsert?: CommentUpsertWithWhereUniqueWithoutAuthorInput | CommentUpsertWithWhereUniqueWithoutAuthorInput[]
+    createMany?: CommentCreateManyAuthorInputEnvelope
+    set?: CommentWhereUniqueInput | CommentWhereUniqueInput[]
+    disconnect?: CommentWhereUniqueInput | CommentWhereUniqueInput[]
+    delete?: CommentWhereUniqueInput | CommentWhereUniqueInput[]
+    connect?: CommentWhereUniqueInput | CommentWhereUniqueInput[]
+    update?: CommentUpdateWithWhereUniqueWithoutAuthorInput | CommentUpdateWithWhereUniqueWithoutAuthorInput[]
+    updateMany?: CommentUpdateManyWithWhereWithoutAuthorInput | CommentUpdateManyWithWhereWithoutAuthorInput[]
+    deleteMany?: CommentScalarWhereInput | CommentScalarWhereInput[]
   }
 
   export type UserCreateNestedManyWithoutHouseholdInput = {
@@ -10933,6 +15404,150 @@ export namespace Prisma {
     deleteMany?: UserAvatarPropsScalarWhereInput | UserAvatarPropsScalarWhereInput[]
   }
 
+  export type UserCreateNestedOneWithoutBulletinItemInput = {
+    create?: XOR<UserCreateWithoutBulletinItemInput, UserUncheckedCreateWithoutBulletinItemInput>
+    connectOrCreate?: UserCreateOrConnectWithoutBulletinItemInput
+    connect?: UserWhereUniqueInput
+  }
+
+  export type CommentCreateNestedManyWithoutTargetInput = {
+    create?: XOR<CommentCreateWithoutTargetInput, CommentUncheckedCreateWithoutTargetInput> | CommentCreateWithoutTargetInput[] | CommentUncheckedCreateWithoutTargetInput[]
+    connectOrCreate?: CommentCreateOrConnectWithoutTargetInput | CommentCreateOrConnectWithoutTargetInput[]
+    createMany?: CommentCreateManyTargetInputEnvelope
+    connect?: CommentWhereUniqueInput | CommentWhereUniqueInput[]
+  }
+
+  export type PollOptionCreateNestedManyWithoutPollInput = {
+    create?: XOR<PollOptionCreateWithoutPollInput, PollOptionUncheckedCreateWithoutPollInput> | PollOptionCreateWithoutPollInput[] | PollOptionUncheckedCreateWithoutPollInput[]
+    connectOrCreate?: PollOptionCreateOrConnectWithoutPollInput | PollOptionCreateOrConnectWithoutPollInput[]
+    createMany?: PollOptionCreateManyPollInputEnvelope
+    connect?: PollOptionWhereUniqueInput | PollOptionWhereUniqueInput[]
+  }
+
+  export type CommentUncheckedCreateNestedManyWithoutTargetInput = {
+    create?: XOR<CommentCreateWithoutTargetInput, CommentUncheckedCreateWithoutTargetInput> | CommentCreateWithoutTargetInput[] | CommentUncheckedCreateWithoutTargetInput[]
+    connectOrCreate?: CommentCreateOrConnectWithoutTargetInput | CommentCreateOrConnectWithoutTargetInput[]
+    createMany?: CommentCreateManyTargetInputEnvelope
+    connect?: CommentWhereUniqueInput | CommentWhereUniqueInput[]
+  }
+
+  export type PollOptionUncheckedCreateNestedManyWithoutPollInput = {
+    create?: XOR<PollOptionCreateWithoutPollInput, PollOptionUncheckedCreateWithoutPollInput> | PollOptionCreateWithoutPollInput[] | PollOptionUncheckedCreateWithoutPollInput[]
+    connectOrCreate?: PollOptionCreateOrConnectWithoutPollInput | PollOptionCreateOrConnectWithoutPollInput[]
+    createMany?: PollOptionCreateManyPollInputEnvelope
+    connect?: PollOptionWhereUniqueInput | PollOptionWhereUniqueInput[]
+  }
+
+  export type EnumBulletinTypeFieldUpdateOperationsInput = {
+    set?: $Enums.BulletinType
+  }
+
+  export type UserUpdateOneRequiredWithoutBulletinItemNestedInput = {
+    create?: XOR<UserCreateWithoutBulletinItemInput, UserUncheckedCreateWithoutBulletinItemInput>
+    connectOrCreate?: UserCreateOrConnectWithoutBulletinItemInput
+    upsert?: UserUpsertWithoutBulletinItemInput
+    connect?: UserWhereUniqueInput
+    update?: XOR<XOR<UserUpdateToOneWithWhereWithoutBulletinItemInput, UserUpdateWithoutBulletinItemInput>, UserUncheckedUpdateWithoutBulletinItemInput>
+  }
+
+  export type CommentUpdateManyWithoutTargetNestedInput = {
+    create?: XOR<CommentCreateWithoutTargetInput, CommentUncheckedCreateWithoutTargetInput> | CommentCreateWithoutTargetInput[] | CommentUncheckedCreateWithoutTargetInput[]
+    connectOrCreate?: CommentCreateOrConnectWithoutTargetInput | CommentCreateOrConnectWithoutTargetInput[]
+    upsert?: CommentUpsertWithWhereUniqueWithoutTargetInput | CommentUpsertWithWhereUniqueWithoutTargetInput[]
+    createMany?: CommentCreateManyTargetInputEnvelope
+    set?: CommentWhereUniqueInput | CommentWhereUniqueInput[]
+    disconnect?: CommentWhereUniqueInput | CommentWhereUniqueInput[]
+    delete?: CommentWhereUniqueInput | CommentWhereUniqueInput[]
+    connect?: CommentWhereUniqueInput | CommentWhereUniqueInput[]
+    update?: CommentUpdateWithWhereUniqueWithoutTargetInput | CommentUpdateWithWhereUniqueWithoutTargetInput[]
+    updateMany?: CommentUpdateManyWithWhereWithoutTargetInput | CommentUpdateManyWithWhereWithoutTargetInput[]
+    deleteMany?: CommentScalarWhereInput | CommentScalarWhereInput[]
+  }
+
+  export type PollOptionUpdateManyWithoutPollNestedInput = {
+    create?: XOR<PollOptionCreateWithoutPollInput, PollOptionUncheckedCreateWithoutPollInput> | PollOptionCreateWithoutPollInput[] | PollOptionUncheckedCreateWithoutPollInput[]
+    connectOrCreate?: PollOptionCreateOrConnectWithoutPollInput | PollOptionCreateOrConnectWithoutPollInput[]
+    upsert?: PollOptionUpsertWithWhereUniqueWithoutPollInput | PollOptionUpsertWithWhereUniqueWithoutPollInput[]
+    createMany?: PollOptionCreateManyPollInputEnvelope
+    set?: PollOptionWhereUniqueInput | PollOptionWhereUniqueInput[]
+    disconnect?: PollOptionWhereUniqueInput | PollOptionWhereUniqueInput[]
+    delete?: PollOptionWhereUniqueInput | PollOptionWhereUniqueInput[]
+    connect?: PollOptionWhereUniqueInput | PollOptionWhereUniqueInput[]
+    update?: PollOptionUpdateWithWhereUniqueWithoutPollInput | PollOptionUpdateWithWhereUniqueWithoutPollInput[]
+    updateMany?: PollOptionUpdateManyWithWhereWithoutPollInput | PollOptionUpdateManyWithWhereWithoutPollInput[]
+    deleteMany?: PollOptionScalarWhereInput | PollOptionScalarWhereInput[]
+  }
+
+  export type CommentUncheckedUpdateManyWithoutTargetNestedInput = {
+    create?: XOR<CommentCreateWithoutTargetInput, CommentUncheckedCreateWithoutTargetInput> | CommentCreateWithoutTargetInput[] | CommentUncheckedCreateWithoutTargetInput[]
+    connectOrCreate?: CommentCreateOrConnectWithoutTargetInput | CommentCreateOrConnectWithoutTargetInput[]
+    upsert?: CommentUpsertWithWhereUniqueWithoutTargetInput | CommentUpsertWithWhereUniqueWithoutTargetInput[]
+    createMany?: CommentCreateManyTargetInputEnvelope
+    set?: CommentWhereUniqueInput | CommentWhereUniqueInput[]
+    disconnect?: CommentWhereUniqueInput | CommentWhereUniqueInput[]
+    delete?: CommentWhereUniqueInput | CommentWhereUniqueInput[]
+    connect?: CommentWhereUniqueInput | CommentWhereUniqueInput[]
+    update?: CommentUpdateWithWhereUniqueWithoutTargetInput | CommentUpdateWithWhereUniqueWithoutTargetInput[]
+    updateMany?: CommentUpdateManyWithWhereWithoutTargetInput | CommentUpdateManyWithWhereWithoutTargetInput[]
+    deleteMany?: CommentScalarWhereInput | CommentScalarWhereInput[]
+  }
+
+  export type PollOptionUncheckedUpdateManyWithoutPollNestedInput = {
+    create?: XOR<PollOptionCreateWithoutPollInput, PollOptionUncheckedCreateWithoutPollInput> | PollOptionCreateWithoutPollInput[] | PollOptionUncheckedCreateWithoutPollInput[]
+    connectOrCreate?: PollOptionCreateOrConnectWithoutPollInput | PollOptionCreateOrConnectWithoutPollInput[]
+    upsert?: PollOptionUpsertWithWhereUniqueWithoutPollInput | PollOptionUpsertWithWhereUniqueWithoutPollInput[]
+    createMany?: PollOptionCreateManyPollInputEnvelope
+    set?: PollOptionWhereUniqueInput | PollOptionWhereUniqueInput[]
+    disconnect?: PollOptionWhereUniqueInput | PollOptionWhereUniqueInput[]
+    delete?: PollOptionWhereUniqueInput | PollOptionWhereUniqueInput[]
+    connect?: PollOptionWhereUniqueInput | PollOptionWhereUniqueInput[]
+    update?: PollOptionUpdateWithWhereUniqueWithoutPollInput | PollOptionUpdateWithWhereUniqueWithoutPollInput[]
+    updateMany?: PollOptionUpdateManyWithWhereWithoutPollInput | PollOptionUpdateManyWithWhereWithoutPollInput[]
+    deleteMany?: PollOptionScalarWhereInput | PollOptionScalarWhereInput[]
+  }
+
+  export type BulletinItemCreateNestedOneWithoutCommentsInput = {
+    create?: XOR<BulletinItemCreateWithoutCommentsInput, BulletinItemUncheckedCreateWithoutCommentsInput>
+    connectOrCreate?: BulletinItemCreateOrConnectWithoutCommentsInput
+    connect?: BulletinItemWhereUniqueInput
+  }
+
+  export type UserCreateNestedOneWithoutCommentInput = {
+    create?: XOR<UserCreateWithoutCommentInput, UserUncheckedCreateWithoutCommentInput>
+    connectOrCreate?: UserCreateOrConnectWithoutCommentInput
+    connect?: UserWhereUniqueInput
+  }
+
+  export type BulletinItemUpdateOneRequiredWithoutCommentsNestedInput = {
+    create?: XOR<BulletinItemCreateWithoutCommentsInput, BulletinItemUncheckedCreateWithoutCommentsInput>
+    connectOrCreate?: BulletinItemCreateOrConnectWithoutCommentsInput
+    upsert?: BulletinItemUpsertWithoutCommentsInput
+    connect?: BulletinItemWhereUniqueInput
+    update?: XOR<XOR<BulletinItemUpdateToOneWithWhereWithoutCommentsInput, BulletinItemUpdateWithoutCommentsInput>, BulletinItemUncheckedUpdateWithoutCommentsInput>
+  }
+
+  export type UserUpdateOneRequiredWithoutCommentNestedInput = {
+    create?: XOR<UserCreateWithoutCommentInput, UserUncheckedCreateWithoutCommentInput>
+    connectOrCreate?: UserCreateOrConnectWithoutCommentInput
+    upsert?: UserUpsertWithoutCommentInput
+    connect?: UserWhereUniqueInput
+    update?: XOR<XOR<UserUpdateToOneWithWhereWithoutCommentInput, UserUpdateWithoutCommentInput>, UserUncheckedUpdateWithoutCommentInput>
+  }
+
+  export type BulletinItemCreateNestedOneWithoutOptionsInput = {
+    create?: XOR<BulletinItemCreateWithoutOptionsInput, BulletinItemUncheckedCreateWithoutOptionsInput>
+    connectOrCreate?: BulletinItemCreateOrConnectWithoutOptionsInput
+    connect?: BulletinItemWhereUniqueInput
+  }
+
+  export type BulletinItemUpdateOneRequiredWithoutOptionsNestedInput = {
+    create?: XOR<BulletinItemCreateWithoutOptionsInput, BulletinItemUncheckedCreateWithoutOptionsInput>
+    connectOrCreate?: BulletinItemCreateOrConnectWithoutOptionsInput
+    upsert?: BulletinItemUpsertWithoutOptionsInput
+    connect?: BulletinItemWhereUniqueInput
+    update?: XOR<XOR<BulletinItemUpdateToOneWithWhereWithoutOptionsInput, BulletinItemUpdateWithoutOptionsInput>, BulletinItemUncheckedUpdateWithoutOptionsInput>
+  }
+
   export type NestedIntFilter<$PrismaModel = never> = {
     equals?: number | IntFieldRefInput<$PrismaModel>
     in?: number[] | ListIntFieldRefInput<$PrismaModel>
@@ -11143,6 +15758,23 @@ export namespace Prisma {
     _max?: NestedEnumPropTypeFilter<$PrismaModel>
   }
 
+  export type NestedEnumBulletinTypeFilter<$PrismaModel = never> = {
+    equals?: $Enums.BulletinType | EnumBulletinTypeFieldRefInput<$PrismaModel>
+    in?: $Enums.BulletinType[] | ListEnumBulletinTypeFieldRefInput<$PrismaModel>
+    notIn?: $Enums.BulletinType[] | ListEnumBulletinTypeFieldRefInput<$PrismaModel>
+    not?: NestedEnumBulletinTypeFilter<$PrismaModel> | $Enums.BulletinType
+  }
+
+  export type NestedEnumBulletinTypeWithAggregatesFilter<$PrismaModel = never> = {
+    equals?: $Enums.BulletinType | EnumBulletinTypeFieldRefInput<$PrismaModel>
+    in?: $Enums.BulletinType[] | ListEnumBulletinTypeFieldRefInput<$PrismaModel>
+    notIn?: $Enums.BulletinType[] | ListEnumBulletinTypeFieldRefInput<$PrismaModel>
+    not?: NestedEnumBulletinTypeWithAggregatesFilter<$PrismaModel> | $Enums.BulletinType
+    _count?: NestedIntFilter<$PrismaModel>
+    _min?: NestedEnumBulletinTypeFilter<$PrismaModel>
+    _max?: NestedEnumBulletinTypeFilter<$PrismaModel>
+  }
+
   export type HouseholdCreateWithoutUsersInput = {
     name: string
     joinCode?: string
@@ -11232,6 +15864,62 @@ export namespace Prisma {
 
   export type UserAvatarPropsCreateManyUserInputEnvelope = {
     data: UserAvatarPropsCreateManyUserInput | UserAvatarPropsCreateManyUserInput[]
+    skipDuplicates?: boolean
+  }
+
+  export type BulletinItemCreateWithoutAuthorInput = {
+    type: $Enums.BulletinType
+    content: string
+    dateCreated?: Date | string
+    dateModified?: Date | string
+    likeCount?: number
+    comments?: CommentCreateNestedManyWithoutTargetInput
+    options?: PollOptionCreateNestedManyWithoutPollInput
+  }
+
+  export type BulletinItemUncheckedCreateWithoutAuthorInput = {
+    id?: number
+    type: $Enums.BulletinType
+    content: string
+    dateCreated?: Date | string
+    dateModified?: Date | string
+    likeCount?: number
+    comments?: CommentUncheckedCreateNestedManyWithoutTargetInput
+    options?: PollOptionUncheckedCreateNestedManyWithoutPollInput
+  }
+
+  export type BulletinItemCreateOrConnectWithoutAuthorInput = {
+    where: BulletinItemWhereUniqueInput
+    create: XOR<BulletinItemCreateWithoutAuthorInput, BulletinItemUncheckedCreateWithoutAuthorInput>
+  }
+
+  export type BulletinItemCreateManyAuthorInputEnvelope = {
+    data: BulletinItemCreateManyAuthorInput | BulletinItemCreateManyAuthorInput[]
+    skipDuplicates?: boolean
+  }
+
+  export type CommentCreateWithoutAuthorInput = {
+    content: string
+    dateCreated?: Date | string
+    dateModified?: Date | string
+    target: BulletinItemCreateNestedOneWithoutCommentsInput
+  }
+
+  export type CommentUncheckedCreateWithoutAuthorInput = {
+    id?: number
+    targetId: number
+    content: string
+    dateCreated?: Date | string
+    dateModified?: Date | string
+  }
+
+  export type CommentCreateOrConnectWithoutAuthorInput = {
+    where: CommentWhereUniqueInput
+    create: XOR<CommentCreateWithoutAuthorInput, CommentUncheckedCreateWithoutAuthorInput>
+  }
+
+  export type CommentCreateManyAuthorInputEnvelope = {
+    data: CommentCreateManyAuthorInput | CommentCreateManyAuthorInput[]
     skipDuplicates?: boolean
   }
 
@@ -11344,6 +16032,63 @@ export namespace Prisma {
     propId?: IntFilter<"UserAvatarProps"> | number
   }
 
+  export type BulletinItemUpsertWithWhereUniqueWithoutAuthorInput = {
+    where: BulletinItemWhereUniqueInput
+    update: XOR<BulletinItemUpdateWithoutAuthorInput, BulletinItemUncheckedUpdateWithoutAuthorInput>
+    create: XOR<BulletinItemCreateWithoutAuthorInput, BulletinItemUncheckedCreateWithoutAuthorInput>
+  }
+
+  export type BulletinItemUpdateWithWhereUniqueWithoutAuthorInput = {
+    where: BulletinItemWhereUniqueInput
+    data: XOR<BulletinItemUpdateWithoutAuthorInput, BulletinItemUncheckedUpdateWithoutAuthorInput>
+  }
+
+  export type BulletinItemUpdateManyWithWhereWithoutAuthorInput = {
+    where: BulletinItemScalarWhereInput
+    data: XOR<BulletinItemUpdateManyMutationInput, BulletinItemUncheckedUpdateManyWithoutAuthorInput>
+  }
+
+  export type BulletinItemScalarWhereInput = {
+    AND?: BulletinItemScalarWhereInput | BulletinItemScalarWhereInput[]
+    OR?: BulletinItemScalarWhereInput[]
+    NOT?: BulletinItemScalarWhereInput | BulletinItemScalarWhereInput[]
+    id?: IntFilter<"BulletinItem"> | number
+    type?: EnumBulletinTypeFilter<"BulletinItem"> | $Enums.BulletinType
+    authorId?: IntFilter<"BulletinItem"> | number
+    content?: StringFilter<"BulletinItem"> | string
+    dateCreated?: DateTimeFilter<"BulletinItem"> | Date | string
+    dateModified?: DateTimeFilter<"BulletinItem"> | Date | string
+    likeCount?: IntFilter<"BulletinItem"> | number
+  }
+
+  export type CommentUpsertWithWhereUniqueWithoutAuthorInput = {
+    where: CommentWhereUniqueInput
+    update: XOR<CommentUpdateWithoutAuthorInput, CommentUncheckedUpdateWithoutAuthorInput>
+    create: XOR<CommentCreateWithoutAuthorInput, CommentUncheckedCreateWithoutAuthorInput>
+  }
+
+  export type CommentUpdateWithWhereUniqueWithoutAuthorInput = {
+    where: CommentWhereUniqueInput
+    data: XOR<CommentUpdateWithoutAuthorInput, CommentUncheckedUpdateWithoutAuthorInput>
+  }
+
+  export type CommentUpdateManyWithWhereWithoutAuthorInput = {
+    where: CommentScalarWhereInput
+    data: XOR<CommentUpdateManyMutationInput, CommentUncheckedUpdateManyWithoutAuthorInput>
+  }
+
+  export type CommentScalarWhereInput = {
+    AND?: CommentScalarWhereInput | CommentScalarWhereInput[]
+    OR?: CommentScalarWhereInput[]
+    NOT?: CommentScalarWhereInput | CommentScalarWhereInput[]
+    id?: IntFilter<"Comment"> | number
+    targetId?: IntFilter<"Comment"> | number
+    authorId?: IntFilter<"Comment"> | number
+    content?: StringFilter<"Comment"> | string
+    dateCreated?: DateTimeFilter<"Comment"> | Date | string
+    dateModified?: DateTimeFilter<"Comment"> | Date | string
+  }
+
   export type UserCreateWithoutHouseholdInput = {
     createdAt?: Date | string
     email: string
@@ -11358,6 +16103,8 @@ export namespace Prisma {
     assignedChores?: ChoreCreateNestedManyWithoutAssigneeInput
     avatar?: AvatarCreateNestedOneWithoutOwnerInput
     userAvatarProps?: UserAvatarPropsCreateNestedManyWithoutUserInput
+    BulletinItem?: BulletinItemCreateNestedManyWithoutAuthorInput
+    Comment?: CommentCreateNestedManyWithoutAuthorInput
   }
 
   export type UserUncheckedCreateWithoutHouseholdInput = {
@@ -11375,6 +16122,8 @@ export namespace Prisma {
     assignedChores?: ChoreUncheckedCreateNestedManyWithoutAssigneeInput
     avatar?: AvatarUncheckedCreateNestedOneWithoutOwnerInput
     userAvatarProps?: UserAvatarPropsUncheckedCreateNestedManyWithoutUserInput
+    BulletinItem?: BulletinItemUncheckedCreateNestedManyWithoutAuthorInput
+    Comment?: CommentUncheckedCreateNestedManyWithoutAuthorInput
   }
 
   export type UserCreateOrConnectWithoutHouseholdInput = {
@@ -11502,6 +16251,8 @@ export namespace Prisma {
     household?: HouseholdCreateNestedOneWithoutUsersInput
     avatar?: AvatarCreateNestedOneWithoutOwnerInput
     userAvatarProps?: UserAvatarPropsCreateNestedManyWithoutUserInput
+    BulletinItem?: BulletinItemCreateNestedManyWithoutAuthorInput
+    Comment?: CommentCreateNestedManyWithoutAuthorInput
   }
 
   export type UserUncheckedCreateWithoutAssignedChoresInput = {
@@ -11519,6 +16270,8 @@ export namespace Prisma {
     currentPoints?: number
     avatar?: AvatarUncheckedCreateNestedOneWithoutOwnerInput
     userAvatarProps?: UserAvatarPropsUncheckedCreateNestedManyWithoutUserInput
+    BulletinItem?: BulletinItemUncheckedCreateNestedManyWithoutAuthorInput
+    Comment?: CommentUncheckedCreateNestedManyWithoutAuthorInput
   }
 
   export type UserCreateOrConnectWithoutAssignedChoresInput = {
@@ -11575,6 +16328,8 @@ export namespace Prisma {
     household?: HouseholdUpdateOneWithoutUsersNestedInput
     avatar?: AvatarUpdateOneWithoutOwnerNestedInput
     userAvatarProps?: UserAvatarPropsUpdateManyWithoutUserNestedInput
+    BulletinItem?: BulletinItemUpdateManyWithoutAuthorNestedInput
+    Comment?: CommentUpdateManyWithoutAuthorNestedInput
   }
 
   export type UserUncheckedUpdateWithoutAssignedChoresInput = {
@@ -11592,6 +16347,8 @@ export namespace Prisma {
     currentPoints?: IntFieldUpdateOperationsInput | number
     avatar?: AvatarUncheckedUpdateOneWithoutOwnerNestedInput
     userAvatarProps?: UserAvatarPropsUncheckedUpdateManyWithoutUserNestedInput
+    BulletinItem?: BulletinItemUncheckedUpdateManyWithoutAuthorNestedInput
+    Comment?: CommentUncheckedUpdateManyWithoutAuthorNestedInput
   }
 
   export type UserCreateWithoutAvatarInput = {
@@ -11608,6 +16365,8 @@ export namespace Prisma {
     household?: HouseholdCreateNestedOneWithoutUsersInput
     assignedChores?: ChoreCreateNestedManyWithoutAssigneeInput
     userAvatarProps?: UserAvatarPropsCreateNestedManyWithoutUserInput
+    BulletinItem?: BulletinItemCreateNestedManyWithoutAuthorInput
+    Comment?: CommentCreateNestedManyWithoutAuthorInput
   }
 
   export type UserUncheckedCreateWithoutAvatarInput = {
@@ -11625,6 +16384,8 @@ export namespace Prisma {
     currentPoints?: number
     assignedChores?: ChoreUncheckedCreateNestedManyWithoutAssigneeInput
     userAvatarProps?: UserAvatarPropsUncheckedCreateNestedManyWithoutUserInput
+    BulletinItem?: BulletinItemUncheckedCreateNestedManyWithoutAuthorInput
+    Comment?: CommentUncheckedCreateNestedManyWithoutAuthorInput
   }
 
   export type UserCreateOrConnectWithoutAvatarInput = {
@@ -11837,6 +16598,8 @@ export namespace Prisma {
     household?: HouseholdUpdateOneWithoutUsersNestedInput
     assignedChores?: ChoreUpdateManyWithoutAssigneeNestedInput
     userAvatarProps?: UserAvatarPropsUpdateManyWithoutUserNestedInput
+    BulletinItem?: BulletinItemUpdateManyWithoutAuthorNestedInput
+    Comment?: CommentUpdateManyWithoutAuthorNestedInput
   }
 
   export type UserUncheckedUpdateWithoutAvatarInput = {
@@ -11854,6 +16617,8 @@ export namespace Prisma {
     currentPoints?: IntFieldUpdateOperationsInput | number
     assignedChores?: ChoreUncheckedUpdateManyWithoutAssigneeNestedInput
     userAvatarProps?: UserAvatarPropsUncheckedUpdateManyWithoutUserNestedInput
+    BulletinItem?: BulletinItemUncheckedUpdateManyWithoutAuthorNestedInput
+    Comment?: CommentUncheckedUpdateManyWithoutAuthorNestedInput
   }
 
   export type AvatarPropUpsertWithoutSkinToneInAvatarsInput = {
@@ -12086,6 +16851,8 @@ export namespace Prisma {
     household?: HouseholdCreateNestedOneWithoutUsersInput
     assignedChores?: ChoreCreateNestedManyWithoutAssigneeInput
     avatar?: AvatarCreateNestedOneWithoutOwnerInput
+    BulletinItem?: BulletinItemCreateNestedManyWithoutAuthorInput
+    Comment?: CommentCreateNestedManyWithoutAuthorInput
   }
 
   export type UserUncheckedCreateWithoutUserAvatarPropsInput = {
@@ -12103,6 +16870,8 @@ export namespace Prisma {
     currentPoints?: number
     assignedChores?: ChoreUncheckedCreateNestedManyWithoutAssigneeInput
     avatar?: AvatarUncheckedCreateNestedOneWithoutOwnerInput
+    BulletinItem?: BulletinItemUncheckedCreateNestedManyWithoutAuthorInput
+    Comment?: CommentUncheckedCreateNestedManyWithoutAuthorInput
   }
 
   export type UserCreateOrConnectWithoutUserAvatarPropsInput = {
@@ -12165,6 +16934,8 @@ export namespace Prisma {
     household?: HouseholdUpdateOneWithoutUsersNestedInput
     assignedChores?: ChoreUpdateManyWithoutAssigneeNestedInput
     avatar?: AvatarUpdateOneWithoutOwnerNestedInput
+    BulletinItem?: BulletinItemUpdateManyWithoutAuthorNestedInput
+    Comment?: CommentUpdateManyWithoutAuthorNestedInput
   }
 
   export type UserUncheckedUpdateWithoutUserAvatarPropsInput = {
@@ -12182,6 +16953,8 @@ export namespace Prisma {
     currentPoints?: IntFieldUpdateOperationsInput | number
     assignedChores?: ChoreUncheckedUpdateManyWithoutAssigneeNestedInput
     avatar?: AvatarUncheckedUpdateOneWithoutOwnerNestedInput
+    BulletinItem?: BulletinItemUncheckedUpdateManyWithoutAuthorNestedInput
+    Comment?: CommentUncheckedUpdateManyWithoutAuthorNestedInput
   }
 
   export type AvatarPropUpsertWithoutUserAvatarPropsInput = {
@@ -12531,6 +17304,390 @@ export namespace Prisma {
     data: XOR<UserAvatarPropsUpdateManyMutationInput, UserAvatarPropsUncheckedUpdateManyWithoutPropInput>
   }
 
+  export type UserCreateWithoutBulletinItemInput = {
+    createdAt?: Date | string
+    email: string
+    name: string
+    password_hash: string
+    salt?: string | null
+    role?: $Enums.Role
+    difficulty?: number | null
+    maxChoreTime?: number | null
+    totalPoints?: number
+    currentPoints?: number
+    household?: HouseholdCreateNestedOneWithoutUsersInput
+    assignedChores?: ChoreCreateNestedManyWithoutAssigneeInput
+    avatar?: AvatarCreateNestedOneWithoutOwnerInput
+    userAvatarProps?: UserAvatarPropsCreateNestedManyWithoutUserInput
+    Comment?: CommentCreateNestedManyWithoutAuthorInput
+  }
+
+  export type UserUncheckedCreateWithoutBulletinItemInput = {
+    id?: number
+    createdAt?: Date | string
+    email: string
+    name: string
+    password_hash: string
+    salt?: string | null
+    householdId?: number | null
+    role?: $Enums.Role
+    difficulty?: number | null
+    maxChoreTime?: number | null
+    totalPoints?: number
+    currentPoints?: number
+    assignedChores?: ChoreUncheckedCreateNestedManyWithoutAssigneeInput
+    avatar?: AvatarUncheckedCreateNestedOneWithoutOwnerInput
+    userAvatarProps?: UserAvatarPropsUncheckedCreateNestedManyWithoutUserInput
+    Comment?: CommentUncheckedCreateNestedManyWithoutAuthorInput
+  }
+
+  export type UserCreateOrConnectWithoutBulletinItemInput = {
+    where: UserWhereUniqueInput
+    create: XOR<UserCreateWithoutBulletinItemInput, UserUncheckedCreateWithoutBulletinItemInput>
+  }
+
+  export type CommentCreateWithoutTargetInput = {
+    content: string
+    dateCreated?: Date | string
+    dateModified?: Date | string
+    author: UserCreateNestedOneWithoutCommentInput
+  }
+
+  export type CommentUncheckedCreateWithoutTargetInput = {
+    id?: number
+    authorId: number
+    content: string
+    dateCreated?: Date | string
+    dateModified?: Date | string
+  }
+
+  export type CommentCreateOrConnectWithoutTargetInput = {
+    where: CommentWhereUniqueInput
+    create: XOR<CommentCreateWithoutTargetInput, CommentUncheckedCreateWithoutTargetInput>
+  }
+
+  export type CommentCreateManyTargetInputEnvelope = {
+    data: CommentCreateManyTargetInput | CommentCreateManyTargetInput[]
+    skipDuplicates?: boolean
+  }
+
+  export type PollOptionCreateWithoutPollInput = {
+    content: string
+    voteCount?: number
+  }
+
+  export type PollOptionUncheckedCreateWithoutPollInput = {
+    id?: number
+    content: string
+    voteCount?: number
+  }
+
+  export type PollOptionCreateOrConnectWithoutPollInput = {
+    where: PollOptionWhereUniqueInput
+    create: XOR<PollOptionCreateWithoutPollInput, PollOptionUncheckedCreateWithoutPollInput>
+  }
+
+  export type PollOptionCreateManyPollInputEnvelope = {
+    data: PollOptionCreateManyPollInput | PollOptionCreateManyPollInput[]
+    skipDuplicates?: boolean
+  }
+
+  export type UserUpsertWithoutBulletinItemInput = {
+    update: XOR<UserUpdateWithoutBulletinItemInput, UserUncheckedUpdateWithoutBulletinItemInput>
+    create: XOR<UserCreateWithoutBulletinItemInput, UserUncheckedCreateWithoutBulletinItemInput>
+    where?: UserWhereInput
+  }
+
+  export type UserUpdateToOneWithWhereWithoutBulletinItemInput = {
+    where?: UserWhereInput
+    data: XOR<UserUpdateWithoutBulletinItemInput, UserUncheckedUpdateWithoutBulletinItemInput>
+  }
+
+  export type UserUpdateWithoutBulletinItemInput = {
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    email?: StringFieldUpdateOperationsInput | string
+    name?: StringFieldUpdateOperationsInput | string
+    password_hash?: StringFieldUpdateOperationsInput | string
+    salt?: NullableStringFieldUpdateOperationsInput | string | null
+    role?: EnumRoleFieldUpdateOperationsInput | $Enums.Role
+    difficulty?: NullableIntFieldUpdateOperationsInput | number | null
+    maxChoreTime?: NullableIntFieldUpdateOperationsInput | number | null
+    totalPoints?: IntFieldUpdateOperationsInput | number
+    currentPoints?: IntFieldUpdateOperationsInput | number
+    household?: HouseholdUpdateOneWithoutUsersNestedInput
+    assignedChores?: ChoreUpdateManyWithoutAssigneeNestedInput
+    avatar?: AvatarUpdateOneWithoutOwnerNestedInput
+    userAvatarProps?: UserAvatarPropsUpdateManyWithoutUserNestedInput
+    Comment?: CommentUpdateManyWithoutAuthorNestedInput
+  }
+
+  export type UserUncheckedUpdateWithoutBulletinItemInput = {
+    id?: IntFieldUpdateOperationsInput | number
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    email?: StringFieldUpdateOperationsInput | string
+    name?: StringFieldUpdateOperationsInput | string
+    password_hash?: StringFieldUpdateOperationsInput | string
+    salt?: NullableStringFieldUpdateOperationsInput | string | null
+    householdId?: NullableIntFieldUpdateOperationsInput | number | null
+    role?: EnumRoleFieldUpdateOperationsInput | $Enums.Role
+    difficulty?: NullableIntFieldUpdateOperationsInput | number | null
+    maxChoreTime?: NullableIntFieldUpdateOperationsInput | number | null
+    totalPoints?: IntFieldUpdateOperationsInput | number
+    currentPoints?: IntFieldUpdateOperationsInput | number
+    assignedChores?: ChoreUncheckedUpdateManyWithoutAssigneeNestedInput
+    avatar?: AvatarUncheckedUpdateOneWithoutOwnerNestedInput
+    userAvatarProps?: UserAvatarPropsUncheckedUpdateManyWithoutUserNestedInput
+    Comment?: CommentUncheckedUpdateManyWithoutAuthorNestedInput
+  }
+
+  export type CommentUpsertWithWhereUniqueWithoutTargetInput = {
+    where: CommentWhereUniqueInput
+    update: XOR<CommentUpdateWithoutTargetInput, CommentUncheckedUpdateWithoutTargetInput>
+    create: XOR<CommentCreateWithoutTargetInput, CommentUncheckedCreateWithoutTargetInput>
+  }
+
+  export type CommentUpdateWithWhereUniqueWithoutTargetInput = {
+    where: CommentWhereUniqueInput
+    data: XOR<CommentUpdateWithoutTargetInput, CommentUncheckedUpdateWithoutTargetInput>
+  }
+
+  export type CommentUpdateManyWithWhereWithoutTargetInput = {
+    where: CommentScalarWhereInput
+    data: XOR<CommentUpdateManyMutationInput, CommentUncheckedUpdateManyWithoutTargetInput>
+  }
+
+  export type PollOptionUpsertWithWhereUniqueWithoutPollInput = {
+    where: PollOptionWhereUniqueInput
+    update: XOR<PollOptionUpdateWithoutPollInput, PollOptionUncheckedUpdateWithoutPollInput>
+    create: XOR<PollOptionCreateWithoutPollInput, PollOptionUncheckedCreateWithoutPollInput>
+  }
+
+  export type PollOptionUpdateWithWhereUniqueWithoutPollInput = {
+    where: PollOptionWhereUniqueInput
+    data: XOR<PollOptionUpdateWithoutPollInput, PollOptionUncheckedUpdateWithoutPollInput>
+  }
+
+  export type PollOptionUpdateManyWithWhereWithoutPollInput = {
+    where: PollOptionScalarWhereInput
+    data: XOR<PollOptionUpdateManyMutationInput, PollOptionUncheckedUpdateManyWithoutPollInput>
+  }
+
+  export type PollOptionScalarWhereInput = {
+    AND?: PollOptionScalarWhereInput | PollOptionScalarWhereInput[]
+    OR?: PollOptionScalarWhereInput[]
+    NOT?: PollOptionScalarWhereInput | PollOptionScalarWhereInput[]
+    id?: IntFilter<"PollOption"> | number
+    pollId?: IntFilter<"PollOption"> | number
+    content?: StringFilter<"PollOption"> | string
+    voteCount?: IntFilter<"PollOption"> | number
+  }
+
+  export type BulletinItemCreateWithoutCommentsInput = {
+    type: $Enums.BulletinType
+    content: string
+    dateCreated?: Date | string
+    dateModified?: Date | string
+    likeCount?: number
+    author: UserCreateNestedOneWithoutBulletinItemInput
+    options?: PollOptionCreateNestedManyWithoutPollInput
+  }
+
+  export type BulletinItemUncheckedCreateWithoutCommentsInput = {
+    id?: number
+    type: $Enums.BulletinType
+    authorId: number
+    content: string
+    dateCreated?: Date | string
+    dateModified?: Date | string
+    likeCount?: number
+    options?: PollOptionUncheckedCreateNestedManyWithoutPollInput
+  }
+
+  export type BulletinItemCreateOrConnectWithoutCommentsInput = {
+    where: BulletinItemWhereUniqueInput
+    create: XOR<BulletinItemCreateWithoutCommentsInput, BulletinItemUncheckedCreateWithoutCommentsInput>
+  }
+
+  export type UserCreateWithoutCommentInput = {
+    createdAt?: Date | string
+    email: string
+    name: string
+    password_hash: string
+    salt?: string | null
+    role?: $Enums.Role
+    difficulty?: number | null
+    maxChoreTime?: number | null
+    totalPoints?: number
+    currentPoints?: number
+    household?: HouseholdCreateNestedOneWithoutUsersInput
+    assignedChores?: ChoreCreateNestedManyWithoutAssigneeInput
+    avatar?: AvatarCreateNestedOneWithoutOwnerInput
+    userAvatarProps?: UserAvatarPropsCreateNestedManyWithoutUserInput
+    BulletinItem?: BulletinItemCreateNestedManyWithoutAuthorInput
+  }
+
+  export type UserUncheckedCreateWithoutCommentInput = {
+    id?: number
+    createdAt?: Date | string
+    email: string
+    name: string
+    password_hash: string
+    salt?: string | null
+    householdId?: number | null
+    role?: $Enums.Role
+    difficulty?: number | null
+    maxChoreTime?: number | null
+    totalPoints?: number
+    currentPoints?: number
+    assignedChores?: ChoreUncheckedCreateNestedManyWithoutAssigneeInput
+    avatar?: AvatarUncheckedCreateNestedOneWithoutOwnerInput
+    userAvatarProps?: UserAvatarPropsUncheckedCreateNestedManyWithoutUserInput
+    BulletinItem?: BulletinItemUncheckedCreateNestedManyWithoutAuthorInput
+  }
+
+  export type UserCreateOrConnectWithoutCommentInput = {
+    where: UserWhereUniqueInput
+    create: XOR<UserCreateWithoutCommentInput, UserUncheckedCreateWithoutCommentInput>
+  }
+
+  export type BulletinItemUpsertWithoutCommentsInput = {
+    update: XOR<BulletinItemUpdateWithoutCommentsInput, BulletinItemUncheckedUpdateWithoutCommentsInput>
+    create: XOR<BulletinItemCreateWithoutCommentsInput, BulletinItemUncheckedCreateWithoutCommentsInput>
+    where?: BulletinItemWhereInput
+  }
+
+  export type BulletinItemUpdateToOneWithWhereWithoutCommentsInput = {
+    where?: BulletinItemWhereInput
+    data: XOR<BulletinItemUpdateWithoutCommentsInput, BulletinItemUncheckedUpdateWithoutCommentsInput>
+  }
+
+  export type BulletinItemUpdateWithoutCommentsInput = {
+    type?: EnumBulletinTypeFieldUpdateOperationsInput | $Enums.BulletinType
+    content?: StringFieldUpdateOperationsInput | string
+    dateCreated?: DateTimeFieldUpdateOperationsInput | Date | string
+    dateModified?: DateTimeFieldUpdateOperationsInput | Date | string
+    likeCount?: IntFieldUpdateOperationsInput | number
+    author?: UserUpdateOneRequiredWithoutBulletinItemNestedInput
+    options?: PollOptionUpdateManyWithoutPollNestedInput
+  }
+
+  export type BulletinItemUncheckedUpdateWithoutCommentsInput = {
+    id?: IntFieldUpdateOperationsInput | number
+    type?: EnumBulletinTypeFieldUpdateOperationsInput | $Enums.BulletinType
+    authorId?: IntFieldUpdateOperationsInput | number
+    content?: StringFieldUpdateOperationsInput | string
+    dateCreated?: DateTimeFieldUpdateOperationsInput | Date | string
+    dateModified?: DateTimeFieldUpdateOperationsInput | Date | string
+    likeCount?: IntFieldUpdateOperationsInput | number
+    options?: PollOptionUncheckedUpdateManyWithoutPollNestedInput
+  }
+
+  export type UserUpsertWithoutCommentInput = {
+    update: XOR<UserUpdateWithoutCommentInput, UserUncheckedUpdateWithoutCommentInput>
+    create: XOR<UserCreateWithoutCommentInput, UserUncheckedCreateWithoutCommentInput>
+    where?: UserWhereInput
+  }
+
+  export type UserUpdateToOneWithWhereWithoutCommentInput = {
+    where?: UserWhereInput
+    data: XOR<UserUpdateWithoutCommentInput, UserUncheckedUpdateWithoutCommentInput>
+  }
+
+  export type UserUpdateWithoutCommentInput = {
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    email?: StringFieldUpdateOperationsInput | string
+    name?: StringFieldUpdateOperationsInput | string
+    password_hash?: StringFieldUpdateOperationsInput | string
+    salt?: NullableStringFieldUpdateOperationsInput | string | null
+    role?: EnumRoleFieldUpdateOperationsInput | $Enums.Role
+    difficulty?: NullableIntFieldUpdateOperationsInput | number | null
+    maxChoreTime?: NullableIntFieldUpdateOperationsInput | number | null
+    totalPoints?: IntFieldUpdateOperationsInput | number
+    currentPoints?: IntFieldUpdateOperationsInput | number
+    household?: HouseholdUpdateOneWithoutUsersNestedInput
+    assignedChores?: ChoreUpdateManyWithoutAssigneeNestedInput
+    avatar?: AvatarUpdateOneWithoutOwnerNestedInput
+    userAvatarProps?: UserAvatarPropsUpdateManyWithoutUserNestedInput
+    BulletinItem?: BulletinItemUpdateManyWithoutAuthorNestedInput
+  }
+
+  export type UserUncheckedUpdateWithoutCommentInput = {
+    id?: IntFieldUpdateOperationsInput | number
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    email?: StringFieldUpdateOperationsInput | string
+    name?: StringFieldUpdateOperationsInput | string
+    password_hash?: StringFieldUpdateOperationsInput | string
+    salt?: NullableStringFieldUpdateOperationsInput | string | null
+    householdId?: NullableIntFieldUpdateOperationsInput | number | null
+    role?: EnumRoleFieldUpdateOperationsInput | $Enums.Role
+    difficulty?: NullableIntFieldUpdateOperationsInput | number | null
+    maxChoreTime?: NullableIntFieldUpdateOperationsInput | number | null
+    totalPoints?: IntFieldUpdateOperationsInput | number
+    currentPoints?: IntFieldUpdateOperationsInput | number
+    assignedChores?: ChoreUncheckedUpdateManyWithoutAssigneeNestedInput
+    avatar?: AvatarUncheckedUpdateOneWithoutOwnerNestedInput
+    userAvatarProps?: UserAvatarPropsUncheckedUpdateManyWithoutUserNestedInput
+    BulletinItem?: BulletinItemUncheckedUpdateManyWithoutAuthorNestedInput
+  }
+
+  export type BulletinItemCreateWithoutOptionsInput = {
+    type: $Enums.BulletinType
+    content: string
+    dateCreated?: Date | string
+    dateModified?: Date | string
+    likeCount?: number
+    author: UserCreateNestedOneWithoutBulletinItemInput
+    comments?: CommentCreateNestedManyWithoutTargetInput
+  }
+
+  export type BulletinItemUncheckedCreateWithoutOptionsInput = {
+    id?: number
+    type: $Enums.BulletinType
+    authorId: number
+    content: string
+    dateCreated?: Date | string
+    dateModified?: Date | string
+    likeCount?: number
+    comments?: CommentUncheckedCreateNestedManyWithoutTargetInput
+  }
+
+  export type BulletinItemCreateOrConnectWithoutOptionsInput = {
+    where: BulletinItemWhereUniqueInput
+    create: XOR<BulletinItemCreateWithoutOptionsInput, BulletinItemUncheckedCreateWithoutOptionsInput>
+  }
+
+  export type BulletinItemUpsertWithoutOptionsInput = {
+    update: XOR<BulletinItemUpdateWithoutOptionsInput, BulletinItemUncheckedUpdateWithoutOptionsInput>
+    create: XOR<BulletinItemCreateWithoutOptionsInput, BulletinItemUncheckedCreateWithoutOptionsInput>
+    where?: BulletinItemWhereInput
+  }
+
+  export type BulletinItemUpdateToOneWithWhereWithoutOptionsInput = {
+    where?: BulletinItemWhereInput
+    data: XOR<BulletinItemUpdateWithoutOptionsInput, BulletinItemUncheckedUpdateWithoutOptionsInput>
+  }
+
+  export type BulletinItemUpdateWithoutOptionsInput = {
+    type?: EnumBulletinTypeFieldUpdateOperationsInput | $Enums.BulletinType
+    content?: StringFieldUpdateOperationsInput | string
+    dateCreated?: DateTimeFieldUpdateOperationsInput | Date | string
+    dateModified?: DateTimeFieldUpdateOperationsInput | Date | string
+    likeCount?: IntFieldUpdateOperationsInput | number
+    author?: UserUpdateOneRequiredWithoutBulletinItemNestedInput
+    comments?: CommentUpdateManyWithoutTargetNestedInput
+  }
+
+  export type BulletinItemUncheckedUpdateWithoutOptionsInput = {
+    id?: IntFieldUpdateOperationsInput | number
+    type?: EnumBulletinTypeFieldUpdateOperationsInput | $Enums.BulletinType
+    authorId?: IntFieldUpdateOperationsInput | number
+    content?: StringFieldUpdateOperationsInput | string
+    dateCreated?: DateTimeFieldUpdateOperationsInput | Date | string
+    dateModified?: DateTimeFieldUpdateOperationsInput | Date | string
+    likeCount?: IntFieldUpdateOperationsInput | number
+    comments?: CommentUncheckedUpdateManyWithoutTargetNestedInput
+  }
+
   export type ChoreCreateManyAssigneeInput = {
     id?: number
     name: string
@@ -12545,6 +17702,23 @@ export namespace Prisma {
 
   export type UserAvatarPropsCreateManyUserInput = {
     propId: number
+  }
+
+  export type BulletinItemCreateManyAuthorInput = {
+    id?: number
+    type: $Enums.BulletinType
+    content: string
+    dateCreated?: Date | string
+    dateModified?: Date | string
+    likeCount?: number
+  }
+
+  export type CommentCreateManyAuthorInput = {
+    id?: number
+    targetId: number
+    content: string
+    dateCreated?: Date | string
+    dateModified?: Date | string
   }
 
   export type ChoreUpdateWithoutAssigneeInput = {
@@ -12594,6 +17768,59 @@ export namespace Prisma {
     propId?: IntFieldUpdateOperationsInput | number
   }
 
+  export type BulletinItemUpdateWithoutAuthorInput = {
+    type?: EnumBulletinTypeFieldUpdateOperationsInput | $Enums.BulletinType
+    content?: StringFieldUpdateOperationsInput | string
+    dateCreated?: DateTimeFieldUpdateOperationsInput | Date | string
+    dateModified?: DateTimeFieldUpdateOperationsInput | Date | string
+    likeCount?: IntFieldUpdateOperationsInput | number
+    comments?: CommentUpdateManyWithoutTargetNestedInput
+    options?: PollOptionUpdateManyWithoutPollNestedInput
+  }
+
+  export type BulletinItemUncheckedUpdateWithoutAuthorInput = {
+    id?: IntFieldUpdateOperationsInput | number
+    type?: EnumBulletinTypeFieldUpdateOperationsInput | $Enums.BulletinType
+    content?: StringFieldUpdateOperationsInput | string
+    dateCreated?: DateTimeFieldUpdateOperationsInput | Date | string
+    dateModified?: DateTimeFieldUpdateOperationsInput | Date | string
+    likeCount?: IntFieldUpdateOperationsInput | number
+    comments?: CommentUncheckedUpdateManyWithoutTargetNestedInput
+    options?: PollOptionUncheckedUpdateManyWithoutPollNestedInput
+  }
+
+  export type BulletinItemUncheckedUpdateManyWithoutAuthorInput = {
+    id?: IntFieldUpdateOperationsInput | number
+    type?: EnumBulletinTypeFieldUpdateOperationsInput | $Enums.BulletinType
+    content?: StringFieldUpdateOperationsInput | string
+    dateCreated?: DateTimeFieldUpdateOperationsInput | Date | string
+    dateModified?: DateTimeFieldUpdateOperationsInput | Date | string
+    likeCount?: IntFieldUpdateOperationsInput | number
+  }
+
+  export type CommentUpdateWithoutAuthorInput = {
+    content?: StringFieldUpdateOperationsInput | string
+    dateCreated?: DateTimeFieldUpdateOperationsInput | Date | string
+    dateModified?: DateTimeFieldUpdateOperationsInput | Date | string
+    target?: BulletinItemUpdateOneRequiredWithoutCommentsNestedInput
+  }
+
+  export type CommentUncheckedUpdateWithoutAuthorInput = {
+    id?: IntFieldUpdateOperationsInput | number
+    targetId?: IntFieldUpdateOperationsInput | number
+    content?: StringFieldUpdateOperationsInput | string
+    dateCreated?: DateTimeFieldUpdateOperationsInput | Date | string
+    dateModified?: DateTimeFieldUpdateOperationsInput | Date | string
+  }
+
+  export type CommentUncheckedUpdateManyWithoutAuthorInput = {
+    id?: IntFieldUpdateOperationsInput | number
+    targetId?: IntFieldUpdateOperationsInput | number
+    content?: StringFieldUpdateOperationsInput | string
+    dateCreated?: DateTimeFieldUpdateOperationsInput | Date | string
+    dateModified?: DateTimeFieldUpdateOperationsInput | Date | string
+  }
+
   export type UserCreateManyHouseholdInput = {
     id?: number
     createdAt?: Date | string
@@ -12634,6 +17861,8 @@ export namespace Prisma {
     assignedChores?: ChoreUpdateManyWithoutAssigneeNestedInput
     avatar?: AvatarUpdateOneWithoutOwnerNestedInput
     userAvatarProps?: UserAvatarPropsUpdateManyWithoutUserNestedInput
+    BulletinItem?: BulletinItemUpdateManyWithoutAuthorNestedInput
+    Comment?: CommentUpdateManyWithoutAuthorNestedInput
   }
 
   export type UserUncheckedUpdateWithoutHouseholdInput = {
@@ -12651,6 +17880,8 @@ export namespace Prisma {
     assignedChores?: ChoreUncheckedUpdateManyWithoutAssigneeNestedInput
     avatar?: AvatarUncheckedUpdateOneWithoutOwnerNestedInput
     userAvatarProps?: UserAvatarPropsUncheckedUpdateManyWithoutUserNestedInput
+    BulletinItem?: BulletinItemUncheckedUpdateManyWithoutAuthorNestedInput
+    Comment?: CommentUncheckedUpdateManyWithoutAuthorNestedInput
   }
 
   export type UserUncheckedUpdateManyWithoutHouseholdInput = {
@@ -12932,6 +18163,60 @@ export namespace Prisma {
 
   export type UserAvatarPropsUncheckedUpdateManyWithoutPropInput = {
     userId?: IntFieldUpdateOperationsInput | number
+  }
+
+  export type CommentCreateManyTargetInput = {
+    id?: number
+    authorId: number
+    content: string
+    dateCreated?: Date | string
+    dateModified?: Date | string
+  }
+
+  export type PollOptionCreateManyPollInput = {
+    id?: number
+    content: string
+    voteCount?: number
+  }
+
+  export type CommentUpdateWithoutTargetInput = {
+    content?: StringFieldUpdateOperationsInput | string
+    dateCreated?: DateTimeFieldUpdateOperationsInput | Date | string
+    dateModified?: DateTimeFieldUpdateOperationsInput | Date | string
+    author?: UserUpdateOneRequiredWithoutCommentNestedInput
+  }
+
+  export type CommentUncheckedUpdateWithoutTargetInput = {
+    id?: IntFieldUpdateOperationsInput | number
+    authorId?: IntFieldUpdateOperationsInput | number
+    content?: StringFieldUpdateOperationsInput | string
+    dateCreated?: DateTimeFieldUpdateOperationsInput | Date | string
+    dateModified?: DateTimeFieldUpdateOperationsInput | Date | string
+  }
+
+  export type CommentUncheckedUpdateManyWithoutTargetInput = {
+    id?: IntFieldUpdateOperationsInput | number
+    authorId?: IntFieldUpdateOperationsInput | number
+    content?: StringFieldUpdateOperationsInput | string
+    dateCreated?: DateTimeFieldUpdateOperationsInput | Date | string
+    dateModified?: DateTimeFieldUpdateOperationsInput | Date | string
+  }
+
+  export type PollOptionUpdateWithoutPollInput = {
+    content?: StringFieldUpdateOperationsInput | string
+    voteCount?: IntFieldUpdateOperationsInput | number
+  }
+
+  export type PollOptionUncheckedUpdateWithoutPollInput = {
+    id?: IntFieldUpdateOperationsInput | number
+    content?: StringFieldUpdateOperationsInput | string
+    voteCount?: IntFieldUpdateOperationsInput | number
+  }
+
+  export type PollOptionUncheckedUpdateManyWithoutPollInput = {
+    id?: IntFieldUpdateOperationsInput | number
+    content?: StringFieldUpdateOperationsInput | string
+    voteCount?: IntFieldUpdateOperationsInput | number
   }
 
 

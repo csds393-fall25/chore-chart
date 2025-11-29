@@ -4,15 +4,15 @@ datasource db {
 }
 
 generator client {
-  provider = "prisma-client-js"
-  output   = "../src/generated/prisma"
-  binaryTargets   = ["native", "windows"]
+  provider      = "prisma-client-js"
+  output        = "../src/generated/prisma"
+  binaryTargets = ["native", "windows"]
 }
 
 model User {
-  id            Int       @id @default(autoincrement())
-  createdAt     DateTime  @default(now())
-  email         String    @unique
+  id            Int        @id @default(autoincrement())
+  createdAt     DateTime   @default(now())
+  email         String     @unique
   name          String
   password_hash String
   salt          String?
@@ -20,29 +20,31 @@ model User {
   householdId   Int?
   role          Role       @default(member)
   difficulty    Int?
-  maxChoreTime  Int?       // in minutes/week
+  maxChoreTime  Int? // in minutes/week
   totalPoints   Int        @default(0)
   currentPoints Int        @default(0)
 
   // Opposite relation fields:
-  assignedChores  Chore[]           // chores assigned to this user
-  avatar          Avatar?           // one-to-one Avatar.owner <-> User.avatar
+  assignedChores  Chore[] // chores assigned to this user
+  avatar          Avatar? // one-to-one Avatar.owner <-> User.avatar
   userAvatarProps UserAvatarProps[] // join table entries for user's owned props
+  BulletinItem    BulletinItem[]
+  Comment         Comment[]
 }
 
 model Household {
-  id        Int     @id @default(autoincrement())
-  name      String    
-  joinCode  String  @unique @default(uuid())
+  id       Int    @id @default(autoincrement())
+  name     String
+  joinCode String @unique @default(uuid())
 
   // Opposite relation fields:
-  users User[]
+  users  User[]
   chores Chore[]
 }
 
 model Chore {
-  id    Int     @id @default(autoincrement())
-  name  String
+  id            Int       @id @default(autoincrement())
+  name          String
   description   String
   difficulty    Int
   location      String
@@ -51,49 +53,83 @@ model Chore {
   repeat        Boolean
   household     Household @relation(fields: [householdId], references: [id])
   householdId   Int
-  assignee      User? @relation(fields: [assigneeId], references: [id])
-  assigneeId    Int?  
+  assignee      User?     @relation(fields: [assigneeId], references: [id])
+  assigneeId    Int?
 }
 
 model Avatar {
-  ownerId       Int @id
-  owner         User @relation(fields: [ownerId], references: [id], onDelete: Cascade)
-  skinTone      AvatarProp @relation("skinTone", fields: [skinToneId], references: [id])
-  hat           AvatarProp @relation("hat", fields: [hatId], references: [id])
-  hair          AvatarProp @relation("hair", fields: [hairId], references: [id])
-  shirt         AvatarProp @relation("shirt", fields: [shirtId], references: [id])
-  background    AvatarProp @relation("background", fields: [backgroundId], references: [id])
-  handProp      AvatarProp @relation("handProp", fields: [handPropId], references: [id])
-  skinToneId    Int
-  hatId         Int
-  hairId        Int 
-  shirtId       Int
-  backgroundId  Int
-  handPropId    Int
+  ownerId      Int        @id
+  owner        User       @relation(fields: [ownerId], references: [id], onDelete: Cascade)
+  skinTone     AvatarProp @relation("skinTone", fields: [skinToneId], references: [id])
+  hat          AvatarProp @relation("hat", fields: [hatId], references: [id])
+  hair         AvatarProp @relation("hair", fields: [hairId], references: [id])
+  shirt        AvatarProp @relation("shirt", fields: [shirtId], references: [id])
+  background   AvatarProp @relation("background", fields: [backgroundId], references: [id])
+  handProp     AvatarProp @relation("handProp", fields: [handPropId], references: [id])
+  skinToneId   Int
+  hatId        Int
+  hairId       Int
+  shirtId      Int
+  backgroundId Int
+  handPropId   Int
 }
 
 model UserAvatarProps {
-  userId  Int 
-  user    User @relation(fields: [userId], references: [id], onDelete: Cascade)
-  propId  Int
-  prop    AvatarProp @relation(fields: [propId], references: [id])
+  userId Int
+  user   User       @relation(fields: [userId], references: [id], onDelete: Cascade)
+  propId Int
+  prop   AvatarProp @relation(fields: [propId], references: [id])
+
   @@id([userId, propId])
 }
 
 model AvatarProp {
-  id    Int @id @default(autoincrement())
-  name  String @unique
-  type  PropType
-  cost  Int
+  id   Int      @id @default(autoincrement())
+  name String   @unique
+  type PropType
+  cost Int
 
   // Opposite relation fields:
-  skinToneInAvatars   Avatar[] @relation("skinTone")
-  hatInAvatars        Avatar[] @relation("hat")
-  hairInAvatars       Avatar[] @relation("hair")
-  shirtInAvatars      Avatar[] @relation("shirt")
-  backgroundInAvatars Avatar[] @relation("background")
-  handPropInAvatars   Avatar[] @relation("handProp")
-  userAvatarProps UserAvatarProps[]
+  skinToneInAvatars   Avatar[]          @relation("skinTone")
+  hatInAvatars        Avatar[]          @relation("hat")
+  hairInAvatars       Avatar[]          @relation("hair")
+  shirtInAvatars      Avatar[]          @relation("shirt")
+  backgroundInAvatars Avatar[]          @relation("background")
+  handPropInAvatars   Avatar[]          @relation("handProp")
+  userAvatarProps     UserAvatarProps[]
+}
+
+model BulletinItem {
+  id           Int          @id @default(autoincrement())
+  type         BulletinType
+  author       User         @relation(fields: [authorId], references: [id], onDelete: Cascade)
+  authorId     Int
+  content      String
+  dateCreated  DateTime     @default(now())
+  dateModified DateTime     @updatedAt
+  likeCount    Int          @default(0)
+
+  comments Comment[]
+  options  PollOption[]
+}
+
+model Comment {
+  id           Int          @id @default(autoincrement())
+  target       BulletinItem @relation(fields: [targetId], references: [id], onDelete: Cascade)
+  targetId     Int
+  author       User         @relation(fields: [authorId], references: [id], onDelete: Cascade)
+  authorId     Int
+  content      String
+  dateCreated  DateTime     @default(now())
+  dateModified DateTime     @updatedAt
+}
+
+model PollOption {
+  id        Int          @id @default(autoincrement())
+  poll      BulletinItem @relation(fields: [pollId], references: [id], onDelete: Cascade)
+  pollId    Int
+  content   String
+  voteCount Int          @default(0)
 }
 
 enum Role {
@@ -110,3 +146,7 @@ enum PropType {
   skinTone
 }
 
+enum BulletinType {
+  post
+  poll
+}

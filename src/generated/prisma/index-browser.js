@@ -176,6 +176,32 @@ exports.Prisma.AvatarPropScalarFieldEnum = {
   cost: 'cost'
 };
 
+exports.Prisma.BulletinItemScalarFieldEnum = {
+  id: 'id',
+  type: 'type',
+  authorId: 'authorId',
+  content: 'content',
+  dateCreated: 'dateCreated',
+  dateModified: 'dateModified',
+  likeCount: 'likeCount'
+};
+
+exports.Prisma.CommentScalarFieldEnum = {
+  id: 'id',
+  targetId: 'targetId',
+  authorId: 'authorId',
+  content: 'content',
+  dateCreated: 'dateCreated',
+  dateModified: 'dateModified'
+};
+
+exports.Prisma.PollOptionScalarFieldEnum = {
+  id: 'id',
+  pollId: 'pollId',
+  content: 'content',
+  voteCount: 'voteCount'
+};
+
 exports.Prisma.SortOrder = {
   asc: 'asc',
   desc: 'desc'
@@ -204,13 +230,21 @@ exports.PropType = exports.$Enums.PropType = {
   skinTone: 'skinTone'
 };
 
+exports.BulletinType = exports.$Enums.BulletinType = {
+  post: 'post',
+  poll: 'poll'
+};
+
 exports.Prisma.ModelName = {
   User: 'User',
   Household: 'Household',
   Chore: 'Chore',
   Avatar: 'Avatar',
   UserAvatarProps: 'UserAvatarProps',
-  AvatarProp: 'AvatarProp'
+  AvatarProp: 'AvatarProp',
+  BulletinItem: 'BulletinItem',
+  Comment: 'Comment',
+  PollOption: 'PollOption'
 };
 
 /**

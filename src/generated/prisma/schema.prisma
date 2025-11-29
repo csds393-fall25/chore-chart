@@ -28,6 +28,8 @@ model User {
   assignedChores  Chore[] // chores assigned to this user
   avatar          Avatar? // one-to-one Avatar.owner <-> User.avatar
   userAvatarProps UserAvatarProps[] // join table entries for user's owned props
+  BulletinItem    BulletinItem[]
+  Comment         Comment[]
 }
 
 model Household {
@@ -97,6 +99,39 @@ model AvatarProp {
   userAvatarProps     UserAvatarProps[]
 }
 
+model BulletinItem {
+  id           Int          @id @default(autoincrement())
+  type         BulletinType
+  author       User         @relation(fields: [authorId], references: [id], onDelete: Cascade)
+  authorId     Int
+  content      String
+  dateCreated  DateTime     @default(now())
+  dateModified DateTime     @updatedAt
+  likeCount    Int          @default(0)
+
+  comments Comment[]
+  options  PollOption[]
+}
+
+model Comment {
+  id           Int          @id @default(autoincrement())
+  target       BulletinItem @relation(fields: [targetId], references: [id], onDelete: Cascade)
+  targetId     Int
+  author       User         @relation(fields: [authorId], references: [id], onDelete: Cascade)
+  authorId     Int
+  content      String
+  dateCreated  DateTime     @default(now())
+  dateModified DateTime     @updatedAt
+}
+
+model PollOption {
+  id        Int          @id @default(autoincrement())
+  poll      BulletinItem @relation(fields: [pollId], references: [id], onDelete: Cascade)
+  pollId    Int
+  content   String
+  voteCount Int          @default(0)
+}
+
 enum Role {
   member
   leader
@@ -109,4 +144,9 @@ enum PropType {
   background
   handProp
   skinTone
+}
+
+enum BulletinType {
+  post
+  poll
 }
