@@ -251,6 +251,9 @@
       if (result == 513){
         console.error("Violate unique constraint on email")
         errorMessages.value.email = "There already exists an account for this email"
+        if (!isJoin.value){
+          FetchService.deleteHousehold(house.id)
+        }
       }
       else{
 
