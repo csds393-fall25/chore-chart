@@ -316,10 +316,10 @@
   import { useAppStore } from '@/stores/app';
   import { useRouter } from 'vue-router'
   import FetchService from '../FetchService.js'
+  import { useToast } from 'vue-toastification'
 
   const store = useAppStore()
-
-  const listMode = ref(true);
+  const toast = useToast()
   const errorMessages = ref({household: ""})
   const joinCode = ref()
   const showLastToLeaveDialog = ref(false)
@@ -360,20 +360,26 @@
     let lastHouseId = store.household.id
     if(!house){
       errorMessages.value.household = "Join code does not exist" 
+      toast.error("That join code does not exist")
     } else {
       store.household.id = house.id
       store.household.name = house.name
       store.household.joinCode = house.joinCode
       const result = await FetchService.leaveHousehold(store.user.id, house.id);
-      householdName.value = ""
-      store.household = await FetchService.fetchHousehold(house.id);
-      members.value = store.household.users.filter(user => user.role == 'member')
-      leaders.value = store.household.users.filter(user => user.role == 'leader')
-      showDialog.value = false
-      errorMessages.value.household= ""
-      if (lastFlag.value){
-        await FetchService.deleteHousehold(lastHouseId)
-        lastFlag.value = false
+      if(result) {
+        toast.success("You were able to join the household successfully.")
+        householdName.value = ""
+        store.household = await FetchService.fetchHousehold(house.id);
+        members.value = store.household.users.filter(user => user.role == 'member')
+        leaders.value = store.household.users.filter(user => user.role == 'leader')
+        showDialog.value = false
+        errorMessages.value.household= ""
+        if (lastFlag.value){
+          await FetchService.deleteHousehold(lastHouseId)
+          lastFlag.value = false
+        }
+      } else {
+        toast.error("Something went wrong. You were not able to leave your household.")
       }
     }
     methodComplete.value = true;
@@ -405,16 +411,21 @@
     store.household.joinCode = house.joinCode
     joinCode.value = house.joinCode
     const result = await FetchService.leaveHousehold(store.user.id, house.id);
-    householdName.value = ""
-    store.household = await FetchService.fetchHousehold(house.id);
+    if(result) {
+      toast.success("You successfully created a new household.")
+      householdName.value = ""
+      store.household = await FetchService.fetchHousehold(house.id);
 
-    members.value = store.household.users.filter((user) => user.role == 'member')
-    leaders.value = store.household.users.filter((user) => user.role == 'leader')
-    showDialog.value = false
-    errorMessages.value.household = ""
-    if (lastFlag.value){
-      await FetchService.deleteHousehold(lastHouseId)
-      lastFlag.value = false
+      members.value = store.household.users.filter((user) => user.role == 'member')
+      leaders.value = store.household.users.filter((user) => user.role == 'leader')
+      showDialog.value = false
+      errorMessages.value.household = ""
+      if (lastFlag.value){
+        await FetchService.deleteHousehold(lastHouseId)
+        lastFlag.value = false
+      }
+    } else {
+      toast.error("Something went wrong. You were unable to leave your household")
     }
     methodComplete.value = true;
   }
