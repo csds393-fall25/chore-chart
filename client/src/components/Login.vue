@@ -71,7 +71,10 @@
   import FetchService from "../FetchService.js"
   import { useAppStore } from '@/stores/app.js';
 
+  import { useRouter } from 'vue-router'
 
+
+  const router = useRouter()
   const username = ref();
   const password = ref("");
   const isIncorrect = ref(false);
@@ -98,6 +101,7 @@
       isIncorrect.value = false;
       store.user = (result.user)
       store.household = await FetchService.fetchHousehold(store.user.householdId);
+      router.push({name: 'home' })
       //Needs to occur last so that all other data is retrieved before the page changes
       store.loggedIn = true;
     } catch (error) {
