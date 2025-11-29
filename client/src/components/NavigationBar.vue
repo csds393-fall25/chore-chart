@@ -63,6 +63,8 @@
         </template>
       </v-app-bar>
       <v-navigation-drawer
+        data-testid="nav-drawer"
+        id="nav-drawer"
         v-model="drawer"
         temporary
         color="primary"
