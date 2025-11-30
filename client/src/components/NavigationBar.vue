@@ -36,6 +36,7 @@
       <v-list bg-color="primary" width="100%">
         <v-list-item title = "Leaderboard" value = "leaderboard" to="/leaderboard"></v-list-item>
         <v-list-item title = "Store" value = "store" to="/store"></v-list-item>
+        <v-list-item title = "Bulletin" value = "bulletin" to="/bulletin"></v-list-item>
       </v-list>
     </v-container>
   </v-sheet>
