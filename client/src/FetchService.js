@@ -548,7 +548,6 @@ class FetchService {
 
        static async fetchPosts() {
         try {
-            console.log("HI")
             const response = await fetch(`${baseURL}/bulletinItem`);
             if(!response.ok) {
                 throw new Error(`Response status: ${response.status}`);
@@ -561,13 +560,39 @@ class FetchService {
     }
 
     static async deletePost(postId) {
-        console.log(postId)
         
         try {
             const response = await fetch(`${baseURL}/bulletinItem/${postId}`, {
                 method: "DELETE"
             });
 
+            if(!response.ok) {
+                throw new Error(`Response status: ${response.status}`);
+            }
+            const result = await response.json();
+            return result;
+        } catch (error) {
+            console.error(error.message);
+        }
+    }
+
+    static async likePost(postId, newLike) {
+        try {
+            var stringified;
+            let temp = {};
+
+            temp.likeCount=newLike
+
+          stringified = JSON.stringify(temp)
+            console.log(postId)
+            console.log("in HERE")
+            const response = await fetch(`${baseURL}/bulletinItem/${postId}`, {
+                method: "PUT",
+                headers: {
+                    "Content-Type": "application/json",
+                },
+                body: stringified
+            });
             if(!response.ok) {
                 throw new Error(`Response status: ${response.status}`);
             }

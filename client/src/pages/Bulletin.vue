@@ -17,15 +17,10 @@
               {{ item.content }}
             </v-card-text>
             <v-card-actions>
-                <v-btn id="delete" @click="deletePost(item.id)" text="Like">
+                <v-btn id="like" @click="likePost(item.id, item.likeCount)" :text=" item.likeCount + ' Likes'">
             </v-btn>
              <v-btn  v-if="item.authorId == store.user.id" id="cancel" @click="deletePost(item.id)" text="Delete">
             </v-btn>
-
->
-
-            
-       
             </v-card-actions>
           </v-card>
         </v-col>
@@ -41,7 +36,6 @@
         <v-card-item>
           <v-card-title>Create Post</v-card-title>
         </v-card-item>
-        <v-text-field v-model="title" label = "Post title"></v-text-field>
         <v-text-field v-model="text" label = "Post content"> </v-text-field>
         <v-card-actions>
             <v-btn
@@ -152,7 +146,16 @@
     await FetchService.deletePost(id)
     let result = await FetchService.fetchPosts()
     store.bulletin.items = result
+    itemsList.value = store.bulletin.items
 
+
+  }
+
+  async function likePost(id, likes){
+    console.log(id)
+    await FetchService.likePost(id, (likes+1) )
+    let result = await FetchService.fetchPosts()
+    store.bulletin.items = result
     itemsList.value = store.bulletin.items
 
 
