@@ -166,47 +166,48 @@ test("PVT-1 Profile information is viewed successfully", async () => {
 })
 
 test("PDT-1 Profile is deleted", async () => {
-    const wrapper = mount(Profile, {
-        global: {
-  plugins: [
-    createTestingPinia({createSpy: vi.fn}),
-  [vuetify],
-  ],
-  stubs: {
-    VDialog: {
-      name: "VDialog",
-      template: '<div class="v-dialog-stub"><slot /></div>',
-      props: ['modelValue',
-      ]
+  const wrapper = mount(Profile, {
+    global: {
+      plugins: [
+        createTestingPinia({createSpy: vi.fn}),
+        [vuetify],
+      ],
+      stubs: {
+        VDialog: {
+          name: "VDialog",
+          template: '<div class="v-dialog-stub"><slot /></div>',
+          props: ['modelValue',
+          ]
+        }
+      }
     }
+  })
+  const store = useAppStore()
+  store.user.id = -1
+  wrapper.vm.displayedName = "Mollietest"
+  wrapper.vm.username = "validateProfile12@qq.com" 
+  wrapper.vm.password = "Mtest1234"
+  wrapper.vm.maxDifficulty = 3
+  wrapper.vm.estimatedTime = 27
+  wrapper.vm.repeatedPassword = "Mtest1234"
+  wrapper.vm.isJoin = false
+
+  const user = {
+    name:  wrapper.vm.displayedName,
+    email:    wrapper.vm.username,
+    password_hash: wrapper.vm.password,
+    householdId: 2,
+    totalPoints: 0,
+    difficulty: wrapper.vm.maxDifficulty,
+    maxChoreTime: wrapper.vm.estimatedTime,
   }
-}
-
-})
-    wrapper.vm.displayedName = "Mollietest"
-    wrapper.vm.username = "validateProfile12@qq.com" 
-    wrapper.vm.password = "Mtest1234"
-    wrapper.vm.maxDifficulty = 3
-    wrapper.vm.estimatedTime = 27
-    wrapper.vm.repeatedPassword = "Mtest1234"
-    wrapper.vm.isJoin = false
-
-      const user = {
-      name:  wrapper.vm.displayedName,
-      email:    wrapper.vm.username,
-      password_hash: wrapper.vm.password,
-      householdId: 2,
-      totalPoints: 0,
-      difficulty: wrapper.vm.maxDifficulty,
-      maxChoreTime: wrapper.vm.estimatedTime,
-    }
-    await nextTick()
-    await wrapper.find("#deleteButton").trigger("click")
-    expect(wrapper.vm.showDialog).toBe(true);
-    await nextTick()
-    const spy = vi.spyOn(wrapper.vm, "deleteProfile");
-    await wrapper.find("#delete").trigger("click")
-    expect(spy).toHaveBeenCalled();
+  await nextTick()
+  await wrapper.find("#deleteButton").trigger("click")
+  expect(wrapper.vm.showDialog).toBe(true);
+  await nextTick()
+  const spy = vi.spyOn(wrapper.vm, "deleteProfile");
+  await wrapper.find("#delete").trigger("click")
+  expect(spy).toHaveBeenCalled();
 })
 
 test("PDT-1 delete user information", async () => {
