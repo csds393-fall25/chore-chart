@@ -98,9 +98,10 @@ const select = wrapper.findComponent('[data-testid="profileDialog"]');
     await select.setValue("true")
     await nextTick()
     expect(wrapper.vm.profileDialog).toBe("true")
+    
 })
 
-test("profile() works as expected", async () => {
+test("profile() works as expected with disabled", async () => {
     const wrapper = mount(Avatar, {
         global: {
             plugins: [
@@ -155,6 +156,7 @@ test("profile() works as expected", async () => {
     wrapper.vm.profile()
     await nextTick()
     expect(wrapper.vm.profileDialog).toBe(true)
+    expect(wrapper.vm.name).toBe("test")
    
    
     

@@ -173,7 +173,7 @@
             >
             
               <v-btn
-               v-if="store.user.role == 'leader' && chore.id != store.user.id"
+               v-if="store.user.role == 'leader' && leader.id != store.user.id"
                 block
                 color="secondary"
                 id="makeMember"
@@ -247,9 +247,9 @@
           <template
             v-slot:prepend
           >
-            <v-avatar color="primary">
-              <span class="text-h5">{{ userInitials(member.name) }}</span>
-            </v-avatar>
+            <div style="width: 40px" class="mr-3">
+                <Avatar :userId="member.id"/>
+              </div>
           </template>
 
             <template v-slot:default>

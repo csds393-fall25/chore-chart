@@ -1,20 +1,31 @@
 <template class="mb-0 pb-0">
-  <div class="w-100 mb-0 pb-0 position-relative">
-    <img id = "background" @click.prevent="profile" :to="route"  v-if="avatar.background" :src="avatar.background.url" class="top-0 left-0 w-100 pb-0 mb-0"/>
-    <img @click.prevent="profile" :to="route"  v-if="avatar.skinTone" :src="avatar.skinTone.url" class="position-absolute top-0 left-0 w-100"/>
-    <img @click.prevent="profile" :to="route"  v-if="avatar.hair" :src="avatar.hair.url" class="position-absolute top-0 left-0 w-100"/>
-    <img @click.prevent="profile" :to="route"  v-if="avatar.hat" :src="avatar.hat.url" class="position-absolute top-0 left-0 w-100"/>
-    <img @click.prevent="profile" :to="route"  v-if="avatar.shirt" :src="avatar.shirt.url" class="position-absolute top-0 left-0 w-100"/>
-    <img @click.prevent=" profile" :to="route" v-if="avatar.handProp" :src="avatar.handProp.url" class="position-absolute top-0 left-0 w-100"/>
-    <img @click.prevent=" profile" :to="route"  src="../assets/BorderCircle.png" class="position-absolute top-0 left-0 w-100"/>
+  <div  @click="profile($event)" class="w-100 mb-0 pb-0 position-relative">
+    <img id = "background" v-if="avatar.background" :src="avatar.background.url" class="top-0 left-0 w-100 pb-0 mb-0"/>
+    <img v-if="avatar.skinTone" :src="avatar.skinTone.url" class="position-absolute top-0 left-0 w-100"/>
+    <img v-if="avatar.hair" :src="avatar.hair.url" class="position-absolute top-0 left-0 w-100"/>
+    <img v-if="avatar.hat" :src="avatar.hat.url" class="position-absolute top-0 left-0 w-100"/>
+    <img v-if="avatar.shirt" :src="avatar.shirt.url" class="position-absolute top-0 left-0 w-100"/>
+    <img v-if="avatar.handProp" :src="avatar.handProp.url" class="position-absolute top-0 left-0 w-100"/>
+    <img src="../assets/BorderCircle.png" class="position-absolute top-0 left-0 w-100"/>
   
   </div>
 
 
      <v-dialog data-testid="profileDialog" v-model="profileDialog" width="500">
-        <v-card class="text-center" :title="name + '\'s profile'" max-width="400">
-          <v-row>
-          <v-col class="ml-1 ">
+        <v-card :title="name + '\'s profile'" max-width="400">
+          
+        <div class="w-50 mb-0 pb-0 ml-auto mr-auto position-relative">
+    <img id = "background" v-if="avatar.background" :src="avatar.background.url" class="top-0 left-0 w-100 pb-0 mb-0"/>
+    <img v-if="avatar.skinTone" :src="avatar.skinTone.url" class="position-absolute top-0 left-0 w-100"/>
+    <img v-if="avatar.hair" :src="avatar.hair.url" class="position-absolute top-0 left-0 w-100"/>
+    <img v-if="avatar.hat" :src="avatar.hat.url" class="position-absolute top-0 left-0 w-100"/>
+    <img v-if="avatar.shirt" :src="avatar.shirt.url" class="position-absolute top-0 left-0 w-100"/>
+    <img v-if="avatar.handProp" :src="avatar.handProp.url" class="position-absolute top-0 left-0 w-100"/>
+    <img src="../assets/BorderCircle.png" class="position-absolute top-0 left-0 w-100"/>
+  
+  </div>
+          <v-row class = "pa-2">
+          <v-col class="ml-2  ">
           <p> Role: {{ role }}   </p>
           <p>Total points: {{totalPoints}} pts</p>
           </v-col>
@@ -24,7 +35,7 @@
           </v-col>
           </v-row>
            <v-card-actions>
-             <v-btn id = "cancel" @click="cancel()" data-testid="cancelButton" > cancel
+             <v-btn variant="elevated" color= "error" @click="cancel()" data-testid="cancelButton" > Close
             </v-btn>
           </v-card-actions>
         </v-card>
@@ -129,8 +140,10 @@ onMounted(async () => {
   }
 })
 
-function profile(){
+function profile(event){
   if (!props.dis){
+    event.preventDefault()
+    event.stopPropagation()
     let currentUser = store.household.users.find((user)=> user.id==props.userId)
     if(currentUser) {
       profileDialog.value = true
