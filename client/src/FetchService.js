@@ -336,6 +336,8 @@ class FetchService {
         }
     }
 
+
+
     // Edit Chore
     static async editChore(choreId, chore) {
         try {
@@ -508,6 +510,65 @@ class FetchService {
                 })
             }); 
             if (!response.ok) {
+                throw new Error(`Response status: ${response.status}`);
+            }
+            const result = await response.json();
+            return result;
+        } catch (error) {
+            console.error(error.message);
+        }
+    }
+
+
+    // Create chore
+    static async createPost(post) {
+        try {
+            const response = await fetch(`${baseURL}/bulletinItem`, {
+                method: "POST",
+                headers: {
+                    "Content-Type": "application/json",
+                },
+                body: JSON.stringify({
+                    type: "post",
+                    authorId: post.authorId,
+                    content: post.content,
+                    likeCount: 0,
+                })
+            });
+
+            if(!response.ok) {
+                throw new Error(`Response status: ${response.status}`);
+            }
+            const result = await response.json();
+            return result;
+        } catch (error) {
+            console.error(error.message);
+        }
+    }
+
+       static async fetchPosts() {
+        try {
+            console.log("HI")
+            const response = await fetch(`${baseURL}/bulletinItem`);
+            if(!response.ok) {
+                throw new Error(`Response status: ${response.status}`);
+            }
+            const result = await response.json();
+            return result;
+        } catch (error) {
+            console.error(error.message);
+        }
+    }
+
+    static async deletePost(postId) {
+        console.log(postId)
+        
+        try {
+            const response = await fetch(`${baseURL}/bulletinItem/${postId}`, {
+                method: "DELETE"
+            });
+
+            if(!response.ok) {
                 throw new Error(`Response status: ${response.status}`);
             }
             const result = await response.json();

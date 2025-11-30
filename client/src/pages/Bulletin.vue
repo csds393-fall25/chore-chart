@@ -13,16 +13,13 @@
           :key="item.id"
         >
           <v-card>
-            <v-card-title class="pr-0 pl-0 w-100 text-center">
-                {{item.title}}
-            </v-card-title>
             <v-card-text class="text-center text-body-1 mb-0 pb-0">
-              {{ item.text }}
+              {{ item.content }}
             </v-card-text>
             <v-card-actions>
-                <v-btn id="delete" @click="deleteProfile(store.user.id)" text="Like">
+                <v-btn id="delete" @click="deletePost(item.id)" text="Like">
             </v-btn>
-             <v-btn  v-if="item.author == store.user.id" id="cancel" @click="showDialog = false" text="Delete">
+             <v-btn  v-if="item.authorId == store.user.id" id="cancel" @click="deletePost(item.id)" text="Delete">
             </v-btn>
 
 >
@@ -85,10 +82,13 @@
 
   onMounted(async () => {
     //get bulletin board items
-    console.log(store.bulletin.items)
     
+  
+    console.log("HERE")
+    let result = await FetchService.fetchPosts()
+    console.log(result)
+    store.bulletin.items = result
     itemsList.value = store.bulletin.items
-    console.log(store.bulletin.items[0].text)
     
   })
 
@@ -132,15 +132,30 @@
 
   }
 
-  function post(){
+  async function post(){
     let item = {
-        title: title.value,
-        text: text.value,
-        author: store.user.id
+        content: text.value,
+      
+        authorId: store.user.id
     }
-    store.bulletin.items.push(item)
+    await FetchService.createPost(item)
+    let result = await FetchService.fetchPosts()
+    store.bulletin.items = result
     itemsList.value = store.bulletin.items
     showDialog.value = false
+
+    
+  }
+
+  async function deletePost(id){
+    console.log(id)
+    await FetchService.deletePost(id)
+    let result = await FetchService.fetchPosts()
+    store.bulletin.items = result
+
+    itemsList.value = store.bulletin.items
+
+
   }
 
  
