@@ -110,9 +110,11 @@
   import { onMounted, ref } from 'vue'
   import { useAppStore } from '@/stores/app'
   import FetchService from '../FetchService.js'
+  import { useToast } from 'vue-toastification'
   import Avatar from '../components/Avatar.vue'
 
   const store = useAppStore()
+  const toast = useToast()
 
   const ownedProps = ref([])
   const propsList = ref([])
@@ -206,9 +208,13 @@
     if(store.user.currentPoints >= prop.cost) {
       let result = await FetchService.buyProp(store.user.id, prop.id)
 
-      ownedProps.value.push(prop.id)
-      store.user.currentPoints = result.currentPoints
-
+      if(result) {
+        ownedProps.value.push(prop.id)
+        store.user.currentPoints = result.currentPoints
+        toast.success("The prop was bought successfully")
+      } else {
+        toast.error("Something went wrong. The prop was unable to be bought")
+      }
       return true;
     } else {
       tooExpensiveDialogOpen.value = true;
@@ -219,15 +225,19 @@
   async function equipProp(prop) {
     let result = await FetchService.equipProp(store.user.id, prop)
 
-    usersAvatar.value[prop.type] = {
-      url: prop.url,
-      id: prop.id
-    };
-    store.avatars.find((avatar) => avatar.userId == store.user.id)[prop.type] = {
-      url: prop.url,
-      id: prop.id,
+    if(result) {
+      toast.success("The prop was successfully equipped")
+      usersAvatar.value[prop.type] = {
+        url: prop.url,
+        id: prop.id
+      };
+      store.avatars.find((avatar) => avatar.userId == store.user.id)[prop.type] = {
+        url: prop.url,
+        id: prop.id,
+      }
+    } else {
+      toast.error("Something went wrong. The prop was not successfully equipped")
     }
-
     return true;
   }
 
