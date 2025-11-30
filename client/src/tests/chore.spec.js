@@ -877,7 +877,7 @@ test("CCT-2 and CET-2 - validateChore returns correctly for missing name", () =>
         description: "test description",
         difficulty: 10,
         location: "Kitchen",
-        estimatedTime: "20",
+        estimatedTime: 20,
         dueDate: '2025-12-25',
         repeat: false,
         householdId: 1,
@@ -957,7 +957,7 @@ test("CCT-3 and CET-3 - validateChore returns correctly for missing difficulty",
         description: "test description",
         difficulty: null,
         location: "Kitchen",
-        estimatedTime: "20",
+        estimatedTime: 20,
         dueDate: '2025-12-25',
         repeat: false,
         householdId: 1,
@@ -1037,7 +1037,7 @@ test("CCT-4 and CET-4 - validateChore returns correctly for difficulty not betwe
         description: "test description",
         difficulty: -1,
         location: "Kitchen",
-        estimatedTime: "20",
+        estimatedTime: 20,
         dueDate: '2025-12-25',
         repeat: false,
         householdId: 1,
@@ -1117,7 +1117,7 @@ test("CCT-7 and CET-7 - validateChore returns correctly for missing location", (
         description: "test description",
         difficulty: 10,
         location: "",
-        estimatedTime: "20",
+        estimatedTime: 20,
         dueDate: '2025-12-25',
         repeat: false,
         householdId: 1,
@@ -1357,7 +1357,7 @@ test("CCT-8 and CET-8 - validateChore returns correctly for missing due date", (
         description: "test description",
         difficulty: 10,
         location: "Kitchen",
-        estimatedTime: "20",
+        estimatedTime: 20,
         dueDate: '',
         repeat: false,
         householdId: 1,
@@ -1437,7 +1437,7 @@ test("CCT-9 and CET-9 - validateChore returns correctly for due date before curr
         description: "test description",
         difficulty: 10,
         location: "Kitchen",
-        estimatedTime: "20",
+        estimatedTime: 20,
         dueDate: '2025-10-10',
         repeat: false,
         householdId: 1,
@@ -1517,7 +1517,7 @@ test("CCT-1 and CET-1 - validateChore returns correctly for correct chore", () =
         description: "test description",
         difficulty: 10,
         location: "Kitchen",
-        estimatedTime: "20",
+        estimatedTime: 20,
         dueDate: '2025-12-30',
         repeat: false,
         householdId: 1,
@@ -1597,7 +1597,7 @@ test("CCT-14 and CET-16 - error messages are removed after information is correc
         description: "test description",
         difficulty: null,
         location: "",
-        estimatedTime: "-1",
+        estimatedTime: -1,
         dueDate: '',
         repeat: false,
         householdId: 1,
@@ -1622,7 +1622,7 @@ test("CCT-14 and CET-16 - error messages are removed after information is correc
         description: "test description",
         difficulty: 3,
         location: "Kitchen",
-        estimatedTime: "20",
+        estimatedTime: 20,
         dueDate: '2035-12-30',
         repeat: false,
         householdId: 1,
@@ -1714,7 +1714,7 @@ test("CCT-1 - createChore returns correctly", async () => {
         description: "new test description",
         difficulty: 7,
         location: "Basement",
-        estimatedTime: "20",
+        estimatedTime: 20,
         dueDate: '2025-12-30',
         repeat: false,
         householdId: 1,
@@ -3396,8 +3396,8 @@ test("NOFT - test v-model chore.estimatedTime", async () => {
 
     const store = useAppStore()
 
-    await wrapper.find("#estimatedTime").setValue('120');
-    expect(wrapper.vm.chore.estimatedTime).toBe('120');
+    await wrapper.find("#estimatedTime").setValue(120);
+    expect(wrapper.vm.chore.estimatedTime).toBe(120);
 })
 
 test("NOFT - test v-model chore.dueDate", async () => {
