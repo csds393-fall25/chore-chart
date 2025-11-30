@@ -129,14 +129,18 @@
   async function post(){
     let item = {
         content: text.value,
-      
         authorId: store.user.id
     }
-    await FetchService.createPost(item)
+    console.log(item)
+    let post = await FetchService.createPost(item)
+    console.log(post)
     let result = await FetchService.fetchPosts()
+    console.log(result)
     store.bulletin.items = result
     itemsList.value = store.bulletin.items
     showDialog.value = false
+    text.value = ""
+    return post
 
     
   }

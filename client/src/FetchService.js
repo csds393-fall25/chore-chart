@@ -522,6 +522,7 @@ class FetchService {
 
     // Create chore
     static async createPost(post) {
+        console.log(post)
         try {
             const response = await fetch(`${baseURL}/bulletinItem`, {
                 method: "POST",
@@ -537,6 +538,7 @@ class FetchService {
             });
 
             if(!response.ok) {
+                console.log(response)
                 throw new Error(`Response status: ${response.status}`);
             }
             const result = await response.json();

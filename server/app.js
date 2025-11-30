@@ -561,6 +561,7 @@ app.put('/api/prop/equip', async (req, res) => {
 
 // add post
 app.post('/api/bulletinItem', async (req, res) => {
+  console.log(req)
   const {type, authorId, content, likeCount} = req.body;
   var post;
     post = await prisma.bulletinItem.create({data: {
