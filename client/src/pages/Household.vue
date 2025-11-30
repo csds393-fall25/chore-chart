@@ -2,313 +2,291 @@
   <v-sheet color="navy" class="fill-height pr-0">
     <v-container>
       <v-row style = "margin-bottom: 2%;">
-        <v-col cols="8"  class="pb-0 pt-0">
+        <v-col cols="12" md="8" class="pb-0 pt-0">
           <div class="text-subtitle-1">{{ store.household.name }} </div>
           <div class="text-subtitle-1">Join Code: {{ store.household.joinCode }} </div>
         </v-col>
       
-        <v-col cols="4" sm="6" md="2" offset-sm="6" offset-md="1" class="pr-0 pl-0 pt-0 mb-1">
-          <!-- <div class="pr-0 mr-0"> -->
-           
-           
-            <v-btn
-              color="error"
-              class="mr-0 mt-1"
-              id = "leave"
-              @click="leaveHousehold()"
-              block
-            >
-              Leave
-            </v-btn>
-            
-            <v-btn
-              v-if="store.user.role == 'leader'"
-              color="secondary"
-              id="edit"
-              class="mr-0 mt-1"
-              @click="editHousehold()"
-              block
-            >
-              Edit
-            </v-btn>
-            
-
-
-            <v-dialog data-testid="dialog" v-model="showDialog" width="500">
-        <v-card title="Join or Create a new household" max-width="400">
-          <v-text-field class = "ml-2 mr-2" data-testid="houseName" :error-messages="errorMessages.household"  v-model = "householdName"  label =  "Enter a new name or an existing join code"></v-text-field>
-          <v-card-actions>
-             <v-btn id = "cancel" @click="cancel()" data-testid="cancelButton" > cancel
-            </v-btn>
-            <v-btn id = "newHouse" @click="createNewHousehold()" > Create New
-            </v-btn>
-            <v-btn id = "existingHouse" @click="joinNewHousehold()" > Join Existing
-            </v-btn>
-          </v-card-actions>
-        </v-card>
-      </v-dialog>
-      <v-dialog data-testid="lastToLeaveDialog" v-model="showLastToLeaveDialog" width="500">
-        <v-card max-width="500" color="error">
-          <v-card-title>
-            <p>You are the last member in your household!</p>
-          </v-card-title>
-          <v-card-text>
-            <p>If you leave, your household will be deleted</p>
-          </v-card-text>  
-          <v-card-actions>
-             <v-btn id = "cancelLast" @click="cancel()" data-testid="cancelButton" > cancel
-            </v-btn>
-            <v-btn id = "newHouse" @click="switchDialogs" > Okay
-            </v-btn>
-          </v-card-actions>
-        </v-card>
-      </v-dialog>
+        <v-col cols="12" sm="6" md="4" offset-sm="6" offset-md="0" class="pr-0 pl-0 pt-0 mb-1">
+          <v-btn
+            color="error"
+            class="mr-0 mt-1"
+            id = "leave"
+            @click="leaveHousehold()"
+            block
+          >
+            Leave
+          </v-btn>
+          
+          <v-btn
+            v-if="store.user.role == 'leader'"
+            color="secondary"
+            id="edit"
+            class="mr-0 mt-1"
+            @click="editHousehold()"
+            block
+          >
+            Edit
+          </v-btn>
+          <v-dialog data-testid="dialog" v-model="showDialog" width="500">
+            <v-card title="Join or Create a new household" max-width="400">
+              <v-text-field class = "ml-2 mr-2" data-testid="houseName" :error-messages="errorMessages.household"  v-model = "householdName"  label =  "Enter a new name or an existing join code"></v-text-field>
+              <v-card-actions>
+                <v-btn id = "cancel" @click="cancel()" data-testid="cancelButton" > cancel
+                </v-btn>
+                <v-btn id = "newHouse" @click="createNewHousehold()" > Create New
+                </v-btn>
+                <v-btn id = "existingHouse" @click="joinNewHousehold()" > Join Existing
+                </v-btn>
+              </v-card-actions>
+            </v-card>
+          </v-dialog>
+          <v-dialog data-testid="lastToLeaveDialog" v-model="showLastToLeaveDialog" width="500">
+            <v-card max-width="500" color="error">
+              <v-card-title>
+                <p>You are the last member in your household!</p>
+              </v-card-title>
+              <v-card-text>
+                <p>If you leave, your household will be deleted</p>
+              </v-card-text>  
+              <v-card-actions>
+                <v-btn id = "cancelLast" @click="cancel()" data-testid="cancelButton" > cancel
+                </v-btn>
+                <v-btn id = "newHouse" @click="switchDialogs" > Okay
+                </v-btn>
+              </v-card-actions>
+            </v-card>
+          </v-dialog>
           <v-dialog data-testid="confirmation" v-model="showConfirmation" width="500">
-        <v-card title="You are changing the following:" max-width="400">
-          <p>{} will become a {}</p>
-          <v-card-actions>
-             <v-btn id = "confirmationCancel" @click="cancel()" data-testid="cancelButton" > cancel
-            </v-btn>
-            <v-btn id = "changeRoles" @click="changeRoles()" > Proceed
-            </v-btn>
-          </v-card-actions>
-        </v-card>
-      </v-dialog>
+            <v-card title="You are changing the following:" max-width="400">
+              <p>{} will become a {}</p>
+              <v-card-actions>
+                <v-btn id = "confirmationCancel" @click="cancel()" data-testid="cancelButton" > cancel
+                </v-btn>
+                <v-btn id = "changeRoles" @click="changeRoles()" > Proceed
+                </v-btn>
+              </v-card-actions>
+            </v-card>
+          </v-dialog>
 
-         <v-dialog data-testid="ShowEditdialog" v-model="showEditDialog" width="500">
-        <v-card title="Edit Household" max-width="400">
-          <v-text-field class="ml-2 mr-2" data-testid="houseEditName" :error-messages="errorMessages.household"  v-model = "householdName"  label =  "Enter a household name"></v-text-field>
-          <v-card-actions>
-             <v-btn id = "cancelEdit" @click="cancel()" data-testid="cancelButton" > cancel
-            </v-btn>
-            <v-btn id = "editHouse" @click="editHouseholdData(store.household.id)" > Change Name
-            </v-btn>
-          </v-card-actions>
-        </v-card>
-      </v-dialog>
+          <v-dialog data-testid="ShowEditdialog" v-model="showEditDialog" width="500">
+            <v-card title="Edit Household" max-width="400">
+              <v-text-field class="ml-2 mr-2" data-testid="houseEditName" :error-messages="errorMessages.household"  v-model = "householdName"  label =  "Enter a household name"></v-text-field>
+              <v-card-actions>
+                <v-btn id = "cancelEdit" @click="cancel()" data-testid="cancelButton" > cancel
+                </v-btn>
+                <v-btn id = "editHouse" @click="editHouseholdData(store.household.id)" > Change Name
+                </v-btn>
+              </v-card-actions>
+            </v-card>
+          </v-dialog>
 
-      <v-dialog data-testid="lastLeaderDialog" v-model="showLastLeaderDialog" width="500">
-        <v-card title="You are the last leader" max-width="400">
-          <p>You must assign someone else a leader before you leave</p>
-           <v-card-actions>
-             <v-btn id = "lastLeaderCancel" @click="cancel()" data-testid="cancelButton" > cancel
-            </v-btn>
-          </v-card-actions>
-        </v-card>
-      </v-dialog>
-          <!-- </div> -->
+          <v-dialog data-testid="lastLeaderDialog" v-model="showLastLeaderDialog" width="500">
+            <v-card title="You are the last leader" max-width="400">
+              <p>You must assign someone else a leader before you leave</p>
+              <v-card-actions>
+                <v-btn id = "lastLeaderCancel" @click="cancel()" data-testid="cancelButton" > cancel
+                </v-btn>
+              </v-card-actions>
+            </v-card>
+          </v-dialog>
         </v-col>
       </v-row>
-
-            
- <div class="bg-primary text-center text-h5 pb-2 pt-2">Leaders</div>
-     
- <v-list 
-        class="pb-0 pt-0"
-        :key = "showDialog"
-      
-      >
-      <v-list-item
-          class="border-b-thin h-25 bg-secondary "
-           variant="outlined"
-           
+      <div class="bg-primary text-center text-h5 pb-2 pt-2">Leaders</div>
+      <div class="overflow-x-auto">
+        <v-list 
+          class="pb-0 pt-0 list"
+          :key = "showDialog"
         >
-          <template
-            v-slot:prepend
+          <v-list-item
+            class="border-b-thin h-25 bg-secondary "
+            variant="outlined"
           >
-            <v-avatar></v-avatar>
-          </template>
-
-          <template v-slot:default>
-            <v-row>
-              <v-col cols="3">
-                Name
-              </v-col>
-              <v-col cols="2">
-                Difficulty
-              </v-col>
-              <v-col cols="3">
-                Max Chore Time
-              </v-col>
-              <v-col cols="4">
-                Points
-              </v-col>
-            </v-row>
-          </template>
-
-          <template
-            v-slot:append
-            min-width="8em"
-          >
-            <div
-              class="list-append"
+            <template
+              v-slot:prepend
             >
-             </div>
-          </template>
-        </v-list-item>
-        <v-list-item
-          v-for="(chore) in leaders"
-          :key="chore.id"
-          class="border-b-thin "
-           variant="outlined"
-        >
-          <template
-            v-slot:prepend
-          >
-            <v-avatar color="primary">
-              <span class="text-h5">{{ userInitials(chore.name) }}</span>
-            </v-avatar>
-          </template>
+              <v-avatar></v-avatar>
+            </template>
 
-          <template v-slot:default>
-            <v-row>
-              <v-col cols="3">
-                {{ chore.name }}
-              </v-col>
-              <v-col cols="2">
-                {{ chore.difficulty }}
-              </v-col>
-              <v-col cols="3">
-                {{ chore.maxChoreTime }} {{chore.maxChoreTime == 1 ? 'min' : 'mins'}}
-              </v-col>
-              <v-col cols="4">
-                {{ chore.totalPoints}} pts
-              </v-col>
-            </v-row>
-          </template>
+            <template v-slot:default>
+              <v-row>
+                <v-col cols="12" sm="4" md="3">
+                  Name
+                </v-col>
+                <v-col cols="0" sm="3" md="2" class="d-none d-sm-block">
+                  Difficulty
+                </v-col>
+                <v-col cols="0" sm="5" md="3" class="d-none d-sm-block">
+                  Max Chore Time
+                </v-col>
+                <v-col cols="0" md="4" class="d-none d-md-block">
+                  Points
+                </v-col>
+              </v-row>
+            </template>
 
-          <template
-            v-slot:append
-          >
-            <div
-              class="list-append"
+            <template
+              v-slot:append
             >
-            
-              <v-btn
-               v-if="store.user.role == 'leader' && chore.id != store.user.id"
-                block
-                color="secondary"
-                id="makeMember"
-                density="compact"
-                class="mt-1 mb-1"
-                @click ="confirmation('member', chore.id)"
-                min-width="8em"
-                 
+              <div
+                class="list-append"
               >
-                Make Member
-              </v-btn>
-        
-            </div>
-          </template>
-        </v-list-item>
-
-
-
-        
-      </v-list >
- <div class="bg-primary text-center text-h5 pb-2 pt-2 mt-2">Members</div>
- 
- <v-list class = "pt-0 pb-0">
-
-  
-      <v-list-item
-          class="border-b-thin bg-secondary"
-           variant="outlined"
-           
-        >
-          <template
-            v-slot:prepend
+              </div>
+            </template>
+          </v-list-item>
+          <v-list-item
+            v-for="(chore) in leaders"
+            :key="chore.id"
+            class="border-b-thin "
+            variant="outlined"
           >
-            <v-avatar></v-avatar>
-          </template>
-
-          <template v-slot:default>
-            <v-row>
-              <v-col cols="3">
-                Name
-              </v-col>
-              <v-col cols="2">
-                Difficulty
-              </v-col>
-              <v-col cols="3">
-                Max Chore Time
-              </v-col>
-              <v-col cols="4">
-                Points
-              </v-col>
-            </v-row>
-          </template>
-
-          <template
-            v-slot:append
-            min-width="8em"
-          >
-            <div
-              class="list-append"
+            <template
+              v-slot:prepend
             >
-             </div>
-          </template>
-        </v-list-item>
-        
-        <v-list-item
-          v-for="(chore) in members"
-          :key="chore.id"
-          class="border-b-thin"
-           variant="outlined"
-        >
-          <template
-            v-slot:prepend
-          >
-            <v-avatar color="primary">
-              <span class="text-h5">{{ userInitials(chore.name) }}</span>
-            </v-avatar>
-          </template>
+              <v-avatar color="primary">
+                <span class="text-h5">{{ userInitials(chore.name) }}</span>
+              </v-avatar>
+            </template>
 
-          <template v-slot:default>
-            <v-row>
-              <v-col cols="3">
-                {{ chore.name }}
-              </v-col>
-              <v-col cols="2">
-                {{ chore.difficulty }}
-              </v-col>
-              <v-col cols="3">
-                {{ chore.maxChoreTime }} {{chore.maxChoreTime == 1 ? 'min' : 'mins'}}
-              </v-col>
-              <v-col cols="4">
-                {{ chore.totalPoints}} pts
-              </v-col>
-            </v-row>
-          </template>
+            <template v-slot:default>
+              <v-row>
+                <v-col cols="12" sm="4" md="3">
+                  {{ chore.name }}
+                </v-col>
+                <v-col cols="0" sm="3" md="2" class="d-none d-sm-block">
+                  {{ chore.difficulty }}
+                </v-col>
+                <v-col cols="0" sm="5" md="3" class="d-none d-sm-block">
+                  {{ chore.maxChoreTime }} {{chore.maxChoreTime == 1 ? 'min' : 'mins'}}
+                </v-col>
+                <v-col cols="0" md="4" class="d-none d-md-block">
+                  {{ chore.totalPoints}} pts
+                </v-col>
+              </v-row>
+            </template>
 
-          <template
-            v-slot:append
-          >
-            <div
-              class="list-append"
+            <template
+              v-slot:append
             >
-
-            
-              <v-btn
-               v-if="store.user.role == 'leader' && chore.id != store.user.id"
-                block
-                id="makeLeader"
-                color="secondary"
-                density="compact"
-                class="mt-1 mb-1"
-                @click = "confirmation('leader', chore.id)"
-                min-width="8em"
-                 
+              <div
+                class="list-append"
               >
-                Make Leader
-              </v-btn>
-             
-             </div>
-          </template>
-        </v-list-item>
-      </v-list>
+              
+                <v-btn
+                v-if="store.user.role == 'leader' && chore.id != store.user.id"
+                  block
+                  color="secondary"
+                  id="makeMember"
+                  density="compact"
+                  class="mt-1 mb-1"
+                  @click ="confirmation('member', chore.id)"
+                >
+                  Make Member
+                </v-btn>
+          
+              </div>
+            </template>
+          </v-list-item> 
+        </v-list>
+      </div>
+
+      <div class="bg-primary text-center text-h5 pb-2 pt-2 mt-2">Members</div>
+      <div class="overflow-x-auto">
+        <v-list class = "pt-0 pb-0 list">
+          <v-list-item
+            class="border-b-thin bg-secondary"
+            variant="outlined"
+            
+          >
+            <template
+              v-slot:prepend
+            >
+              <v-avatar></v-avatar>
+            </template>
+
+            <template v-slot:default>
+              <v-row>
+                <v-col cols="12" sm="4" md="3">
+                  Name
+                </v-col>
+                <v-col cols="0" sm="3" md="2" class="d-none d-sm-block">
+                  Difficulty
+                </v-col>
+                <v-col cols="0" sm="5" md="3" class="d-none d-sm-block">
+                  Max Chore Time
+                </v-col>
+                <v-col cols="0" md="4" class="d-none d-md-block">
+                  Points
+                </v-col>
+              </v-row>
+            </template>
+
+            <template
+              v-slot:append
+            >
+              <div
+                class="list-append"
+              >
+              </div>
+            </template>
+          </v-list-item>
+          
+          <v-list-item
+            v-for="(chore) in members"
+            :key="chore.id"
+            class="border-b-thin"
+            variant="outlined"
+          >
+            <template
+              v-slot:prepend
+            >
+              <v-avatar color="primary">
+                <span class="text-h5">{{ userInitials(chore.name) }}</span>
+              </v-avatar>
+            </template>
+
+            <template v-slot:default>
+              <v-row>
+                <v-col cols="12" sm="4" md="3">
+                  {{ chore.name }}
+                </v-col>
+                <v-col cols="0" sm="3" md="2" class="d-none d-sm-block">
+                  {{ chore.difficulty }}
+                </v-col>
+                <v-col cols="0" sm="5" md="3" class="d-none d-sm-block">
+                  {{ chore.maxChoreTime }} {{chore.maxChoreTime == 1 ? 'min' : 'mins'}}
+                </v-col>
+                <v-col cols="0" md="4" class="d-none d-md-block">
+                  {{ chore.totalPoints}} pts
+                </v-col>
+              </v-row>
+            </template>
+
+            <template
+              v-slot:append
+            >
+              <div
+                class="list-append"
+              >       
+                <v-btn
+                v-if="store.user.role == 'leader' && chore.id != store.user.id"
+                  block
+                  id="makeLeader"
+                  color="secondary"
+                  density="compact"
+                  class="mt-1 mb-1"
+                  @click = "confirmation('leader', chore.id)"
+                >
+                  Make Leader
+                </v-btn>
+              
+              </div>
+            </template>
+          </v-list-item>
+        </v-list>
+      </div>
     </v-container>
-    </v-sheet>
+  </v-sheet>
 </template>
   
 <script setup>
@@ -316,10 +294,10 @@
   import { useAppStore } from '@/stores/app';
   import { useRouter } from 'vue-router'
   import FetchService from '../FetchService.js'
+  import { useToast } from 'vue-toastification'
 
   const store = useAppStore()
-
-  const listMode = ref(true);
+  const toast = useToast()
   const errorMessages = ref({household: ""})
   const joinCode = ref()
   const showLastToLeaveDialog = ref(false)
@@ -360,20 +338,26 @@
     let lastHouseId = store.household.id
     if(!house){
       errorMessages.value.household = "Join code does not exist" 
+      toast.error("That join code does not exist")
     } else {
       store.household.id = house.id
       store.household.name = house.name
       store.household.joinCode = house.joinCode
       const result = await FetchService.leaveHousehold(store.user.id, house.id);
-      householdName.value = ""
-      store.household = await FetchService.fetchHousehold(house.id);
-      members.value = store.household.users.filter(user => user.role == 'member')
-      leaders.value = store.household.users.filter(user => user.role == 'leader')
-      showDialog.value = false
-      errorMessages.value.household= ""
-      if (lastFlag.value){
-        await FetchService.deleteHousehold(lastHouseId)
-        lastFlag.value = false
+      if(result) {
+        toast.success("You were able to join the household successfully.")
+        householdName.value = ""
+        store.household = await FetchService.fetchHousehold(house.id);
+        members.value = store.household.users.filter(user => user.role == 'member')
+        leaders.value = store.household.users.filter(user => user.role == 'leader')
+        showDialog.value = false
+        errorMessages.value.household= ""
+        if (lastFlag.value){
+          await FetchService.deleteHousehold(lastHouseId)
+          lastFlag.value = false
+        }
+      } else {
+        toast.error("Something went wrong. You were not able to leave your household.")
       }
     }
     methodComplete.value = true;
@@ -405,16 +389,21 @@
     store.household.joinCode = house.joinCode
     joinCode.value = house.joinCode
     const result = await FetchService.leaveHousehold(store.user.id, house.id);
-    householdName.value = ""
-    store.household = await FetchService.fetchHousehold(house.id);
+    if(result) {
+      toast.success("You successfully created a new household.")
+      householdName.value = ""
+      store.household = await FetchService.fetchHousehold(house.id);
 
-    members.value = store.household.users.filter((user) => user.role == 'member')
-    leaders.value = store.household.users.filter((user) => user.role == 'leader')
-    showDialog.value = false
-    errorMessages.value.household = ""
-    if (lastFlag.value){
-      await FetchService.deleteHousehold(lastHouseId)
-      lastFlag.value = false
+      members.value = store.household.users.filter((user) => user.role == 'member')
+      leaders.value = store.household.users.filter((user) => user.role == 'leader')
+      showDialog.value = false
+      errorMessages.value.household = ""
+      if (lastFlag.value){
+        await FetchService.deleteHousehold(lastHouseId)
+        lastFlag.value = false
+      }
+    } else {
+      toast.error("Something went wrong. You were unable to leave your household")
     }
     methodComplete.value = true;
   }
@@ -475,6 +464,9 @@
 
 <style scoped>
   .list-append {
-    width: 100px;
+    width: 9em;
+  }
+  .list {
+    min-width: 25em;
   }
 </style>

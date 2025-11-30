@@ -127,7 +127,7 @@
         </v-list-item>
       </v-list>
       <v-row v-else class="mb-3">
-        <v-col cols="12" sm="6" md="4"
+        <v-col cols="12" md="6" lg="4"
           v-for="(chore) in choreList"
           :key="chore.id"
         >
@@ -392,9 +392,10 @@
   import { useRouter } from 'vue-router'
   import FetchService from '../FetchService.js'
   import Avatar from '../components/Avatar.vue'
+  import { useToast } from 'vue-toastification'
 
   const store = useAppStore()
-
+  const toast = useToast()
   const router = useRouter()
 
   const listMode = ref(true);
@@ -444,11 +445,14 @@
     const result = await FetchService.deleteChore(choreId)
     deleteDialogOpen.value = false
     deleteDialogChore.value = null
-    choreList.value = choreList.value.filter(chore => chore.id != choreId)
-    unassignedList.value = unassignedList.value.filter(chore => chore.id != choreId)
-    store.household.chores = store.household.chores.filter(chore => chore.id != choreId)
-
-    //TODO: add toaster that confirms it was deleted
+    if(result) {
+      toast.success("The chore was successfully deleted")
+      choreList.value = choreList.value.filter(chore => chore.id != choreId)
+      unassignedList.value = unassignedList.value.filter(chore => chore.id != choreId)
+      store.household.chores = store.household.chores.filter(chore => chore.id != choreId)
+    } else {
+      toast.error("Something went wrong. That chore was unable to be deleted")
+    }
   }
 
   function assignToSelfPrompt(chore) {
@@ -474,11 +478,14 @@
     assignDialogOpen.value = false;
     assignDialogChore.value = null;
 
-    choreList.value.push(choreForDatabase)
-    unassignedList.value = unassignedList.value.filter(listChore => listChore.id != chore.id);
-    store.household.chores.filter(listChore => listChore.id == chore.id).forEach(listChore => listChore.assigneeId = store.user.id)
-
-    //TODO: add toaster to confirm the chore was able to be assigned
+    if(result) {
+      toast.success("The chore was able to be successfully assigned")
+      choreList.value.push(choreForDatabase)
+      unassignedList.value = unassignedList.value.filter(listChore => listChore.id != chore.id);
+      store.household.chores.filter(listChore => listChore.id == chore.id).forEach(listChore => listChore.assigneeId = store.user.id)
+    } else {
+      toast.error("Something went wrong. That chore was unable to be assigned to you")
+    }
   }
 
   function completeChorePrompt(chore) {
@@ -505,19 +512,23 @@
   async function completeChore(chore) {
     const result = await FetchService.deleteChore(chore.id)
 
-    completeDialogOpen.value = false
-    completeDialogChore.value = null
-    choreList.value = choreList.value.filter(listChore => listChore.id != chore.id)
-    store.household.chores = store.household.chores.filter(listChore => listChore.id != chore.id)
+    if(result) {
 
-    const userResult = await FetchService.updateUserPoints(store.user.id, chorePoints(chore))
+      completeDialogOpen.value = false
+      completeDialogChore.value = null
+      choreList.value = choreList.value.filter(listChore => listChore.id != chore.id)
+      store.household.chores = store.household.chores.filter(listChore => listChore.id != chore.id)
 
-    store.user = userResult;
+      const userResult = await FetchService.updateUserPoints(store.user.id, chorePoints(chore))
 
-    const householdUser = store.household.users.find((user) => user.id == store.user.id)
-    householdUser.totalPoints = userResult.totalPoints
+      store.user = userResult;
 
-    //TODO: add a toaster to confirm that the chore was completed.
+      toast.success("The chore was completed successfully")
+      const householdUser = store.household.users.find((user) => user.id == store.user.id)
+      householdUser.totalPoints = userResult.totalPoints
+    } else {
+      toast.error("Something went wrong. The chore was unable to be completed")
+    }
   }
 
   function filterChores() {

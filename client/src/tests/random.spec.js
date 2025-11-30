@@ -355,6 +355,144 @@ test("RCAT-1, RCAT-2 and RCAT-4 - randomize lists the chores correctly", async (
     expect(wrapper.vm.unassignedChores.length).toBe(3)
 })
 
+test("OMT-1 - randomize goes past maximum time if user has selected to override", async () => {
+    const wrapper = mount(Random, {
+        global: {
+            plugins: [
+                createTestingPinia({
+                    createSpy: vi.fn,
+                    initialState: {
+                        app: {
+                            user: {
+                                id: 1,
+                                householdId: 1,
+                                role: "leader",
+                            },
+                            household: {
+                                users: [
+                                    {
+                                        id: 4,
+                                        name: "test",
+                                        role: "member",
+                                        difficulty: 5,
+                                        maxChoreTime: 20
+                                    },
+                                    {
+                                        id: 6,
+                                        name: "test2",
+                                        role: "member",
+                                        difficulty: 9,
+                                        maxChoreTime: 5
+                                    },
+                                    {
+                                        id: 8,
+                                        name: "test3",
+                                        role: "member",
+                                        difficulty: 1,
+                                        maxChoreTime: 60
+                                    }
+                                ],
+                                chores: [
+                                    {
+                                        id: 1,
+                                        name: "test name too difficult for anyone",
+                                        difficulty: 10,
+                                        estimatedTime: 20,
+                                        householdId: 1,
+                                        assigneeId: null,
+                                    },
+                                    {
+                                        id: 2,
+                                        name: "test name",
+                                        difficulty: 4,
+                                        estimatedTime: 15,
+                                        householdId: 1,
+                                        assigneeId: null,
+                                    },
+                                    {
+                                        id: 3,
+                                        name: "test name",
+                                        difficulty: 3,
+                                        estimatedTime: 10,
+                                        householdId: 1,
+                                        assigneeId: null,
+                                    },
+                                    {
+                                        id: 4,
+                                        name: "test name multiple",
+                                        difficulty: 1,
+                                        estimatedTime: 20,
+                                        householdId: 1,
+                                        assigneeId: null,
+                                    },
+                                    {
+                                        id: 5,
+                                        name: "test name multiple",
+                                        difficulty: 1,
+                                        estimatedTime: 20,
+                                        householdId: 1,
+                                        assigneeId: null,
+                                    },
+                                    {
+                                        id: 6,
+                                        name: "test name multiple",
+                                        difficulty: 1,
+                                        estimatedTime: 20,
+                                        householdId: 1,
+                                        assigneeId: null,
+                                    },
+                                    {
+                                        id: 7,
+                                        name: "test name",
+                                        difficulty: 1,
+                                        estimatedTime: 15,
+                                        householdId: 1,
+                                        assigneeId: 8,
+                                    }
+                                ]
+                            },
+                        },
+                    },
+                }),
+                [vuetify],
+                routes,
+            ],
+        }
+    })
+
+    wrapper.vm.overrideMaxTime = true
+
+    wrapper.vm.randomize()
+
+    expect(wrapper.vm.assignedChores).toContainEqual({
+        id: 2,
+        name: "test name",
+        difficulty: 4,
+        estimatedTime: 15,
+        assigneeId: 4,
+    })
+    expect(wrapper.vm.unassignedChores).toContainEqual({
+        id: 1,
+        name: "test name too difficult for anyone",
+        difficulty: 10,
+        estimatedTime: 20,
+        assigneeId: null,
+    })
+    expect(wrapper.vm.assignedChores).toContainEqual({
+        id: 3,
+        name: "test name",
+        difficulty: 3,
+        estimatedTime: 10,
+        assigneeId: expect.any(Number),
+    })
+    expect(wrapper.vm.assignedChores.filter((chore) => chore.name == 'test name multiple').length).toBe(3)
+
+    expect(wrapper.vm.unassignedChores.filter((chore) => chore.name == 'test name multiple').length).toBe(0)
+
+    expect(wrapper.vm.assignedChores.length).toBe(5)
+    expect(wrapper.vm.unassignedChores.length).toBe(1)
+})
+
 test("RCAT-1 - assignChores assigns correctly", async () => {
 
     let router = createRouter({
@@ -672,6 +810,71 @@ test("RCAT-1 - test assignButton", async () => {
     await wrapper.find('#assignChoresButton').trigger("click")
 
     expect(spy).toHaveBeenCalled()
+})
+
+test("OMT-1 - test overrideMaxTimeCheckbox", async () => {
+
+    const wrapper = mount(Random, {
+        global: {
+            plugins: [
+                createTestingPinia({
+                    createSpy: vi.fn,
+                    initialState: {
+                        app: {
+                            user: {
+                                id: 4,
+                                householdId: 3,
+                                role: "leader",
+                                name: "test"
+                            },
+                            household: {
+                                users: [
+                                    {
+                                        id: 4,
+                                        name: "test",
+                                        role: "member",
+                                        difficulty: 5,
+                                        maxChoreTime: 20
+                                    }
+                                ],
+                                chores: [
+                                    {
+                                        id: 2,
+                                        name: "test name",
+                                        difficulty: 1,
+                                        estimatedTime: 1,
+                                        householdId: 3,
+                                        assigneeId: null,
+                                    },
+                                    {
+                                        id: 3,
+                                        name: "test name",
+                                        difficulty: 1,
+                                        estimatedTime: 1,
+                                        householdId: 3,
+                                        assigneeId: null,
+                                    },
+                                ]
+                            },
+                        },
+                    },
+                }),
+                [vuetify],
+                routes,
+            ],
+        }
+    })
+
+    //flushPromises wouldn't work for some reason so I need to wait for a state to change at the end of onMounted manually
+    while(!wrapper.vm.mounted) {
+        await new Promise(resolve => setTimeout(resolve, 50))
+    }
+
+    const checkbox = await wrapper.find('#overrideMaxTimeCheckbox')
+
+    checkbox.setValue(true)
+
+    expect(wrapper.vm.overrideMaxTime).toBe(true)
 })
 
 test("NOFT - reroutes correctly when a member tries to access", async () => {
