@@ -229,8 +229,10 @@
   import { useAppStore } from "../stores/app.js";
   import { useRouter, useRoute } from 'vue-router';
   import FetchService from '../FetchService.js'
+  import { useToast } from 'vue-toastification'
 
   const store = useAppStore();
+  const toast = useToast()
   const props = defineProps({
     viewMode: String,
     choreId: Number,
@@ -244,7 +246,8 @@
       name: 'viewChore',
       params: { id: props.choreId }
     })
-    //TODO: add a toaster to indicate why it rerouted
+    
+    toast.error("You cannot edit a chore if you are not a leader")
   }
 
   const members = store.household.users
@@ -283,7 +286,7 @@
           name: 'viewChore',
           params: { id: props.choreId }
         })
-        //TODO: add a toaster to indicate why it rerouted
+        toast.error("You cannot edit a chore if you are not a leader")
       }
 
       let viewMode;
@@ -318,7 +321,7 @@
         const choreDate = new Date(chore.value.dueDate);
         chore.value.dueDate = choreDate.toLocaleDateString('en-CA');
       } else {
-        //TODO: add a toast to indicate that the chore was not found
+        toast.error("That chore was not found in your household")
         console.log("no chore with " + choreId + " id is in the household")
         return {};
       }
@@ -326,7 +329,7 @@
 
     if(chore.value.householdId != store.user.householdId) {
       router.push({ name: 'home' });
-      //TODO: add a toaster to indicate why it rerouted
+      toast.error("That chore was not found in your household")
     }
 
     //Create the values needed to display description and assignee in view mode
@@ -400,8 +403,6 @@
         errorMessages.value.dueDate = ''
       }
     }
-
-    //TODO: send a toast if it is not valid
     
     return valid;
   }
@@ -421,8 +422,14 @@
       }
 
       const result = await FetchService.createChore(choreForDatabase);
-      //TODO: add a toast if the create failed
-      store.household.chores.push(result);
+
+      if(result) {
+        store.household.chores.push(result);
+
+        toast.success("Chore created successfully")
+      } else {
+        toast.error("Something went wrong. The chore was unable to be created.")
+      }
 
       router.push({ name: 'home'});
       return result;
@@ -447,16 +454,21 @@
 
       const result = await FetchService.editChore(props.choreId, choreForDatabase);
 
-      //TODO: add a toast if the update failed
+      if(result) {
+        toast.success("Chore updated successfully")
 
-      var choreIndex = -1;
-      for(var index = 0; index < store.household.chores.length; index++) {
-        if(store.household.chores[index].id == props.choreId) {
-          choreIndex = index
+        var choreIndex = -1;
+        for(var index = 0; index < store.household.chores.length; index++) {
+          if(store.household.chores[index].id == props.choreId) {
+            choreIndex = index
+          }
         }
+
+        store.household.chores[choreIndex] = choreForDatabase;
+      } else {
+        toast.error("Something went wrong. The chore was unable to be updated.")
       }
 
-      store.household.chores[choreIndex] = choreForDatabase;
       router.push({ name: 'viewChore', params: {id: props.choreId}});
       return result;
     }

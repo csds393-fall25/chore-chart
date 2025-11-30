@@ -134,8 +134,10 @@
   import { useAppStore } from "../stores/app.js";
   import { useRouter, useRoute } from 'vue-router';
   import FetchService from '../FetchService.js'
+  import { useToast } from 'vue-toastification'
 
   const store = useAppStore();
+  const toast = useToast();
   const router = useRouter();
 
   const assignedChores = ref([])
@@ -147,7 +149,7 @@
     router.push({
       name: 'home'
     })
-    //TODO: add a toaster to indicate why it rerouted
+    toast.error("Only a leader is able to randomly assign chores")
   }
 
   onMounted(async () => {

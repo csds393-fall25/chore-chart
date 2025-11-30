@@ -74,6 +74,9 @@
   import { ref } from 'vue'
   import FetchService from "../FetchService.js"
   import { useAppStore } from '@/stores/app.js';
+  import { useToast } from 'vue-toastification'
+
+  const toast = useToast()
 
 
   const username = ref();
@@ -106,6 +109,7 @@
       store.loggedIn = true;
     } catch (error) {
       console.error("Login failed:", error);
+      toast.error("Incorrect username or password");
       errorMessages.value.password = "incorrect username or password"
       isIncorrect.value = true;
     }

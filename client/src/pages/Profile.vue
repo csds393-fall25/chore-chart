@@ -88,7 +88,10 @@ import { ref } from 'vue';
 import { useAppStore } from "../stores/app.js";
 import FetchService from '@/FetchService';
 import Avatar from '../components/Avatar.vue'
+import { useToast } from 'vue-toastification'
+
 const store = useAppStore();
+const toast = useToast();
 const username = ref(store.user.email);
 const isUpdate = ref(false)
 const password = ref();
@@ -136,10 +139,15 @@ async function updateProfile() {
       confirmed.value = false
       password.value = ""
       repeatedPassword.value = ""
-      store.user.name = name.value
-      store.user.email = username.value
-      store.user.difficulty = maxDifficulty.value
-      store.user.maxChoreTime = estimatedTime.value
+      if(result) {
+        toast.success("Your profile was updated successfully")
+        store.user.name = name.value
+        store.user.email = username.value
+        store.user.difficulty = maxDifficulty.value
+        store.user.maxChoreTime = estimatedTime.value
+      } else {
+        toast.error("Something went wrong. Your profile was unable to be updated")
+      }
       isUpdate.value = false;
       errorMessages.value.previousPassword = ""
       return true;
@@ -155,6 +163,12 @@ async function updateProfile() {
       difficulty: maxDifficulty.value,
       maxChoreTime: estimatedTime.value
     })
+
+    if(result) {
+      toast.success("Profile updated sucessfully")
+    } else {
+      toast.error("Something went wrong. Your profile was unable to be updated")
+    }
   }
 
   store.user.name = name.value
@@ -169,7 +183,13 @@ async function updateProfile() {
 function deleteProfile(id) {
   const result = FetchService.deleteUser(id)
   showDialog.value = false
-  store.loggedIn = false
+  if(result) {
+    store.loggedIn = false
+    toast.success("Your profile was deleted successfully")
+  } else {
+    toast.error("Something went wrong. Your profile was unable to be deleted")
+  }
+  
   return result;
 }
 
