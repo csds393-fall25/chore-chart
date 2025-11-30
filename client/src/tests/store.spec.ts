@@ -78,6 +78,28 @@ test("ST-3 and ST-4 - Store renders correctly", async () => {
                 [vuetify],
                 routes,
             ],
+            stubs: {
+                VTabs: {
+                    name: "VTabs",
+                    template: '<div class="v-tabs-stub"><slot /></div>',
+                    props: ['modelValue'],
+                },
+                VTab: {
+                    name: "VTab",
+                    template: '<div class="v-tab-stub"><slot /></div>',
+                    props: ['modelValue'],
+                },
+                VTabsWindow: {
+                    name: "VTabsWindow",
+                    template: '<div class="v-tabs-window-stub"><slot /></div>',
+                    props: ['modelValue'],
+                },
+                VTabsWindowItem: {
+                    name: "VTabsWindowItem",
+                    template: '<div class="v-tabs-window-item-stub"><slot /></div>',
+                    props: ['modelValue'],
+                }
+            }
         }
     })
 
@@ -150,6 +172,28 @@ test("ST-3 - isOwned returns correctly", async () => {
                 [vuetify],
                 routes,
             ],
+            stubs: {
+                VTabs: {
+                    name: "VTabs",
+                    template: '<div class="v-tabs-stub"><slot /></div>',
+                    props: ['modelValue'],
+                },
+                VTab: {
+                    name: "VTab",
+                    template: '<div class="v-tab-stub"><slot /></div>',
+                    props: ['modelValue'],
+                },
+                VTabsWindow: {
+                    name: "VTabsWindow",
+                    template: '<div class="v-tabs-window-stub"><slot /></div>',
+                    props: ['modelValue'],
+                },
+                VTabsWindowItem: {
+                    name: "VTabsWindowItem",
+                    template: '<div class="v-tabs-window-item-stub"><slot /></div>',
+                    props: ['modelValue'],
+                }
+            }
         }
     })
 
@@ -224,6 +268,28 @@ test("ST-1 and ST-5 - buyProps purchases correctly when user can afford the prop
                 [vuetify],
                 routes,
             ],
+            stubs: {
+                VTabs: {
+                    name: "VTabs",
+                    template: '<div class="v-tabs-stub"><slot /></div>',
+                    props: ['modelValue'],
+                },
+                VTab: {
+                    name: "VTab",
+                    template: '<div class="v-tab-stub"><slot /></div>',
+                    props: ['modelValue'],
+                },
+                VTabsWindow: {
+                    name: "VTabsWindow",
+                    template: '<div class="v-tabs-window-stub"><slot /></div>',
+                    props: ['modelValue'],
+                },
+                VTabsWindowItem: {
+                    name: "VTabsWindowItem",
+                    template: '<div class="v-tabs-window-item-stub"><slot /></div>',
+                    props: ['modelValue'],
+                }
+            }
         }
     })
 
@@ -300,6 +366,28 @@ test("ST-2 - buyProps purchases correctly when user can't afford the prop", asyn
                 [vuetify],
                 routes,
             ],
+            stubs: {
+                VTabs: {
+                    name: "VTabs",
+                    template: '<div class="v-tabs-stub"><slot /></div>',
+                    props: ['modelValue'],
+                },
+                VTab: {
+                    name: "VTab",
+                    template: '<div class="v-tab-stub"><slot /></div>',
+                    props: ['modelValue'],
+                },
+                VTabsWindow: {
+                    name: "VTabsWindow",
+                    template: '<div class="v-tabs-window-stub"><slot /></div>',
+                    props: ['modelValue'],
+                },
+                VTabsWindowItem: {
+                    name: "VTabsWindowItem",
+                    template: '<div class="v-tabs-window-item-stub"><slot /></div>',
+                    props: ['modelValue'],
+                }
+            }
         }
     })
 
@@ -372,6 +460,28 @@ test("ACT-1 and ACT-2 - equipProp equips correctly", async () => {
                 [vuetify],
                 routes,
             ],
+            stubs: {
+                VTabs: {
+                    name: "VTabs",
+                    template: '<div class="v-tabs-stub"><slot /></div>',
+                    props: ['modelValue'],
+                },
+                VTab: {
+                    name: "VTab",
+                    template: '<div class="v-tab-stub"><slot /></div>',
+                    props: ['modelValue'],
+                },
+                VTabsWindow: {
+                    name: "VTabsWindow",
+                    template: '<div class="v-tabs-window-stub"><slot /></div>',
+                    props: ['modelValue'],
+                },
+                VTabsWindowItem: {
+                    name: "VTabsWindowItem",
+                    template: '<div class="v-tabs-window-item-stub"><slot /></div>',
+                    props: ['modelValue'],
+                }
+            }
         }
     })
 
@@ -474,6 +584,28 @@ test("NOFT - isEquipped returns correctly", () => {
                 [vuetify],
                 routes,
             ],
+            stubs: {
+                VTabs: {
+                    name: "VTabs",
+                    template: '<div class="v-tabs-stub"><slot /></div>',
+                    props: ['modelValue'],
+                },
+                VTab: {
+                    name: "VTab",
+                    template: '<div class="v-tab-stub"><slot /></div>',
+                    props: ['modelValue'],
+                },
+                VTabsWindow: {
+                    name: "VTabsWindow",
+                    template: '<div class="v-tabs-window-stub"><slot /></div>',
+                    props: ['modelValue'],
+                },
+                VTabsWindowItem: {
+                    name: "VTabsWindowItem",
+                    template: '<div class="v-tabs-window-item-stub"><slot /></div>',
+                    props: ['modelValue'],
+                }
+            }
         }
     })
 
@@ -570,6 +702,26 @@ test("NOFT - tooExpensiveDialog v-model works correctly", async () => {
                     name: "VDialog",
                     template: '<div class="v-dialog-stub"><slot /></div>',
                     props: ['modelValue'],
+                },
+                VTabs: {
+                    name: "VTabs",
+                    template: '<div class="v-tabs-stub"><slot /></div>',
+                    props: ['modelValue'],
+                },
+                VTab: {
+                    name: "VTab",
+                    template: '<div class="v-tab-stub"><slot /></div>',
+                    props: ['modelValue'],
+                },
+                VTabsWindow: {
+                    name: "VTabsWindow",
+                    template: '<div class="v-tabs-window-stub"><slot /></div>',
+                    props: ['modelValue'],
+                },
+                VTabsWindowItem: {
+                    name: "VTabsWindowItem",
+                    template: '<div class="v-tabs-window-item-stub"><slot /></div>',
+                    props: ['modelValue'],
                 }
             },
         }
@@ -586,6 +738,132 @@ test("NOFT - tooExpensiveDialog v-model works correctly", async () => {
     await nextTick()
 
     expect(wrapper.vm.tooExpensiveDialogOpen).toBe(false);
+})
+
+test("NOFT - tabs v-model works correctly", async () => {
+    const wrapper = mount(Store, {
+        global: {
+            plugins: [
+                createTestingPinia({
+                    createSpy: vi.fn,
+                    initialState: {
+                        app: {
+                            user: {
+                                id: 6,
+                                householdId: 1,
+                                role: "leader",
+                            },
+                            household: {
+                                users: [
+                                    {
+                                        id: 4,
+                                        name: "test",
+                                        role: "member",
+                                    },
+                                ],
+                                chores: [
+                                    {
+                                        id: 1,
+                                        name: "test name",
+                                        description: "test description",
+                                        difficulty: 10,
+                                        location: "Kitchen",
+                                        estimatedTime: 20,
+                                        dueDate: new Date('2025-12-25'),
+                                        repeat: false,
+                                        householdId: 1,
+                                        assigneeId: null,
+                                    },
+                                    {
+                                        id: 2,
+                                        name: "test name result",
+                                        description: "test description result",
+                                        difficulty: 9,
+                                        location: "Living Room",
+                                        estimatedTime: 30,
+                                        dueDate: new Date('2025-12-25'),
+                                        repeat: false,
+                                        householdId: 1,
+                                        assigneeId: null,
+                                    }
+                                ]
+                            },
+                            avatars: [
+                                {
+                                    userId: 6,
+                                    skinTone: {
+                                        url: "skinToneURL",
+                                        id: 7
+                                    },
+                                    hat: {
+                                        url: "hatURL",
+                                        id: 2
+                                    },
+                                    hair: {
+                                        url: "hairURL",
+                                        id: 4,
+                                    },
+                                    shirt: {
+                                        url: "shirtURL",
+                                        id: 3
+                                    },
+                                    background: {
+                                        url: "backgroundURL",
+                                        id: 5
+                                    },
+                                    handProp: {
+                                        url: "handPropURL",
+                                        id: 1
+                                    }
+                                }
+                            ]
+                        },
+                    },
+                }),
+                [vuetify],
+                routes,
+            ],
+            stubs: {
+                VTabs: {
+                    name: "VTabs",
+                    template: '<div class="v-tabs-stub"><slot /></div>',
+                    props: ['modelValue'],
+                },
+                VTab: {
+                    name: "VTab",
+                    template: '<div class="v-tab-stub"><slot /></div>',
+                    props: ['modelValue'],
+                },
+                VTabsWindow: {
+                    name: "VTabsWindow",
+                    template: '<div class="v-tabs-window-stub"><slot /></div>',
+                    props: ['modelValue'],
+                },
+                VTabsWindowItem: {
+                    name: "VTabsWindowItem",
+                    template: '<div class="v-tabs-window-item-stub"><slot /></div>',
+                    props: ['modelValue'],
+                }
+            },
+        }
+    })
+
+    wrapper.vm.tab = 'shirt';
+
+    await nextTick()
+
+    const tabMenu = wrapper.findComponent('[data-testid="tabMenu"]')
+    const tabWindow = wrapper.findComponent('[data-testid="tabWindow"]')
+
+    await tabMenu.setValue('skinTone')
+
+    await nextTick()
+
+    expect(wrapper.vm.tab).toBe('skinTone');
+
+    await tabWindow.setValue('background')
+
+    expect(wrapper.vm.tab).toBe('background');
 })
 
 test("NOFT - test cancelButton", async () => {
@@ -675,6 +953,26 @@ test("NOFT - test cancelButton", async () => {
                 VDialog: {
                     name: "VDialog",
                     template: '<div class="v-dialog-stub"><slot /></div>',
+                    props: ['modelValue'],
+                },
+                VTabs: {
+                    name: "VTabs",
+                    template: '<div class="v-tabs-stub"><slot /></div>',
+                    props: ['modelValue'],
+                },
+                VTab: {
+                    name: "VTab",
+                    template: '<div class="v-tab-stub"><slot /></div>',
+                    props: ['modelValue'],
+                },
+                VTabsWindow: {
+                    name: "VTabsWindow",
+                    template: '<div class="v-tabs-window-stub"><slot /></div>',
+                    props: ['modelValue'],
+                },
+                VTabsWindowItem: {
+                    name: "VTabsWindowItem",
+                    template: '<div class="v-tabs-window-item-stub"><slot /></div>',
                     props: ['modelValue'],
                 }
             },
@@ -777,6 +1075,26 @@ test("NOFT - test buyButton", async () => {
                     name: "VDialog",
                     template: '<div class="v-dialog-stub"><slot /></div>',
                     props: ['modelValue'],
+                },
+                VTabs: {
+                    name: "VTabs",
+                    template: '<div class="v-tabs-stub"><slot /></div>',
+                    props: ['modelValue'],
+                },
+                VTab: {
+                    name: "VTab",
+                    template: '<div class="v-tab-stub"><slot /></div>',
+                    props: ['modelValue'],
+                },
+                VTabsWindow: {
+                    name: "VTabsWindow",
+                    template: '<div class="v-tabs-window-stub"><slot /></div>',
+                    props: ['modelValue'],
+                },
+                VTabsWindowItem: {
+                    name: "VTabsWindowItem",
+                    template: '<div class="v-tabs-window-item-stub"><slot /></div>',
+                    props: ['modelValue'],
                 }
             },
         }
@@ -862,6 +1180,26 @@ test("NOFT - test equipButton", async () => {
                 VDialog: {
                     name: "VDialog",
                     template: '<div class="v-dialog-stub"><slot /></div>',
+                    props: ['modelValue'],
+                },
+                VTabs: {
+                    name: "VTabs",
+                    template: '<div class="v-tabs-stub"><slot /></div>',
+                    props: ['modelValue'],
+                },
+                VTab: {
+                    name: "VTab",
+                    template: '<div class="v-tab-stub"><slot /></div>',
+                    props: ['modelValue'],
+                },
+                VTabsWindow: {
+                    name: "VTabsWindow",
+                    template: '<div class="v-tabs-window-stub"><slot /></div>',
+                    props: ['modelValue'],
+                },
+                VTabsWindowItem: {
+                    name: "VTabsWindowItem",
+                    template: '<div class="v-tabs-window-item-stub"><slot /></div>',
                     props: ['modelValue'],
                 }
             },
@@ -975,6 +1313,26 @@ test("NOFT - test don't update all props if already have them", async () => {
                 VDialog: {
                     name: "VDialog",
                     template: '<div class="v-dialog-stub"><slot /></div>',
+                    props: ['modelValue'],
+                },
+                VTabs: {
+                    name: "VTabs",
+                    template: '<div class="v-tabs-stub"><slot /></div>',
+                    props: ['modelValue'],
+                },
+                VTab: {
+                    name: "VTab",
+                    template: '<div class="v-tab-stub"><slot /></div>',
+                    props: ['modelValue'],
+                },
+                VTabsWindow: {
+                    name: "VTabsWindow",
+                    template: '<div class="v-tabs-window-stub"><slot /></div>',
+                    props: ['modelValue'],
+                },
+                VTabsWindowItem: {
+                    name: "VTabsWindowItem",
+                    template: '<div class="v-tabs-window-item-stub"><slot /></div>',
                     props: ['modelValue'],
                 }
             },
