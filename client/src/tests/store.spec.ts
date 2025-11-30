@@ -384,8 +384,8 @@ test("ACT-1 and ACT-2 - equipProp equips correctly", async () => {
 
     await wrapper.vm.equipProp(store.allProps.find((prop) => prop.id == 8))
 
-    expect(wrapper.vm.usersAvatar.hat).toEqual(store.allProps.find((prop) => prop.id == 8).url)
-    expect(store.avatars.find((avatar) => avatar.userId == 6).hat).toBe(store.allProps.find((prop) => prop.id == 8).url)
+    expect(wrapper.vm.usersAvatar.hat.id).toEqual(8)
+    expect(store.avatars.find((avatar) => avatar.userId == 6).hat.id).toBe(8)
 
     await wrapper.vm.equipProp(store.allProps.find((prop) => prop.id == 2))
 })
@@ -442,12 +442,30 @@ test("NOFT - isEquipped returns correctly", () => {
                             avatars: [
                                 {
                                     userId: 6,
-                                    skinTone: "skinToneURL",
-                                    hat: "hatURL",
-                                    hair: "hairURL",
-                                    shirt: "shirtURL",
-                                    background: "backgroundURL",
-                                    handProp: "handPropURL"
+                                    skinTone: {
+                                        url: "skinToneURL",
+                                        id: 7
+                                    },
+                                    hat: {
+                                        url: "hatURL",
+                                        id: 2
+                                    },
+                                    hair: {
+                                        url: "hairURL",
+                                        id: 4,
+                                    },
+                                    shirt: {
+                                        url: "shirtURL",
+                                        id: 3
+                                    },
+                                    background: {
+                                        url: "backgroundURL",
+                                        id: 5
+                                    },
+                                    handProp: {
+                                        url: "handPropURL",
+                                        id: 1
+                                    }
                                 }
                             ]
                         },
@@ -515,12 +533,30 @@ test("NOFT - tooExpensiveDialog v-model works correctly", async () => {
                             avatars: [
                                 {
                                     userId: 6,
-                                    skinTone: "skinToneURL",
-                                    hat: "hatURL",
-                                    hair: "hairURL",
-                                    shirt: "shirtURL",
-                                    background: "backgroundURL",
-                                    handProp: "handPropURL"
+                                    skinTone: {
+                                        url: "skinToneURL",
+                                        id: 7
+                                    },
+                                    hat: {
+                                        url: "hatURL",
+                                        id: 2
+                                    },
+                                    hair: {
+                                        url: "hairURL",
+                                        id: 4,
+                                    },
+                                    shirt: {
+                                        url: "shirtURL",
+                                        id: 3
+                                    },
+                                    background: {
+                                        url: "backgroundURL",
+                                        id: 5
+                                    },
+                                    handProp: {
+                                        url: "handPropURL",
+                                        id: 1
+                                    }
                                 }
                             ]
                         },
@@ -603,12 +639,30 @@ test("NOFT - test cancelButton", async () => {
                             avatars: [
                                 {
                                     userId: 6,
-                                    skinTone: "skinToneURL",
-                                    hat: "hatURL",
-                                    hair: "hairURL",
-                                    shirt: "shirtURL",
-                                    background: "backgroundURL",
-                                    handProp: "handPropURL"
+                                    skinTone: {
+                                        url: "skinToneURL",
+                                        id: 7
+                                    },
+                                    hat: {
+                                        url: "hatURL",
+                                        id: 2
+                                    },
+                                    hair: {
+                                        url: "hairURL",
+                                        id: 4,
+                                    },
+                                    shirt: {
+                                        url: "shirtURL",
+                                        id: 3
+                                    },
+                                    background: {
+                                        url: "backgroundURL",
+                                        id: 5
+                                    },
+                                    handProp: {
+                                        url: "handPropURL",
+                                        id: 1
+                                    }
                                 }
                             ]
                         },
@@ -686,12 +740,30 @@ test("NOFT - test buyButton", async () => {
                             avatars: [
                                 {
                                     userId: 6,
-                                    skinTone: "skinToneURL",
-                                    hat: "hatURL",
-                                    hair: "hairURL",
-                                    shirt: "shirtURL",
-                                    background: "backgroundURL",
-                                    handProp: "handPropURL"
+                                    skinTone: {
+                                        url: "skinToneURL",
+                                        id: 7
+                                    },
+                                    hat: {
+                                        url: "hatURL",
+                                        id: 2
+                                    },
+                                    hair: {
+                                        url: "hairURL",
+                                        id: 4,
+                                    },
+                                    shirt: {
+                                        url: "shirtURL",
+                                        id: 3
+                                    },
+                                    background: {
+                                        url: "backgroundURL",
+                                        id: 5
+                                    },
+                                    handProp: {
+                                        url: "handPropURL",
+                                        id: 1
+                                    }
                                 }
                             ]
                         },
@@ -858,12 +930,30 @@ test("NOFT - test don't update all props if already have them", async () => {
                             avatars: [
                                 {
                                     userId: 6,
-                                    skinTone: "skinToneURL",
-                                    hat: "hatURL",
-                                    hair: "hairURL",
-                                    shirt: "shirtURL",
-                                    background: "backgroundURL",
-                                    handProp: "handPropURL"
+                                    skinTone: {
+                                        url: "skinToneURL",
+                                        id: 7
+                                    },
+                                    hat: {
+                                        url: "hatURL",
+                                        id: 2
+                                    },
+                                    hair: {
+                                        url: "hairURL",
+                                        id: 4,
+                                    },
+                                    shirt: {
+                                        url: "shirtURL",
+                                        id: 3
+                                    },
+                                    background: {
+                                        url: "backgroundURL",
+                                        id: 5
+                                    },
+                                    handProp: {
+                                        url: "handPropURL",
+                                        id: 1
+                                    }
                                 }
                             ],
                             allProps: [

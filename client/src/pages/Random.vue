@@ -1,105 +1,115 @@
 <template>
   <v-sheet class="w-100 fill-height" color="navy">
-    <div class="text-h2 ml-3 pt-2 mb-3">Random Assignment</div>
-    <div class="text-right">
-      <v-btn
-          color="secondary"
-          class="ml-2 mr-2"
-          id="randomizeButton"
-          @click="randomize()"
-      >
-          Re-randomize
-      </v-btn>
-      <v-btn
-          color="secondary"
-          class="ml-2 mr-2"
-          id="assignChoresButton"
-          @click="assignChores()"
-      >
-          Assign
-      </v-btn>
-      <v-btn
-          color="error"
-          class="ml-2 mr-2"
-          id="cancelButton"
-          @click="cancel()"
-      >
-          Cancel
-      </v-btn>
-    </div>
+    <div class="text-h4 text-md-h2 ml-3 pt-2 mb-3">Random Assignment</div>
+    <v-row class="mr-2 ml-2 mb-3 mt-3">
+      <v-col offset-md="5" cols="12" md="3" class="pt-1 pb-1">
+        <v-btn
+            color="secondary"
+            block
+            id="randomizeButton"
+            @click="randomize()"
+        >
+            Re-randomize
+        </v-btn>
+      </v-col>
+      <v-col cols="12" md="2" class="pt-1 pb-1">
+        <v-btn
+            color="secondary"
+            block
+            id="assignChoresButton"
+            @click="assignChores()"
+        >
+            Assign
+        </v-btn>
+      </v-col>
+      <v-col cols="12" md="2" class="pt-1 pb-1">
+        <v-btn
+            color="error"
+            block
+            id="cancelButton"
+            @click="cancel()"
+        >
+            Cancel
+        </v-btn>
+      </v-col>
+    </v-row>
     <div class="w-100 text-center text-h5 bg-primary mt-2">Chores to Assign</div>
-    <v-list class="pt-0">
-      <v-list-item class="bg-secondary">
-        <template v-slot:default>
-          <v-row>
-            <v-col cols="6">
-              Name
-            </v-col>
-            <v-col cols="3">
-              Assigned To
-            </v-col>
-            <v-col cols="3">
-              Est. Time
-            </v-col>
-          </v-row>
-        </template>
-      </v-list-item>
-      <v-list-item
-        v-for="(chore) in assignedChores"
-        :key="chore.id"
-      >
-        <template v-slot:default>
-          <v-row>
-            <v-col cols="6">
-              {{ chore.name }}
-            </v-col>
-            <v-col cols="3">
-              <!-- TODO: add an avatar for the user here -->
-              {{ userName(chore.assigneeId) }}
-            </v-col>
-            <v-col cols="3">
-              {{ chore.estimatedTime }} min
-            </v-col>
-          </v-row>
-        </template>
-      </v-list-item>
-    </v-list>
+    <div class="overflow-x-auto">
+      <v-list class="pt-0 list">
+        <v-list-item class="bg-secondary">
+          <template v-slot:default>
+            <v-row>
+              <v-col cols="6">
+                Name
+              </v-col>
+              <v-col cols="3">
+                Assigned To
+              </v-col>
+              <v-col cols="3">
+                Est. Time
+              </v-col>
+            </v-row>
+          </template>
+        </v-list-item>
+        <v-list-item
+          v-for="(chore) in assignedChores"
+          :key="chore.id"
+        >
+          <template v-slot:default>
+            <v-row>
+              <v-col cols="6">
+                {{ chore.name }}
+              </v-col>
+              <v-col cols="3">
+                <!-- TODO: add an avatar for the user here -->
+                {{ userName(chore.assigneeId) }}
+              </v-col>
+              <v-col cols="3">
+                {{ chore.estimatedTime }} min
+              </v-col>
+            </v-row>
+          </template>
+        </v-list-item>
+      </v-list>
+    </div>
     <div class="w-100 text-center text-h5 bg-primary mt-2">Still Unassigned</div>
-    <v-list class="pt-0">
-      <v-list-item class="bg-secondary">
-        <template v-slot:default>
-          <v-row>
-            <v-col cols="6">
-              Name
-            </v-col>
-            <v-col cols="3">
-              Difficulty
-            </v-col>
-            <v-col cols="3">
-              Est. Time
-            </v-col>
-          </v-row>
-        </template>
-      </v-list-item>
-      <v-list-item
-        v-for="(chore) in unassignedChores"
-        :key="chore.id"
-      >
-        <template v-slot:default>
-          <v-row>
-            <v-col cols="6">
-              {{ chore.name }}
-            </v-col>
-            <v-col>
-              {{ chore.difficulty }}
-            </v-col>
-            <v-col cols="3">
-              {{ chore.estimatedTime }} min
-            </v-col>
-          </v-row>
-        </template>
-      </v-list-item>
-    </v-list>
+    <div class="overflow-x-auto">
+      <v-list class="pt-0 list">
+        <v-list-item class="bg-secondary">
+          <template v-slot:default>
+            <v-row>
+              <v-col cols="6">
+                Name
+              </v-col>
+              <v-col cols="3">
+                Difficulty
+              </v-col>
+              <v-col cols="3">
+                Est. Time
+              </v-col>
+            </v-row>
+          </template>
+        </v-list-item>
+        <v-list-item
+          v-for="(chore) in unassignedChores"
+          :key="chore.id"
+        >
+          <template v-slot:default>
+            <v-row>
+              <v-col cols="6">
+                {{ chore.name }}
+              </v-col>
+              <v-col>
+                {{ chore.difficulty }}
+              </v-col>
+              <v-col cols="3">
+                {{ chore.estimatedTime }} min
+              </v-col>
+            </v-row>
+          </template>
+        </v-list-item>
+      </v-list>
+    </div>
   </v-sheet>
 </template>
 
@@ -216,3 +226,8 @@
     router.push({ name: 'home' });
   }
 </script>
+<style scoped>
+.list {
+  min-width: 25em;
+}
+</style>

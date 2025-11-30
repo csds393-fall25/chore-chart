@@ -1,27 +1,59 @@
 <template>
   <v-sheet class="fill-height w-100 " color="primary-darken-1">
-    <v-btn id="logout" class="float-right ma-3" color="secondary" @click="store.loggedIn=false">Logout</v-btn>
+    <v-btn id="logout" class="float-sm-right ma-3" color="secondary" @click="store.loggedIn=false">Logout</v-btn>
     <v-row class="mt-0">
-      <v-col cols="4" class="ma-4">
+      <v-col cols="6" md ="4" class="ma-4">
           <Avatar :userId="store.user.id"/>
       </v-col>
     </v-row>
 
     <v-form class="ma-4">
-      <v-text-field data-testid="name"  v-if="isUpdate" :error-messages="errorMessages.name" style="width: 75%; " label="Name" v-model="name"></v-text-field>
-      <p v-if="!isUpdate">Name: {{name}}</p>
-      <p v-if="!isUpdate"> Points: {{store.user.totalPoints}}</p>
-      <v-text-field data-testid="email" v-if="isUpdate" :error-messages="errorMessages.email" :disabled="true" style="width: 75%" v-model="username" label="Email"></v-text-field>
-      <v-text-field data-testid="password" v-if="isUpdate" :error-messages="errorMessages.password" style="width: 75%; " type="password" label="new password" v-model="password"></v-text-field>
-      <v-text-field v-if="isUpdate" data-testid="repeatedPassword" :error-messages="errorMessages.repeatedPassword" style="width: 75%" type="password" v-model="repeatedPassword" label="verify new password"></v-text-field> 
-      <p v-if="!isUpdate">Email: {{username}}</p>
-      <p  v-if="!isUpdate"> Estimated Time To Complete Chores (minutes): {{estimatedTime}}</p>
-      <p v-if="isUpdate">Estimated Time To Complete Chores (minutes)</p>
-      <v-number-input data-testid="estTime" v-if="isUpdate" :disabled="!isUpdate" :error-messages="errorMessages.estTime" style="width: 75%" v-model="estimatedTime" :min='0' control-variant="split"></v-number-input>
-        <p v-if="!isUpdate">Maximum Difficulty: {{maxDifficulty}}</p>
-      <p v-if="isUpdate">Maximum Difficulty</p>
-      <v-number-input v-if="isUpdate" :disabled="!isUpdate" :error-messages="errorMessages.maxDiff" style="width: 75%" v-model="maxDifficulty" :min='1' :max='10'
-        control-variant="split"></v-number-input>
+      <v-row>
+        <v-col cols="12" md="9" v-if="isUpdate">
+          <v-text-field data-testid="name" :error-messages="errorMessages.name" label="Name" v-model="name"></v-text-field>
+        </v-col>
+        <v-col cols="12" md="9" v-else>
+          <p>Name: {{name}}</p>
+        </v-col>
+      </v-row>
+      <v-row v-if="!isUpdate">
+        <v-col cols="12">
+          <p> Points: {{store.user.totalPoints}}</p>
+        </v-col>
+      </v-row>
+      <v-row>
+        <v-col cols="12" md="9" v-if="isUpdate">
+          <v-text-field data-testid="email" :error-messages="errorMessages.email" :disabled="true" v-model="username" label="Email"></v-text-field>
+        </v-col>
+        <v-col cols="12" v-else>
+          <p>Email: {{username}}</p>
+        </v-col>
+      </v-row>
+      <v-row>
+        <v-col cols="12" md="9" v-if="isUpdate">
+          <v-text-field data-testid="password" :error-messages="errorMessages.password" type="password" label="new password" v-model="password"></v-text-field>
+          <v-text-field data-testid="repeatedPassword" :error-messages="errorMessages.repeatedPassword" type="password" v-model="repeatedPassword" label="verify new password"></v-text-field> 
+        </v-col>
+      </v-row>
+      <v-row>
+        <v-col cols="12" md="9" v-if="isUpdate">
+          <p>Estimated Time To Complete Chores (minutes)</p>
+          <v-number-input data-testid="estTime" :disabled="!isUpdate" :error-messages="errorMessages.estTime" v-model="estimatedTime" :min='0' control-variant="split"></v-number-input>
+        </v-col>
+        <v-col cols="12" md="9" v-else>
+          <p> Estimated Time To Complete Chores (minutes): {{estimatedTime}}</p>
+        </v-col>
+      </v-row>
+      <v-row>
+        <v-col cols="12" md="9" v-if="isUpdate">
+          <p>Maximum Difficulty</p>
+          <v-number-input :disabled="!isUpdate" :error-messages="errorMessages.maxDiff" v-model="maxDifficulty" :min='1' :max='10' control-variant="split"></v-number-input>
+        </v-col>
+        <v-col cols="12" md="9" v-else>
+          <p class="mb-5">Maximum Difficulty: {{maxDifficulty}}</p>
+        </v-col>
+      </v-row>
+      
       <v-btn id="update" class="elevation-0" style="background-color: #51d299 ; font-size: small; "
         @click=" !isUpdate ? updateButton() : updateProfile()">Update</v-btn>
       <v-btn id="deleteButton" class="mx-auto my-auto elevation-0 ml-4" color="error" @click="showDialog = true"
