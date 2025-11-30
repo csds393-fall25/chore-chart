@@ -113,16 +113,15 @@ onMounted(async () => {
 
 function profile(){
   if (!props.dis){
-    store.household.users.forEach((user)=>{
+    let currentUser = store.household.users.find((user)=> user.id==props.userId)
+    if(currentUser) {
       profileDialog.value = true
-      if(user.id==props.userId){
-        name.value = user.name
-        role.value = user.role
-        maxChoreTime.value = user.maxChoreTime
-        maxDifficulty.value = user.difficulty
-        totalPoints.value = user.totalPoints
-      }
-    })
+      name.value = currentUser.name
+      role.value = currentUser.role
+      maxChoreTime.value = currentUser.maxChoreTime
+      maxDifficulty.value = currentUser.difficulty
+      totalPoints.value = currentUser.totalPoints
+    }
   }
 }
 

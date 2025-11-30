@@ -143,7 +143,7 @@ test("profile() works as expected", async () => {
         },
 
          props: {
-            userID: 0,
+            userId: 0,
             dis: false
             
         }
