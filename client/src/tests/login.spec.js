@@ -8,6 +8,7 @@ import * as components from 'vuetify/components'
 import * as directives from 'vuetify/directives'
 import { useAppStore } from "@/stores/app.js";
 import FetchService from "@/FetchService";
+import routes from '../router/router.js'
 import { nextTick } from "vue";
 // need this at the top
 const vuetify = createVuetify({
@@ -93,6 +94,7 @@ test("LT-1 Successful login to account", async () => {
   plugins: [
     createTestingPinia({createSpy: vi.fn}),
   [vuetify],
+  routes
   ],
 }
 
