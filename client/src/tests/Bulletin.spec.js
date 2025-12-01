@@ -494,3 +494,319 @@ test("RBBI-3 Like a post", async () => {
 
    
 })
+
+
+test("Add button calls add function", async () => {
+    const wrapper = mount(Bulletin, {
+            global: {
+                plugins: [
+                    createTestingPinia({
+                        createSpy: vi.fn,
+                        initialState: {
+                            app: {
+                                user: {
+                                    id: 8,
+                                    householdId: 1,
+                                    role: "leader",
+                                },
+                                household: {
+                                    id: 1,
+    
+                                    users: [
+    
+                                             {
+                                            id: 8,
+                                        },
+
+                                        
+                                  
+                                    ],
+                                },
+                                bulletin: {
+                                    items: [
+                                        {
+                                            id: 40,
+                                            text: "doNotDeletePost",
+                                            authorId: 0,
+                                            likeCount: 0
+                                        }
+                                    ]
+                                        
+                                    
+                                }
+                            },
+                        },
+                    }),
+                    [vuetify],
+                
+                ],
+    
+                 stubs: {
+        VDialog: {
+          name: "VDialog",
+          template: '<div class="v-dialog-stub"><slot /></div>',
+          props: ['modelValue',
+          ]
+        }
+      }
+            },
+           
+        })
+
+
+         const store = useAppStore()
+     const spy = vi.spyOn(wrapper.vm, "addPost");
+    await wrapper.find("#addButton").trigger("click")
+    await nextTick()
+    expect(spy).toHaveBeenCalled();
+    expect(wrapper.vm.showDialog).toBe(true)
+})
+
+test("like button calls like function and delete button deletes post", async () => {
+    const wrapper = mount(Bulletin, {
+            global: {
+                plugins: [
+                    createTestingPinia({
+                        createSpy: vi.fn,
+                        initialState: {
+                            app: {
+                                user: {
+                                    id: 8,
+                                    householdId: 1,
+                                    role: "leader",
+                                },
+                                household: {
+                                    id: 1,
+    
+                                    users: [
+    
+                                             {
+                                            id: 8,
+                                        },
+
+                                        
+                                  
+                                    ],
+                                },
+                                bulletin: {
+                                    items: [
+                                        {
+                                            id: 40,
+                                            text: "doNotDeletePost",
+                                            authorId: 0,
+                                            likeCount: 0
+                                        }
+                                    ]
+                                        
+                                    
+                                }
+                            },
+                        },
+                    }),
+                    [vuetify],
+                
+                ],
+    
+                 stubs: {
+        VDialog: {
+          name: "VDialog",
+          template: '<div class="v-dialog-stub"><slot /></div>',
+          props: ['modelValue',
+          ]
+        }
+      }
+            },
+           
+        })
+
+
+         const store = useAppStore()
+           store.user.id = 8
+           wrapper.vm.text = "hello"
+       let result = await wrapper.vm.post()
+        await nextTick()
+        console.log(result)
+    expect(result.content).toBe("hello")
+    expect(result.authorId).toBe(8)
+    const spy = vi.spyOn(wrapper.vm, "likePost");
+    await wrapper.find("#like").trigger("click")
+    await nextTick()
+    expect(spy).toHaveBeenCalled();
+    const spy2 = vi.spyOn(wrapper.vm, "deletePost");
+    await wrapper.find("#delete").trigger("click")
+    await nextTick()
+    expect(spy2).toHaveBeenCalled();
+
+})
+
+test("showDialog v-model works", async () => {
+    const wrapper = mount(Bulletin, {
+        global: {
+            plugins: [
+                createTestingPinia({
+                    createSpy: vi.fn,
+                    initialState: {
+                        app: {
+                            user: {
+                                id: 0,
+                                householdId: 137,
+                                role: "leader",
+                            },
+                            household: {
+                                id: 137,
+
+                                users: [
+                                    {
+                                        id: 0,
+                                        name: "test",
+                                        role: "leader",
+                                    },
+                                 
+                              
+                                ],
+                            },
+                        },
+                    },
+                }),
+                [vuetify],
+            
+            ],
+
+             stubs: {
+    VDialog: {
+      name: "VDialog",
+      template: '<div class="v-dialog-stub"><slot /></div>',
+      props: ['modelValue',
+      ]
+    }
+  }
+        },
+       
+    })
+
+  
+
+  const select = wrapper.findComponent('[data-testid="dialog"]');
+  await select.setValue(true)
+  await nextTick()
+  expect(wrapper.vm.showDialog).toBe(true)
+})
+
+
+test("text v-model works", async () => {
+    const wrapper = mount(Bulletin, {
+        global: {
+            plugins: [
+                createTestingPinia({
+                    createSpy: vi.fn,
+                    initialState: {
+                        app: {
+                            user: {
+                                id: 0,
+                                householdId: 137,
+                                role: "leader",
+                            },
+                            household: {
+                                id: 137,
+
+                                users: [
+                                    {
+                                        id: 0,
+                                        name: "test",
+                                        role: "leader",
+                                    },
+                                 
+                              
+                                ],
+                            },
+                        },
+                    },
+                }),
+                [vuetify],
+            
+            ],
+
+             stubs: {
+    VDialog: {
+      name: "VDialog",
+      template: '<div class="v-dialog-stub"><slot /></div>',
+      props: ['modelValue',
+      ]
+    }
+  }
+        },
+       
+    })
+
+  
+
+  const select = wrapper.findComponent('[data-testid="text"]');
+  await select.setValue("hi")
+  await nextTick()
+  expect(wrapper.vm.text).toBe("hi")
+})
+
+test("post button calls post function", async () => {
+    const wrapper = mount(Bulletin, {
+            global: {
+                plugins: [
+                    createTestingPinia({
+                        createSpy: vi.fn,
+                        initialState: {
+                            app: {
+                                user: {
+                                    id: 8,
+                                    householdId: 1,
+                                    role: "leader",
+                                },
+                                household: {
+                                    id: 1,
+    
+                                    users: [
+    
+                                             {
+                                            id: 8,
+                                        },
+
+                                        
+                                  
+                                    ],
+                                },
+                                bulletin: {
+                                    items: [
+                                        {
+                                            id: 40,
+                                            text: "doNotDeletePost",
+                                            authorId: 0,
+                                            likeCount: 0
+                                        }
+                                    ]
+                                        
+                                    
+                                }
+                            },
+                        },
+                    }),
+                    [vuetify],
+                
+                ],
+    
+                 stubs: {
+        VDialog: {
+          name: "VDialog",
+          template: '<div class="v-dialog-stub"><slot /></div>',
+          props: ['modelValue',
+          ]
+        }
+      }
+            },
+           
+        })
+
+
+         const store = useAppStore()
+     const spy = vi.spyOn(wrapper.vm, "post");
+    await wrapper.find("#PostButton").trigger("click")
+    await nextTick()
+    expect(spy).toHaveBeenCalled();
+})
