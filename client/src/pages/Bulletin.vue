@@ -19,7 +19,7 @@
             <v-card-actions>
                 <v-btn id="like" @click="likePost(item.id, item.likeCount)" :text=" item.likeCount + ' Likes'">
             </v-btn>
-             <v-btn  v-if="item.authorId == store.user.id" id="cancel" @click="deletePost(item.id)" text="Delete">
+             <v-btn  v-if="item.authorId == store.user.id" id="delete" @click="deletePost(item.id)" text="Delete">
             </v-btn>
             </v-card-actions>
           </v-card>
@@ -165,10 +165,12 @@
 
   async function likePost(id, likes){
     console.log(id)
-    await FetchService.likePost(id, (likes+1) )
+    let likeResult = await FetchService.likePost(id, (likes+1) )
+
     let result = await FetchService.fetchPosts(store.household.id)
     store.bulletin.items = result
     itemsList.value = store.bulletin.items
+    return likeResult
 
 
   }

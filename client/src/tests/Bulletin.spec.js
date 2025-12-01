@@ -95,6 +95,7 @@ test(" ABB-1 User makes a post on the bulletin board successfully", async () => 
                                     role: "leader",
                                 },
                                 household: {
+                                    id: 1,
     
                                     users: [
     
@@ -224,6 +225,7 @@ test("DBBI-1 User deletes post/poll successfully", async () => {
                                     role: "leader",
                                 },
                                 household: {
+                                    id: 1,
     
                                     users: [
     
@@ -277,8 +279,218 @@ test("DBBI-1 User deletes post/poll successfully", async () => {
          
            store.user.id = 8
            wrapper.vm.text = ""
-       let result2 = await wrapper.vm.delete()
+       let result2 = await wrapper.vm.deletePost(result.id)
+       console.log(result2)
         await nextTick()
-        console.log(result2.authorId).toBe(8)
+        expect(result2.deleted).toBe(true)
     
+})
+
+test("DBBI-2 User deletes post/poll unsuccessfully due to not being the author of it.", async () => {
+    const wrapper = mount(Bulletin, {
+            global: {
+                plugins: [
+                    createTestingPinia({
+                        createSpy: vi.fn,
+                        initialState: {
+                            app: {
+                                user: {
+                                    id: 8,
+                                    householdId: 1,
+                                    role: "leader",
+                                },
+                                household: {
+                                    id: 1,
+    
+                                    users: [
+    
+                                             {
+                                            id: 8,
+                                        },
+
+                                        
+                                  
+                                    ],
+                                },
+                                bulletin: {
+                                    items: [
+                                        {
+                                            id: 40,
+                                            text: "doNotDeletePost",
+                                            authorId: 0,
+                                            likeCount: 0
+                                        }
+                                    ]
+                                        
+                                    
+                                }
+                            },
+                        },
+                    }),
+                    [vuetify],
+                
+                ],
+    
+                 stubs: {
+        VDialog: {
+          name: "VDialog",
+          template: '<div class="v-dialog-stub"><slot /></div>',
+          props: ['modelValue',
+          ]
+        }
+      }
+            },
+           
+        })
+
+        expect(wrapper.text()).not.toContain("Delete")
+   
+})
+
+test("DBBI-3 User cancels deletion on dialog for post/poll", async () => {
+    const wrapper = mount(Bulletin, {
+            global: {
+                plugins: [
+                    createTestingPinia({
+                        createSpy: vi.fn,
+                        initialState: {
+                            app: {
+                                user: {
+                                    id: 8,
+                                    householdId: 1,
+                                    role: "leader",
+                                },
+                                household: {
+                                    id: 1,
+    
+                                    users: [
+    
+                                             {
+                                            id: 8,
+                                        },
+
+                                        
+                                  
+                                    ],
+                                },
+                                bulletin: {
+                                    items: [
+                                        {
+                                            id: 40,
+                                            text: "doNotDeletePost",
+                                            authorId: 0,
+                                            likeCount: 0
+                                        }
+                                    ]
+                                        
+                                    
+                                }
+                            },
+                        },
+                    }),
+                    [vuetify],
+                
+                ],
+    
+                 stubs: {
+        VDialog: {
+          name: "VDialog",
+          template: '<div class="v-dialog-stub"><slot /></div>',
+          props: ['modelValue',
+          ]
+        }
+      }
+            },
+           
+        })
+
+
+         const store = useAppStore()
+     const spy = vi.spyOn(wrapper.vm, "cancel");
+    await wrapper.find("#cancelButton").trigger("click")
+    await nextTick()
+    expect(spy).toHaveBeenCalled();
+    expect(wrapper.vm.showDialog).toBe(false)
+
+
+   
+})
+
+test("RBBI-3 Like a post", async () => {
+    const wrapper = mount(Bulletin, {
+            global: {
+                plugins: [
+                    createTestingPinia({
+                        createSpy: vi.fn,
+                        initialState: {
+                            app: {
+                                user: {
+                                    id: 8,
+                                    householdId: 1,
+                                    role: "leader",
+                                },
+                                household: {
+                                    id: 1,
+    
+                                    users: [
+    
+                                             {
+                                            id: 8,
+                                        },
+
+                                        
+                                  
+                                    ],
+                                },
+                                bulletin: {
+                                    items: [
+                                        {
+                                            id: 40,
+                                            text: "doNotDeletePost",
+                                            authorId: 0,
+                                            likeCount: 0
+                                        }
+                                    ]
+                                        
+                                    
+                                }
+                            },
+                        },
+                    }),
+                    [vuetify],
+                
+                ],
+    
+                 stubs: {
+        VDialog: {
+          name: "VDialog",
+          template: '<div class="v-dialog-stub"><slot /></div>',
+          props: ['modelValue',
+          ]
+        }
+      }
+            },
+           
+        })
+
+
+       const store = useAppStore()
+           store.user.id = 8
+           wrapper.vm.text = "hello"
+       let result = await wrapper.vm.post()
+        await nextTick()
+        console.log(result)
+    expect(result.content).toBe("hello")
+    expect(result.authorId).toBe(8)
+
+         
+           store.user.id = 8
+           wrapper.vm.text = ""
+       let result2 = await wrapper.vm.likePost(result.id, 0)
+       console.log(result2)
+        await nextTick()
+        expect(result2.likeCount).toBe(1)
+
+
+   
 })
