@@ -66,7 +66,7 @@
     <div class="mt-2 text-primary-lighten-1 text-h6 text-md-h4" id="store-heading">Store</div>
     <div class="mt-2 pb-3 text-body1">The store is where users are able to spend their current points to buy customizations for their avatar. When a user first creates their account, they have a default avatar, but once they have completed chores, they can view the available customizations in the store. Users are able to buy customizations and afterward, the user can equip the customization if they want to. The user can only have one customization of each type on their avatar. The available customizations are: background, face, hair, hat/hair accessory, shirt, and an extra accessory.</div>
     <div class="mt-2 text-primary-lighten-1 text-h6 text-md-h4" id="bulletin-heading">Bulletin</div>
-    <div class="mt-2 pb-3 text-body1">The bulletin board allows users to post announcements for the members of their household to see. User's can add announcements to the board, like announcements made by users, and delete announcements that they have written</div>
+    <div class="mt-2 pb-3 text-body1">The bulletin board allows users to post announcements for the members of their household to see. Users can add announcements to the board, like announcements made by users, and delete announcements that they wrote.</div>
   </v-sheet>
 </template>
 
