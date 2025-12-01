@@ -104,7 +104,6 @@
         userPassword: password.value
       }
       const result = await FetchService.login(user);
-      console.log("Login successful!", result);
       isIncorrect.value = false;
       store.user = (result.user)
       store.household = await FetchService.fetchHousehold(store.user.householdId);

@@ -40,9 +40,9 @@
           <template
             v-slot:prepend
           >
-            <v-avatar color="primary">
-              <span class="text-h5">{{ userInitials(member.name) }}</span>
-            </v-avatar>
+            <div style="width: 40px" class="mr-3">
+            <Avatar :userId="member.id"/>
+            </div>
           </template>
 
           <template v-slot:default>
@@ -65,6 +65,7 @@
   import { ref } from 'vue'
   import { useAppStore } from '@/stores/app';
   import { watch } from 'vue';
+  import Avatar from '@/components/Avatar.vue';
 
   const store = useAppStore()
   const members = ref(store.household.users.sort((i, j)=> j.totalPoints-i.totalPoints ))

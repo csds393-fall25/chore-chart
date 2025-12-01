@@ -3,7 +3,7 @@
     <v-btn id="logout" class="float-sm-right ma-3" color="secondary" @click="store.loggedIn=false">Logout</v-btn>
     <v-row class="mt-0">
       <v-col cols="6" md ="4" class="ma-4">
-          <Avatar :userId="store.user.id"/>
+          <Avatar dis :userId="store.user.id"/>
       </v-col>
     </v-row>
 
@@ -64,7 +64,7 @@
           <v-card-actions>
             <v-btn id="delete" @click="deleteProfile(store.user.id)" text="delete">
             </v-btn>
-             <v-btn id="cancel" @click="showDialog = false" text="cancel">
+             <v-btn id="deleteCancel" @click="showDialog = false" text="cancel">
             </v-btn>
           </v-card-actions>
         </v-card>
