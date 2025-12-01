@@ -183,7 +183,8 @@ exports.Prisma.BulletinItemScalarFieldEnum = {
   content: 'content',
   dateCreated: 'dateCreated',
   dateModified: 'dateModified',
-  likeCount: 'likeCount'
+  likeCount: 'likeCount',
+  householdId: 'householdId'
 };
 
 exports.Prisma.CommentScalarFieldEnum = {

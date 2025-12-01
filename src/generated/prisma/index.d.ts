@@ -1693,11 +1693,13 @@ export namespace Prisma {
   export type HouseholdCountOutputType = {
     users: number
     chores: number
+    BulletinItem: number
   }
 
   export type HouseholdCountOutputTypeSelect<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
     users?: boolean | HouseholdCountOutputTypeCountUsersArgs
     chores?: boolean | HouseholdCountOutputTypeCountChoresArgs
+    BulletinItem?: boolean | HouseholdCountOutputTypeCountBulletinItemArgs
   }
 
   // Custom InputTypes
@@ -1723,6 +1725,13 @@ export namespace Prisma {
    */
   export type HouseholdCountOutputTypeCountChoresArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
     where?: ChoreWhereInput
+  }
+
+  /**
+   * HouseholdCountOutputType without action
+   */
+  export type HouseholdCountOutputTypeCountBulletinItemArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    where?: BulletinItemWhereInput
   }
 
 
@@ -3398,6 +3407,7 @@ export namespace Prisma {
     joinCode?: boolean
     users?: boolean | Household$usersArgs<ExtArgs>
     chores?: boolean | Household$choresArgs<ExtArgs>
+    BulletinItem?: boolean | Household$BulletinItemArgs<ExtArgs>
     _count?: boolean | HouseholdCountOutputTypeDefaultArgs<ExtArgs>
   }, ExtArgs["result"]["household"]>
 
@@ -3423,6 +3433,7 @@ export namespace Prisma {
   export type HouseholdInclude<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
     users?: boolean | Household$usersArgs<ExtArgs>
     chores?: boolean | Household$choresArgs<ExtArgs>
+    BulletinItem?: boolean | Household$BulletinItemArgs<ExtArgs>
     _count?: boolean | HouseholdCountOutputTypeDefaultArgs<ExtArgs>
   }
   export type HouseholdIncludeCreateManyAndReturn<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {}
@@ -3433,6 +3444,7 @@ export namespace Prisma {
     objects: {
       users: Prisma.$UserPayload<ExtArgs>[]
       chores: Prisma.$ChorePayload<ExtArgs>[]
+      BulletinItem: Prisma.$BulletinItemPayload<ExtArgs>[]
     }
     scalars: $Extensions.GetPayloadResult<{
       id: number
@@ -3834,6 +3846,7 @@ export namespace Prisma {
     readonly [Symbol.toStringTag]: "PrismaPromise"
     users<T extends Household$usersArgs<ExtArgs> = {}>(args?: Subset<T, Household$usersArgs<ExtArgs>>): Prisma.PrismaPromise<$Result.GetResult<Prisma.$UserPayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
     chores<T extends Household$choresArgs<ExtArgs> = {}>(args?: Subset<T, Household$choresArgs<ExtArgs>>): Prisma.PrismaPromise<$Result.GetResult<Prisma.$ChorePayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
+    BulletinItem<T extends Household$BulletinItemArgs<ExtArgs> = {}>(args?: Subset<T, Household$BulletinItemArgs<ExtArgs>>): Prisma.PrismaPromise<$Result.GetResult<Prisma.$BulletinItemPayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
     /**
      * Attaches callbacks for the resolution and/or rejection of the Promise.
      * @param onfulfilled The callback to execute when the Promise is resolved.
@@ -4299,6 +4312,30 @@ export namespace Prisma {
     take?: number
     skip?: number
     distinct?: ChoreScalarFieldEnum | ChoreScalarFieldEnum[]
+  }
+
+  /**
+   * Household.BulletinItem
+   */
+  export type Household$BulletinItemArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the BulletinItem
+     */
+    select?: BulletinItemSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the BulletinItem
+     */
+    omit?: BulletinItemOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: BulletinItemInclude<ExtArgs> | null
+    where?: BulletinItemWhereInput
+    orderBy?: BulletinItemOrderByWithRelationInput | BulletinItemOrderByWithRelationInput[]
+    cursor?: BulletinItemWhereUniqueInput
+    take?: number
+    skip?: number
+    distinct?: BulletinItemScalarFieldEnum | BulletinItemScalarFieldEnum[]
   }
 
   /**
@@ -9054,12 +9091,14 @@ export namespace Prisma {
     id: number | null
     authorId: number | null
     likeCount: number | null
+    householdId: number | null
   }
 
   export type BulletinItemSumAggregateOutputType = {
     id: number | null
     authorId: number | null
     likeCount: number | null
+    householdId: number | null
   }
 
   export type BulletinItemMinAggregateOutputType = {
@@ -9070,6 +9109,7 @@ export namespace Prisma {
     dateCreated: Date | null
     dateModified: Date | null
     likeCount: number | null
+    householdId: number | null
   }
 
   export type BulletinItemMaxAggregateOutputType = {
@@ -9080,6 +9120,7 @@ export namespace Prisma {
     dateCreated: Date | null
     dateModified: Date | null
     likeCount: number | null
+    householdId: number | null
   }
 
   export type BulletinItemCountAggregateOutputType = {
@@ -9090,6 +9131,7 @@ export namespace Prisma {
     dateCreated: number
     dateModified: number
     likeCount: number
+    householdId: number
     _all: number
   }
 
@@ -9098,12 +9140,14 @@ export namespace Prisma {
     id?: true
     authorId?: true
     likeCount?: true
+    householdId?: true
   }
 
   export type BulletinItemSumAggregateInputType = {
     id?: true
     authorId?: true
     likeCount?: true
+    householdId?: true
   }
 
   export type BulletinItemMinAggregateInputType = {
@@ -9114,6 +9158,7 @@ export namespace Prisma {
     dateCreated?: true
     dateModified?: true
     likeCount?: true
+    householdId?: true
   }
 
   export type BulletinItemMaxAggregateInputType = {
@@ -9124,6 +9169,7 @@ export namespace Prisma {
     dateCreated?: true
     dateModified?: true
     likeCount?: true
+    householdId?: true
   }
 
   export type BulletinItemCountAggregateInputType = {
@@ -9134,6 +9180,7 @@ export namespace Prisma {
     dateCreated?: true
     dateModified?: true
     likeCount?: true
+    householdId?: true
     _all?: true
   }
 
@@ -9231,6 +9278,7 @@ export namespace Prisma {
     dateCreated: Date
     dateModified: Date
     likeCount: number
+    householdId: number
     _count: BulletinItemCountAggregateOutputType | null
     _avg: BulletinItemAvgAggregateOutputType | null
     _sum: BulletinItemSumAggregateOutputType | null
@@ -9260,7 +9308,9 @@ export namespace Prisma {
     dateCreated?: boolean
     dateModified?: boolean
     likeCount?: boolean
+    householdId?: boolean
     author?: boolean | UserDefaultArgs<ExtArgs>
+    household?: boolean | HouseholdDefaultArgs<ExtArgs>
     comments?: boolean | BulletinItem$commentsArgs<ExtArgs>
     options?: boolean | BulletinItem$optionsArgs<ExtArgs>
     _count?: boolean | BulletinItemCountOutputTypeDefaultArgs<ExtArgs>
@@ -9274,7 +9324,9 @@ export namespace Prisma {
     dateCreated?: boolean
     dateModified?: boolean
     likeCount?: boolean
+    householdId?: boolean
     author?: boolean | UserDefaultArgs<ExtArgs>
+    household?: boolean | HouseholdDefaultArgs<ExtArgs>
   }, ExtArgs["result"]["bulletinItem"]>
 
   export type BulletinItemSelectUpdateManyAndReturn<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetSelect<{
@@ -9285,7 +9337,9 @@ export namespace Prisma {
     dateCreated?: boolean
     dateModified?: boolean
     likeCount?: boolean
+    householdId?: boolean
     author?: boolean | UserDefaultArgs<ExtArgs>
+    household?: boolean | HouseholdDefaultArgs<ExtArgs>
   }, ExtArgs["result"]["bulletinItem"]>
 
   export type BulletinItemSelectScalar = {
@@ -9296,26 +9350,31 @@ export namespace Prisma {
     dateCreated?: boolean
     dateModified?: boolean
     likeCount?: boolean
+    householdId?: boolean
   }
 
-  export type BulletinItemOmit<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetOmit<"id" | "type" | "authorId" | "content" | "dateCreated" | "dateModified" | "likeCount", ExtArgs["result"]["bulletinItem"]>
+  export type BulletinItemOmit<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetOmit<"id" | "type" | "authorId" | "content" | "dateCreated" | "dateModified" | "likeCount" | "householdId", ExtArgs["result"]["bulletinItem"]>
   export type BulletinItemInclude<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
     author?: boolean | UserDefaultArgs<ExtArgs>
+    household?: boolean | HouseholdDefaultArgs<ExtArgs>
     comments?: boolean | BulletinItem$commentsArgs<ExtArgs>
     options?: boolean | BulletinItem$optionsArgs<ExtArgs>
     _count?: boolean | BulletinItemCountOutputTypeDefaultArgs<ExtArgs>
   }
   export type BulletinItemIncludeCreateManyAndReturn<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
     author?: boolean | UserDefaultArgs<ExtArgs>
+    household?: boolean | HouseholdDefaultArgs<ExtArgs>
   }
   export type BulletinItemIncludeUpdateManyAndReturn<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
     author?: boolean | UserDefaultArgs<ExtArgs>
+    household?: boolean | HouseholdDefaultArgs<ExtArgs>
   }
 
   export type $BulletinItemPayload<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
     name: "BulletinItem"
     objects: {
       author: Prisma.$UserPayload<ExtArgs>
+      household: Prisma.$HouseholdPayload<ExtArgs>
       comments: Prisma.$CommentPayload<ExtArgs>[]
       options: Prisma.$PollOptionPayload<ExtArgs>[]
     }
@@ -9327,6 +9386,7 @@ export namespace Prisma {
       dateCreated: Date
       dateModified: Date
       likeCount: number
+      householdId: number
     }, ExtArgs["result"]["bulletinItem"]>
     composites: {}
   }
@@ -9722,6 +9782,7 @@ export namespace Prisma {
   export interface Prisma__BulletinItemClient<T, Null = never, ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs, GlobalOmitOptions = {}> extends Prisma.PrismaPromise<T> {
     readonly [Symbol.toStringTag]: "PrismaPromise"
     author<T extends UserDefaultArgs<ExtArgs> = {}>(args?: Subset<T, UserDefaultArgs<ExtArgs>>): Prisma__UserClient<$Result.GetResult<Prisma.$UserPayload<ExtArgs>, T, "findUniqueOrThrow", GlobalOmitOptions> | Null, Null, ExtArgs, GlobalOmitOptions>
+    household<T extends HouseholdDefaultArgs<ExtArgs> = {}>(args?: Subset<T, HouseholdDefaultArgs<ExtArgs>>): Prisma__HouseholdClient<$Result.GetResult<Prisma.$HouseholdPayload<ExtArgs>, T, "findUniqueOrThrow", GlobalOmitOptions> | Null, Null, ExtArgs, GlobalOmitOptions>
     comments<T extends BulletinItem$commentsArgs<ExtArgs> = {}>(args?: Subset<T, BulletinItem$commentsArgs<ExtArgs>>): Prisma.PrismaPromise<$Result.GetResult<Prisma.$CommentPayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
     options<T extends BulletinItem$optionsArgs<ExtArgs> = {}>(args?: Subset<T, BulletinItem$optionsArgs<ExtArgs>>): Prisma.PrismaPromise<$Result.GetResult<Prisma.$PollOptionPayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
     /**
@@ -9760,6 +9821,7 @@ export namespace Prisma {
     readonly dateCreated: FieldRef<"BulletinItem", 'DateTime'>
     readonly dateModified: FieldRef<"BulletinItem", 'DateTime'>
     readonly likeCount: FieldRef<"BulletinItem", 'Int'>
+    readonly householdId: FieldRef<"BulletinItem", 'Int'>
   }
     
 
@@ -12525,7 +12587,8 @@ export namespace Prisma {
     content: 'content',
     dateCreated: 'dateCreated',
     dateModified: 'dateModified',
-    likeCount: 'likeCount'
+    likeCount: 'likeCount',
+    householdId: 'householdId'
   };
 
   export type BulletinItemScalarFieldEnum = (typeof BulletinItemScalarFieldEnum)[keyof typeof BulletinItemScalarFieldEnum]
@@ -12806,6 +12869,7 @@ export namespace Prisma {
     joinCode?: StringFilter<"Household"> | string
     users?: UserListRelationFilter
     chores?: ChoreListRelationFilter
+    BulletinItem?: BulletinItemListRelationFilter
   }
 
   export type HouseholdOrderByWithRelationInput = {
@@ -12814,6 +12878,7 @@ export namespace Prisma {
     joinCode?: SortOrder
     users?: UserOrderByRelationAggregateInput
     chores?: ChoreOrderByRelationAggregateInput
+    BulletinItem?: BulletinItemOrderByRelationAggregateInput
   }
 
   export type HouseholdWhereUniqueInput = Prisma.AtLeast<{
@@ -12825,6 +12890,7 @@ export namespace Prisma {
     name?: StringFilter<"Household"> | string
     users?: UserListRelationFilter
     chores?: ChoreListRelationFilter
+    BulletinItem?: BulletinItemListRelationFilter
   }, "id" | "joinCode">
 
   export type HouseholdOrderByWithAggregationInput = {
@@ -13144,7 +13210,9 @@ export namespace Prisma {
     dateCreated?: DateTimeFilter<"BulletinItem"> | Date | string
     dateModified?: DateTimeFilter<"BulletinItem"> | Date | string
     likeCount?: IntFilter<"BulletinItem"> | number
+    householdId?: IntFilter<"BulletinItem"> | number
     author?: XOR<UserScalarRelationFilter, UserWhereInput>
+    household?: XOR<HouseholdScalarRelationFilter, HouseholdWhereInput>
     comments?: CommentListRelationFilter
     options?: PollOptionListRelationFilter
   }
@@ -13157,7 +13225,9 @@ export namespace Prisma {
     dateCreated?: SortOrder
     dateModified?: SortOrder
     likeCount?: SortOrder
+    householdId?: SortOrder
     author?: UserOrderByWithRelationInput
+    household?: HouseholdOrderByWithRelationInput
     comments?: CommentOrderByRelationAggregateInput
     options?: PollOptionOrderByRelationAggregateInput
   }
@@ -13173,7 +13243,9 @@ export namespace Prisma {
     dateCreated?: DateTimeFilter<"BulletinItem"> | Date | string
     dateModified?: DateTimeFilter<"BulletinItem"> | Date | string
     likeCount?: IntFilter<"BulletinItem"> | number
+    householdId?: IntFilter<"BulletinItem"> | number
     author?: XOR<UserScalarRelationFilter, UserWhereInput>
+    household?: XOR<HouseholdScalarRelationFilter, HouseholdWhereInput>
     comments?: CommentListRelationFilter
     options?: PollOptionListRelationFilter
   }, "id">
@@ -13186,6 +13258,7 @@ export namespace Prisma {
     dateCreated?: SortOrder
     dateModified?: SortOrder
     likeCount?: SortOrder
+    householdId?: SortOrder
     _count?: BulletinItemCountOrderByAggregateInput
     _avg?: BulletinItemAvgOrderByAggregateInput
     _max?: BulletinItemMaxOrderByAggregateInput
@@ -13204,6 +13277,7 @@ export namespace Prisma {
     dateCreated?: DateTimeWithAggregatesFilter<"BulletinItem"> | Date | string
     dateModified?: DateTimeWithAggregatesFilter<"BulletinItem"> | Date | string
     likeCount?: IntWithAggregatesFilter<"BulletinItem"> | number
+    householdId?: IntWithAggregatesFilter<"BulletinItem"> | number
   }
 
   export type CommentWhereInput = {
@@ -13449,6 +13523,7 @@ export namespace Prisma {
     joinCode?: string
     users?: UserCreateNestedManyWithoutHouseholdInput
     chores?: ChoreCreateNestedManyWithoutHouseholdInput
+    BulletinItem?: BulletinItemCreateNestedManyWithoutHouseholdInput
   }
 
   export type HouseholdUncheckedCreateInput = {
@@ -13457,6 +13532,7 @@ export namespace Prisma {
     joinCode?: string
     users?: UserUncheckedCreateNestedManyWithoutHouseholdInput
     chores?: ChoreUncheckedCreateNestedManyWithoutHouseholdInput
+    BulletinItem?: BulletinItemUncheckedCreateNestedManyWithoutHouseholdInput
   }
 
   export type HouseholdUpdateInput = {
@@ -13464,6 +13540,7 @@ export namespace Prisma {
     joinCode?: StringFieldUpdateOperationsInput | string
     users?: UserUpdateManyWithoutHouseholdNestedInput
     chores?: ChoreUpdateManyWithoutHouseholdNestedInput
+    BulletinItem?: BulletinItemUpdateManyWithoutHouseholdNestedInput
   }
 
   export type HouseholdUncheckedUpdateInput = {
@@ -13472,6 +13549,7 @@ export namespace Prisma {
     joinCode?: StringFieldUpdateOperationsInput | string
     users?: UserUncheckedUpdateManyWithoutHouseholdNestedInput
     chores?: ChoreUncheckedUpdateManyWithoutHouseholdNestedInput
+    BulletinItem?: BulletinItemUncheckedUpdateManyWithoutHouseholdNestedInput
   }
 
   export type HouseholdCreateManyInput = {
@@ -13756,6 +13834,7 @@ export namespace Prisma {
     dateModified?: Date | string
     likeCount?: number
     author: UserCreateNestedOneWithoutBulletinItemInput
+    household: HouseholdCreateNestedOneWithoutBulletinItemInput
     comments?: CommentCreateNestedManyWithoutTargetInput
     options?: PollOptionCreateNestedManyWithoutPollInput
   }
@@ -13768,6 +13847,7 @@ export namespace Prisma {
     dateCreated?: Date | string
     dateModified?: Date | string
     likeCount?: number
+    householdId: number
     comments?: CommentUncheckedCreateNestedManyWithoutTargetInput
     options?: PollOptionUncheckedCreateNestedManyWithoutPollInput
   }
@@ -13779,6 +13859,7 @@ export namespace Prisma {
     dateModified?: DateTimeFieldUpdateOperationsInput | Date | string
     likeCount?: IntFieldUpdateOperationsInput | number
     author?: UserUpdateOneRequiredWithoutBulletinItemNestedInput
+    household?: HouseholdUpdateOneRequiredWithoutBulletinItemNestedInput
     comments?: CommentUpdateManyWithoutTargetNestedInput
     options?: PollOptionUpdateManyWithoutPollNestedInput
   }
@@ -13791,6 +13872,7 @@ export namespace Prisma {
     dateCreated?: DateTimeFieldUpdateOperationsInput | Date | string
     dateModified?: DateTimeFieldUpdateOperationsInput | Date | string
     likeCount?: IntFieldUpdateOperationsInput | number
+    householdId?: IntFieldUpdateOperationsInput | number
     comments?: CommentUncheckedUpdateManyWithoutTargetNestedInput
     options?: PollOptionUncheckedUpdateManyWithoutPollNestedInput
   }
@@ -13803,6 +13885,7 @@ export namespace Prisma {
     dateCreated?: Date | string
     dateModified?: Date | string
     likeCount?: number
+    householdId: number
   }
 
   export type BulletinItemUpdateManyMutationInput = {
@@ -13821,6 +13904,7 @@ export namespace Prisma {
     dateCreated?: DateTimeFieldUpdateOperationsInput | Date | string
     dateModified?: DateTimeFieldUpdateOperationsInput | Date | string
     likeCount?: IntFieldUpdateOperationsInput | number
+    householdId?: IntFieldUpdateOperationsInput | number
   }
 
   export type CommentCreateInput = {
@@ -14493,12 +14577,14 @@ export namespace Prisma {
     dateCreated?: SortOrder
     dateModified?: SortOrder
     likeCount?: SortOrder
+    householdId?: SortOrder
   }
 
   export type BulletinItemAvgOrderByAggregateInput = {
     id?: SortOrder
     authorId?: SortOrder
     likeCount?: SortOrder
+    householdId?: SortOrder
   }
 
   export type BulletinItemMaxOrderByAggregateInput = {
@@ -14509,6 +14595,7 @@ export namespace Prisma {
     dateCreated?: SortOrder
     dateModified?: SortOrder
     likeCount?: SortOrder
+    householdId?: SortOrder
   }
 
   export type BulletinItemMinOrderByAggregateInput = {
@@ -14519,12 +14606,14 @@ export namespace Prisma {
     dateCreated?: SortOrder
     dateModified?: SortOrder
     likeCount?: SortOrder
+    householdId?: SortOrder
   }
 
   export type BulletinItemSumOrderByAggregateInput = {
     id?: SortOrder
     authorId?: SortOrder
     likeCount?: SortOrder
+    householdId?: SortOrder
   }
 
   export type EnumBulletinTypeWithAggregatesFilter<$PrismaModel = never> = {
@@ -14876,6 +14965,13 @@ export namespace Prisma {
     connect?: ChoreWhereUniqueInput | ChoreWhereUniqueInput[]
   }
 
+  export type BulletinItemCreateNestedManyWithoutHouseholdInput = {
+    create?: XOR<BulletinItemCreateWithoutHouseholdInput, BulletinItemUncheckedCreateWithoutHouseholdInput> | BulletinItemCreateWithoutHouseholdInput[] | BulletinItemUncheckedCreateWithoutHouseholdInput[]
+    connectOrCreate?: BulletinItemCreateOrConnectWithoutHouseholdInput | BulletinItemCreateOrConnectWithoutHouseholdInput[]
+    createMany?: BulletinItemCreateManyHouseholdInputEnvelope
+    connect?: BulletinItemWhereUniqueInput | BulletinItemWhereUniqueInput[]
+  }
+
   export type UserUncheckedCreateNestedManyWithoutHouseholdInput = {
     create?: XOR<UserCreateWithoutHouseholdInput, UserUncheckedCreateWithoutHouseholdInput> | UserCreateWithoutHouseholdInput[] | UserUncheckedCreateWithoutHouseholdInput[]
     connectOrCreate?: UserCreateOrConnectWithoutHouseholdInput | UserCreateOrConnectWithoutHouseholdInput[]
@@ -14888,6 +14984,13 @@ export namespace Prisma {
     connectOrCreate?: ChoreCreateOrConnectWithoutHouseholdInput | ChoreCreateOrConnectWithoutHouseholdInput[]
     createMany?: ChoreCreateManyHouseholdInputEnvelope
     connect?: ChoreWhereUniqueInput | ChoreWhereUniqueInput[]
+  }
+
+  export type BulletinItemUncheckedCreateNestedManyWithoutHouseholdInput = {
+    create?: XOR<BulletinItemCreateWithoutHouseholdInput, BulletinItemUncheckedCreateWithoutHouseholdInput> | BulletinItemCreateWithoutHouseholdInput[] | BulletinItemUncheckedCreateWithoutHouseholdInput[]
+    connectOrCreate?: BulletinItemCreateOrConnectWithoutHouseholdInput | BulletinItemCreateOrConnectWithoutHouseholdInput[]
+    createMany?: BulletinItemCreateManyHouseholdInputEnvelope
+    connect?: BulletinItemWhereUniqueInput | BulletinItemWhereUniqueInput[]
   }
 
   export type UserUpdateManyWithoutHouseholdNestedInput = {
@@ -14918,6 +15021,20 @@ export namespace Prisma {
     deleteMany?: ChoreScalarWhereInput | ChoreScalarWhereInput[]
   }
 
+  export type BulletinItemUpdateManyWithoutHouseholdNestedInput = {
+    create?: XOR<BulletinItemCreateWithoutHouseholdInput, BulletinItemUncheckedCreateWithoutHouseholdInput> | BulletinItemCreateWithoutHouseholdInput[] | BulletinItemUncheckedCreateWithoutHouseholdInput[]
+    connectOrCreate?: BulletinItemCreateOrConnectWithoutHouseholdInput | BulletinItemCreateOrConnectWithoutHouseholdInput[]
+    upsert?: BulletinItemUpsertWithWhereUniqueWithoutHouseholdInput | BulletinItemUpsertWithWhereUniqueWithoutHouseholdInput[]
+    createMany?: BulletinItemCreateManyHouseholdInputEnvelope
+    set?: BulletinItemWhereUniqueInput | BulletinItemWhereUniqueInput[]
+    disconnect?: BulletinItemWhereUniqueInput | BulletinItemWhereUniqueInput[]
+    delete?: BulletinItemWhereUniqueInput | BulletinItemWhereUniqueInput[]
+    connect?: BulletinItemWhereUniqueInput | BulletinItemWhereUniqueInput[]
+    update?: BulletinItemUpdateWithWhereUniqueWithoutHouseholdInput | BulletinItemUpdateWithWhereUniqueWithoutHouseholdInput[]
+    updateMany?: BulletinItemUpdateManyWithWhereWithoutHouseholdInput | BulletinItemUpdateManyWithWhereWithoutHouseholdInput[]
+    deleteMany?: BulletinItemScalarWhereInput | BulletinItemScalarWhereInput[]
+  }
+
   export type UserUncheckedUpdateManyWithoutHouseholdNestedInput = {
     create?: XOR<UserCreateWithoutHouseholdInput, UserUncheckedCreateWithoutHouseholdInput> | UserCreateWithoutHouseholdInput[] | UserUncheckedCreateWithoutHouseholdInput[]
     connectOrCreate?: UserCreateOrConnectWithoutHouseholdInput | UserCreateOrConnectWithoutHouseholdInput[]
@@ -14944,6 +15061,20 @@ export namespace Prisma {
     update?: ChoreUpdateWithWhereUniqueWithoutHouseholdInput | ChoreUpdateWithWhereUniqueWithoutHouseholdInput[]
     updateMany?: ChoreUpdateManyWithWhereWithoutHouseholdInput | ChoreUpdateManyWithWhereWithoutHouseholdInput[]
     deleteMany?: ChoreScalarWhereInput | ChoreScalarWhereInput[]
+  }
+
+  export type BulletinItemUncheckedUpdateManyWithoutHouseholdNestedInput = {
+    create?: XOR<BulletinItemCreateWithoutHouseholdInput, BulletinItemUncheckedCreateWithoutHouseholdInput> | BulletinItemCreateWithoutHouseholdInput[] | BulletinItemUncheckedCreateWithoutHouseholdInput[]
+    connectOrCreate?: BulletinItemCreateOrConnectWithoutHouseholdInput | BulletinItemCreateOrConnectWithoutHouseholdInput[]
+    upsert?: BulletinItemUpsertWithWhereUniqueWithoutHouseholdInput | BulletinItemUpsertWithWhereUniqueWithoutHouseholdInput[]
+    createMany?: BulletinItemCreateManyHouseholdInputEnvelope
+    set?: BulletinItemWhereUniqueInput | BulletinItemWhereUniqueInput[]
+    disconnect?: BulletinItemWhereUniqueInput | BulletinItemWhereUniqueInput[]
+    delete?: BulletinItemWhereUniqueInput | BulletinItemWhereUniqueInput[]
+    connect?: BulletinItemWhereUniqueInput | BulletinItemWhereUniqueInput[]
+    update?: BulletinItemUpdateWithWhereUniqueWithoutHouseholdInput | BulletinItemUpdateWithWhereUniqueWithoutHouseholdInput[]
+    updateMany?: BulletinItemUpdateManyWithWhereWithoutHouseholdInput | BulletinItemUpdateManyWithWhereWithoutHouseholdInput[]
+    deleteMany?: BulletinItemScalarWhereInput | BulletinItemScalarWhereInput[]
   }
 
   export type HouseholdCreateNestedOneWithoutChoresInput = {
@@ -15410,6 +15541,12 @@ export namespace Prisma {
     connect?: UserWhereUniqueInput
   }
 
+  export type HouseholdCreateNestedOneWithoutBulletinItemInput = {
+    create?: XOR<HouseholdCreateWithoutBulletinItemInput, HouseholdUncheckedCreateWithoutBulletinItemInput>
+    connectOrCreate?: HouseholdCreateOrConnectWithoutBulletinItemInput
+    connect?: HouseholdWhereUniqueInput
+  }
+
   export type CommentCreateNestedManyWithoutTargetInput = {
     create?: XOR<CommentCreateWithoutTargetInput, CommentUncheckedCreateWithoutTargetInput> | CommentCreateWithoutTargetInput[] | CommentUncheckedCreateWithoutTargetInput[]
     connectOrCreate?: CommentCreateOrConnectWithoutTargetInput | CommentCreateOrConnectWithoutTargetInput[]
@@ -15448,6 +15585,14 @@ export namespace Prisma {
     upsert?: UserUpsertWithoutBulletinItemInput
     connect?: UserWhereUniqueInput
     update?: XOR<XOR<UserUpdateToOneWithWhereWithoutBulletinItemInput, UserUpdateWithoutBulletinItemInput>, UserUncheckedUpdateWithoutBulletinItemInput>
+  }
+
+  export type HouseholdUpdateOneRequiredWithoutBulletinItemNestedInput = {
+    create?: XOR<HouseholdCreateWithoutBulletinItemInput, HouseholdUncheckedCreateWithoutBulletinItemInput>
+    connectOrCreate?: HouseholdCreateOrConnectWithoutBulletinItemInput
+    upsert?: HouseholdUpsertWithoutBulletinItemInput
+    connect?: HouseholdWhereUniqueInput
+    update?: XOR<XOR<HouseholdUpdateToOneWithWhereWithoutBulletinItemInput, HouseholdUpdateWithoutBulletinItemInput>, HouseholdUncheckedUpdateWithoutBulletinItemInput>
   }
 
   export type CommentUpdateManyWithoutTargetNestedInput = {
@@ -15779,6 +15924,7 @@ export namespace Prisma {
     name: string
     joinCode?: string
     chores?: ChoreCreateNestedManyWithoutHouseholdInput
+    BulletinItem?: BulletinItemCreateNestedManyWithoutHouseholdInput
   }
 
   export type HouseholdUncheckedCreateWithoutUsersInput = {
@@ -15786,6 +15932,7 @@ export namespace Prisma {
     name: string
     joinCode?: string
     chores?: ChoreUncheckedCreateNestedManyWithoutHouseholdInput
+    BulletinItem?: BulletinItemUncheckedCreateNestedManyWithoutHouseholdInput
   }
 
   export type HouseholdCreateOrConnectWithoutUsersInput = {
@@ -15873,6 +16020,7 @@ export namespace Prisma {
     dateCreated?: Date | string
     dateModified?: Date | string
     likeCount?: number
+    household: HouseholdCreateNestedOneWithoutBulletinItemInput
     comments?: CommentCreateNestedManyWithoutTargetInput
     options?: PollOptionCreateNestedManyWithoutPollInput
   }
@@ -15884,6 +16032,7 @@ export namespace Prisma {
     dateCreated?: Date | string
     dateModified?: Date | string
     likeCount?: number
+    householdId: number
     comments?: CommentUncheckedCreateNestedManyWithoutTargetInput
     options?: PollOptionUncheckedCreateNestedManyWithoutPollInput
   }
@@ -15938,6 +16087,7 @@ export namespace Prisma {
     name?: StringFieldUpdateOperationsInput | string
     joinCode?: StringFieldUpdateOperationsInput | string
     chores?: ChoreUpdateManyWithoutHouseholdNestedInput
+    BulletinItem?: BulletinItemUpdateManyWithoutHouseholdNestedInput
   }
 
   export type HouseholdUncheckedUpdateWithoutUsersInput = {
@@ -15945,6 +16095,7 @@ export namespace Prisma {
     name?: StringFieldUpdateOperationsInput | string
     joinCode?: StringFieldUpdateOperationsInput | string
     chores?: ChoreUncheckedUpdateManyWithoutHouseholdNestedInput
+    BulletinItem?: BulletinItemUncheckedUpdateManyWithoutHouseholdNestedInput
   }
 
   export type ChoreUpsertWithWhereUniqueWithoutAssigneeInput = {
@@ -16059,6 +16210,7 @@ export namespace Prisma {
     dateCreated?: DateTimeFilter<"BulletinItem"> | Date | string
     dateModified?: DateTimeFilter<"BulletinItem"> | Date | string
     likeCount?: IntFilter<"BulletinItem"> | number
+    householdId?: IntFilter<"BulletinItem"> | number
   }
 
   export type CommentUpsertWithWhereUniqueWithoutAuthorInput = {
@@ -16169,6 +16321,39 @@ export namespace Prisma {
     skipDuplicates?: boolean
   }
 
+  export type BulletinItemCreateWithoutHouseholdInput = {
+    type: $Enums.BulletinType
+    content: string
+    dateCreated?: Date | string
+    dateModified?: Date | string
+    likeCount?: number
+    author: UserCreateNestedOneWithoutBulletinItemInput
+    comments?: CommentCreateNestedManyWithoutTargetInput
+    options?: PollOptionCreateNestedManyWithoutPollInput
+  }
+
+  export type BulletinItemUncheckedCreateWithoutHouseholdInput = {
+    id?: number
+    type: $Enums.BulletinType
+    authorId: number
+    content: string
+    dateCreated?: Date | string
+    dateModified?: Date | string
+    likeCount?: number
+    comments?: CommentUncheckedCreateNestedManyWithoutTargetInput
+    options?: PollOptionUncheckedCreateNestedManyWithoutPollInput
+  }
+
+  export type BulletinItemCreateOrConnectWithoutHouseholdInput = {
+    where: BulletinItemWhereUniqueInput
+    create: XOR<BulletinItemCreateWithoutHouseholdInput, BulletinItemUncheckedCreateWithoutHouseholdInput>
+  }
+
+  export type BulletinItemCreateManyHouseholdInputEnvelope = {
+    data: BulletinItemCreateManyHouseholdInput | BulletinItemCreateManyHouseholdInput[]
+    skipDuplicates?: boolean
+  }
+
   export type UserUpsertWithWhereUniqueWithoutHouseholdInput = {
     where: UserWhereUniqueInput
     update: XOR<UserUpdateWithoutHouseholdInput, UserUncheckedUpdateWithoutHouseholdInput>
@@ -16219,10 +16404,27 @@ export namespace Prisma {
     data: XOR<ChoreUpdateManyMutationInput, ChoreUncheckedUpdateManyWithoutHouseholdInput>
   }
 
+  export type BulletinItemUpsertWithWhereUniqueWithoutHouseholdInput = {
+    where: BulletinItemWhereUniqueInput
+    update: XOR<BulletinItemUpdateWithoutHouseholdInput, BulletinItemUncheckedUpdateWithoutHouseholdInput>
+    create: XOR<BulletinItemCreateWithoutHouseholdInput, BulletinItemUncheckedCreateWithoutHouseholdInput>
+  }
+
+  export type BulletinItemUpdateWithWhereUniqueWithoutHouseholdInput = {
+    where: BulletinItemWhereUniqueInput
+    data: XOR<BulletinItemUpdateWithoutHouseholdInput, BulletinItemUncheckedUpdateWithoutHouseholdInput>
+  }
+
+  export type BulletinItemUpdateManyWithWhereWithoutHouseholdInput = {
+    where: BulletinItemScalarWhereInput
+    data: XOR<BulletinItemUpdateManyMutationInput, BulletinItemUncheckedUpdateManyWithoutHouseholdInput>
+  }
+
   export type HouseholdCreateWithoutChoresInput = {
     name: string
     joinCode?: string
     users?: UserCreateNestedManyWithoutHouseholdInput
+    BulletinItem?: BulletinItemCreateNestedManyWithoutHouseholdInput
   }
 
   export type HouseholdUncheckedCreateWithoutChoresInput = {
@@ -16230,6 +16432,7 @@ export namespace Prisma {
     name: string
     joinCode?: string
     users?: UserUncheckedCreateNestedManyWithoutHouseholdInput
+    BulletinItem?: BulletinItemUncheckedCreateNestedManyWithoutHouseholdInput
   }
 
   export type HouseholdCreateOrConnectWithoutChoresInput = {
@@ -16294,6 +16497,7 @@ export namespace Prisma {
     name?: StringFieldUpdateOperationsInput | string
     joinCode?: StringFieldUpdateOperationsInput | string
     users?: UserUpdateManyWithoutHouseholdNestedInput
+    BulletinItem?: BulletinItemUpdateManyWithoutHouseholdNestedInput
   }
 
   export type HouseholdUncheckedUpdateWithoutChoresInput = {
@@ -16301,6 +16505,7 @@ export namespace Prisma {
     name?: StringFieldUpdateOperationsInput | string
     joinCode?: StringFieldUpdateOperationsInput | string
     users?: UserUncheckedUpdateManyWithoutHouseholdNestedInput
+    BulletinItem?: BulletinItemUncheckedUpdateManyWithoutHouseholdNestedInput
   }
 
   export type UserUpsertWithoutAssignedChoresInput = {
@@ -17346,6 +17551,26 @@ export namespace Prisma {
     create: XOR<UserCreateWithoutBulletinItemInput, UserUncheckedCreateWithoutBulletinItemInput>
   }
 
+  export type HouseholdCreateWithoutBulletinItemInput = {
+    name: string
+    joinCode?: string
+    users?: UserCreateNestedManyWithoutHouseholdInput
+    chores?: ChoreCreateNestedManyWithoutHouseholdInput
+  }
+
+  export type HouseholdUncheckedCreateWithoutBulletinItemInput = {
+    id?: number
+    name: string
+    joinCode?: string
+    users?: UserUncheckedCreateNestedManyWithoutHouseholdInput
+    chores?: ChoreUncheckedCreateNestedManyWithoutHouseholdInput
+  }
+
+  export type HouseholdCreateOrConnectWithoutBulletinItemInput = {
+    where: HouseholdWhereUniqueInput
+    create: XOR<HouseholdCreateWithoutBulletinItemInput, HouseholdUncheckedCreateWithoutBulletinItemInput>
+  }
+
   export type CommentCreateWithoutTargetInput = {
     content: string
     dateCreated?: Date | string
@@ -17440,6 +17665,32 @@ export namespace Prisma {
     Comment?: CommentUncheckedUpdateManyWithoutAuthorNestedInput
   }
 
+  export type HouseholdUpsertWithoutBulletinItemInput = {
+    update: XOR<HouseholdUpdateWithoutBulletinItemInput, HouseholdUncheckedUpdateWithoutBulletinItemInput>
+    create: XOR<HouseholdCreateWithoutBulletinItemInput, HouseholdUncheckedCreateWithoutBulletinItemInput>
+    where?: HouseholdWhereInput
+  }
+
+  export type HouseholdUpdateToOneWithWhereWithoutBulletinItemInput = {
+    where?: HouseholdWhereInput
+    data: XOR<HouseholdUpdateWithoutBulletinItemInput, HouseholdUncheckedUpdateWithoutBulletinItemInput>
+  }
+
+  export type HouseholdUpdateWithoutBulletinItemInput = {
+    name?: StringFieldUpdateOperationsInput | string
+    joinCode?: StringFieldUpdateOperationsInput | string
+    users?: UserUpdateManyWithoutHouseholdNestedInput
+    chores?: ChoreUpdateManyWithoutHouseholdNestedInput
+  }
+
+  export type HouseholdUncheckedUpdateWithoutBulletinItemInput = {
+    id?: IntFieldUpdateOperationsInput | number
+    name?: StringFieldUpdateOperationsInput | string
+    joinCode?: StringFieldUpdateOperationsInput | string
+    users?: UserUncheckedUpdateManyWithoutHouseholdNestedInput
+    chores?: ChoreUncheckedUpdateManyWithoutHouseholdNestedInput
+  }
+
   export type CommentUpsertWithWhereUniqueWithoutTargetInput = {
     where: CommentWhereUniqueInput
     update: XOR<CommentUpdateWithoutTargetInput, CommentUncheckedUpdateWithoutTargetInput>
@@ -17489,6 +17740,7 @@ export namespace Prisma {
     dateModified?: Date | string
     likeCount?: number
     author: UserCreateNestedOneWithoutBulletinItemInput
+    household: HouseholdCreateNestedOneWithoutBulletinItemInput
     options?: PollOptionCreateNestedManyWithoutPollInput
   }
 
@@ -17500,6 +17752,7 @@ export namespace Prisma {
     dateCreated?: Date | string
     dateModified?: Date | string
     likeCount?: number
+    householdId: number
     options?: PollOptionUncheckedCreateNestedManyWithoutPollInput
   }
 
@@ -17568,6 +17821,7 @@ export namespace Prisma {
     dateModified?: DateTimeFieldUpdateOperationsInput | Date | string
     likeCount?: IntFieldUpdateOperationsInput | number
     author?: UserUpdateOneRequiredWithoutBulletinItemNestedInput
+    household?: HouseholdUpdateOneRequiredWithoutBulletinItemNestedInput
     options?: PollOptionUpdateManyWithoutPollNestedInput
   }
 
@@ -17579,6 +17833,7 @@ export namespace Prisma {
     dateCreated?: DateTimeFieldUpdateOperationsInput | Date | string
     dateModified?: DateTimeFieldUpdateOperationsInput | Date | string
     likeCount?: IntFieldUpdateOperationsInput | number
+    householdId?: IntFieldUpdateOperationsInput | number
     options?: PollOptionUncheckedUpdateManyWithoutPollNestedInput
   }
 
@@ -17637,6 +17892,7 @@ export namespace Prisma {
     dateModified?: Date | string
     likeCount?: number
     author: UserCreateNestedOneWithoutBulletinItemInput
+    household: HouseholdCreateNestedOneWithoutBulletinItemInput
     comments?: CommentCreateNestedManyWithoutTargetInput
   }
 
@@ -17648,6 +17904,7 @@ export namespace Prisma {
     dateCreated?: Date | string
     dateModified?: Date | string
     likeCount?: number
+    householdId: number
     comments?: CommentUncheckedCreateNestedManyWithoutTargetInput
   }
 
@@ -17674,6 +17931,7 @@ export namespace Prisma {
     dateModified?: DateTimeFieldUpdateOperationsInput | Date | string
     likeCount?: IntFieldUpdateOperationsInput | number
     author?: UserUpdateOneRequiredWithoutBulletinItemNestedInput
+    household?: HouseholdUpdateOneRequiredWithoutBulletinItemNestedInput
     comments?: CommentUpdateManyWithoutTargetNestedInput
   }
 
@@ -17685,6 +17943,7 @@ export namespace Prisma {
     dateCreated?: DateTimeFieldUpdateOperationsInput | Date | string
     dateModified?: DateTimeFieldUpdateOperationsInput | Date | string
     likeCount?: IntFieldUpdateOperationsInput | number
+    householdId?: IntFieldUpdateOperationsInput | number
     comments?: CommentUncheckedUpdateManyWithoutTargetNestedInput
   }
 
@@ -17711,6 +17970,7 @@ export namespace Prisma {
     dateCreated?: Date | string
     dateModified?: Date | string
     likeCount?: number
+    householdId: number
   }
 
   export type CommentCreateManyAuthorInput = {
@@ -17774,6 +18034,7 @@ export namespace Prisma {
     dateCreated?: DateTimeFieldUpdateOperationsInput | Date | string
     dateModified?: DateTimeFieldUpdateOperationsInput | Date | string
     likeCount?: IntFieldUpdateOperationsInput | number
+    household?: HouseholdUpdateOneRequiredWithoutBulletinItemNestedInput
     comments?: CommentUpdateManyWithoutTargetNestedInput
     options?: PollOptionUpdateManyWithoutPollNestedInput
   }
@@ -17785,6 +18046,7 @@ export namespace Prisma {
     dateCreated?: DateTimeFieldUpdateOperationsInput | Date | string
     dateModified?: DateTimeFieldUpdateOperationsInput | Date | string
     likeCount?: IntFieldUpdateOperationsInput | number
+    householdId?: IntFieldUpdateOperationsInput | number
     comments?: CommentUncheckedUpdateManyWithoutTargetNestedInput
     options?: PollOptionUncheckedUpdateManyWithoutPollNestedInput
   }
@@ -17796,6 +18058,7 @@ export namespace Prisma {
     dateCreated?: DateTimeFieldUpdateOperationsInput | Date | string
     dateModified?: DateTimeFieldUpdateOperationsInput | Date | string
     likeCount?: IntFieldUpdateOperationsInput | number
+    householdId?: IntFieldUpdateOperationsInput | number
   }
 
   export type CommentUpdateWithoutAuthorInput = {
@@ -17845,6 +18108,16 @@ export namespace Prisma {
     dueDate: Date | string
     repeat: boolean
     assigneeId?: number | null
+  }
+
+  export type BulletinItemCreateManyHouseholdInput = {
+    id?: number
+    type: $Enums.BulletinType
+    authorId: number
+    content: string
+    dateCreated?: Date | string
+    dateModified?: Date | string
+    likeCount?: number
   }
 
   export type UserUpdateWithoutHouseholdInput = {
@@ -17931,6 +18204,39 @@ export namespace Prisma {
     dueDate?: DateTimeFieldUpdateOperationsInput | Date | string
     repeat?: BoolFieldUpdateOperationsInput | boolean
     assigneeId?: NullableIntFieldUpdateOperationsInput | number | null
+  }
+
+  export type BulletinItemUpdateWithoutHouseholdInput = {
+    type?: EnumBulletinTypeFieldUpdateOperationsInput | $Enums.BulletinType
+    content?: StringFieldUpdateOperationsInput | string
+    dateCreated?: DateTimeFieldUpdateOperationsInput | Date | string
+    dateModified?: DateTimeFieldUpdateOperationsInput | Date | string
+    likeCount?: IntFieldUpdateOperationsInput | number
+    author?: UserUpdateOneRequiredWithoutBulletinItemNestedInput
+    comments?: CommentUpdateManyWithoutTargetNestedInput
+    options?: PollOptionUpdateManyWithoutPollNestedInput
+  }
+
+  export type BulletinItemUncheckedUpdateWithoutHouseholdInput = {
+    id?: IntFieldUpdateOperationsInput | number
+    type?: EnumBulletinTypeFieldUpdateOperationsInput | $Enums.BulletinType
+    authorId?: IntFieldUpdateOperationsInput | number
+    content?: StringFieldUpdateOperationsInput | string
+    dateCreated?: DateTimeFieldUpdateOperationsInput | Date | string
+    dateModified?: DateTimeFieldUpdateOperationsInput | Date | string
+    likeCount?: IntFieldUpdateOperationsInput | number
+    comments?: CommentUncheckedUpdateManyWithoutTargetNestedInput
+    options?: PollOptionUncheckedUpdateManyWithoutPollNestedInput
+  }
+
+  export type BulletinItemUncheckedUpdateManyWithoutHouseholdInput = {
+    id?: IntFieldUpdateOperationsInput | number
+    type?: EnumBulletinTypeFieldUpdateOperationsInput | $Enums.BulletinType
+    authorId?: IntFieldUpdateOperationsInput | number
+    content?: StringFieldUpdateOperationsInput | string
+    dateCreated?: DateTimeFieldUpdateOperationsInput | Date | string
+    dateModified?: DateTimeFieldUpdateOperationsInput | Date | string
+    likeCount?: IntFieldUpdateOperationsInput | number
   }
 
   export type AvatarCreateManySkinToneInput = {
