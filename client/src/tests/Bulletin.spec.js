@@ -20,6 +20,59 @@ test("temp test", () => {
     expect (1+1).toBe(2)
 }) 
 
+test("NOFT - contentLines returns a list of the lines in the content ", async () => {
+    const wrapper = mount(Bulletin, {
+        global: {
+            plugins: [
+                createTestingPinia({
+                    createSpy: vi.fn,
+                    initialState: {
+                        app: {
+                            user: {
+                                id: 0,
+                                householdId: 1,
+                                role: "leader",
+                            },
+                            household: {
+                                users: [
+                                    {
+                                        id: 0,
+                                    },
+                                ],
+                            },
+                            bulletin: {
+                                items: [
+                                    {
+                                        id: 40,
+                                        text: "doNotDeletePost",
+                                        authorId: 0,
+                                        likeCount: 0
+                                    }
+                                ]
+                            }
+                        },
+                    },
+                }),
+                [vuetify],
+            ],
+            stubs: {
+                VDialog: {
+                    name: "VDialog",
+                    template: '<div class="v-dialog-stub"><slot /></div>',
+                    props: ['modelValue']
+                }
+            }
+        },
+    })
+    
+    expect(wrapper.vm.contentLines("this\nis\nmultiple\nlines")).toEqual([
+        {key: 0, line: "this"}, 
+        {key: 1, line: "is"}, 
+        {key: 2, line: "multiple"}, 
+        {key: 3, line: "lines"}
+    ])
+})
+
 test(" View bulletin board ", async () => {
     const wrapper = mount(Bulletin, {
             global: {
