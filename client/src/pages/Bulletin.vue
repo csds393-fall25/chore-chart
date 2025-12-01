@@ -80,7 +80,7 @@
     
   
     console.log("HERE")
-    let result = await FetchService.fetchPosts()
+    let result = await FetchService.fetchPosts(store.household.id)
     console.log(result)
     store.bulletin.items = result
     itemsList.value = store.bulletin.items
@@ -135,12 +135,13 @@
     }
     let item = {
         content: text.value,
-        authorId: store.user.id
+        authorId: store.user.id,
+        householdId: store.household.id
     }
     console.log(item)
     let post = await FetchService.createPost(item)
     console.log(post)
-    let result = await FetchService.fetchPosts()
+    let result = await FetchService.fetchPosts(store.household.id)
     console.log(result)
     store.bulletin.items = result
     itemsList.value = store.bulletin.items
@@ -154,7 +155,7 @@
   async function deletePost(id){
     console.log(id)
     let result2 = await FetchService.deletePost(id)
-    let result = await FetchService.fetchPosts()
+    let result = await FetchService.fetchPosts(store.household.id)
     store.bulletin.items = result
     itemsList.value = store.bulletin.items
     return result2
@@ -165,7 +166,7 @@
   async function likePost(id, likes){
     console.log(id)
     await FetchService.likePost(id, (likes+1) )
-    let result = await FetchService.fetchPosts()
+    let result = await FetchService.fetchPosts(store.household.id)
     store.bulletin.items = result
     itemsList.value = store.bulletin.items
 

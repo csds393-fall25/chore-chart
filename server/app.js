@@ -562,13 +562,14 @@ app.put('/api/prop/equip', async (req, res) => {
 // add post
 app.post('/api/bulletinItem', async (req, res) => {
   console.log(req)
-  const {type, authorId, content, likeCount} = req.body;
+  const {type, authorId, content, likeCount, householdId} = req.body;
   var post;
     post = await prisma.bulletinItem.create({data: {
       type,
       authorId,
       content,
       likeCount,
+      householdId
     }});
   
   res.json(post);
@@ -577,7 +578,7 @@ app.post('/api/bulletinItem', async (req, res) => {
 app.get('/api/bulletinItem', async (req, res) => {
   const {householdId} = req.query;
   try {
-    const items = await prisma.bulletinItem.findMany()
+    const items = await prisma.bulletinItem.findMany({where: { householdId: Number(householdId)}})
     res.json(items);
   } catch (err) {
     res.status(500).json({ error: err.message });

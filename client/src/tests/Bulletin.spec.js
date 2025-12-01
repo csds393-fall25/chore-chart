@@ -279,6 +279,6 @@ test("DBBI-1 User deletes post/poll successfully", async () => {
            wrapper.vm.text = ""
        let result2 = await wrapper.vm.delete()
         await nextTick()
-        console.log(result)
+        console.log(result2.authorId).toBe(8)
     
 })
