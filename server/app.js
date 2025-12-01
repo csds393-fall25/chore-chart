@@ -115,12 +115,12 @@ app.delete('/api/household/:id', async (req, res) => {
 // signup
 app.post('/api/signup', async (req, res) => {
   let defaultAvatar = [
-    {name: "YellowSmileyFace", type: "skinTone", id: 0},
-    {name: "PurpleBeanie", type: "hat", id: 0},
-    {name: "LongMediumBrownHair", type: "hair", id: 0},
-    {name: "BlueWolfShirt", type: "shirt", id: 0},
-    {name: "LightBlueBackground", type: "background", id: 0},
-    {name: "BlueBook", type: "handProp", id: 0}
+    {name: "YellowFace", type: "skinTone", id: 0},
+    {name: "NoHairAccessory", type: "hat", id: 0},
+    {name: "Bald", type: "hair", id: 0},
+    {name: "BluePocketShirt", type: "shirt", id: 0},
+    {name: "WhiteSolidBackground", type: "background", id: 0},
+    {name: "NoExtra", type: "handProp", id: 0}
   ]
   try {
     const {name, role, email, password_hash, difficulty, totalPoints, maxChoreTime, householdId } = req.body;
