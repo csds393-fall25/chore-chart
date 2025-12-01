@@ -1,4 +1,4 @@
-const baseURL = "http://localhost:3000/api"
+const baseURL = import.meta.env.VITE_SERVER_URL
 class FetchService {
 
     // Sign up
