@@ -20,6 +20,10 @@ export const useAppStore = defineStore('app', {
       joinCode: 0,
       users: [],
     },
+    bulletin:{
+      items: [],
+
+    },
     avatars: [],
     allProps: []
   }),

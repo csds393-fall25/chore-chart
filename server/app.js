@@ -559,6 +559,56 @@ app.put('/api/prop/equip', async (req, res) => {
   }
 });
 
+// add post
+app.post('/api/bulletinItem', async (req, res) => {
+  const {type, authorId, content, likeCount, householdId} = req.body;
+  var post;
+    post = await prisma.bulletinItem.create({data: {
+      type,
+      authorId,
+      content,
+      likeCount,
+      householdId
+    }});
+  
+  res.json(post);
+});
+
+app.get('/api/bulletinItem', async (req, res) => {
+  const {householdId} = req.query;
+  try {
+    const items = await prisma.bulletinItem.findMany({where: { householdId: Number(householdId)}})
+    res.json(items);
+  } catch (err) {
+    res.status(500).json({ error: err.message });
+  }
+});
+
+app.delete('/api/bulletinItem/:id', async (req, res) => {
+  const {id} = req.params;
+  try {
+    const deleted = await prisma.bulletinItem.delete({ where: { id: Number(id) }});
+    res.json({deleted: true, id: deleted.id});
+  } catch (err) {
+    res.status(500).json({error: err.message});
+  }
+});
+
+// add likes
+
+app.put('/api/bulletinItem/:id', async (req, res) => {
+  const { id } = req.params;
+  if(Number.isNaN(id)) { return res.status(400).json({ error: "Invalid id" })};
+  const { likeCount} = req.body;
+  try {
+    const updated = await prisma.bulletinItem.update({ where:  { id: Number(id) }, data: { likeCount } });
+    res.json(updated);
+  } catch (err) {
+    res.status(500).json({ error: err.message });
+  }
+});
+
+
 const port = process.env.PORT || 3000;
 
 app.listen(port, () => {
