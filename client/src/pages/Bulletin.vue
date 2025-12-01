@@ -6,6 +6,7 @@
       </v-row>
       <v-row class="pl-3">
         <v-btn 
+          id="addButton" 
           @click="addPost()"
           color="secondary"
         >Add Post</v-btn>
@@ -28,7 +29,7 @@
             </v-btn>
              <v-btn  
               v-if="item.authorId == store.user.id" 
-              id="cancel" 
+              id="delete" 
               @click="deletePost(item.id)"
               variant="elevated"
               color="error"
@@ -41,15 +42,15 @@
     </v-container>
 
     <v-dialog 
+      data-testid="dialog"
       v-model="showDialog" 
       max-width="500"
-      data-testid="Add"
     >
       <v-card>
         <v-card-item>
           <v-card-title>Create Post</v-card-title>
         </v-card-item>
-        <v-textarea :error-messages="errorMessages.text" v-model="text" label = "Post content"> </v-textarea>
+        <v-textarea data-testid="text" :error-messages="errorMessages.text" v-model="text" label = "Post content"> </v-textarea>
         <v-card-actions>
           <v-btn
             variant="elevated"
@@ -94,13 +95,10 @@
 
   onMounted(async () => {
     //get bulletin board items
-    
-  
-    console.log("HERE")
     let result = await FetchService.fetchPosts(store.household.id)
-    console.log(result)
     store.bulletin.items = result
     itemsList.value = store.bulletin.items
+    
   })
 
   function contentLines(content) {
@@ -108,40 +106,6 @@
       return {key: index, line: line};
     });
   }
-
-  function isOwned(prop) {
-    return ownedProps.value.some((ownedProp) => ownedProp == prop.id)
-  }
-
-  async function buyProp(prop) {
-    if(store.user.currentPoints >= prop.cost) {
-      let result = await FetchService.buyProp(store.user.id, prop.id)
-
-      ownedProps.value.push(prop.id)
-      store.user.currentPoints = result.currentPoints
-
-      return true;
-    } else {
-      tooExpensiveDialogOpen.value = true;
-      return false
-    }
-  }
-
-  async function equipProp(prop) {
-    let result = await FetchService.equipProp(store.user.id, prop)
-
-    usersAvatar.value[prop.type] = prop.url;
-    store.avatars.find((avatar) => avatar.userId == store.user.id)[prop.type] = prop.url
-
-    return true;
-  }
-
-  function isEquipped(prop) {
-    return Object.entries(usersAvatar.value).some((entry) => entry[1] == prop.url)
-  }
-
-
-
 
   function addPost(){
     showDialog.value = true
@@ -160,11 +124,8 @@
         authorId: store.user.id,
         householdId: store.household.id
     }
-    console.log(item)
     let post = await FetchService.createPost(item)
-    console.log(post)
     let result = await FetchService.fetchPosts(store.household.id)
-    console.log(result)
     store.bulletin.items = result
     itemsList.value = store.bulletin.items
     showDialog.value = false
@@ -175,7 +136,6 @@
   }
 
   async function deletePost(id){
-    console.log(id)
     let result2 = await FetchService.deletePost(id)
     let result = await FetchService.fetchPosts(store.household.id)
     store.bulletin.items = result
@@ -186,11 +146,14 @@
   }
 
   async function likePost(id, likes){
-    console.log(id)
-    await FetchService.likePost(id, (likes+1) )
+    let likeResult = await FetchService.likePost(id, (likes+1) )
+
     let result = await FetchService.fetchPosts(store.household.id)
     store.bulletin.items = result
     itemsList.value = store.bulletin.items
+    return likeResult
+
+
   }
 
   function cancel(){

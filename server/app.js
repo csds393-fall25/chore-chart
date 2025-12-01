@@ -561,7 +561,6 @@ app.put('/api/prop/equip', async (req, res) => {
 
 // add post
 app.post('/api/bulletinItem', async (req, res) => {
-  console.log(req)
   const {type, authorId, content, likeCount, householdId} = req.body;
   var post;
     post = await prisma.bulletinItem.create({data: {
@@ -598,15 +597,11 @@ app.delete('/api/bulletinItem/:id', async (req, res) => {
 // add likes
 
 app.put('/api/bulletinItem/:id', async (req, res) => {
-  console.log("in HERE")
   const { id } = req.params;
-  console.log(" HERE")
   if(Number.isNaN(id)) { return res.status(400).json({ error: "Invalid id" })};
   const { likeCount} = req.body;
   try {
-    console.log("in HERE2")
     const updated = await prisma.bulletinItem.update({ where:  { id: Number(id) }, data: { likeCount } });
-    console.log("inhere5")
     res.json(updated);
   } catch (err) {
     res.status(500).json({ error: err.message });
