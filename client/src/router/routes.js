@@ -7,6 +7,7 @@ import Store from '../pages/Store.vue'
 import Leaderboard from '@/pages/Leaderboard.vue'
 import Random from '../pages/Random.vue'
 import Help from '../pages/Help.vue'
+import Bulletin from '@/pages/Bulletin.vue'
 
 const routes = [
   { 
@@ -59,6 +60,12 @@ const routes = [
     path: '/print', 
     name: 'print',
     component: PrintPage, 
+    props: true 
+  },
+  { 
+    path: '/bulletin', 
+    name: 'bulletin',
+    component: Bulletin, 
     props: true 
   },
   { 

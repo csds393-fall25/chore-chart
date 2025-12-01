@@ -30,11 +30,8 @@
             <v-list-item v-if="store.user.role == 'leader'" title = "Random" value = "random" to="/random">
             </v-list-item>
             <v-list-item title = "Print" value = "print" to="/print"></v-list-item>
+            <v-list-item title = "Bulletin" value = "bulletin" to="/bulletin"></v-list-item>
             <v-list-item title = "Help" value = "help" to="/help"></v-list-item>
-          </v-list>
-        </v-container>
-        <v-container class="primary-lighten-1 text-center pa-0 mt-auto" width="100%">
-          <v-list bg-color="primary" width="100%">
             <v-list-item title = "Leaderboard" value = "leaderboard" to="/leaderboard"></v-list-item>
             <v-list-item title = "Store" value = "store" to="/store"></v-list-item>
           </v-list>
@@ -77,6 +74,7 @@
           <v-list-item v-if="store.user.role == 'leader'" title = "Random" value = "random" to="/random">
           </v-list-item>
           <v-list-item title = "Print" value = "print" to="/print"></v-list-item>
+          <v-list-item title = "Bulletin" value = "bulletin" to="/bulletin"></v-list-item>
           <v-list-item title = "Help" value = "help" to="/help"></v-list-item>
           <v-list-item title = "Leaderboard" value = "leaderboard" to="/leaderboard"></v-list-item>
           <v-list-item title = "Store" value = "store" to="/store"></v-list-item>

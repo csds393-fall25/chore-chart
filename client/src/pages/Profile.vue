@@ -56,8 +56,8 @@
       
       <v-btn id="update" class="elevation-0" style="background-color: #51d299 ; font-size: small; "
         @click=" !isUpdate ? updateButton() : updateProfile()">Update</v-btn>
-      <v-btn id="deleteButton" class="mx-auto my-auto elevation-0 ml-4" color="error" @click="showDialog = true"
-        style=" font-size: small; "> Delete</v-btn>
+      <v-btn id="deleteButton" class="mx-auto my-auto elevation-0 ml-4" color="error" @click=" !isUpdate ? showDialog = true : isUpdate = false"
+        style=" font-size: small; "> {{isUpdate? 'Cancel ': 'Delete'  }}</v-btn>
       <v-dialog data-testid="dialog" v-model="showDialog" width="auto">
         <v-card title="Delete Profile?" max-width="400">
           <v-card-text>Are you sure you want to delete your profile? This action cannot be reversed.</v-card-text>
@@ -70,7 +70,7 @@
         </v-card>
       </v-dialog>
        <v-dialog data-testid="passwordDialog" v-model="showPasswordDialog" width="auto" >
-        <v-card title="change Password?" >
+        <v-card title="Change password?" >
           <v-text-field data-testid="prevPass" :error-messages="errorMessages.previousPassword" class="ml-1 mr-1" v-model="previousPassword" type="password" label="Previous Password"></v-text-field> 
           <v-card-actions>
             <v-btn id="confirm" @click="confirm" text="Confirm">
@@ -123,14 +123,14 @@ async function updateProfile() {
   if(password.value && confirmed.value) {
     const user = {
         email: store.user.email,
-        password_hash: previousPassword.value
+        userPassword: previousPassword.value
     }
     let pastPass = await FetchService.login(user)
     if(pastPass){
       const result = await FetchService.updateUser(store.user.id, {
         name: name.value,
         email: username.value,
-        password_hash: password.value,
+        userPassword: password.value,
         difficulty: maxDifficulty.value,
         maxChoreTime: estimatedTime.value
         

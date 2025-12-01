@@ -46,17 +46,17 @@
             <div class="text-subtitle-1 font-weight-bold">Difficulty: </div>
           </v-col>
           <v-col cols="12" sm="9" class="mb-0 mt-0">
-            <v-select
-              placeholder="Difficulty"
+            <v-number-input 
               required
+              :error-messages="errorMessages.difficulty" 
+              v-model="chore.difficulty" 
+              :min='1' :max='10' 
               variant="outlined"
               id="difficulty"
               data-testid="difficulty"
-              v-model="chore.difficulty"
-              :items="[1, 2, 3, 4, 5, 6, 7, 8, 9, 10]"
-              :error-messages="errorMessages.difficulty"
+              control-variant="split"
               v-if="props.viewMode == 'create' || props.viewMode == 'edit'"
-            ></v-select>
+            ></v-number-input>
             <p v-else class="text-body-1">{{chore.difficulty}}</p>
           </v-col>
         </v-row>
@@ -84,17 +84,18 @@
             <div class="text-subtitle-1 font-weight-bold">Estimated Time To Complete (minutes): </div>
           </v-col>
           <v-col cols="12" sm="9" class="mb-0 mt-0">
-            <v-text-field
-              placeholder="minutes"
-              required
-              variant="outlined"
-              id="estimatedTime"
-              type="number"
-              v-model="chore.estimatedTime"
-              :error-messages="errorMessages.estimatedTime"
-              tooltip="The time to complete the chore in minutes"
-              v-if="props.viewMode == 'create' || props.viewMode == 'edit'"
-              ></v-text-field>
+              <v-number-input 
+                required
+                :error-messages="errorMessages.estimatedTime" 
+                v-model="chore.estimatedTime"
+                :min='1'
+                variant="outlined"
+                id="estimatedTime"
+                data-testid="estimatedTime"
+                control-variant="split"
+                tooltip="The time to complete the chore in minutes"
+                v-if="props.viewMode == 'create' || props.viewMode == 'edit'"
+              ></v-number-input>
               <div v-else class="text-body-1">{{ chore.estimatedTime }}</div>
           </v-col>
         </v-row>

@@ -101,7 +101,7 @@
     try {
       const user = {
         email: username.value,
-        password_hash: password.value
+        userPassword: password.value
       }
       const result = await FetchService.login(user);
       isIncorrect.value = false;
@@ -246,7 +246,7 @@
     const user = {
       name: displayedName.value,
       email: username.value,
-      password_hash: password.value,
+      userPassword: password.value,
       householdId: house.id,
       totalPoints: 0,
       role: isJoin.value ? 'member' : 'leader',
@@ -262,6 +262,9 @@
       if (result == 513){
         console.error("Violate unique constraint on email")
         errorMessages.value.email = "There already exists an account for this email"
+        if (!isJoin.value){
+          FetchService.deleteHousehold(house.id)
+        }
       }
       else{
 
