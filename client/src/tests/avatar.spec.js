@@ -66,12 +66,67 @@ test("User cancels out of the profile dialog", async () => {
     })
 
     const store = useAppStore()
-     const spy = vi.spyOn(wrapper.vm, "cancel");
+    wrapper.vm.profileDialog = true;
+    await nextTick();
+    const spy = vi.spyOn(wrapper.vm, "cancel");
     await wrapper.find("#cancel").trigger("click")
     await nextTick()
     expect(spy).toHaveBeenCalled();
     
 })
+
+test("User clicks on avatar", async () => {
+    const wrapper = mount(Avatar, {
+        global: {
+            plugins: [
+                createTestingPinia({
+                    createSpy: vi.fn,
+                    initialState: {
+                        app: {
+                            user: {
+                                id: 0,
+                                householdId: 137,
+                                role: "leader",
+                            },
+                            household: {
+
+                                users: [
+                                    {
+                                        id: 0,
+                                        name: "test",
+                                        role: "leader",
+                                    },
+                                 
+                              
+                                ],
+                            },
+                        },
+                    },
+                }),
+                [vuetify],
+            
+            ],
+
+             stubs: {
+    VDialog: {
+      name: "VDialog",
+      template: '<div class="v-dialog-stub"><slot /></div>',
+      props: ['modelValue',
+      ]
+    }
+  }
+        },
+       
+    })
+
+    const store = useAppStore()
+    const spy = vi.spyOn(wrapper.vm, "profile");
+    await wrapper.find("#avatar-pictures").trigger("click")
+    await nextTick()
+    expect(spy).toHaveBeenCalled();
+    
+})
+
 test("testing profileDialog v-model", async () => {
     const wrapper = mount(Avatar, {
         global: {
@@ -152,16 +207,11 @@ test("profile() works as expected with disabled", async () => {
     })
 
     const store = useAppStore()
-    console.log(store.household.users)
     wrapper.vm.profile()
     await nextTick()
     expect(wrapper.vm.profileDialog).toBe(true)
     expect(wrapper.vm.name).toBe("test")
-   
-   
-    
 })
-
 
 test("profile() works as expected", async () => {
     const wrapper = mount(Avatar, {
@@ -216,9 +266,6 @@ test("profile() works as expected", async () => {
     const store = useAppStore()
     wrapper.vm.profile()
     await nextTick()
-    expect(wrapper.vm.profileDialog).toBe(false)
-   
-   
-    
+    expect(wrapper.vm.profileDialog).toBe(false) 
 })
 

@@ -3,7 +3,7 @@
     <v-btn id="logout" class="float-sm-right ma-3" color="secondary" @click="store.loggedIn=false">Logout</v-btn>
     <v-row class="mt-0">
       <v-col cols="6" md ="4" class="ma-4">
-          <Avatar dis="true" :userId="store.user.id"/>
+          <Avatar dis :userId="store.user.id"/>
       </v-col>
     </v-row>
 
