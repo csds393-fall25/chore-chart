@@ -244,7 +244,10 @@ test("PDT-1 delete user information", async () => {
 
     //TODO fails here sometimes
     const method = await wrapperProfile.vm.deleteProfile(result.id)
+    let house = await FetchService.fetchHouseholdByJoin(store.household.joinCode)
+    await FetchService.deleteHousehold(house.id)
     expect (method.deleted).toBe(true)
+    
 
 })
 
