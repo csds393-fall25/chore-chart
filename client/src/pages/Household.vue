@@ -60,7 +60,7 @@
           <v-dialog data-testid="confirmation" v-model="showConfirmation" width="500">
             <v-card title="You are changing the following:" max-width="400">
               <p class="ml-2" v-if="store.household.users.find((user) => user.id == roleChangingID)">{{ store.household.users.find((user) => user.id == roleChangingID).name }} will become a {{ roleChanging }}</p>
-              <p>That user was not found in the household.</p>
+              <p v-else>That user was not found in the household.</p>
               <v-card-actions>
                 <v-btn id = "confirmationCancel" @click="cancel()" data-testid="cancelButton" > cancel
                 </v-btn>
