@@ -715,3 +715,27 @@ test("testing logout button", async () => {
     await wrapper.find("#logout").trigger("click")
     expect(store.loggedIn).toBe(false)
 })
+
+test("testing cancel button", async () => {
+    const wrapper = mount(Profile, {
+        global: {
+  plugins: [
+    createTestingPinia({createSpy: vi.fn}),
+  [vuetify],
+  ],
+  stubs: {
+    VDialog: {
+      name: "VDialog",
+      template: '<div class="v-dialog-stub"><slot /></div>',
+      props: ['modelValue',
+      ]
+    }
+  }
+}
+})
+wrapper.vm.isCreate = false
+wrapper.vm.isUpdate = true
+await nextTick()
+await wrapper.find("#deleteButton").trigger("click")
+expect(wrapper.vm.isUpdate).toBe(false);
+})
