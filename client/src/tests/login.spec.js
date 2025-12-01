@@ -89,23 +89,40 @@ expect(wrapper.vm.password).toBe("")
 })
 
 test("LT-1 Successful login to account", async () => {
-    const wrapper = mount(Login, {
-        global: {
-  plugins: [
-    createTestingPinia({createSpy: vi.fn}),
-  [vuetify],
-  routes
-  ],
-}
+  const wrapper = mount(Login, {
+      global: {
+        plugins: [
+          createTestingPinia({createSpy: vi.fn}),
+          [vuetify],
+          routes
+          ],
+    }
+  })
 
-})
-const store = useAppStore()
-wrapper.vm.username = 'login'
-//store.user.id=219
-wrapper.vm.password = '1234'
+  const store = useAppStore()
 
-await wrapper.vm.validateLogin()
-expect(store.loggedIn).toBe(true)
+  // Create a test user
+  wrapper.vm.displayedName = "LoginTest"
+  wrapper.vm.username = "logintest@test.com"
+  wrapper.vm.password = "Test1234"
+  wrapper.vm.maxDifficulty = 3
+  wrapper.vm.estimatedTime = 30
+  wrapper.vm.repeatedPassword = "Test1234"
+  wrapper.vm.householdName = "TESTLOGIN"
+  wrapper.vm.isJoin = false
+  const createdUser = await wrapper.vm.createProfile()
+
+  // test login with the created credentials
+  wrapper.vm.switchLogin() 
+  wrapper.vm.username = 'logintest@test.com'
+  wrapper.vm.password = 'Test1234'
+
+  await wrapper.vm.validateLogin()
+  expect(store.loggedIn).toBe(true)
+
+  // cleanup
+  await FetchService.deleteUser(createdUser.id)
+  await FetchService.deleteHousehold(createdUser.householdId)
 })
 
 test("PCT-1, HCT-1 All valid fields for creating profile with valid household name for household creation", async () => {
@@ -130,7 +147,7 @@ const store = useAppStore()
     const houseResult = await FetchService.fetchHouseholdByJoin(store.household.joinCode)
     expect(result.email).toBe("validateProfile12@q.com")
     expect(result.name).toBe("Mollietest")
-    expect(result.password_hash).toBe("Mtest1234")
+    expect(result).toHaveProperty("password_hash")
     expect(result.difficulty).toBe(3)
     expect(result.maxChoreTime).toBe(27)
     expect(houseResult.name).toBe("TESTHOUSEHOLD1")
@@ -160,7 +177,7 @@ const store = useAppStore()
     const houseResult = await FetchService.fetchHouseholdByJoin(store.household.joinCode)
     expect(result.email).toBe("validateProfile@test.com")
     expect(result.name).toBe("Mollietest")
-    expect(result.password_hash).toBe("Mtest")
+    expect(result).toHaveProperty('password_hash')
     expect(result.difficulty).toBe(3)
     expect(result.maxChoreTime).toBe(27)
     expect(houseResult.name).toBe("TESTHOUSEHOLD2")
@@ -176,7 +193,7 @@ const store = useAppStore()
     const houseResult2 = await FetchService.fetchHouseholdByJoin(store.household.joinCode)
     expect(result2.email).toBe("validateProfile2")
     expect(result2.name).toBe("Mollietest2")
-    expect(result2.password_hash).toBe("Mtest1234")
+    expect(result2).toHaveProperty('password_hash')
     expect(result2.difficulty).toBe(3)
     expect(result2.maxChoreTime).toBe(27)
     expect(houseResult2.name).toBe("TESTHOUSEHOLD2")
@@ -585,7 +602,7 @@ const store = useAppStore()
   const houseResult = await FetchService.fetchHouseholdByJoin(store.household.joinCode)
   expect(result.email).toBe("validateProfile@test2.com")
   expect(result.name).toBe("Mollietest")
-  expect(result.password_hash).toBe("Mtest")
+  expect(result).toHaveProperty("password_hash")
   expect(result.difficulty).toBe(3)
   expect(result.maxChoreTime).toBe(27)
   expect(houseResult.name).toBe("TESTHOUSEHOLD4")

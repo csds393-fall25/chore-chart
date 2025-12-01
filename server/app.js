@@ -242,8 +242,8 @@ app.put('/api/user/:id', async (req, res) => {
   const { id } = req.params;
   if(Number.isNaN(id)) { return res.status(400).json({ error: "Invalid id" })};
   const { name, email, userPassword, difficulty, maxChoreTime, householdId, role } = req.body;
-
-  const password_hash = await bcrypt.hash(userPassword, saltRounds);
+  const existingUser = await prisma.user.findUnique({ where:  { id: Number(id) }});
+  const password_hash = userPassword ? await bcrypt.hash(userPassword, saltRounds) : existingUser.password_hash;
 
   try {
     const updated =  await prisma.user.update({ where:  { id: Number(id) }, data: { name, email, password_hash, difficulty, maxChoreTime, householdId, role } });
