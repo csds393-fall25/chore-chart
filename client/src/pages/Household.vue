@@ -136,74 +136,80 @@
             </template>
           </v-list-item>
           <v-list-item
-            v-for="(chore) in leaders"
-            :key="chore.id"
+            v-for="(leader) in leaders"
+            :key="leader.id"
             class="border-b-thin "
             variant="outlined"
           >
             <template
               v-slot:prepend
             >
-              <v-avatar color="primary">
-                <span class="text-h5">{{ userInitials(chore.name) }}</span>
-              </v-avatar>
+               <div style="width: 40px" class="mr-3">
+                <Avatar :userId="leader.id"/>
+              </div>
             </template>
 
             <template v-slot:default>
               <v-row>
                 <v-col cols="12" sm="4" md="3">
-                  {{ chore.name }}
+                  {{ leader.name }}
                 </v-col>
                 <v-col cols="0" sm="3" md="2" class="d-none d-sm-block">
-                  {{ chore.difficulty }}
+                  {{ leader.difficulty }}
                 </v-col>
                 <v-col cols="0" sm="5" md="3" class="d-none d-sm-block">
-                  {{ chore.maxChoreTime }} {{chore.maxChoreTime == 1 ? 'min' : 'mins'}}
+                  {{ leader.maxChoreTime }} {{leader.maxChoreTime == 1 ? 'min' : 'mins'}}
                 </v-col>
                 <v-col cols="0" md="4" class="d-none d-md-block">
-                  {{ chore.totalPoints}} pts
+                  {{ leader.totalPoints}} pts
                 </v-col>
               </v-row>
             </template>
 
-            <template
-              v-slot:append
-            >
-              <div
-                class="list-append"
-              >
-              
-                <v-btn
-                v-if="store.user.role == 'leader' && chore.id != store.user.id"
-                  block
-                  color="secondary"
-                  id="makeMember"
-                  density="compact"
-                  class="mt-1 mb-1"
-                  @click ="confirmation('member', chore.id)"
-                >
-                  Make Member
-                </v-btn>
-          
-              </div>
-            </template>
-          </v-list-item> 
-        </v-list>
-      </div>
-
-      <div class="bg-primary text-center text-h5 pb-2 pt-2 mt-2">Members</div>
-      <div class="overflow-x-auto">
-        <v-list class = "pt-0 pb-0 list">
-          <v-list-item
-            class="border-b-thin bg-secondary"
-            variant="outlined"
-            
+          <template
+            v-slot:append
           >
-            <template
-              v-slot:prepend
+            <div
+              class="list-append"
             >
-              <v-avatar></v-avatar>
-            </template>
+            
+              <v-btn
+               v-if="store.user.role == 'leader' && leader.id != store.user.id"
+                block
+                color="secondary"
+                id="makeMember"
+                density="compact"
+                class="mt-1 mb-1"
+                @click ="confirmation('member', leader.id)"
+                min-width="8em"
+                 
+              >
+                Make Member
+              </v-btn>
+        
+            </div>
+          </template>
+        </v-list-item>
+
+
+
+        
+      </v-list >
+ <div class="bg-primary text-center text-h5 pb-2 pt-2 mt-2">Members</div>
+ 
+ <v-list class = "pt-0 pb-0">
+
+  
+      <v-list-item
+          class="border-b-thin bg-secondary"
+           variant="outlined"
+           
+        >
+          <template
+            v-slot:prepend
+          >
+            <v-avatar></v-avatar>
+          </template>
 
             <template v-slot:default>
               <v-row>
@@ -222,43 +228,44 @@
               </v-row>
             </template>
 
-            <template
-              v-slot:append
-            >
-              <div
-                class="list-append"
-              >
-              </div>
-            </template>
-          </v-list-item>
-          
-          <v-list-item
-            v-for="(chore) in members"
-            :key="chore.id"
-            class="border-b-thin"
-            variant="outlined"
+          <template
+            v-slot:append
+            min-width="8em"
           >
-            <template
-              v-slot:prepend
+            <div
+              class="list-append"
             >
-              <v-avatar color="primary">
-                <span class="text-h5">{{ userInitials(chore.name) }}</span>
-              </v-avatar>
-            </template>
+             </div>
+          </template>
+        </v-list-item>
+        
+        <v-list-item
+          v-for="(member) in members"
+          :key="member.id"
+          class="border-b-thin"
+           variant="outlined"
+        >
+          <template
+            v-slot:prepend
+          >
+            <div style="width: 40px" class="mr-3">
+                <Avatar :userId="member.id"/>
+              </div>
+          </template>
 
             <template v-slot:default>
               <v-row>
                 <v-col cols="12" sm="4" md="3">
-                  {{ chore.name }}
+                  {{ member.name }}
                 </v-col>
                 <v-col cols="0" sm="3" md="2" class="d-none d-sm-block">
-                  {{ chore.difficulty }}
+                  {{ member.difficulty }}
                 </v-col>
                 <v-col cols="0" sm="5" md="3" class="d-none d-sm-block">
-                  {{ chore.maxChoreTime }} {{chore.maxChoreTime == 1 ? 'min' : 'mins'}}
+                  {{ member.maxChoreTime }} {{member.maxChoreTime == 1 ? 'min' : 'mins'}}
                 </v-col>
                 <v-col cols="0" md="4" class="d-none d-md-block">
-                  {{ chore.totalPoints}} pts
+                  {{ member.totalPoints}} pts
                 </v-col>
               </v-row>
             </template>
@@ -270,13 +277,13 @@
                 class="list-append"
               >       
                 <v-btn
-                v-if="store.user.role == 'leader' && chore.id != store.user.id"
+                v-if="store.user.role == 'leader' && member.id != store.user.id"
                   block
                   id="makeLeader"
                   color="secondary"
                   density="compact"
                   class="mt-1 mb-1"
-                  @click = "confirmation('leader', chore.id)"
+                  @click = "confirmation('leader', member.id)"
                 >
                   Make Leader
                 </v-btn>
@@ -295,6 +302,7 @@
   import { useAppStore } from '@/stores/app';
   import { useRouter } from 'vue-router'
   import FetchService from '../FetchService.js'
+  import Avatar from '@/components/Avatar.vue';
   import { useToast } from 'vue-toastification'
 
   const store = useAppStore()

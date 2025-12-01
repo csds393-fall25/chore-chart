@@ -3,7 +3,7 @@
     <v-btn id="logout" class="float-sm-right ma-3" color="secondary" @click="store.loggedIn=false">Logout</v-btn>
     <v-row class="mt-0">
       <v-col cols="6" md ="4" class="ma-4">
-          <Avatar :userId="store.user.id"/>
+          <Avatar dis :userId="store.user.id"/>
       </v-col>
     </v-row>
 
@@ -64,13 +64,13 @@
           <v-card-actions>
             <v-btn id="delete" @click="deleteProfile(store.user.id)" text="delete">
             </v-btn>
-             <v-btn id="cancel" @click="showDialog = false" text="cancel">
+             <v-btn id="deleteCancel" @click="showDialog = false" text="cancel">
             </v-btn>
           </v-card-actions>
         </v-card>
       </v-dialog>
        <v-dialog data-testid="passwordDialog" v-model="showPasswordDialog" width="auto" >
-        <v-card title="change Password?" >
+        <v-card title="Change password?" >
           <v-text-field data-testid="prevPass" :error-messages="errorMessages.previousPassword" class="ml-1 mr-1" v-model="previousPassword" type="password" label="Previous Password"></v-text-field> 
           <v-card-actions>
             <v-btn id="confirm" @click="confirm" text="Confirm">
@@ -123,14 +123,14 @@ async function updateProfile() {
   if(password.value && confirmed.value) {
     const user = {
         email: store.user.email,
-        password_hash: previousPassword.value
+        userPassword: previousPassword.value
     }
     let pastPass = await FetchService.login(user)
     if(pastPass){
       const result = await FetchService.updateUser(store.user.id, {
         name: name.value,
         email: username.value,
-        password_hash: password.value,
+        userPassword: password.value,
         difficulty: maxDifficulty.value,
         maxChoreTime: estimatedTime.value
         

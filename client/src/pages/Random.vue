@@ -78,6 +78,9 @@
               </v-col>
               <v-col cols="3">
                 <!-- TODO: add an avatar for the user here -->
+                <div style="width: 40px" class="mr-3">
+                  <Avatar :userId="chore.assigneeId"/>
+                </div>
                 {{ userName(chore.assigneeId) }}
               </v-col>
               <v-col cols="3">
@@ -135,6 +138,7 @@
   import { useRouter, useRoute } from 'vue-router';
   import FetchService from '../FetchService.js'
   import { useToast } from 'vue-toastification'
+  import Avatar from '@/components/Avatar.vue';
 
   const store = useAppStore();
   const toast = useToast();

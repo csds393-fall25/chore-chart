@@ -147,7 +147,7 @@ test("temp test", () => {
     expect (1+1).toBe(2)
 }) 
 
-test("VHT-1 View Household", () => {
+test("VHT-1 and VHT-2 - View Household", () => {
     const wrapper = mount(Household, {
         global: {
             plugins: [

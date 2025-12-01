@@ -8,7 +8,6 @@ describe('DB integration tests', () => {
 	let user = null;
 	let chore = null;
 
-    // TODO see if this is needed
     beforeAll(async () => {
 		// cleanup db to avoid unique name conflict 
         await prisma.chore.deleteMany({ where: { name: { contains: 'db-test-chore' } } });
@@ -46,14 +45,18 @@ describe('DB integration tests', () => {
         .send({
             name: `test-user`,
             email: `db-test-user@example.com`,
-            password_hash: 'testpw',
+            userPassword: 'testpw',
+            role: 'member',
+            difficulty: 5,
+            totalPoints: 0,
+            maxChoreTime: 60,
             householdId: household.id
         });
         expect(response.status).toBe(200);
         expect(response.body).toHaveProperty('id');
         expect(response.body).toHaveProperty('name', 'test-user');
         expect(response.body).toHaveProperty('email', 'db-test-user@example.com');
-        expect(response.body).toHaveProperty('password_hash', 'testpw');
+        expect(response.body).toHaveProperty('password_hash');
         expect(response.body).toHaveProperty('householdId', household.id);
 
         user = response.body;
@@ -65,10 +68,13 @@ describe('DB integration tests', () => {
         .send({
             name: `test-user-duplicate`,
             email: `db-test-user@example.com`,
-            password_hash: 'testpw',
+            userPassword: 'testpw',
+            role: 'member',
+            difficulty: 5,
+            totalPoints: 0,
+            maxChoreTime: 60,
             householdId: household.id
         });
-        console.log(response.error.message);
         expect(response.status).toBe(513);
     });
 
@@ -132,15 +138,24 @@ describe('DB integration tests', () => {
 	test('LT-1 - Login with valid credentials', async () => {
 		const response = await request(app)
 		.post(`/api/login`)
-		.send({ email: user.email, password_hash: user.password_hash });
+		.send({ email: user.email, userPassword: 'testpw' });
 
 		expect(response.status).toBe(200);
+		expect(response.body).toHaveProperty('user');
 	});
 
 	test('PET-1 - Edit profile (update name and maxChoreTime)', async () => {
 		const response = await request(app)
 		.put(`/api/user/${user.id}`)
-		.send({ name: 'db-test-user-edited', maxChoreTime: 120 });
+		.send({ 
+			name: 'db-test-user-edited', 
+			email: user.email,
+			userPassword: 'testpw',
+			difficulty: user.difficulty,
+			maxChoreTime: 120,
+			householdId: user.householdId,
+			role: user.role
+		});
 
 		expect(response.status).toBe(200);
 		expect(response.body.name).toBe('db-test-user-edited');

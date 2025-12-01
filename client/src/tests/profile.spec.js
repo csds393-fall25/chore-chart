@@ -192,22 +192,22 @@ test("PDT-1 Profile is deleted", async () => {
   wrapper.vm.repeatedPassword = "Mtest1234"
   wrapper.vm.isJoin = false
 
-  const user = {
-    name:  wrapper.vm.displayedName,
-    email:    wrapper.vm.username,
-    password_hash: wrapper.vm.password,
-    householdId: 2,
-    totalPoints: 0,
-    difficulty: wrapper.vm.maxDifficulty,
-    maxChoreTime: wrapper.vm.estimatedTime,
-  }
-  await nextTick()
-  await wrapper.find("#deleteButton").trigger("click")
-  expect(wrapper.vm.showDialog).toBe(true);
-  await nextTick()
-  const spy = vi.spyOn(wrapper.vm, "deleteProfile");
-  await wrapper.find("#delete").trigger("click")
-  expect(spy).toHaveBeenCalled();
+      const user = {
+      name:  wrapper.vm.displayedName,
+      email:    wrapper.vm.username,
+      userPassword: wrapper.vm.password,
+      householdId: 2,
+      totalPoints: 0,
+      difficulty: wrapper.vm.maxDifficulty,
+      maxChoreTime: wrapper.vm.estimatedTime,
+    }
+    await nextTick()
+    await wrapper.find("#deleteButton").trigger("click")
+    expect(wrapper.vm.showDialog).toBe(true);
+    await nextTick()
+    const spy = vi.spyOn(wrapper.vm, "deleteProfile");
+    await wrapper.find("#delete").trigger("click")
+    expect(spy).toHaveBeenCalled();
 })
 
 test("PDT-1 delete user information", async () => {
@@ -281,7 +281,7 @@ test("PDT-2 Profile deletion is canceled", async () => {
       const user = {
       name:  wrapper.vm.displayedName,
       email:    wrapper.vm.username,
-      password_hash: wrapper.vm.password,
+      userPassword: wrapper.vm.password,
       householdId: 2,
       totalPoints: 0,
       difficulty: wrapper.vm.maxDifficulty,
@@ -290,7 +290,7 @@ test("PDT-2 Profile deletion is canceled", async () => {
     const result = await FetchService.signup(user)
     FetchService.deleteUser(result.id)
     await nextTick()
-    await wrapper.find("#cancel").trigger("click")
+    await wrapper.find("#deleteCancel").trigger("click")
     expect(wrapper.vm.showDialog).toBe(false);
 })
 
@@ -489,27 +489,42 @@ test("PET-5 Password is updated but not valid with previous password", async () 
 
 test("PET-1 Edited fields are all valid (including password)", async () => {
     const wrapper = mount(Profile, {
-        global: {
-  plugins: [
-    createTestingPinia({createSpy: vi.fn}),
-  [vuetify],
-  ],
-}
+      global: {
+        plugins: [
+          createTestingPinia({createSpy: vi.fn}),
+        [vuetify],
+        ],
+      }
+    })
+    // create test user
+    const user = {
+        name: "UpdateTestUser",
+        email: "test-update-user@test.com",
+        userPassword: "OldPass123",
+        difficulty: 5,
+        maxChoreTime: 30,
+        householdId: 1,
+        totalPoints: 0,
+        role: "member"
+    }
+    const createdUser = await FetchService.signup(user)
 
-})
     const store = useAppStore()
-    store.user.id = 219
-    wrapper.vm.name = "x"
-    store.user.email = "x"
-    wrapper.vm.username = "x"
+    store.user = createdUser
+
+    wrapper.vm.name = "UpdatedName"
+    wrapper.vm.username = createdUser.email
     wrapper.vm.maxDifficulty = 10
     wrapper.vm.estimatedTime = 50
-    wrapper.vm.password = '12345678B'
-    wrapper.vm.repeatedPassword = '12345678B'
-    wrapper.vm.previousPassword = '12345678B'
+    wrapper.vm.password = 'NewPass123'
+    wrapper.vm.repeatedPassword = 'NewPass123'
+    wrapper.vm.previousPassword = 'OldPass123'
     wrapper.vm.confirmed = true
     const result = await wrapper.vm.updateProfile()
     expect(result).toBe(true)
+    
+    // Cleanup
+    await FetchService.deleteUser(createdUser.id)
 })
 
 test("showPasswordDialog shows", async () => {

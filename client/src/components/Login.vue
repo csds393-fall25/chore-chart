@@ -101,10 +101,9 @@
     try {
       const user = {
         email: username.value,
-        password_hash: password.value
+        userPassword: password.value
       }
       const result = await FetchService.login(user);
-      console.log("Login successful!", result);
       isIncorrect.value = false;
       store.user = (result.user)
       store.household = await FetchService.fetchHousehold(store.user.householdId);
@@ -247,7 +246,7 @@
     const user = {
       name: displayedName.value,
       email: username.value,
-      password_hash: password.value,
+      userPassword: password.value,
       householdId: house.id,
       totalPoints: 0,
       role: isJoin.value ? 'member' : 'leader',
