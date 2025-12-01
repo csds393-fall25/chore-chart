@@ -36,7 +36,7 @@
         <v-card-item>
           <v-card-title>Create Post</v-card-title>
         </v-card-item>
-        <v-text-field v-model="text" label = "Post content"> </v-text-field>
+        <v-text-field :error-messages="errorMessages.text" v-model="text" label = "Post content"> </v-text-field>
         <v-card-actions>
             <v-btn
             @click="post()"
@@ -45,7 +45,7 @@
             Post
           </v-btn>
           <v-btn
-            @click="showDialog = false"
+            @click="cancel()"
             id="cancelButton"
           >
             Cancel
@@ -68,6 +68,7 @@
   const showDialog = ref(false)
   const title = ref()
   const text = ref()
+   const errorMessages = ref({text: ""})
 
   const usersAvatar = ref(store.avatars.find((avatar) => avatar.userId == store.user.id))
   const mounted = ref(false)
@@ -127,6 +128,11 @@
   }
 
   async function post(){
+
+    if(!text.value){
+      errorMessages.value.text = "Post must have a message"
+      return
+    }
     let item = {
         content: text.value,
         authorId: store.user.id
@@ -147,10 +153,11 @@
 
   async function deletePost(id){
     console.log(id)
-    await FetchService.deletePost(id)
+    let result2 = await FetchService.deletePost(id)
     let result = await FetchService.fetchPosts()
     store.bulletin.items = result
     itemsList.value = store.bulletin.items
+    return result2
 
 
   }
@@ -163,6 +170,11 @@
     itemsList.value = store.bulletin.items
 
 
+  }
+
+  function cancel(){
+    errorMessages.value.text = ""
+    showDialog.value = false
   }
 
  
