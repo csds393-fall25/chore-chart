@@ -6,7 +6,7 @@
           <div class="text-center text-sm-left">Store</div>
         </v-col>
         <v-col cols="4" lg="2" offset-lg="1" offset-sm="0" offset="4">
-          <Avatar :userId="store.user.id"/>
+          <Avatar dis :userId="store.user.id"/>
         </v-col>
       </v-row>
       <v-tabs
