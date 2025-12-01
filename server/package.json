@@ -11,6 +11,7 @@
   },
   "type": "module",
   "scripts": {
+    "start": "node app.js",
     "test": "cross-env NODE_ENV=test vitest"
   },
   "devDependencies": {
