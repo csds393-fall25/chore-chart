@@ -13,7 +13,7 @@ describe('Fetch Services', () => {
             difficulty: 5,
             name: 'test-user-name',
             email: uniqueEmail,
-            password_hash: 'pwh',
+            userPassword: 'pwh',
             totalPoints: 0,
             role: 'member',
             householdId: 1,
@@ -30,7 +30,7 @@ describe('Fetch Services', () => {
     });
 
     test('Fetch signin', async () => {
-        const resp = await FetchService.login({ email: user.email, password_hash: user.password_hash });
+        const resp = await FetchService.login({ email: user.email, userPassword: user.userPassword });
         expect(resp).toBeDefined();
         if (resp.email) {
             expect(resp.email).toBe(user.email);
@@ -41,8 +41,6 @@ describe('Fetch Services', () => {
         const newName = 'edited-test-user';
         const updated = await FetchService.updateUser(createdUser.id, {
             name: newName,
-            email: user.email,
-            difficulty: 2,
             maxChoreTime: 60
         });
         expect(updated).toBeDefined();

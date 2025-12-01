@@ -13,7 +13,7 @@ class FetchService {
                     difficulty: user.difficulty,
                     name: user.name,
                     email: user.email,
-                    password_hash: user.password_hash,
+                    userPassword: user.userPassword,
                     totalPoints: 0,
                     role: user.role,
                     householdId: user.householdId,
@@ -40,7 +40,7 @@ class FetchService {
                 },
                 body: JSON.stringify({
                     email: user.email,
-                    password_hash: user.password_hash
+                    userPassword: user.userPassword
                 })
             });
             
@@ -69,9 +69,9 @@ class FetchService {
                 temp.email = userData.email
             } 
 
-             if(Object.hasOwn(userData, 'password_hash')){
+             if(Object.hasOwn(userData, 'userPassword')){
                 
-                temp.password_hash = userData.password_hash
+                temp.userPassword = userData.userPassword
                
             } 
 
