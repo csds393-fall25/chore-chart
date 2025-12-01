@@ -518,6 +518,7 @@ class FetchService {
                     authorId: post.authorId,
                     content: post.content,
                     likeCount: 0,
+                    householdId: post.householdId
                 })
             });
 
@@ -532,9 +533,9 @@ class FetchService {
         }
     }
 
-       static async fetchPosts() {
+       static async fetchPosts(householdId) {
         try {
-            const response = await fetch(`${baseURL}/bulletinItem`);
+            const response = await fetch(`${baseURL}/bulletinItem?householdId=${householdId}`);
             if(!response.ok) {
                 throw new Error(`Response status: ${response.status}`);
             }

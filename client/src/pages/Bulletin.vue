@@ -49,7 +49,7 @@
         <v-card-item>
           <v-card-title>Create Post</v-card-title>
         </v-card-item>
-        <v-textarea v-model="text" label = "Post content"> </v-textarea>
+        <v-textarea :error-messages="errorMessages.text" v-model="text" label = "Post content"> </v-textarea>
         <v-card-actions>
           <v-btn
             variant="elevated"
@@ -62,7 +62,7 @@
           <v-btn
             variant="elevated"
             color="error"
-            @click="showDialog = false"
+            @click="cancel()"
             id="cancelButton"
           >
             Cancel
@@ -85,6 +85,7 @@
   const showDialog = ref(false)
   const title = ref()
   const text = ref()
+   const errorMessages = ref({text: ""})
 
   const usersAvatar = ref(store.avatars.find((avatar) => avatar.userId == store.user.id))
   const mounted = ref(false)
@@ -96,7 +97,7 @@
     
   
     console.log("HERE")
-    let result = await FetchService.fetchPosts()
+    let result = await FetchService.fetchPosts(store.household.id)
     console.log(result)
     store.bulletin.items = result
     itemsList.value = store.bulletin.items
@@ -149,14 +150,20 @@
   }
 
   async function post(){
+
+    if(!text.value){
+      errorMessages.value.text = "Post must have a message"
+      return
+    }
     let item = {
         content: text.value,
-        authorId: store.user.id
+        authorId: store.user.id,
+        householdId: store.household.id
     }
     console.log(item)
     let post = await FetchService.createPost(item)
     console.log(post)
-    let result = await FetchService.fetchPosts()
+    let result = await FetchService.fetchPosts(store.household.id)
     console.log(result)
     store.bulletin.items = result
     itemsList.value = store.bulletin.items
@@ -169,10 +176,11 @@
 
   async function deletePost(id){
     console.log(id)
-    await FetchService.deletePost(id)
-    let result = await FetchService.fetchPosts()
+    let result2 = await FetchService.deletePost(id)
+    let result = await FetchService.fetchPosts(store.household.id)
     store.bulletin.items = result
     itemsList.value = store.bulletin.items
+    return result2
 
 
   }
@@ -180,9 +188,14 @@
   async function likePost(id, likes){
     console.log(id)
     await FetchService.likePost(id, (likes+1) )
-    let result = await FetchService.fetchPosts()
+    let result = await FetchService.fetchPosts(store.household.id)
     store.bulletin.items = result
     itemsList.value = store.bulletin.items
+  }
+
+  function cancel(){
+    errorMessages.value.text = ""
+    showDialog.value = false
   }
 
  

@@ -38,8 +38,9 @@ model Household {
   joinCode String @unique @default(uuid())
 
   // Opposite relation fields:
-  users  User[]
-  chores Chore[]
+  users        User[]
+  chores       Chore[]
+  BulletinItem BulletinItem[]
 }
 
 model Chore {
@@ -108,6 +109,8 @@ model BulletinItem {
   dateCreated  DateTime     @default(now())
   dateModified DateTime     @updatedAt
   likeCount    Int          @default(0)
+  household    Household    @relation(fields: [householdId], references: [id], onDelete: Cascade)
+  householdId  Int
 
   comments Comment[]
   options  PollOption[]

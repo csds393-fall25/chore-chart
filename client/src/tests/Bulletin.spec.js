@@ -134,7 +134,7 @@ test(" View bulletin board ", async () => {
     
 })
 
-test(" add bulletin board ", async () => {
+test(" ABB-1 User makes a post on the bulletin board successfully", async () => {
     const wrapper = mount(Bulletin, {
             global: {
                 plugins: [
@@ -152,7 +152,7 @@ test(" add bulletin board ", async () => {
                                     users: [
     
                                              {
-                                            id: 1,
+                                            id: 8,
                                         },
                                      
                                   
@@ -194,6 +194,144 @@ test(" add bulletin board ", async () => {
        let result = await wrapper.vm.post()
         await nextTick()
         console.log(result)
-    /expect(wrapper.vm.itemsList[]).toContain({content: "hello"})
+    expect(result.content).toBe("hello")
+    expect(result.authorId).toBe(8)
+    
+})
+
+test("ABB-3 User makes a post unsuccessfully", async () => {
+    const wrapper = mount(Bulletin, {
+            global: {
+                plugins: [
+                    createTestingPinia({
+                        createSpy: vi.fn,
+                        initialState: {
+                            app: {
+                                user: {
+                                    id: 8,
+                                    householdId: 1,
+                                    role: "leader",
+                                },
+                                household: {
+    
+                                    users: [
+    
+                                             {
+                                            id: 8,
+                                        },
+                                     
+                                  
+                                    ],
+                                },
+                                bulletin: {
+                                    items: [
+                                        {
+                                            id: 40,
+                                            text: "doNotDeletePost",
+                                            authorId: 0,
+                                            likeCount: 0
+                                        }
+                                    ]
+                                        
+                                    
+                                }
+                            },
+                        },
+                    }),
+                    [vuetify],
+                
+                ],
+    
+                 stubs: {
+        VDialog: {
+          name: "VDialog",
+          template: '<div class="v-dialog-stub"><slot /></div>',
+          props: ['modelValue',
+          ]
+        }
+      }
+            },
+           
+        })
+           const store = useAppStore()
+           store.user.id = 8
+           wrapper.vm.text = ""
+       let result = await wrapper.vm.post()
+        await nextTick()
+        console.log(result)
+    expect(wrapper.vm.errorMessages.text).toBe("Post must have a message")
+    
+})
+
+test("DBBI-1 User deletes post/poll successfully", async () => {
+    const wrapper = mount(Bulletin, {
+            global: {
+                plugins: [
+                    createTestingPinia({
+                        createSpy: vi.fn,
+                        initialState: {
+                            app: {
+                                user: {
+                                    id: 8,
+                                    householdId: 1,
+                                    role: "leader",
+                                },
+                                household: {
+    
+                                    users: [
+    
+                                             {
+                                            id: 8,
+                                        },
+                                     
+                                  
+                                    ],
+                                },
+                                bulletin: {
+                                    items: [
+                                        {
+                                            id: 40,
+                                            text: "doNotDeletePost",
+                                            authorId: 0,
+                                            likeCount: 0
+                                        }
+                                    ]
+                                        
+                                    
+                                }
+                            },
+                        },
+                    }),
+                    [vuetify],
+                
+                ],
+    
+                 stubs: {
+        VDialog: {
+          name: "VDialog",
+          template: '<div class="v-dialog-stub"><slot /></div>',
+          props: ['modelValue',
+          ]
+        }
+      }
+            },
+           
+        })
+
+         const store = useAppStore()
+           store.user.id = 8
+           wrapper.vm.text = "hello"
+       let result = await wrapper.vm.post()
+        await nextTick()
+        console.log(result)
+    expect(result.content).toBe("hello")
+    expect(result.authorId).toBe(8)
+
+         
+           store.user.id = 8
+           wrapper.vm.text = ""
+       let result2 = await wrapper.vm.delete()
+        await nextTick()
+        console.log(result2.authorId).toBe(8)
     
 })
