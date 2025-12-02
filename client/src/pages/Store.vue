@@ -37,7 +37,7 @@
         >
           <v-row class="mb-3 mt-0">
             <v-col cols="12" sm="4" md="3"
-              v-for="(prop) in propsList.filter((propItem) => propItem.type == type)"
+              v-for="(prop) in propsList.filter((propItem) => propItem.type == type).sort((prop1, prop2) => prop1.cost - prop2.cost)"
               :key="prop.id"
             >
               <v-card>
