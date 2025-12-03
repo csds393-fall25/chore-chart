@@ -78,8 +78,8 @@
               </v-col>
               <v-col cols="3">
                 <!-- TODO: add an avatar for the user here -->
-                <div style="width: 40px" class="mr-3">
-                  <Avatar :userId="chore.assigneeId"/>
+                <div style="width: 40px" class="mr-3" :key="chore.assigneeId">
+                  <Avatar :userId="chore.assigneeId" :key="chore.assigneeId"/>
                 </div>
                 {{ userName(chore.assigneeId) }}
               </v-col>
