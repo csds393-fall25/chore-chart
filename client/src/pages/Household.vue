@@ -29,15 +29,19 @@
             Edit
           </v-btn>
           <v-dialog data-testid="dialog" v-model="showDialog" width="500">
-            <v-card title="Join or Create a new household" max-width="400">
-              <v-text-field class = "ml-2 mr-2" data-testid="houseName" :error-messages="errorMessages.household"  v-model = "householdName"  label =  "Enter a new name or an existing join code"></v-text-field>
+            <v-card title="Leave Household" max-width="400">
+              <v-row class="text-center mb-1">
+                <v-col>
+                <v-btn :variant=" joinbutton ? 'flat': 'outlined'" @click="joinbutton=false" class="mr-2  ">Create Household</v-btn>
+                <v-btn :variant=" joinbutton ? 'outlined': 'flat'" @click="joinbutton=true">Join Household</v-btn>
+                </v-col>
+              </v-row>
+              <v-text-field class = "ml-2 mr-2" data-testid="houseName" :error-messages="errorMessages.household"  v-model = "householdName"  :label = "joinbutton ? 'Enter existing household join code' : 'Enter new household name'"></v-text-field>
               <v-card-actions>
                 <v-btn id = "cancel" @click="cancel()" data-testid="cancelButton" > cancel
                 </v-btn>
-                <v-btn id = "newHouse" @click="createNewHousehold()" > Create New
-                </v-btn>
-                <v-btn id = "existingHouse" @click="joinNewHousehold()" > Join Existing
-                </v-btn>
+                <v-btn id = "newHouse" @click=" joinbutton? joinNewHousehold() : createNewHousehold()" > Leave
+                </v-btn>   
               </v-card-actions>
             </v-card>
           </v-dialog>
@@ -320,6 +324,7 @@
   const roleChangingID = ref()
   const roleChanging = ref()
   const methodComplete = ref(false)
+  const joinbutton = ref(false)
 
   const showDialog = ref(false);
   const isJoin = ref(true)
