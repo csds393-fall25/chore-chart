@@ -32,8 +32,8 @@
             <v-card title="Leave Household" max-width="400">
               <v-row class="text-center mb-1">
                 <v-col>
-                <v-btn :variant=" joinbutton ? 'flat': 'outlined'" @click="joinbutton=false" class="mr-2  ">Create Household</v-btn>
-                <v-btn :variant=" joinbutton ? 'outlined': 'flat'" @click="joinbutton=true">Join Household</v-btn>
+                <v-btn :variant=" joinbutton ? 'flat': 'outlined'"  @click="() => { joinbutton=false; errorMessages.household = ''; householdName='' }" class="mr-2  ">Create Household</v-btn>
+                <v-btn :variant=" joinbutton ? 'outlined': 'flat'" @click="() => { joinbutton=true; errorMessages.household = ''; householdName='' }">Join Household</v-btn>
                 </v-col>
               </v-row>
               <v-text-field class = "ml-2 mr-2" data-testid="houseName" :error-messages="errorMessages.household"  v-model = "householdName"  :label = "joinbutton ? 'Enter existing household join code' : 'Enter new household name'"></v-text-field>
